@@ -64,6 +64,7 @@
 
 #include <QtGui>
 
+#include "associationselectdlg.h"
 #include "controldatadlg.h"
 #include "dataselectdlg.h"
 #include "energydlg.h"
@@ -96,6 +97,8 @@ class mainWindow : public QMainWindow {
     void openFile();
     void readData(double minEnergy, double maxEnergy);
     void saveFile();
+    void addAssociation();
+    void setAssociation(association* newAssoc);
     void pixelize();
     void transform();
     void analyze();
@@ -130,30 +133,32 @@ class mainWindow : public QMainWindow {
 
     Ui::MainWindow *ui;
     
-    controlDataDialog    *ctrlDlg;
-    dataSelectDialog     *dataSelectDlg;
-    energyDialog         *energyDlg;
+    associationSelectDialog *assocDlg;
+    controlDataDialog       *ctrlDlg;
+    dataSelectDialog        *dataSelectDlg;
+    energyDialog            *energyDlg;
     multipleSelectionDialog *multSelDlg;
-    pixelizerDialog      *pixSelectDlg;
-    healpixDialog        *healpixDlg;
-    transformerDialog    *transSelectDlg;
-    rshtDialog           *rshtDlg;
-    spectrumDialog       *specDlg;
-    mapperDialog         *mapperDlg;
-    mapSelectDialog      *mapSelectDlg;
-    graphDialog          *graphDlg;
-    graphSelectDialog    *graphSelectDlg;
+    pixelizerDialog         *pixSelectDlg;
+    healpixDialog           *healpixDlg;
+    transformerDialog       *transSelectDlg;
+    rshtDialog              *rshtDlg;
+    spectrumDialog          *specDlg;
+    mapperDialog            *mapperDlg;
+    mapSelectDialog         *mapSelectDlg;
+    graphDialog             *graphDlg;
+    graphSelectDialog       *graphSelectDlg;
     
-    progress             *s_progressInterface;
+    progress                *s_progressInterface;
 
-    association          *s_association;
-    FILETYPE             selectedDataType;
-    GENERICTYPE          selectedDataStream;
-    FORMAT               dataFormat;
-    unsigned char        *activeMap;
-    unsigned char        *activeGraph;
-    QString              fileName;
-    QDir                 directory;
+    association               *s_association;
+    std::vector<association*> *associationVector;
+    FILETYPE                  selectedDataType;
+    GENERICTYPE               selectedDataStream;
+    FORMAT                    dataFormat;
+    unsigned char             *activeMap;
+    unsigned char             *activeGraph;
+    QString                   fileName;
+    QDir                      directory;
 
     int pbValue;
     

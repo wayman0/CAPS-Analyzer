@@ -66,8 +66,13 @@ mainWindow::mainWindow() :
   QString title, message;
 
   s_association = 0;
-  try {
-    s_association = new association();
+  try
+  {
+    associationVector = new std::vector<association*>(1);
+    (*associationVector)[0] = new association();
+    s_association = (*associationVector)[0];
+
+    //s_association = new association();
   }
   catch (const std::overflow_error &e) {
     title = QString(tr("Error code returned"));
@@ -95,6 +100,9 @@ mainWindow::mainWindow() :
   }
 
   /* create dialogs needed to pass signals back and forth */
+  assocDlg = new associationSelectDialog(associationVector);
+  assocDlg->setCurrAssoc(s_association);
+
   ctrlDlg = new controlDataDialog(s_association);
   energyDlg = new energyDialog();
   multSelDlg = new multipleSelectionDialog(s_association);
@@ -106,7 +114,7 @@ mainWindow::mainWindow() :
   mapperDlg = new mapperDialog(s_association);
   mapSelectDlg = new mapSelectDialog(s_association);
   graphDlg = new graphDialog(s_association);
-  graphSelectDlg = new graphSelectDialog();
+  graphSelectDlg = new graphSelectDialog(s_association);
 
   /* initialize progress bar */
   ui->progressBar->reset();
@@ -148,6 +156,11 @@ mainWindow::mainWindow() :
   connect(ui->controlAction, &QAction::triggered, [=](bool open){ctrlDlg->configure(false);});
   connect(ui->openAction, &QAction::triggered, [=](){openFile();});
   connect(ui->saveAction, &QAction::triggered, [=](){saveFile();});
+
+  connect(ui->addAssociationAction, &QAction::triggered, [=](){addAssociation(); });
+  connect(ui->selectAssociation, &QAction::triggered, [=](){assocDlg->configure();});
+
+  connect(assocDlg, &associationSelectDialog::associationSelected, [=](association* newAssoc){setAssociation(newAssoc);});
 
 //  connect(ui->informationAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->printAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
@@ -631,6 +644,42 @@ void mainWindow::saveFile() {
   saveSuccessful.setText("Save Successful.");
   saveSuccessful.setStandardButtons(QMessageBox::Ok);
   saveSuccessful.exec();
+}
+
+void mainWindow::addAssociation()
+{
+  association* newAssoc = new association();
+  associationVector->push_back(newAssoc);
+  s_association = newAssoc;
+  assocDlg->setCurrAssoc(newAssoc);
+  setAssociation(s_association);
+
+  QMessageBox addSuccessful;
+  addSuccessful.setText("Addition Successful. Now using the new addition.");
+  addSuccessful.setStandardButtons(QMessageBox::Ok);
+  addSuccessful.exec();
+}
+
+void mainWindow::setAssociation(association* newAssoc)
+{
+  s_association = newAssoc;
+
+  ctrlDlg->setAssociation(s_association);
+  if(dataSelectDlg)
+    dataSelectDlg->setAssociation(s_association);
+  energyDlg->setAssociation(s_association);
+  multSelDlg->setAssociation(s_association);
+  pixSelectDlg->setAssociation(s_association);
+  healpixDlg->setAssociation(s_association);
+  transSelectDlg->setAssociation(s_association);
+  rshtDlg->setAssociation(s_association);
+  mapperDlg->setAssociation(s_association);
+  mapSelectDlg->setAssociation(s_association);
+  graphDlg->setAssociation(s_association);
+  graphSelectDlg->setAssociation(s_association);
+
+  clearMaps();
+  clearGraphs();
 }
 
 void mainWindow::createControlData(FILETYPE dataType, bool complete)

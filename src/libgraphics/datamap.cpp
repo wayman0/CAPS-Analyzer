@@ -305,12 +305,39 @@ void dataMap::writeRGB(bmp_param *bm, arry_param *ar, trans_param *tr) {
   }
 
   /* Check for valid parameters... */
+  if (tr->dst_xend >= bm->width)
+    printf("tr->dst_xend %d >= bm->width %d.\n", tr->dst_xend, bm->width);
+  if (tr->src_xend >= ar->width)
+      printf("tr->src_xend %d >= ar->width %d.\n", tr->src_xend, ar->width);
+  if (tr->dst_yend >= bm->height)
+      printf("tr->dst_yend %d >= bm->height %d.\n", tr->dst_yend, bm->height);
+  if (tr->src_yend >= ar->height)
+      printf("tr->src_yend %d >= ar->height %d.\n", tr->src_yend, ar->height);
+  if (tr->dst_xorig < 0)
+      printf("tr->dst_xorig %d < 0.\n", tr->dst_xorig);
+  if (tr->src_xorig < 0)
+      printf("tr->src_xorig %d < 0.\n", tr->src_xorig);
+  if (tr->dst_yorig < 0)
+      printf("tr->dst_yorig %d < 0.\n", tr->dst_yorig);
+  if (tr->src_yorig < 0)
+      printf("tr->src_yorig %d < 0.\n", tr->src_yorig);
+  if (tr->dst_xend < tr->dst_xorig)
+      printf("tr->dst_xend %d < tr->dst_xorig %d.\n", tr->dst_xend, tr->dst_xorig);
+  if (tr->dst_yend < tr->dst_yorig)
+      printf("tr->dst_yend %d < tr->dst_yorig %d.\n", tr->dst_yend, tr->dst_yorig);
+  if (tr->src_xend < tr->src_xorig)
+      printf("tr->src_xend %d < tr->src_xorig %d.\n", tr->src_xend, tr->src_xorig);
+  if (tr->src_yend < tr->src_yorig)
+    printf("tr->src_yend %d < tr->src_yorig %d.\n", tr->src_yend, tr->src_yorig);
+
+
   if (tr->dst_xend >= bm->width || tr->src_xend >= ar->width ||
       tr->dst_yend >= bm->height || tr->src_yend >= ar->height ||
       tr->dst_xorig < 0 || tr->src_xorig < 0 ||
       tr->dst_yorig < 0 || tr->src_yorig < 0 ||
       tr->dst_xend < tr->dst_xorig || tr->dst_yend < tr->dst_yorig ||
-      tr->src_xend < tr->src_xorig || tr->src_yend < tr->src_yorig) {
+      tr->src_xend < tr->src_xorig || tr->src_yend < tr->src_yorig)
+  {
     printf("image bounds or tranfer area error.\n");
     return;
   }

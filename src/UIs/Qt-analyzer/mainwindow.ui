@@ -440,7 +440,7 @@
          </property>
         </widget>
        </item>
-        <item row="5" column="4">
+       <item row="5" column="4">
         <widget class="QLedLabel" name="almBeamLED">
          <property name="text">
           <string/>
@@ -460,7 +460,7 @@
          </property>
         </widget>
        </item>
-     </layout>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -470,7 +470,7 @@
       <x>10</x>
       <y>700</y>
       <width>861</width>
-      <height>25</height>
+      <height>28</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -549,7 +549,7 @@
      <x>0</x>
      <y>0</y>
      <width>1248</width>
-     <height>20</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -626,6 +626,8 @@
    <addaction name="controlAction"/>
    <addaction name="openAction"/>
    <addaction name="saveAction"/>
+   <addaction name="addAssociationAction"/>
+   <addaction name="selectAssociation"/>
   </widget>
   <widget class="QToolBar" name="actionToolBar">
    <property name="windowTitle">
@@ -831,6 +833,22 @@
   <action name="actionChange_Coordinate_System">
    <property name="text">
     <string>Change Coordinate System</string>
+   </property>
+  </action>
+  <action name="selectAssociation">
+   <property name="text">
+    <string>Choose DataSet</string>
+   </property>
+   <property name="toolTip">
+    <string>Choose DataSet</string>
+   </property>
+  </action>
+  <action name="addAssociationAction">
+   <property name="text">
+    <string>Add Data Set</string>
+   </property>
+   <property name="toolTip">
+    <string>Add Data Set</string>
    </property>
   </action>
  </widget>

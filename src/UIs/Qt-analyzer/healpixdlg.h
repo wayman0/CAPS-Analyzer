@@ -80,6 +80,7 @@ class healpixDialog : public QDialog {
     bool doMinMaxScale()  const {return doMinMax;}
 
     bool order() const {return nestedFlag;}
+    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
     void configure();

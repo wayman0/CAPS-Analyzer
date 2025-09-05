@@ -71,6 +71,7 @@ class rshtDialog : public QDialog {
     int minimumIndex() const {return minIndex;}
     int maximumIndex() const {return maxIndex;}
     int iterations() const {return noIterations;}
+    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
     void configure();

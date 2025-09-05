@@ -55,6 +55,7 @@
 
 //#include "../libanalyzer/analyzer.h"
 #include "../../libanalyzer/atypes.h"
+#include "../../libanalyzer/association.h"
 
 namespace Ui {
   class graphSelectDialog;
@@ -64,9 +65,9 @@ class graphSelectDialog : public QDialog {
   Q_OBJECT
   
   public:
-    graphSelectDialog();
+    graphSelectDialog(association* assoc);
     virtual ~graphSelectDialog();
-    
+    void setAssociation(association* newAssoc) {dataAssoc = newAssoc; }
   Q_SIGNALS:
     void graphSelected(ASSOCIATEDSPECTRUM);
 
@@ -80,6 +81,7 @@ class graphSelectDialog : public QDialog {
     
     Ui::graphSelectDialog *ui;
     ASSOCIATEDSPECTRUM graphType;
+    association* dataAssoc;
     bool dirty;
     unsigned int activeGraphs;
     

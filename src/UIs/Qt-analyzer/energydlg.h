@@ -68,7 +68,8 @@ class energyDialog : public QDialog {
     energyDialog();
     virtual ~energyDialog();
     bool configured() {return isConfigured;}
-    
+    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
+
   public Q_SLOTS:
     void configure(double min, double max);
 //    void configure(bool triggered);

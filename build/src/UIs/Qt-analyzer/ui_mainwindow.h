@@ -57,6 +57,8 @@ public:
     QAction *configureTransformer;
     QAction *configureGrapher;
     QAction *actionChange_Coordinate_System;
+    QAction *selectAssociation;
+    QAction *addAssociationAction;
     QWidget *centralwidget;
     QTabWidget *tabWidget;
     QWidget *mapTab;
@@ -214,6 +216,10 @@ public:
         configureGrapher->setObjectName(QString::fromUtf8("configureGrapher"));
         actionChange_Coordinate_System = new QAction(MainWindow);
         actionChange_Coordinate_System->setObjectName(QString::fromUtf8("actionChange_Coordinate_System"));
+        selectAssociation = new QAction(MainWindow);
+        selectAssociation->setObjectName(QString::fromUtf8("selectAssociation"));
+        addAssociationAction = new QAction(MainWindow);
+        addAssociationAction->setObjectName(QString::fromUtf8("addAssociationAction"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         tabWidget = new QTabWidget(centralwidget);
@@ -477,7 +483,7 @@ public:
 
         layoutWidget1 = new QWidget(centralwidget);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(10, 700, 861, 25));
+        layoutWidget1->setGeometry(QRect(10, 700, 861, 28));
         horizontalLayout = new QHBoxLayout(layoutWidget1);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
@@ -518,7 +524,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1248, 20));
+        menubar->setGeometry(QRect(0, 0, 1248, 30));
         menu_File = new QMenu(menubar);
         menu_File->setObjectName(QString::fromUtf8("menu_File"));
         menu_Actions = new QMenu(menubar);
@@ -580,6 +586,8 @@ public:
         fileToolBar->addAction(controlAction);
         fileToolBar->addAction(openAction);
         fileToolBar->addAction(saveAction);
+        fileToolBar->addAction(addAssociationAction);
+        fileToolBar->addAction(selectAssociation);
         actionToolBar->addAction(pixelizeAction);
         actionToolBar->addAction(transformAction);
         actionToolBar->addAction(analyzeAction);
@@ -632,6 +640,14 @@ public:
         configureTransformer->setText(QCoreApplication::translate("MainWindow", "&Transformer", nullptr));
         configureGrapher->setText(QCoreApplication::translate("MainWindow", "&Grapher", nullptr));
         actionChange_Coordinate_System->setText(QCoreApplication::translate("MainWindow", "Change Coordinate System", nullptr));
+        selectAssociation->setText(QCoreApplication::translate("MainWindow", "Choose DataSet", nullptr));
+#if QT_CONFIG(tooltip)
+        selectAssociation->setToolTip(QCoreApplication::translate("MainWindow", "Choose DataSet", nullptr));
+#endif // QT_CONFIG(tooltip)
+        addAssociationAction->setText(QCoreApplication::translate("MainWindow", "Add Data Set", nullptr));
+#if QT_CONFIG(tooltip)
+        addAssociationAction->setToolTip(QCoreApplication::translate("MainWindow", "Add Data Set", nullptr));
+#endif // QT_CONFIG(tooltip)
         tabWidget->setTabText(tabWidget->indexOf(mapTab), QCoreApplication::translate("MainWindow", "Map", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(powerTab), QCoreApplication::translate("MainWindow", "Power Spectrum", nullptr));
         statusLabel->setText(QCoreApplication::translate("MainWindow", "Data Status", nullptr));

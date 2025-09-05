@@ -51,7 +51,7 @@
 #include "graphselectdlg.h"
 #include "ui_graphselectdlg.h"
 
-graphSelectDialog::graphSelectDialog() :
+graphSelectDialog::graphSelectDialog(association* assoc) :
                    ui(new Ui::graphSelectDialog) {
   /* set up the user interface first */
   ui->setupUi(this);
@@ -60,6 +60,7 @@ graphSelectDialog::graphSelectDialog() :
   graphType = associatedSpectrum::Null;
   dirty = false;
   activeGraphs = 0;
+  dataAssoc = assoc;
   
   /* enable all graphs */
   ui->noiseButton->setEnabled(true);
@@ -161,31 +162,31 @@ void graphSelectDialog::configure(unsigned int availableGraphs) {
     switch (graphType)
     {
       case associatedSpectrum::TransformedNoiseSpectrum:
-        if (selected)
+        if (selected && dataAssoc->exists(fileType::TransformedNoise))
           ui->noiseButton->setEnabled(true);
         break;
       case associatedSpectrum::TransformedWeightedNoiseSpectrum:
-        if(selected)
+        if(selected && dataAssoc->exists(fileType::TransformedWeightedNoise))
           ui->weightedNoiseButton->setEnabled(true);
         break;
       case associatedSpectrum::TransformedFilterSpectrum:
-        if (selected)
+        if (selected && dataAssoc->exists(fileType::TransformedFilter))
           ui->filterButton->setEnabled(true);
         break;
       case associatedSpectrum::TransformedBeamSpectrum:
-        if (selected)
+        if (selected && dataAssoc->exists(fileType::TransformedBeam))
           ui->beamButton->setEnabled(true);
         break;
       case associatedSpectrum::TransformedDataSpectrum:
-        if (selected)
+        if (selected && dataAssoc->exists(fileType::TransformedData))
           ui->dataButton->setEnabled(true);
         break;
       case associatedSpectrum::TransformedWeightsSpectrum:
-        if (selected)
+        if (selected && dataAssoc->exists(fileType::TransformedWeights))
           ui->weightButton->setEnabled(true);
         break;
       case associatedSpectrum::WeightedTransformSpectrum:
-        if (selected)
+        if (selected && dataAssoc->exists(fileType::WeightedTransform))
           ui->combinedDataButton->setEnabled(true);
         break;
       /*
@@ -199,19 +200,19 @@ void graphSelectDialog::configure(unsigned int availableGraphs) {
         break;
       */
       case associatedSpectrum::EnsembleAveragedNoiseSpectrum:
-        if(selected)
+        if(selected && dataAssoc->exists(fileType::EnsembleAveragedNoise))
           ui->EnsAvgNoiseSpectrumButton->setEnabled(true);
         break;
       case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
-        if(selected)
+        if(selected && dataAssoc->exists(fileType::EnsembleAveragedSpectrum))
           ui->EnsAvgSpectrumButton->setEnabled(true);
         break;
       case associatedSpectrum::BinnedSpectrumSpectrum:
-        if(selected)
+        if(selected && dataAssoc->exists(fileType::BinnedSpectrum))
           ui->binnedSpectrumButton->setEnabled(true);
         break;
       case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
-        if(selected)
+        if(selected && dataAssoc->exists(fileType::EnsembleAveragedBinnedSpectrum))
           ui->EnsAvgBinnedSpectrumButton->setEnabled(true);
         break;
     }

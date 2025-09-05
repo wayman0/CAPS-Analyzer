@@ -24,6 +24,7 @@ add_definitions(-DQT_NO_KEYWORDS)
 set(Qt-analyzer_SRCS
     main.cpp
     mainwindow.cpp
+    associationselectdlg.cpp
     controldatadlg.cpp
     energydlg.cpp
     multipleselectiondlg.cpp
@@ -41,6 +42,7 @@ set(Qt-analyzer_SRCS
 
 set(Qt-analyzer_MOC_HDRS
     mainwindow.h
+    associationselectdlg.h
     controldatadlg.h
     energydlg.h
     multipleselectiondlg.h
@@ -58,6 +60,7 @@ set(Qt-analyzer_MOC_HDRS
 
 set(Qt-analyzer_UIS
     mainwindow.ui
+    associationselectdlg.ui
     controldatadlg.ui
     energydlg.ui
     multipleselectiondlg.ui

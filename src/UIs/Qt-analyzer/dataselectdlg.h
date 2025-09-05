@@ -71,7 +71,8 @@ class dataSelectDialog : public QDialog {
     void setMode(RWMode selectedMode) {mode = selectedMode;};
     RWMode getMode()                  {return mode;};
     void setData(FILETYPE* dataTypes, int numTypes);
-    
+    void setAssociation(association* newAssoc) {dataMgr = newAssoc;}
+
   Q_SIGNALS:
     void dataSelected(std::vector<FILETYPE>*);
 

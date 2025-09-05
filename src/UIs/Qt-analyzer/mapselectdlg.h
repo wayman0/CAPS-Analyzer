@@ -67,7 +67,8 @@ class mapSelectDialog : public QDialog {
   public:
     mapSelectDialog(association* assoc);
     virtual ~mapSelectDialog();
-    
+    void setAssociation(association* newAssoc) {dataMgr = newAssoc;}
+
   Q_SIGNALS:
     void mapSelected(ASSOCIATEDMAP);
 

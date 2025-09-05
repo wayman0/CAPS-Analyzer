@@ -68,7 +68,8 @@ class graphDialog : public QDialog {
     graphDialog(association *assoc);
     virtual ~graphDialog();
     bool configured() {return isConfigured;}
-    
+    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
+
   public Q_SLOTS:
     void configure();
     void configure(bool triggered);

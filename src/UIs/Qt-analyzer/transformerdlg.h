@@ -68,7 +68,8 @@ class transformerDialog : public QDialog {
     transformerDialog(association *assoc);
     virtual ~transformerDialog();
     bool configured() const {return isConfigured;}
-    
+    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
+
   Q_SIGNALS:
     void transformerSelected(TRANSFORMERSCHEME);
 
