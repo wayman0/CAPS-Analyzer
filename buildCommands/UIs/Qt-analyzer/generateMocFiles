@@ -1,0 +1,21 @@
+echo "Removing all MOC Files"
+rm mocFiles/moc_*.cpp
+
+echo "Generating MOC Files"
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_energydlg.cpp      /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_graphselectdlg.cpp /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphselectdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_controldatadlg.cpp /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_pixelizerdlg.cpp   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_graphdlg.cpp       /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_healpixdlg.cpp     /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/healpixdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_spectrumdlg.cpp    /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_rshtdlg.cpp        /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_mainwindow.cpp     /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_mapperdlg.cpp      /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_mapselectdlg.cpp   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_transformerdlg.cpp /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/transformerdlg.h
+sudo chrt -r 1 moc -DQT_NO_KEYWORDS -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/moc_qledlabel.cpp      /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/qledlabel.h
+
+
+echo "Generating QRC Files"
+sudo chrt -r 1 rcc --name mainwindow --output /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/mocFiles/qrc_mainwindow.cpp /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.qrc

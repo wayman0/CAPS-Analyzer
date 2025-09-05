@@ -1,0 +1,80 @@
+[
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/analyzer.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/analyzer.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/analyzer.cpp",
+  "output": "CMakeFiles/analyzer.dir/analyzer.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/association.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/association.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/association.cpp",
+  "output": "CMakeFiles/analyzer.dir/association.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/basedata.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/basedata.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/basedata.cpp",
+  "output": "CMakeFiles/analyzer.dir/basedata.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/csvmanager.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/csvmanager.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/csvmanager.cpp",
+  "output": "CMakeFiles/analyzer.dir/csvmanager.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/filemanager.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/filemanager.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/filemanager.cpp",
+  "output": "CMakeFiles/analyzer.dir/filemanager.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/fitsmanager.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/fitsmanager.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/fitsmanager.cpp",
+  "output": "CMakeFiles/analyzer.dir/fitsmanager.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/hdf5manager.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/hdf5manager.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/hdf5manager.cpp",
+  "output": "CMakeFiles/analyzer.dir/hdf5manager.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/healpix.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/healpix.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/healpix.cpp",
+  "output": "CMakeFiles/analyzer.dir/healpix.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/inputmatrixdata.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/inputmatrixdata.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/inputmatrixdata.cpp",
+  "output": "CMakeFiles/analyzer.dir/inputmatrixdata.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/pixelizer.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/pixelizer.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/pixelizer.cpp",
+  "output": "CMakeFiles/analyzer.dir/pixelizer.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/rsht.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/rsht.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/rsht.cpp",
+  "output": "CMakeFiles/analyzer.dir/rsht.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/spectrum.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/spectrum.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/spectrum.cpp",
+  "output": "CMakeFiles/analyzer.dir/spectrum.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libanalyzer",
+  "command": "/usr/bin/c++ -Danalyzer_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/analyzer.dir/transformer.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/transformer.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libanalyzer/transformer.cpp",
+  "output": "CMakeFiles/analyzer.dir/transformer.cpp.o"
+}
+]

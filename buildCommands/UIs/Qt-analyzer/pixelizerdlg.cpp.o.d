@@ -1,0 +1,1 @@
+regFiles/pixelizerdlg.cpp.o.d

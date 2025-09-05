@@ -1,0 +1,1 @@
+UIFiles/ui_pixelizerdlg.h

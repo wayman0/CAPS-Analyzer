@@ -1,0 +1,1 @@
+regFiles/mainwindow.cpp.o.d

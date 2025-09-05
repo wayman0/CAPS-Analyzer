@@ -1,0 +1,4 @@
+-DQT_NO_KEYWORDS
+-o
+/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp
+/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.h

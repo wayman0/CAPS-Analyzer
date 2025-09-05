@@ -1,0 +1,1 @@
+mocFiles/qrc_mainwindow.cpp.o.d

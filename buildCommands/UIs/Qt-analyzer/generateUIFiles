@@ -1,0 +1,17 @@
+echo "Removing UI Files"
+rm UIFiles/ui_*.h
+
+echo "Generating UI Files"
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.ui      -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_mainwindow.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.ui  -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_controldatadlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.ui       -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_energydlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.ui       -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_mapperdlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.ui    -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_mapselectdlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphdlg.ui        -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_graphdlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphselectdlg.ui  -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_graphselectdlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.ui    -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_pixelizerdlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/healpixdlg.ui      -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_healpixdlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/transformerdlg.ui  -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_transformerdlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.ui         -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_rshtdlg.h
+sudo chrt -r 1 uic /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.ui     -o /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/UIFiles/ui_spectrumdlg.h
+

@@ -1,0 +1,1 @@
+regFiles/transformerdlg.cpp.o.d

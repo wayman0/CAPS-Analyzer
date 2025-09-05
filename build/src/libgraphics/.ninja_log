@@ -1,0 +1,24 @@
+# ninja log v5
+1	99	1742773333268970719	CMakeFiles/graphics.dir/font_roman.cpp.o	ed9e71e06c5ca565
+4	348	1742773333519970702	CMakeFiles/graphics.dir/raster.cpp.o	e6e35d7052f51b34
+3	546	1742773333718970689	CMakeFiles/graphics.dir/progress.cpp.o	496731abf3488c9d
+1	50	1742773333222970722	CMakeFiles/graphics.dir/font_mroman.cpp.o	5fa669b369a7cabd
+1	930	1742774982476862509	CMakeFiles/graphics.dir/mapper.cpp.o	13477df1613890da
+1	969	1742774982515862507	CMakeFiles/graphics.dir/mollweide.cpp.o	12bd7efe004144c0
+1	1441	1742773334613970630	CMakeFiles/graphics.dir/grapher.cpp.o	9b31b0e85931f3eb
+1	808	1742774982355862517	CMakeFiles/graphics.dir/coordtransformer.cpp.o	614b4a72bd9809b2
+969	1026	1742774982572862503	libgraphics.so	fa6b896ebf6cec8a
+1	1132	1742773334304970651	CMakeFiles/graphics.dir/dataspectrum.cpp.o	cab28a0a033453f0
+1	893	1742774982440862512	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
+1	925	1743634881802291703	CMakeFiles/graphics.dir/mapper.cpp.o	13477df1613890da
+1	940	1743634881817291702	CMakeFiles/graphics.dir/grapher.cpp.o	9b31b0e85931f3eb
+1	967	1743634881844291700	CMakeFiles/graphics.dir/mollweide.cpp.o	12bd7efe004144c0
+1	1227	1743634882104291683	CMakeFiles/graphics.dir/dataspectrum.cpp.o	cab28a0a033453f0
+1	1243	1743634882120291682	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
+1243	1298	1743634882175291678	libgraphics.so	fa6b896ebf6cec8a
+2	924	1743635240600268161	CMakeFiles/graphics.dir/mapper.cpp.o	13477df1613890da
+2	941	1743635240617268160	CMakeFiles/graphics.dir/grapher.cpp.o	9b31b0e85931f3eb
+2	970	1743635240646268158	CMakeFiles/graphics.dir/mollweide.cpp.o	12bd7efe004144c0
+1	1232	1743635240908268141	CMakeFiles/graphics.dir/dataspectrum.cpp.o	cab28a0a033453f0
+1	1253	1743635240930268139	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
+1254	1302	1743635240977268136	libgraphics.so	fa6b896ebf6cec8a

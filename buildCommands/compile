@@ -1,0 +1,12 @@
+for arg in $*; do
+    if [ "$arg" == "-a" ]; then
+        echo "Compiling libanalyzer"
+        /mnt/research/software/CAPS-Analyzer/buildCommands/libanalyzer/compile
+    fi
+
+    if [ "$arg" == "-g" ]; then
+        echo "Compiling libgraphics"
+        /mnt/research/software/CAPS-Analyzer/buildCommands/libgraphics/compile
+    fi
+done
+/mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/compile $*

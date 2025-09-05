@@ -1,0 +1,21 @@
+cd /mnt/research/software/CAPS-Analyzer/buildCommands/libgraphics/
+
+echo "Removing all object files"
+rm *.o
+
+echo "Removing shared object file"
+rm *.so
+
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o datamap.cpp.o           -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/datamap.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o dataspectrum.cpp.o      -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/dataspectrum.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o font_mroman.cpp.o       -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/font_mroman.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o font_roman.cpp.o        -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/font_roman.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o grapher.cpp.o           -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/grapher.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o mapper.cpp.o            -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/mapper.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o mollweide.cpp.o         -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/mollweide.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o progress.cpp.o          -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/progress.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o raster.cpp.o            -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/raster.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o coordtransformer.cpp.o  -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/coordtransformer.cpp
+
+echo "Building shared object file"
+g++ -shared -o libgraphics.so datamap.cpp.o dataspectrum.cpp.o font_mroman.cpp.o font_roman.cpp.o grapher.cpp.o mapper.cpp.o mollweide.cpp.o progress.cpp.o raster.cpp.o coordtransformer.cpp.o -L/mnt/research/software/lib64 -llunar

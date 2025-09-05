@@ -1,0 +1,26 @@
+cd /mnt/research/software/CAPS-Analyzer/buildCommands/libanalyzer
+
+echo "Removing all object files"
+rm *.o
+
+echo "Removing shared object file"
+rm *.so
+
+echo "Building all object files"
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o analyzer.cpp.o        -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/analyzer.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o association.cpp.o     -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/association.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o basedata.cpp.o        -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/basedata.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o csvmanager.cpp.o      -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/csvmanager.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o filemanager.cpp.o     -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/filemanager.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o fitsmanager.cpp.o     -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/fitsmanager.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o hdf5manager.cpp.o     -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/hdf5manager.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o healpix.cpp.o         -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/healpix.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o inputmatrixdata.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/inputmatrixdata.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o pixelizer.cpp.o       -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/pixelizer.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o rsht.cpp.o            -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/rsht.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o spectrum.cpp.o        -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/spectrum.cpp
+g++ -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o transformer.cpp.o     -c /mnt/research/software/CAPS-Analyzer/src/libanalyzer/transformer.cpp
+
+
+echo "Building shared object file"
+g++ -shared -o libanalyzer.so analyzer.cpp.o association.cpp.o basedata.cpp.o csvmanager.cpp.o filemanager.cpp.o fitsmanager.cpp.o hdf5manager.cpp.o healpix.cpp.o inputmatrixdata.cpp.o pixelizer.cpp.o rsht.cpp.o spectrum.cpp.o transformer.cpp.o -L/usr/lib64 -L/mnt/research/software/lib64 -lhdf5_hl_cpp -lhdf5_cpp -lhdf5_hl -lhdf5 -lCCfits -lcfitsio

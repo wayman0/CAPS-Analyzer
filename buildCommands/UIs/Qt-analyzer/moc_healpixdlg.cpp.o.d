@@ -1,0 +1,1 @@
+mocFiles/moc_healpixdlg.cpp.o.d

@@ -1,0 +1,62 @@
+[
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/datamap.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/datamap.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/datamap.cpp",
+  "output": "CMakeFiles/graphics.dir/datamap.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/dataspectrum.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/dataspectrum.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/dataspectrum.cpp",
+  "output": "CMakeFiles/graphics.dir/dataspectrum.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/font_mroman.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/font_mroman.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/font_mroman.cpp",
+  "output": "CMakeFiles/graphics.dir/font_mroman.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/font_roman.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/font_roman.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/font_roman.cpp",
+  "output": "CMakeFiles/graphics.dir/font_roman.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/grapher.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/grapher.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/grapher.cpp",
+  "output": "CMakeFiles/graphics.dir/grapher.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/mapper.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/mapper.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/mapper.cpp",
+  "output": "CMakeFiles/graphics.dir/mapper.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/mollweide.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/mollweide.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/mollweide.cpp",
+  "output": "CMakeFiles/graphics.dir/mollweide.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/progress.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/progress.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/progress.cpp",
+  "output": "CMakeFiles/graphics.dir/progress.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/raster.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/raster.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/raster.cpp",
+  "output": "CMakeFiles/graphics.dir/raster.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/libgraphics",
+  "command": "/usr/bin/c++ -Dgraphics_EXPORTS -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -g -fPIC -o CMakeFiles/graphics.dir/coordtransformer.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/libgraphics/coordtransformer.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/libgraphics/coordtransformer.cpp",
+  "output": "CMakeFiles/graphics.dir/coordtransformer.cpp.o"
+}
+]

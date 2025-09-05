@@ -1,0 +1,31 @@
+cd /mnt/research/software/CAPS-Analyzer/buildCommands/UIs/Qt-analyzer/
+
+echo "Compiling Qt-analyzer"
+
+for arg in $*; do
+    if [ "$arg" == "-gui" ]; then
+        # based on .ui files
+        ./generateUIFiles
+
+        # based on .cpp files but include ui_ files
+        ./compileRegFiles
+    fi
+
+    if [ "$arg" == "-gmoc" ]; then
+        # based on .h files
+        ./generateMocFiles
+
+        # based on moc_*.cpp files
+        ./compileMocFiles
+    fi
+
+    if [ "$arg" == "-creg" ]; then
+        # based on .cpp files
+        ./compileRegFiles $*
+    fi
+done
+
+./compileQt-analyzer
+
+echo "Launching Qt-analyzer"
+./Qt-analyzer

@@ -1,0 +1,1 @@
+regFiles/mapselectdlg.cpp.o.d
