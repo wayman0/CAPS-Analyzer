@@ -77,32 +77,58 @@ dataSelectDialog::dataSelectDialog(association *assoc, RWMode m) :
     ui->transDataCB->setEnabled(false);
     ui->dataAlmCB->setEnabled(false);
     ui->invDataCB->setEnabled(false);
+
     ui->inputWeightCB->setEnabled(false);
     ui->pixelWeightsCB->setEnabled(false);
     ui->transWeightCB->setEnabled(false);
     ui->weightAlmCB->setEnabled(false);
     ui->invWeightsCB->setEnabled(false);
+
+    ui->WeightedInputCB->setEnabled(false);
+    ui->WeightedPixelCB->setEnabled(false);
+    ui->WeightedTransformCB->setEnabled(false);
+    ui->weightedAlmCB->setEnabled(false);
+    ui->WeightedInverseCB->setEnabled(false);
+
     ui->inputNoiseCB->setEnabled(false);
     ui->pixelNoiseCB->setEnabled(false);
     ui->transNoiseCB->setEnabled(false);
     ui->noiseAlmCB->setEnabled(false);
     ui->invNoiseCB->setEnabled(false);
+
+    ui->inputWeightedNoiseCB->setEnabled(false);
+    ui->pixelWeightedNoiseCB->setEnabled(false);
+    ui->transWeightedNoiseCB->setEnabled(false);
+    ui->noiseWeightedAlmCB->setEnabled(false);
+    ui->invWeightedNoiseCB->setEnabled(false);
+
     ui->inputFilterCB->setEnabled(false);
     ui->pixelFilterCB->setEnabled(false);
     ui->transFilterCB->setEnabled(false);
     ui->filterAlmCB->setEnabled(false);
     ui->invFilterCB->setEnabled(false);
+
     ui->inputBeamCB->setEnabled(false);
     ui->pixelBeamCB->setEnabled(false);
     ui->transBeamCB->setEnabled(false);
     ui->beamAlmCB->setEnabled(false);
     ui->invBeamCB->setEnabled(false);
-    ui->binCB->setEnabled(false);
-    ui->invBinCB->setEnabled(false);
-    ui->modeCB->setEnabled(false);
-    ui->invModeCB->setEnabled(false);
-    ui->comboSpectrumCB->setEnabled(false);
-    ui->ensembleCB->setEnabled(false);
+
+    ui->EnsAvgNoiseCB->setEnabled(false);
+    ui->EnsAvgSpectrumCB->setEnabled(false);
+    ui->EnsAvgBinnedSpectrumCB->setEnabled(false);
+
+    ui->EnsIterNoiseCB->setEnabled(false);
+    ui->EnsIterSpectrumCB->setEnabled(false);
+    ui->EnsIterBinnedSpectrumCB->setEnabled(false);
+
+    ui->modeMatrixCB->setEnabled(false);
+    ui->binningMatrixCB->setEnabled(false);
+    ui->unbinningMatrixCB->setEnabled(false);
+
+    ui->instrumentEffectsMatrixCB->setEnabled(false);
+    ui->binnedInstrumentEffectsMatrixCB->setEnabled(false);
+    ui->inverseBinnedInstrumentMatrixCB->setEnabled(false);
   //}
 
   /* set up signals and slots */
@@ -120,6 +146,7 @@ void dataSelectDialog::validate() {
   dirty = false; // assume nothing has changed
   
   std::vector<FILETYPE> oldDataSets(*dataSets);
+
   if (ui->inputDataCB->isEnabled())
   {
     if (ui->inputDataCB->isChecked() == true)
@@ -232,6 +259,61 @@ void dataSelectDialog::validate() {
     }
   }
 
+  if (ui->WeightedInputCB->isEnabled())
+  {
+    if (ui->WeightedInputCB->isChecked() == true)
+      dataSets->push_back(fileType::WeightedData);
+    else {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::WeightedData;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if (ui->WeightedPixelCB->isEnabled())
+  {
+    if (ui->WeightedPixelCB->isChecked() == true)
+      dataSets->push_back(fileType::WeightedPixel);
+    else {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::WeightedPixel;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if (ui->WeightedTransformCB->isEnabled())
+  {
+    if (ui->WeightedTransformCB->isChecked() == true)
+      dataSets->push_back(fileType::WeightedTransform);
+    else {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::WeightedTransform;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if (ui->weightedAlmCB->isEnabled())
+  {
+    if (ui->weightedAlmCB->isChecked() == true)
+      dataSets->push_back(fileType::WeightedAlm);
+    else {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::WeightedAlm;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if (ui->WeightedInverseCB->isEnabled())
+  {
+    if (ui->WeightedInverseCB->isChecked() == true)
+      dataSets->push_back(fileType::WeightedInverse);
+    else {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::WeightedInverse;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
   if (ui->inputNoiseCB->isEnabled())
   {
     if (ui->inputNoiseCB->isChecked() == true)
@@ -282,6 +364,65 @@ void dataSelectDialog::validate() {
       dataSets->push_back(fileType::InverseNoise);
     else {
       auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InverseNoise;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if (ui->inputWeightedNoiseCB->isEnabled())
+  {
+    if (ui->inputWeightedNoiseCB->isChecked() == true)
+      dataSets->push_back(fileType::InputWeightedNoise);
+    else {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InputWeightedNoise;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->pixelWeightedNoiseCB->isEnabled())
+  {
+    if(ui->pixelWeightedNoiseCB->isChecked())
+      dataSets->push_back(fileType::PixelizedWeightedNoise);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::PixelizedWeightedNoise;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->transWeightedNoiseCB->isEnabled())
+  {
+    if(ui->transWeightedNoiseCB->isChecked())
+      dataSets->push_back(fileType::TransformedWeightedNoise);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::TransformedWeightedNoise;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->noiseWeightedAlmCB->isEnabled())
+  {
+    if(ui->noiseWeightedAlmCB->isChecked())
+      dataSets->push_back(fileType::AlmWeightedNoise);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::AlmWeightedNoise;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->invWeightedNoiseCB->isEnabled())
+  {
+    if(ui->invWeightedNoiseCB->isChecked())
+      dataSets->push_back(fileType::InverseWeightedNoise);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InverseWeightedNoise;});
       if (ftIterator != dataSets->end())
         dataSets->erase(ftIterator);
     }
@@ -390,13 +531,15 @@ void dataSelectDialog::validate() {
   {
     if (ui->invBeamCB->isChecked() == true)
       dataSets->push_back(fileType::InverseBeam);
-    else {
+    else
+    {
       auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InverseBeam;});
       if (ftIterator != dataSets->end())
         dataSets->erase(ftIterator);
     }
   }
 
+  /*
   if (ui->binCB->isEnabled())
   {
     if (ui->binCB->isChecked() == true)
@@ -463,6 +606,152 @@ void dataSelectDialog::validate() {
     }
   }
 
+  */
+
+  if(ui->EnsAvgNoiseCB->isEnabled())
+  {
+    if(ui->EnsAvgNoiseCB->isChecked())
+      dataSets->push_back(fileType::EnsembleAveragedNoise);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::EnsembleAveragedNoise;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->EnsAvgSpectrumCB->isEnabled())
+  {
+    if(ui->EnsAvgSpectrumCB->isChecked())
+      dataSets->push_back(fileType::EnsembleAveragedSpectrum);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::EnsembleAveragedNoise;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->EnsAvgBinnedSpectrumCB->isEnabled())
+  {
+    if(ui->EnsAvgBinnedSpectrumCB->isChecked())
+      dataSets->push_back(fileType::EnsembleAveragedBinnedSpectrum);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::EnsembleAveragedBinnedSpectrum;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->EnsIterNoiseCB->isEnabled())
+  {
+    if(ui->EnsIterNoiseCB->isChecked())
+      dataSets->push_back(fileType::EnsembleIterationNoise);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::EnsembleIterationNoise;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->EnsIterSpectrumCB->isEnabled())
+  {
+    if(ui->EnsIterSpectrumCB->isChecked())
+      dataSets->push_back(fileType::EnsembleIterationSpectrum);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::EnsembleIterationSpectrum;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->EnsIterBinnedSpectrumCB->isEnabled())
+  {
+    if(ui->EnsIterBinnedSpectrumCB->isChecked())
+      dataSets->push_back(fileType::EnsembleIterationBinnedSpectrum);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::EnsembleIterationBinnedSpectrum;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->modeMatrixCB->isEnabled())
+  {
+    if(ui->modeMatrixCB->isChecked())
+      dataSets->push_back(fileType::ModeModeMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::ModeModeMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->binningMatrixCB->isEnabled())
+  {
+    if(ui->binningMatrixCB->isChecked())
+      dataSets->push_back(fileType::BinningMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::BinningMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->unbinningMatrixCB->isEnabled())
+  {
+    if(ui->unbinningMatrixCB->isChecked())
+      dataSets->push_back(fileType::UnbinningMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::UnbinningMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->instrumentEffectsMatrixCB->isEnabled())
+  {
+    if(ui->instrumentEffectsMatrixCB->isChecked())
+      dataSets->push_back(fileType::InstrumentEffectsMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InstrumentEffectsMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->binnedInstrumentEffectsMatrixCB->isEnabled())
+  {
+    if(ui->binnedInstrumentEffectsMatrixCB->isChecked())
+      dataSets->push_back(fileType::BinnedInstrumentEffectsMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::BinnedInstrumentEffectsMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->inverseBinnedInstrumentMatrixCB->isEnabled())
+  {
+    if(ui->inverseBinnedInstrumentMatrixCB->isChecked())
+      dataSets->push_back(fileType::InverseBinnedInstrumentMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InverseBinnedInstrumentMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
   if (*dataSets != oldDataSets)
     dirty = true;
   
@@ -487,6 +776,9 @@ void dataSelectDialog::configure(RWMode uiMode) {
         case fileType::InputWeights:
           ui->inputWeightCB->setEnabled(true);
           break;
+        case fileType::WeightedData:
+          ui->WeightedInputCB->setEnabled(true);
+          break;
         case fileType::InputBeam:
           ui->inputBeamCB->setEnabled(true);
           break;
@@ -501,6 +793,9 @@ void dataSelectDialog::configure(RWMode uiMode) {
           break;
         case fileType::PixelizedWeights:
           ui->pixelWeightsCB->setEnabled(true);
+          break;
+        case fileType::WeightedPixel:
+          ui->WeightedPixelCB->setEnabled(true);
           break;
         case fileType::PixelizedBeam:
           ui->pixelBeamCB->setEnabled(true);
@@ -517,6 +812,9 @@ void dataSelectDialog::configure(RWMode uiMode) {
         case fileType::TransformedWeights:
           ui->transWeightCB->setEnabled(true);
           break;
+        case fileType::WeightedTransform:
+          ui->WeightedTransformCB->setEnabled(true);
+          break;
         case fileType::TransformedBeam:
           ui->transBeamCB->setEnabled(true);
           break;
@@ -531,6 +829,9 @@ void dataSelectDialog::configure(RWMode uiMode) {
           break;
         case fileType::AlmWeights:
           ui->weightAlmCB->setEnabled(true);
+          break;
+        case fileType::WeightedAlm:
+          ui->weightedAlmCB->setEnabled(true);
           break;
         case fileType::AlmBeam:
           ui->beamAlmCB->setEnabled(true);
@@ -547,6 +848,9 @@ void dataSelectDialog::configure(RWMode uiMode) {
         case fileType::InverseWeights:
           ui->invWeightsCB->setEnabled(true);
           break;
+        case fileType::WeightedInverse:
+          ui->WeightedInverseCB->setEnabled(true);
+          break;
         case fileType::InverseBeam:
           ui->invBeamCB->setEnabled(true);
           break;
@@ -556,6 +860,7 @@ void dataSelectDialog::configure(RWMode uiMode) {
         case fileType::InverseNoise:
           ui->invNoiseCB->setEnabled(true);
           break;
+        /*
         case fileType::BinCouplingMatrix:
           ui->binCB->setEnabled(true);
           ui->invBinCB->setEnabled(true);
@@ -569,6 +874,59 @@ void dataSelectDialog::configure(RWMode uiMode) {
           break;
         case fileType::EnsembleData:
           ui->ensembleCB->setEnabled(true);
+          break;
+        */
+        case fileType::InputWeightedNoise:
+          ui->inputWeightedNoiseCB->setEnabled(true);
+          break;
+        case fileType::PixelizedWeightedNoise:
+          ui->pixelWeightedNoiseCB->setEnabled(true);
+          break;
+        case fileType::TransformedWeightedNoise:
+          ui->transWeightedNoiseCB->setEnabled(true);
+          break;
+        case fileType::AlmWeightedNoise:
+          ui->noiseWeightedAlmCB->setEnabled(true);
+          break;
+        case fileType::InverseWeightedNoise:
+          ui->invWeightedNoiseCB->setEnabled(true);
+          break;
+
+        case fileType::EnsembleAveragedNoise:
+          ui->EnsAvgNoiseCB->setEnabled(true);
+          break;
+        case fileType::EnsembleIterationNoise:
+          ui->EnsIterNoiseCB->setEnabled(true);
+          break;
+        case fileType::EnsembleAveragedSpectrum:
+          ui->EnsAvgSpectrumCB->setEnabled(true);
+          break;
+        case fileType::EnsembleIterationSpectrum:
+          ui->EnsIterSpectrumCB->setEnabled(true);
+          break;
+        case fileType::EnsembleAveragedBinnedSpectrum:
+          ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::EnsembleIterationBinnedSpectrum:
+          ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::ModeModeMatrix:
+          ui->modeMatrixCB->setEnabled(true);
+          break;
+        case fileType::BinningMatrix:
+          ui->binningMatrixCB->setEnabled(true);
+          break;
+        case fileType::UnbinningMatrix:
+          ui->unbinningMatrixCB->setEnabled(true);
+          break;
+        case fileType::InstrumentEffectsMatrix:
+          ui->instrumentEffectsMatrixCB->setEnabled(true);
+          break;
+        case fileType::BinnedInstrumentEffectsMatrix:
+          ui->binnedInstrumentEffectsMatrixCB->setEnabled(true);
+          break;
+        case fileType::InverseBinnedInstrumentMatrix:
+          ui->inverseBinnedInstrumentMatrixCB->setEnabled(true);
           break;
         default:
           break;
@@ -628,6 +986,31 @@ void dataSelectDialog::configure(RWMode uiMode) {
       ui->invWeightsCB->setEnabled(false);
     else
       ui->invWeightsCB->setEnabled(true);
+
+    if (dataMgr->weightedInput() == 0)
+      ui->WeightedInputCB->setEnabled(false);
+    else
+      ui->WeightedInputCB->setEnabled(true);
+
+    if (dataMgr->weightedPixel() == 0)
+      ui->WeightedPixelCB->setEnabled(false);
+    else
+      ui->WeightedPixelCB->setEnabled(true);
+
+    if (dataMgr->weightedTransform() == 0)
+      ui->WeightedTransformCB->setEnabled(false);
+    else
+      ui->WeightedTransformCB->setEnabled(true);
+
+    if (dataMgr->weightedAlm() == 0)
+      ui->weightedAlmCB->setEnabled(false);
+    else
+      ui->weightedAlmCB->setEnabled(true);
+
+    if (dataMgr->weightedInverse() == 0)
+      ui->WeightedInverseCB->setEnabled(false);
+    else
+      ui->WeightedInverseCB->setEnabled(true);
 
     if (dataMgr->inputNoise() == 0)
       ui->inputNoiseCB->setEnabled(false);
@@ -704,6 +1087,7 @@ void dataSelectDialog::configure(RWMode uiMode) {
     else
       ui->invBeamCB->setEnabled(true);
 
+    /*
     if (dataMgr->couplingMatrix() == 0)
     {
       ui->binCB->setEnabled(false);
@@ -745,6 +1129,93 @@ void dataSelectDialog::configure(RWMode uiMode) {
       ui->ensembleCB->setEnabled(false);
     else
       ui->ensembleCB->setEnabled(true);
+    */
+
+    if(dataMgr->weightedInputNoise() == 0)
+      ui->inputWeightedNoiseCB->setEnabled(false);
+    else
+      ui->inputWeightedNoiseCB->setEnabled(true);
+
+    if(dataMgr->weightedPixelizedNoise() == 0)
+      ui->pixelWeightedNoiseCB->setEnabled(false);
+    else
+      ui->pixelWeightedNoiseCB->setEnabled(true);
+
+    if(dataMgr->weightedTransformedNoise() == 0)
+      ui->transWeightedNoiseCB->setEnabled(false);
+    else
+      ui->transWeightedNoiseCB->setEnabled(true);
+
+    if(dataMgr->weightedAlmNoise() == 0)
+      ui->noiseWeightedAlmCB->setEnabled(false);
+    else
+      ui->noiseWeightedAlmCB->setEnabled(true);
+
+    if(dataMgr->weightedInverseNoise() == 0)
+      ui->invWeightedNoiseCB->setEnabled(false);
+    else
+      ui->invWeightedNoiseCB->setEnabled(true);
+
+    if(dataMgr->EnsembleAveragedNoise() == 0)
+      ui->EnsAvgNoiseCB->setEnabled(false);
+    else
+      ui->EnsAvgNoiseCB->setEnabled(true);
+
+    if(dataMgr->EnsembleIterationNoise() == 0)
+      ui->EnsIterNoiseCB->setEnabled(false);
+    else
+      ui->EnsIterNoiseCB->setEnabled(true);
+
+    if(dataMgr->EnsembleAveragedSpectrum() == 0)
+      ui->EnsAvgSpectrumCB->setEnabled(false);
+    else
+      ui->EnsAvgSpectrumCB->setEnabled(true);
+
+    if(dataMgr->EnsembleIterationSpectrum() == 0)
+      ui->EnsIterSpectrumCB->setEnabled(false);
+    else
+      ui->EnsIterSpectrumCB->setEnabled(true);
+
+    if(dataMgr->EnsembleAveragedBinnedSpectrum() == 0)
+      ui->EnsAvgBinnedSpectrumCB->setEnabled(false);
+    else
+      ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->EnsembleIterationBinnedSpectrum() == 0)
+      ui->EnsIterBinnedSpectrumCB->setEnabled(false);
+    else
+      ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->ModeModeMatrix() == 0)
+      ui->modeMatrixCB->setEnabled(false);
+    else
+      ui->modeMatrixCB->setEnabled(true);
+
+    if(dataMgr->BinningMatrix() == 0)
+      ui->binningMatrixCB->setEnabled(false);
+    else
+      ui->binningMatrixCB->setEnabled(true);
+
+    if(dataMgr->UnbinningMatrix() == 0)
+      ui->unbinningMatrixCB->setEnabled(false);
+    else
+      ui->unbinningMatrixCB->setEnabled(true);
+
+    if(dataMgr->InstrumentEffectsMatrix() == 0)
+      ui->instrumentEffectsMatrixCB->setEnabled(false);
+    else
+      ui->instrumentEffectsMatrixCB->setEnabled(true);
+
+    if(dataMgr->BinnedInstrumentEffectsMatrix() == 0)
+      ui->binnedInstrumentEffectsMatrixCB->setEnabled(false);
+    else
+      ui->binnedInstrumentEffectsMatrixCB->setEnabled(true);
+
+    if(dataMgr->InverseBinnedInstrumentMatrix() == 0)
+      ui->inverseBinnedInstrumentMatrixCB->setEnabled(false);
+    else
+      ui->inverseBinnedInstrumentMatrixCB->setEnabled(true);
+
   }
 
   exec();
@@ -768,6 +1239,9 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
         case fileType::InputWeights:
           ui->inputWeightCB->setEnabled(true);
           break;
+        case fileType::WeightedData:
+          ui->WeightedInputCB->setEnabled(true);
+          break;
         case fileType::InputBeam:
           ui->inputBeamCB->setEnabled(true);
           break;
@@ -782,6 +1256,9 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
           break;
         case fileType::PixelizedWeights:
           ui->pixelWeightsCB->setEnabled(true);
+          break;
+        case fileType::WeightedPixel:
+          ui->WeightedPixelCB->setEnabled(true);
           break;
         case fileType::PixelizedBeam:
           ui->pixelBeamCB->setEnabled(true);
@@ -798,6 +1275,9 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
         case fileType::TransformedWeights:
           ui->transWeightCB->setEnabled(true);
           break;
+        case fileType::WeightedTransform:
+          ui->WeightedTransformCB->setEnabled(true);
+          break;
         case fileType::TransformedBeam:
           ui->transBeamCB->setEnabled(true);
           break;
@@ -812,6 +1292,9 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
           break;
         case fileType::AlmWeights:
           ui->weightAlmCB->setEnabled(true);
+          break;
+        case fileType::WeightedAlm:
+          ui->weightedAlmCB->setEnabled(true);
           break;
         case fileType::AlmBeam:
           ui->beamAlmCB->setEnabled(true);
@@ -828,6 +1311,9 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
         case fileType::InverseWeights:
           ui->invWeightsCB->setEnabled(true);
           break;
+        case fileType::WeightedInverse:
+          ui->WeightedInverseCB->setEnabled(true);
+          break;
         case fileType::InverseBeam:
           ui->invBeamCB->setEnabled(true);
           break;
@@ -837,6 +1323,7 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
         case fileType::InverseNoise:
           ui->invNoiseCB->setEnabled(true);
           break;
+        /*
         case fileType::BinCouplingMatrix:
           ui->binCB->setEnabled(true);
           ui->invBinCB->setEnabled(true);
@@ -850,6 +1337,59 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
           break;
         case fileType::EnsembleData:
           ui->ensembleCB->setEnabled(true);
+          break;
+        */
+        case fileType::InputWeightedNoise:
+          ui->inputWeightedNoiseCB->setEnabled(true);
+          break;
+        case fileType::PixelizedWeightedNoise:
+          ui->pixelWeightedNoiseCB->setEnabled(true);
+          break;
+        case fileType::TransformedWeightedNoise:
+          ui->transWeightedNoiseCB->setEnabled(true);
+          break;
+        case fileType::AlmWeightedNoise:
+          ui->noiseWeightedAlmCB->setEnabled(true);
+          break;
+        case fileType::InverseWeightedNoise:
+          ui->invWeightedNoiseCB->setEnabled(true);
+          break;
+
+        case fileType::EnsembleAveragedNoise:
+          ui->EnsAvgNoiseCB->setEnabled(true);
+          break;
+        case fileType::EnsembleIterationNoise:
+          ui->EnsIterNoiseCB->setEnabled(true);
+          break;
+        case fileType::EnsembleAveragedSpectrum:
+          ui->EnsAvgSpectrumCB->setEnabled(true);
+          break;
+        case fileType::EnsembleIterationSpectrum:
+          ui->EnsIterSpectrumCB->setEnabled(true);
+          break;
+        case fileType::EnsembleAveragedBinnedSpectrum:
+          ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::EnsembleIterationBinnedSpectrum:
+          ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::ModeModeMatrix:
+          ui->modeMatrixCB->setEnabled(true);
+          break;
+        case fileType::BinningMatrix:
+          ui->binningMatrixCB->setEnabled(true);
+          break;
+        case fileType::UnbinningMatrix:
+          ui->unbinningMatrixCB->setEnabled(true);
+          break;
+        case fileType::InstrumentEffectsMatrix:
+          ui->instrumentEffectsMatrixCB->setEnabled(true);
+          break;
+        case fileType::BinnedInstrumentEffectsMatrix:
+          ui->binnedInstrumentEffectsMatrixCB->setEnabled(true);
+          break;
+        case fileType::InverseBinnedInstrumentMatrix:
+          ui->inverseBinnedInstrumentMatrixCB->setEnabled(true);
           break;
         default:
           break;
@@ -909,6 +1449,31 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
       ui->invWeightsCB->setEnabled(false);
     else
       ui->invWeightsCB->setEnabled(true);
+
+    if (dataMgr->weightedInput() == 0)
+      ui->WeightedInputCB->setEnabled(false);
+    else
+      ui->WeightedInputCB->setEnabled(true);
+
+    if (dataMgr->weightedPixel() == 0)
+      ui->WeightedPixelCB->setEnabled(false);
+    else
+      ui->WeightedPixelCB->setEnabled(true);
+
+    if (dataMgr->weightedTransform() == 0)
+      ui->WeightedTransformCB->setEnabled(false);
+    else
+      ui->WeightedTransformCB->setEnabled(true);
+
+    if (dataMgr->weightedAlm() == 0)
+      ui->weightedAlmCB->setEnabled(false);
+    else
+      ui->weightedAlmCB->setEnabled(true);
+
+    if (dataMgr->weightedInverse() == 0)
+      ui->WeightedInverseCB->setEnabled(false);
+    else
+      ui->WeightedInverseCB->setEnabled(true);
 
     if (dataMgr->inputNoise() == 0)
       ui->inputNoiseCB->setEnabled(false);
@@ -985,6 +1550,7 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
     else
       ui->invBeamCB->setEnabled(true);
 
+    /*
     if (dataMgr->couplingMatrix() == 0)
     {
       ui->binCB->setEnabled(false);
@@ -1026,6 +1592,92 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
       ui->ensembleCB->setEnabled(false);
     else
       ui->ensembleCB->setEnabled(true);
+    */
+    if(dataMgr->weightedInputNoise() == 0)
+      ui->inputWeightedNoiseCB->setEnabled(false);
+    else
+      ui->inputWeightedNoiseCB->setEnabled(true);
+
+    if(dataMgr->weightedPixelizedNoise() == 0)
+      ui->pixelWeightedNoiseCB->setEnabled(false);
+    else
+      ui->pixelWeightedNoiseCB->setEnabled(true);
+
+    if(dataMgr->weightedTransformedNoise() == 0)
+      ui->transWeightedNoiseCB->setEnabled(false);
+    else
+      ui->transWeightedNoiseCB->setEnabled(true);
+
+    if(dataMgr->weightedAlmNoise() == 0)
+      ui->noiseWeightedAlmCB->setEnabled(false);
+    else
+      ui->noiseWeightedAlmCB->setEnabled(true);
+
+    if(dataMgr->weightedInverseNoise() == 0)
+      ui->invWeightedNoiseCB->setEnabled(false);
+    else
+      ui->invWeightedNoiseCB->setEnabled(true);
+
+
+    if(dataMgr->EnsembleAveragedNoise() == 0)
+      ui->EnsAvgNoiseCB->setEnabled(false);
+    else
+      ui->EnsAvgNoiseCB->setEnabled(true);
+
+    if(dataMgr->EnsembleIterationNoise() == 0)
+      ui->EnsIterNoiseCB->setEnabled(false);
+    else
+      ui->EnsIterNoiseCB->setEnabled(true);
+
+    if(dataMgr->EnsembleAveragedSpectrum() == 0)
+      ui->EnsAvgSpectrumCB->setEnabled(false);
+    else
+      ui->EnsAvgSpectrumCB->setEnabled(true);
+
+    if(dataMgr->EnsembleIterationSpectrum() == 0)
+      ui->EnsIterSpectrumCB->setEnabled(false);
+    else
+      ui->EnsIterSpectrumCB->setEnabled(true);
+
+    if(dataMgr->EnsembleAveragedBinnedSpectrum() == 0)
+      ui->EnsAvgBinnedSpectrumCB->setEnabled(false);
+    else
+      ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->EnsembleIterationBinnedSpectrum() == 0)
+      ui->EnsIterBinnedSpectrumCB->setEnabled(false);
+    else
+      ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->ModeModeMatrix() == 0)
+      ui->modeMatrixCB->setEnabled(false);
+    else
+      ui->modeMatrixCB->setEnabled(true);
+
+    if(dataMgr->BinningMatrix() == 0)
+      ui->binningMatrixCB->setEnabled(false);
+    else
+      ui->binningMatrixCB->setEnabled(true);
+
+    if(dataMgr->UnbinningMatrix() == 0)
+      ui->unbinningMatrixCB->setEnabled(false);
+    else
+      ui->unbinningMatrixCB->setEnabled(true);
+
+    if(dataMgr->InstrumentEffectsMatrix() == 0)
+      ui->instrumentEffectsMatrixCB->setEnabled(false);
+    else
+      ui->instrumentEffectsMatrixCB->setEnabled(true);
+
+    if(dataMgr->BinnedInstrumentEffectsMatrix() == 0)
+      ui->binnedInstrumentEffectsMatrixCB->setEnabled(false);
+    else
+      ui->binnedInstrumentEffectsMatrixCB->setEnabled(true);
+
+    if(dataMgr->InverseBinnedInstrumentMatrix() == 0)
+      ui->inverseBinnedInstrumentMatrixCB->setEnabled(false);
+    else
+      ui->inverseBinnedInstrumentMatrixCB->setEnabled(true);
   }
 
   exec();
@@ -1149,6 +1801,11 @@ void dataSelectDialog::reset() {
   ui->transWeightCB->setEnabled(true);
   ui->weightAlmCB->setEnabled(true);
   ui->invWeightsCB->setEnabled(true);
+  ui->WeightedInputCB->setEnabled(true);
+  ui->WeightedPixelCB->setEnabled(true);
+  ui->WeightedTransformCB->setEnabled(true);
+  ui->weightedAlmCB->setEnabled(true);
+  ui->WeightedInverseCB->setEnabled(true);
   ui->inputNoiseCB->setEnabled(true);
   ui->pixelNoiseCB->setEnabled(true);
   ui->transNoiseCB->setEnabled(true);
@@ -1164,12 +1821,36 @@ void dataSelectDialog::reset() {
   ui->transBeamCB->setEnabled(true);
   ui->beamAlmCB->setEnabled(true);
   ui->invBeamCB->setEnabled(true);
+  /*
   ui->binCB->setEnabled(true);
   ui->invBinCB->setEnabled(true);
   ui->modeCB->setEnabled(true);
   ui->invModeCB->setEnabled(true);
   ui->comboSpectrumCB->setEnabled(true);
   ui->ensembleCB->setEnabled(true);
+  */
+  ui->inputWeightedNoiseCB->setEnabled(true);
+  ui->pixelWeightedNoiseCB->setEnabled(true);
+  ui->transWeightedNoiseCB->setEnabled(true);
+  ui->noiseWeightedAlmCB->setEnabled(true);
+  ui->invWeightedNoiseCB->setEnabled(true);
+
+  ui->EnsAvgNoiseCB->setEnabled(true);
+  ui->EnsAvgSpectrumCB->setEnabled(true);
+  ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
+
+  ui->EnsIterNoiseCB->setEnabled(true);
+  ui->EnsIterSpectrumCB->setEnabled(true);
+  ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+
+  ui->modeMatrixCB->setEnabled(true);
+  ui->binningMatrixCB->setEnabled(true);
+  ui->unbinningMatrixCB->setEnabled(true);
+
+  ui->instrumentEffectsMatrixCB->setEnabled(true);
+  ui->binnedInstrumentEffectsMatrixCB->setEnabled(true);
+  ui->inverseBinnedInstrumentMatrixCB->setEnabled(true);
+
   dirty = false;
 }
 

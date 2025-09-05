@@ -124,6 +124,15 @@ public:
   vectorData<double>* inverseWeights() const {return m_invWeights;}
 
   /**
+   * access weighted data chain
+   */
+  matrixData<double>* weightedInput() const {return m_weightedInput;}
+  vectorData<double>* weightedPixel() const {return m_weightedPixel;}
+  vectorData<double>* weightedInverse() const {return m_weightedInverse;}
+  vectorData<double>* weightedTransform() const {return m_weightedTransform;}
+  cubeData<complex<double>>* weightedAlm() const {return m_weightedAlm;}
+
+  /**
    * access noise data
    */
   matrixData<double>* inputNoise() const {return m_inputNoise;}
@@ -131,6 +140,15 @@ public:
   vectorData<double>* transformedNoise() const {return m_transNoise;}
   cubeData<std::complex<double> >* almNoise() const {return m_almNoise;}
   vectorData<double>* inverseNoise() const {return m_invNoise;}
+
+  /**
+   * access weighted noise data chain
+   */
+  matrixData<double>* weightedInputNoise() const {return m_weightedNoise;}
+  vectorData<double>* weightedPixelizedNoise() const {return m_pixelWeightedNoise;}
+  vectorData<double>* weightedTransformedNoise() const {return m_transWeightedNoise;}
+  cubeData<std::complex<double>>* weightedAlmNoise() const {return m_weightedNoiseAlm;}
+  vectorData<double>* weightedInverseNoise() const {return m_invWeightedNoise;}
 
   /**
    * access filter data
@@ -153,8 +171,16 @@ public:
   /**
    * access spectrum data
    */
-  vectorData<double>* spectrumData() const {return m_spectData;}
-  vectorData<double>* ensembleData() const {return m_ensembleSpectData;}
+  vectorData<double>*  EnsembleAveragedNoise()           const {return m_ensembleAveragedNoise;}
+  matrixData<double>*  EnsembleIterationNoise()          const {return m_ensembleIterationNoise;}
+  vectorData<double>*  EnsembleAveragedSpectrum()        const {return m_ensembleAveragedSpectrum;}
+  matrixData<double>*  EnsembleIterationSpectrum()       const {return m_ensembleIterationSpectrum;}
+  vectorData<double>*  BinnedSpectrum()                  const {return m_binnedSpectrum;}
+  vectorData<double>*  EnsembleAveragedBinnedSpectrum()  const {return m_ensembleAveragedBinnedSpectrum;}
+  matrixData<double>*  EnsembleIterationBinnedSpectrum() const {return m_ensembleIterationBinnedSpectrum; }
+
+  //vectorData<double>* spectrumData() const {return m_spectData;}
+  //vectorData<double>* ensembleData() const {return m_ensembleSpectData;}
 
   /**
    * access pixel occupancy
@@ -165,49 +191,77 @@ public:
   /**
    * access coupling matrix data
    */
-  matrixData<double>* couplingMatrix() const {return m_couplingMatrix;}
-  matrixData<double>* inverseMatrix() const {return m_inverseMatrix;}  
+  //matrixData<double>* couplingMatrix() const {return m_couplingMatrix;}
+  //matrixData<double>* inverseMatrix() const {return m_inverseMatrix;}
+  matrixData<double>*  ModeModeMatrix()                const {return m_ModeModeMatrix;}
+  matrixData<double>*  InstrumentEffectsMatrix()       const {return m_InstrumentEffectsMatrix;}
+  matrixData<double>*  BinningMatrix()                 const {return m_BinningMatrix;}
+  matrixData<double>*  UnbinningMatrix()               const {return m_UnbinningMatrix;}
+  matrixData<double>*  BinnedInstrumentEffectsMatrix() const {return m_BinnedInstrumentEffectsMatrix;}
+  matrixData<double>*  InverseBinnedInstrumentMatrix() const {return m_InverseBinnedInstrumentMatrix;}
+
 
   /**
    * access maps
    */
   dataMap* inputDataMap() const {return m_inputDataMap;}
   dataMap* inputWeightsMap() const {return m_inputWeightsMap;}
-  dataMap* inputMap() const {return m_inputMap;}
+
+  dataMap* weightedInputMap() const {return m_weightedInputMap;}
+
+  dataMap* inputMap() const {return m_inputMap;} // the weighted input map
   dataMap* inputNoiseMap() const {return m_inputNoiseMap;}
   dataMap* inputFilterMap() const {return m_inputFilterMap;}
   dataMap* inputBeamMap() const {return m_inputBeamMap;}
+  dataMap* weightedNoiseMap() const {return m_weightedNoiseMap;}
 
   dataMap* pixelDataMap() const {return m_pixelDataMap;}
   dataMap* pixelWeightsMap() const {return m_pixelWeightsMap;}
-  dataMap* pixelMap() const {return m_pixelMap;}
+
+  dataMap* weightedPixelMap() const {return m_weightedPixelMap;}
+
+  dataMap* pixelMap() const {return m_pixelMap;} // the weighted pixel map
   dataMap* pixelOccupancyMap() const {return m_pixelOccupancyMap;}
   dataMap* pixelNoiseMap() const {return m_pixelNoiseMap;}
   dataMap* pixelFilterMap() const {return m_pixelFilterMap;}
   dataMap* pixelBeamMap() const {return m_pixelBeamMap;}
+  dataMap* pixelWeightedNoiseMap() const {return m_pixelWeightedNoiseMap;}
 
   dataMap* invDataMap() const {return m_invDataMap;}
   dataMap* invWeightsMap() const {return m_invWeightsMap;}
-  dataMap* invMap() const {return m_invMap;}
+
+  dataMap* weightedInverseMap() const {return m_weightedInverseMap;}
+
+  dataMap* invMap() const {return m_invMap;} // the inverse weighted data map
   dataMap* invFilterMap() const {return m_invFilterMap;}
   dataMap* invBeamMap() const {return m_invBeamMap;}
   dataMap* invNoiseMap() const {return m_invNoiseMap;}
+  dataMap* invWeightedNoiseMap() const {return m_invWeightedNoiseMap;}
 
   /**
    * access transformed data graphs
    */
   dataSpectrum* transDataGraph() const {return m_transDataGraph;}
   dataSpectrum* transWeightsGraph() const {return m_transWeightsGraph;}
-  dataSpectrum* transGraph() const {return m_transGraph;}
+
+  dataSpectrum* weightedTransformGraph() const {return m_weightedTransformGraph;}
+
+  dataSpectrum* transGraph() const {return m_transGraph;} // the weighted transform aka pseudo spectrum
   dataSpectrum* transFilterGraph() const {return m_transFilterGraph;}
   dataSpectrum* transNoiseGraph() const {return m_transNoiseGraph;}
   dataSpectrum* transBeamGraph() const {return m_transBeamGraph;}
-  dataSpectrum* spectrumGraph() const {return m_spectDataGraph;}
-  dataSpectrum* ensembleGraph() const {return m_ensembleDataGraph;}
+  dataSpectrum* transWeightedNoiseGraph() const {return m_transWeightedNoiseGraph;}
+  //dataSpectrum* spectrumGraph() const {return m_spectDataGraph;}
+  //dataSpectrum* ensembleGraph() const {return m_ensembleDataGraph;}
+  dataSpectrum* EnsembleAveragedNoiseGraph()            const {return m_ensembleAveragedNoiseGraph;}
+  dataSpectrum* EnsembleAveragedSpectrumGraph()         const {return m_ensembleAveragedSpectrumGraph;}
+  dataSpectrum* BinnedSpectrumGraph()                   const {return m_binnedSpectrumGraph;}
+  dataSpectrum* EnsembleAveragedBinnedSpectrumGraph()   const {return m_ensembleAveragedBinnedSpectrumGraph;}
 
   /**
    * access data engines
    */
+
   fileManager* fileIOEngine() const {return m_fileIOEngine;}
   FORMAT fileIOEngineType() const {return m_selectedIOEngine;}
   void fileIOEngineType(FORMAT engine) {m_selectedIOEngine = engine;}
@@ -265,6 +319,8 @@ public:
   void createHarmonic(FILETYPE dataType, int l, int m, double level, M_OP operation);
   void createShotNoise(vectorData<double>* vdd);
   void createWhiteNoise(vectorData<double>* vdd);
+
+  void generateWeightedData(FILETYPE ft);
 
   void generatePixelData(Pixelizer *pixelizer, FILETYPE ft);
 //  void updatePixelData();
@@ -363,18 +419,46 @@ private:
   cubeData<std::complex<double> >  *m_almBeam;
   vectorData<double>               *m_invBeam;
 
+  // the weighted data structures
+  matrixData<double>               *m_weightedInput;
+  vectorData<double>               *m_weightedPixel;
+  vectorData<double>               *m_weightedTransform;
+  vectorData<double>               *m_weightedInverse;
+  cubeData<complex<double>>        *m_weightedAlm;
+
+  matrixData<double>               *m_weightedNoise;
+  vectorData<double>               *m_pixelWeightedNoise;
+  vectorData<double>               *m_transWeightedNoise;
+  vectorData<double>               *m_invWeightedNoise;
+  cubeData<std::complex<double>>   *m_weightedNoiseAlm;
+
   vectorData<int>                  *m_pixelOccupancy;
-  matrixData<double>               *m_couplingMatrix;
-  matrixData<double>               *m_inverseMatrix;
-  vectorData<double>               *m_spectData;
-  vectorData<double>               *m_ensembleSpectData;
-  
+  //matrixData<double>               *m_couplingMatrix;
+  //matrixData<double>               *m_inverseMatrix;
+  //vectorData<double>               *m_spectData;
+  //vectorData<double>               *m_ensembleSpectData;
+  vectorData<double>               *m_ensembleAveragedNoise;         // <Nl> in the paper with a tilde
+  matrixData<double>               *m_ensembleIterationNoise;
+  vectorData<double>               *m_spectrum;                      // Cl in the paper with a tilde
+  vectorData<double>               *m_ensembleAveragedSpectrum;       // <Cl> in the paper with a tilde
+  matrixData<double>               *m_ensembleIterationSpectrum;
+  vectorData<double>               *m_binnedSpectrum;                // Cb in the paper with a tilde
+  vectorData<double>               *m_ensembleAveragedBinnedSpectrum; // <Cb> in the paper with a tilde
+  matrixData<double>               *m_ensembleIterationBinnedSpectrum;
+  matrixData<double>               *m_ModeModeMatrix; // Mll in the paper
+  matrixData<double>               *m_InstrumentEffectsMatrix; // Kll
+  matrixData<double>               *m_BinningMatrix; // Pbl in the paper
+  matrixData<double>               *m_UnbinningMatrix; // Qlb in the paper
+  matrixData<double>               *m_BinnedInstrumentEffectsMatrix; // Kbb  in the paper
+  matrixData<double>               *m_InverseBinnedInstrumentMatrix; //Kbb^-1 in the paper
+
   dataMap                          *m_inputDataMap;
   dataMap                          *m_inputWeightsMap;
   dataMap                          *m_inputMap;
   dataMap                          *m_inputNoiseMap;
   dataMap                          *m_inputFilterMap;
   dataMap                          *m_inputBeamMap;
+  dataMap                          *m_weightedNoiseMap;
   
   dataMap                          *m_pixelDataMap;
   dataMap                          *m_pixelWeightsMap;
@@ -383,14 +467,20 @@ private:
   dataMap                          *m_pixelNoiseMap;
   dataMap                          *m_pixelFilterMap;
   dataMap                          *m_pixelBeamMap;
-  
+  dataMap                          *m_pixelWeightedNoiseMap;
+
   dataMap                          *m_invDataMap;
   dataMap                          *m_invWeightsMap;
   dataMap                          *m_invMap;
   dataMap                          *m_invNoiseMap;
   dataMap                          *m_invFilterMap;
   dataMap                          *m_invBeamMap;
+  dataMap                          *m_invWeightedNoiseMap;
   
+  dataMap                          *m_weightedInputMap;
+  dataMap                          *m_weightedPixelMap;
+  dataMap                          *m_weightedInverseMap;
+
   dataSpectrum                     *m_transDataGraph;
   dataSpectrum                     *m_transWeightsGraph;
   dataSpectrum                     *m_transGraph;
@@ -399,6 +489,14 @@ private:
   dataSpectrum                     *m_transFilterGraph;
   dataSpectrum                     *m_transNoiseGraph;
   dataSpectrum                     *m_transBeamGraph;
+  dataSpectrum                     *m_transWeightedNoiseGraph;
+
+  dataSpectrum                     *m_ensembleAveragedNoiseGraph;
+  dataSpectrum                     *m_ensembleAveragedSpectrumGraph;
+  dataSpectrum                     *m_binnedSpectrumGraph;
+  dataSpectrum                     *m_ensembleAveragedBinnedSpectrumGraph;
+  dataSpectrum                     *m_weightedTransformGraph;
+
 
   fileManager                      *m_fileIOEngine;
   Mapper                           *m_mapEngine;

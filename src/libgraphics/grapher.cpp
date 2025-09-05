@@ -129,6 +129,9 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
     case fileType::TransformedNoise:
       vec_dat_ptr = a->transformedNoise();
       break;
+    case fileType::TransformedWeightedNoise:
+      vec_dat_ptr = a->weightedTransformedNoise();
+      break;
     case fileType::TransformedFilter:
       vec_dat_ptr = a->transformedFilter();
       break;
@@ -142,14 +145,29 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
       vec_wht_ptr = a->transformedWeights();
       break;
     case fileType::WeightedTransform:
-      vec_dat_ptr = a->transformedData();
-      vec_wht_ptr = a->transformedWeights();
+      //vec_dat_ptr = a->transformedData();
+      //vec_wht_ptr = a->transformedWeights();
+      vec_dat_ptr = a->weightedTransform();
       break;
+    /*
     case fileType::SpectralData:
       vec_dat_ptr = a->spectrumData();
       break;
     case fileType::EnsembleData:
       vec_dat_ptr = a->ensembleData();
+    */
+    case fileType::EnsembleAveragedNoise:
+      vec_dat_ptr = a->EnsembleAveragedNoise();
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      vec_dat_ptr = a->EnsembleAveragedSpectrum();
+      break;
+    case fileType::BinnedSpectrum:
+      vec_dat_ptr = a->BinnedSpectrum();
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      vec_dat_ptr = a->EnsembleAveragedBinnedSpectrum();
+      break;
     default:
       break;
   }
@@ -175,18 +193,23 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
   for (count = 0; count < arr_size; count++) {
     switch (dataType) {
       case fileType::TransformedNoise:
+      case fileType::TransformedWeightedNoise:
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
       case fileType::TransformedData:
-      case fileType::SpectralData:
-      case fileType::EnsembleData:
-         value = (*vec_dat_ptr)[count+min_index];
+      //case fileType::SpectralData:
+      //case fileType::EnsembleData:
+      case fileType::EnsembleAveragedNoise:
+      case fileType::EnsembleAveragedSpectrum:
+      case fileType::BinnedSpectrum:
+      case fileType::EnsembleAveragedBinnedSpectrum:
+        value = (*vec_dat_ptr)[count+min_index];
         break;
       case fileType::TransformedWeights:
         value = (*vec_wht_ptr)[count+min_index];
         break;
       case fileType::WeightedTransform:
-        value = ((*vec_dat_ptr)[count+min_index] * (*vec_wht_ptr)[count+min_index]);
+        value = (*vec_dat_ptr)[count+min_index];// * (*vec_wht_ptr)[count+min_index];
         break;
       default:
         break;

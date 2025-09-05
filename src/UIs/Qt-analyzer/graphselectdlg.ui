@@ -2,19 +2,16 @@
 <ui version="4.0">
  <class>graphSelectDialog</class>
  <widget class="QDialog" name="graphSelectDialog">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>536</width>
-    <height>274</height>
+    <width>619</width>
+    <height>234</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>448</width>
-    <height>274</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Spectrum Selection</string>
@@ -23,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>230</y>
+     <y>190</y>
      <width>481</width>
      <height>36</height>
     </rect>
@@ -35,10 +32,10 @@
   <widget class="QGroupBox" name="selectionBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>511</width>
-     <height>141</height>
+     <x>0</x>
+     <y>30</y>
+     <width>610</width>
+     <height>160</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -50,82 +47,93 @@
    <property name="title">
     <string>Select Spectral Type</string>
    </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>471</width>
-      <height>86</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="noiseButton">
-       <property name="text">
-        <string>&amp;Noise Data</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="dataButton">
-       <property name="text">
-        <string>Transformed &amp;Data</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="spectDataButton">
-       <property name="text">
-        <string>&amp;Spectral Data</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QRadioButton" name="filterButton">
-       <property name="text">
-        <string>&amp;Filter Data</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QRadioButton" name="weightButton">
-       <property name="text">
-        <string>Transformed &amp;Weights</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QRadioButton" name="beamButton">
-       <property name="text">
-        <string>&amp;Beam Data</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QRadioButton" name="combinedDataButton">
-       <property name="text">
-        <string>Weighted &amp;Transfomation</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QRadioButton" name="ensembleButton">
-       <property name="text">
-        <string>Ensemble Power Spectrum</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QRadioButton" name="dataButton">
+      <property name="text">
+       <string>Transformed &amp;Data</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QRadioButton" name="noiseButton">
+      <property name="text">
+       <string>&amp;Noise Data</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" rowspan="2">
+     <widget class="QRadioButton" name="EnsAvgNoiseSpectrumButton">
+      <property name="text">
+       <string>Ensemble Averaged Noise Spectrum</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" rowspan="2">
+     <widget class="QRadioButton" name="weightButton">
+      <property name="text">
+       <string>Transformed &amp;Weights</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QRadioButton" name="weightedNoiseButton">
+      <property name="text">
+       <string>Weighted Noise Data</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2" rowspan="2">
+     <widget class="QRadioButton" name="EnsAvgSpectrumButton">
+      <property name="text">
+       <string>Ensemble Averaged Spectrum</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" rowspan="2">
+     <widget class="QRadioButton" name="combinedDataButton">
+      <property name="text">
+       <string>Weighted &amp;Transfomation</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QRadioButton" name="filterButton">
+      <property name="text">
+       <string>&amp;Filter Data</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QRadioButton" name="binnedSpectrumButton">
+      <property name="text">
+       <string>Binned Spectrum</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QRadioButton" name="beamButton">
+      <property name="text">
+       <string>&amp;Beam Data</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QRadioButton" name="EnsAvgBinnedSpectrumButton">
+      <property name="text">
+       <string>Ensemble Averaged Binned Spectrum</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QLabel" name="title">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>80</x>
      <y>10</y>
      <width>471</width>
      <height>20</height>

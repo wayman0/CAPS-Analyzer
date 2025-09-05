@@ -93,13 +93,15 @@ int PROJMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* dataClass
           return makeMapHealpix(map,dataTypes,dataClasses);
       }
       else {
-        if (((vectorData<double>*)dataClasses->getData(fileType::PixelizedData))->pixelScheme() == HealPIX)
+          //if (((vectorData<double>*)dataClasses->getData(fileType::PixelizedData))->pixelScheme() == HealPIX)
+        if(((vectorData<double>*)dataClasses->getData(dataTypes))->pixelScheme() == HealPIX)
           return makeMapHealpix(map,dataTypes,dataClasses);
       }
       break;
     /* Data types which require pixelizer only... */
     case fileType::InverseData:
     case fileType::InverseWeights:
+    case fileType::WeightedInverse:
       if (((vectorData<double>*)dataClasses->getData(dataTypes))->pixelScheme() == HealPIX)
         return makeMapHealpix(map,dataTypes,dataClasses);
       break;
@@ -109,12 +111,27 @@ int PROJMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* dataClass
     case fileType::TransformedFilter:
     case fileType::TransformedData:
     case fileType::TransformedWeights:
-    case fileType::SpectralData:
     case fileType::AlmData:
+    /*
+    case fileType::SpectralData:
     case fileType::BinCouplingMatrix:
     case fileType::ModeCouplingMatrix:
     case fileType::InverseBinMatrix:
     case fileType::InverseModeMatrix:
+    */
+    case fileType::EnsembleAveragedNoise:
+    case fileType::EnsembleIterationNoise:
+    case fileType::EnsembleAveragedSpectrum:
+    case fileType::EnsembleIterationSpectrum:
+    case fileType::BinnedSpectrum:
+    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::EnsembleIterationBinnedSpectrum:
+    case fileType::ModeModeMatrix:
+    case fileType::BinningMatrix:
+    case fileType::UnbinningMatrix:
+    case fileType::InstrumentEffectsMatrix:
+    case fileType::BinnedInstrumentEffectsMatrix:
+    case fileType::InverseBinnedInstrumentMatrix:
     case fileType::Null:
       break;
     /* Doesn't matter--data type will not use pixelizer... */
@@ -144,8 +161,9 @@ int PROJMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
       mat_wht_ptr = dataClasses->inputWeights();
       break;
     case fileType::WeightedData:
-      mat_dat_ptr = dataClasses->inputData();
-      mat_wht_ptr = dataClasses->inputWeights();
+      //mat_dat_ptr = dataClasses->inputData();
+      //mat_wht_ptr = dataClasses->inputWeights();
+      mat_dat_ptr = dataClasses->weightedInput();
       break;
     case fileType::PixelizedData:
       vec_dat_ptr = dataClasses->pixelizedData();
@@ -154,9 +172,10 @@ int PROJMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
       vec_wht_ptr = dataClasses->pixelizedWeights();
       break;
     case fileType::WeightedPixel:
-      vec_dat_ptr = dataClasses->pixelizedData();
-      vec_wht_ptr = dataClasses->pixelizedWeights();
-       break;
+      //vec_dat_ptr = dataClasses->pixelizedData();
+      //vec_wht_ptr = dataClasses->pixelizedWeights();
+      vec_dat_ptr = dataClasses->weightedPixel();
+      break;
     case fileType::PixelOccupancy:
       vec_int_ptr = dataClasses->pixelOccupancy();
       vec_wht_ptr = dataClasses->pixelizedWeights();
@@ -167,6 +186,9 @@ int PROJMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
     case fileType::InverseWeights:
       vec_wht_ptr = dataClasses->inverseWeights();
       break;
+    case fileType::WeightedInverse:
+      vec_dat_ptr = dataClasses->weightedInverse();
+      break;
     default:
       break;
   }
@@ -174,16 +196,32 @@ int PROJMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
   /* Do Healpix configuration... */
   switch (dataTypes) {
     case fileType::PixelizedData:
-    case fileType::PixelizedWeights:
-    case fileType::WeightedPixel:
-    case fileType::PixelOccupancy:
       healpix = new Healpix_Base();
       healpix->SetNside((const int)(dataClasses->pixelizedData()->sides()),(Healpix_Ordering_Scheme)(dataClasses->pixelizedData()->layout() - 1));
       break;
+    case fileType::PixelizedWeights:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->pixelizedWeights()->sides()),(Healpix_Ordering_Scheme)(dataClasses->pixelizedWeights()->layout() - 1));
+      break;
+    case fileType::WeightedPixel:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->weightedPixel()->sides()),(Healpix_Ordering_Scheme)(dataClasses->weightedPixel()->layout() - 1));
+      break;
+    case fileType::PixelOccupancy:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->pixelOccupancy()->sides()),(Healpix_Ordering_Scheme)(dataClasses->pixelOccupancy()->layout() - 1));
+      break;
     case fileType::InverseData:
-    case fileType::InverseWeights:
       healpix = new Healpix_Base();
       healpix->SetNside((const int)(dataClasses->inverseData()->sides()),(Healpix_Ordering_Scheme)(dataClasses->inverseData()->layout() - 1));
+      break;
+    case fileType::InverseWeights:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->inverseWeights()->sides()),(Healpix_Ordering_Scheme)(dataClasses->inverseWeights()->layout() - 1));
+      break;
+    case fileType::WeightedInverse:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->weightedInverse()->sides()),(Healpix_Ordering_Scheme)(dataClasses->weightedInverse()->layout() - 1));
       break;
     default:
       break;
@@ -273,7 +311,7 @@ int PROJMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
 //          lat  = lat - 90.0;
 //          lon  = 180.0 - lon;
           mat_dat_ptr->angle2bin(lat,lon,xPos,yPos);
-          value = (*mat_dat_ptr)[xPos][yPos] * (*mat_wht_ptr)[xPos][yPos];
+          value = (*mat_dat_ptr)[xPos][yPos];// * (*mat_wht_ptr)[xPos][yPos];
           break;
         case fileType::PixelizedData:
           lon  = M_PI - lon;
@@ -288,7 +326,7 @@ int PROJMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
         case fileType::WeightedPixel:
           lon  = M_PI - lon;
           xPos = (long)(healpix->ang2pix(pointing(lat,lon)));
-          value = (*vec_dat_ptr)[xPos] * (*vec_wht_ptr)[xPos];
+          value = (*vec_dat_ptr)[xPos];// * (*vec_wht_ptr)[xPos];
           break;
         case fileType::PixelOccupancy:
           lon  = M_PI - lon;
@@ -307,6 +345,11 @@ int PROJMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
           lon  = M_PI - lon;
           xPos = (long)(healpix->ang2pix(pointing(lat,lon)));
           value = (*vec_wht_ptr)[xPos];
+          break;
+        case fileType::WeightedInverse:
+          lon = M_PI - lon;
+          xPos = (long)(healpix->ang2pix(pointing(lat, lon)));
+          value = (*vec_dat_ptr)[xPos];
           break;
         default:
           break;

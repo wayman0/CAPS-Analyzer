@@ -56,6 +56,7 @@
 #include <math.h>
 
 #include "basedata.h"
+#include "vectordata.h"
 
 template <typename _Type> class matrixData : public baseData {
 
@@ -86,12 +87,22 @@ template <typename _Type> class matrixData : public baseData {
      * overload [] operator
      */
     std::vector<_Type>& operator[](long i) {return m_data[i];}
-   
+
     /**
      * overload = operator
      */
     matrixData<_Type>& operator=(const matrixData<_Type>& other);
 
+    // add matrix multiplication to do element wise multiplication
+    //matrixData<_Type >* operator*(const matrixData<_Type >& mat1);
+
+    matrixData<_Type>*  elementMult(matrixData<_Type>* that);
+    matrixData<_Type>*  elementMult(vectorData<_Type>* that);
+
+    matrixData<_Type>*  matrixMult(matrixData<_Type>* that);
+    vectorData<_Type>*  matrixMult(vectorData<_Type>* that);
+
+    void printMatrix();
     /**
      * initialize matrix to zeros
      */
@@ -266,12 +277,14 @@ template <typename _Type> matrixData<_Type>::matrixData(matrixData<_Type> *from)
   m_EgretUnit    = from->EgretUnit();
 }
 
-template <typename _Type> void matrixData<_Type>::print() {
+template <typename _Type> void matrixData<_Type>::print()
+{
 
 }
 
 //template <typename _Type> matrixData< _Type >& matrixData<_Type>::operator=(const matrixData<_Type >& other) {
-template <typename _Type> matrixData<_Type>& matrixData<_Type>::operator=(const matrixData<_Type >& other) {
+template <typename _Type> matrixData<_Type>& matrixData<_Type>::operator=(const matrixData<_Type >& other)
+{
   int col, row;
 
   // basedata variables
@@ -317,6 +330,106 @@ template <typename _Type> matrixData<_Type>& matrixData<_Type>::operator=(const 
   m_EgretUnit    = other.EgretUnit();
 
   return *this;
+}
+
+/*
+template <typename _Type> matrixData<_Type >* matrixData<_Type >::operator*(const matrixData<_Type >& mat1)
+{
+  if(mat1.rows() != this->rows() ||
+     mat1.cols() != this->cols())
+    throw dataMismatchError;
+
+  matrixData<_Type>* returnMat = new matrixData<_Type>(mat1.rows(), mat1.cols(), mat1.dataType());
+  returnMat->initialize();
+
+  for(int r = 0; r < mat1.rows(); r += 1)
+  {
+    for(int c = 0; c < mat1.cols(); c += 1)
+    {
+      (*returnMat)[c][r] = (mat1)[c][r] * (*this)[c][r];
+    }
+  }
+
+  return returnMat;
+}
+*/
+
+template <typename _Type> matrixData<_Type>* matrixData<_Type>::elementMult(matrixData<_Type>* that)
+{
+  if(this->rows() != that->rows() ||
+     this->cols() != that->cols())
+    throw dataMismatchError;
+
+  matrixData<_Type>* result = new matrixData<_Type>(this->cols(), this->rows(), fileType::Null);
+  result->initialize();
+
+  for(int r = 0; r < this->rows(); r += 1)
+    for(int c = 0; c < this->cols(); c += 1)
+      (*result)[c][r] = (*this)[c][r] * (*that)[c][r];
+
+  return result;
+}
+
+template <typename _Type> matrixData<_Type>* matrixData<_Type>::elementMult(vectorData<_Type>* that)
+{
+  if(this->rows() != that->rows())
+    throw dataMismatchError;
+
+  matrixData<_Type>* result = new matrixData<_Type>(this->cols(), this->rows(), fileType::Null);
+  result->initialize();
+
+  for(int c = 0; c < this->cols(); c += 1)
+    for(int r = 0; r < this->rows(); r += 1)
+      (*result)[c][r] = (*this)[c][r] * (*that)[r];
+
+  return result;
+}
+
+template <typename _Type> matrixData<_Type>* matrixData<_Type>::matrixMult(matrixData<_Type>* that)
+{
+  if(this->cols() != that->rows())
+    throw dataMismatchError;
+
+  matrixData<_Type>* result = new matrixData<_Type>(that->cols(), this->rows(), fileType::Null);
+  result->initialize();
+
+  for(int thatC = 0; thatC < that->cols(); thatC += 1)
+  {
+    for(int thisR = 0; thisR < this->rows(); thisR += 1)
+    {
+      for(int thisC = 0; thisC < this->cols(); thisC += 1)
+      (*result)[thatC][thisR] += (*this)[thisC][thisR] * (*that)[thatC][thisC];
+    }
+  }
+
+  return result;
+}
+
+template <typename _Type> vectorData<_Type>* matrixData<_Type>::matrixMult(vectorData<_Type>* that)
+{
+  if(this->cols() != that->rows())
+    throw dataMismatchError;
+
+  vectorData<_Type>* result = new vectorData<_Type>(this->rows(), fileType::Null);
+  result->initialize();
+
+  for(int r = 0; r < this->rows(); r += 1)
+    for(int c = 0; c < this->cols(); c += 1)
+      (*result)[r] += (*this)[c][r] * (*that)[c];
+
+  return result;
+}
+
+template <typename _Type> void matrixData<_Type>::printMatrix()
+{
+  for(int r = 0; r < this->rows(); r += 1)
+  {
+    for(int c = 0; c < this->cols(); c += 1)
+    {
+      printf("%010.7f, ", (*this)[c][r]);
+    }
+    printf("\n");
+  }
 }
 
 template <typename _Type> int matrixData<_Type>::initialize() {

@@ -84,6 +84,8 @@ fileManager::fileManager() {
   m_fileFormat = None;
   m_err = noErrors;
   m_filename = 0;
+
+  m_observatory = Analyzer;
 }
 
 fileManager::fileManager(fileManager* from) {
@@ -105,6 +107,8 @@ fileManager::fileManager(fileManager* from) {
   m_fileFormat = from->fileFormat();
   m_err = from->error();
   fileName(from->fileName());
+
+  m_observatory = from->m_observatory;
 }
 
 fileManager& fileManager::operator=(fileManager& other) {
@@ -127,6 +131,7 @@ fileManager& fileManager::operator=(fileManager& other) {
   m_err = other.error();
   fileName(other.fileName());
 
+  m_observatory = other.m_observatory;
   return *this;
 }
 

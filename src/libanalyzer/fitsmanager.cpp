@@ -338,12 +338,23 @@ void fitsManager::save(int* numTypes, FILETYPE* dataTypes)
         case fileType::InputWeights:
         case fileType::WeightedData:
         case fileType::InputNoise:
+        case fileType::InputWeightedNoise:
         case fileType::InputFilter:
         case fileType::InputBeam:
-        case fileType::BinCouplingMatrix:
-        case fileType::ModeCouplingMatrix:
-        case fileType::InverseBinMatrix:
-        case fileType::InverseModeMatrix:
+
+        case fileType::EnsembleIterationNoise:
+        case fileType::EnsembleIterationSpectrum:
+        case fileType::EnsembleIterationBinnedSpectrum:
+        case fileType::ModeModeMatrix:
+        case fileType::InstrumentEffectsMatrix:
+        case fileType::BinningMatrix:
+        case fileType::UnbinningMatrix:
+        case fileType::BinnedInstrumentEffectsMatrix:
+        case fileType::InverseBinnedInstrumentMatrix:
+        //case fileType::BinCouplingMatrix:
+        //case fileType::ModeCouplingMatrix:
+        //case fileType::InverseBinMatrix:
+        //case fileType::InverseModeMatrix:
           m_dimensions = 2;
           m_parts = 1;
           m_fitsType = fitsDouble;
@@ -352,7 +363,9 @@ void fitsManager::save(int* numTypes, FILETYPE* dataTypes)
           break;
         case fileType::AlmData:
         case fileType::AlmWeights:
+        case fileType::WeightedAlm:
         case fileType::AlmNoise:
+        case fileType::AlmWeightedNoise:
         case fileType::AlmFilter:
         case fileType::AlmBeam:
           m_dimensions = 4;
@@ -473,9 +486,16 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "PIXEL_MASK";
       break;
+    case fileType::WeightedPixel:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "PIXEL_MASK";
+      break;
     case fileType::PixelizedNoise:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "PIXEL_NOISE";
+      break;
+    case fileType::PixelizedWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::PixelizedFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -493,9 +513,16 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "INVERSE_MASK";
       break;
+    case fileType::WeightedInverse:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "PIXEL_MASK";
+      break;
     case fileType::InverseNoise:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "INVERSE_NOISE";
+      break;
+    case fileType::InverseWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::InverseFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -513,9 +540,16 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_MASK";
       break;
+    case fileType::WeightedTransform:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "PIXEL_MASK";
+      break;
     case fileType::TransformedNoise:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_NOISE";
+      break;
+    case fileType::TransformedWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::TransformedFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -525,6 +559,24 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::EnsembleAveragedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::BinnedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+
+    /*
     case fileType::SpectralData:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "PSEUDO-SPECTRAL_DATA";
@@ -532,6 +584,7 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
     case fileType::EnsembleData:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
+    */
   }
 
   if (v->layout() == Ring)
@@ -575,11 +628,14 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       case fileType::PixelizedWeights:
       case fileType::WeightedPixel:
       case fileType::PixelizedNoise:
+      case fileType::PixelizedWeightedNoise:
       case fileType::PixelizedFilter:
       case fileType::PixelizedBeam:
       case fileType::InverseData:
       case fileType::InverseWeights:
+      case fileType::WeightedInverse:
       case fileType::InverseNoise:
+      case fileType::InverseWeightedNoise:
       case fileType::InverseFilter:
       case fileType::InverseBeam:
         dataImage->addKey("NSIDES",v->sides(),"Number of sides.");
@@ -590,6 +646,7 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       case fileType::TransformedWeights:
       case fileType::WeightedTransform:
       case fileType::TransformedNoise:
+      case fileType::TransformedWeightedNoise:
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
         // if the data is transformed it should also be pixelized
@@ -601,8 +658,12 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
         dataImage->addKey("MAXINDEX",v->maxYIndex(), "Maximum index");
         dataImage->addKey("MININDEX",v->minYIndex(), "Minimum index");
         break;
-      case fileType::SpectralData:
-      case fileType::EnsembleData:
+      //case fileType::SpectralData:
+      //case fileType::EnsembleData:
+      case fileType::EnsembleAveragedNoise:
+      case fileType::EnsembleAveragedSpectrum:
+      case fileType::BinnedSpectrum:
+      case fileType::EnsembleAveragedBinnedSpectrum:
         // if the data is spectral then it should also be pixelized and transformed
         dataImage->addKey("NSIDES",v->sides(),"Number of sides.");
         dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
@@ -656,9 +717,16 @@ bool fitsManager::saveMatrixD(matrixData<double> *m)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_MASK";
       break;
+    case fileType::WeightedData:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_MASK";
+      break;
     case fileType::InputNoise:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_NOISE";
+      break;
+    case fileType::InputWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::InputFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -668,6 +736,7 @@ bool fitsManager::saveMatrixD(matrixData<double> *m)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_BEAM";
       break;
+    /*
     case fileType::BinCouplingMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "BIN_COUPLING_MATRIX";
@@ -683,6 +752,43 @@ bool fitsManager::saveMatrixD(matrixData<double> *m)
     case fileType::InverseModeMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "INVERSE_MODE_COUPLING_MATRIX";
+      break;
+    */
+    case fileType::EnsembleIterationNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::EnsembleIterationSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::ModeModeMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::BinningMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::UnbinningMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
       break;
   }
 
@@ -747,10 +853,19 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
       transformed = (vectorData<double>*)s_association->getData(fileType::TransformedWeights);
       //hduName = "ALM_MASK";
       break;
+    case fileType::WeightedAlm:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      transformed = (vectorData<double>*)s_association->getData(fileType::WeightedTransform);
+      //hduName = "ALM_MASK";
+      break;
     case fileType::AlmNoise:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       transformed = (vectorData<double>*)s_association->getData(fileType::TransformedNoise);
       //hduName = "ALM_NOISE";
+      break;
+    case fileType::AlmWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedWeightedNoise);
       break;
     case fileType::AlmFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -821,7 +936,6 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
     dataImage->addKey("POLARIZATION",c->polarization(),"Polarization of data.");
     dataImage->addKey("INDEX",c->index(),"Index of data stored in file.");
 
-    std::cout << sides << "\n";
     // save the transformer info so we can use it when we want to go from alm to transformed
     dataImage->addKey("NSIDES",   c->sides(),  "Number of sides.");
     dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
@@ -1360,18 +1474,30 @@ baseData *fitsManager::data() {
         return 0;
       case fileType::InputData:
       case fileType::InputWeights:
+      case fileType::WeightedData:
       case fileType::InputNoise:
+      case fileType::InputWeightedNoise:
       case fileType::InputFilter:
       case fileType::InputBeam:
-      case fileType::WeightedData:
-      case fileType::BinCouplingMatrix:
-      case fileType::ModeCouplingMatrix:
-      case fileType::InverseBinMatrix:
-      case fileType::InverseModeMatrix:
+      case fileType::EnsembleIterationNoise:
+      case fileType::EnsembleIterationSpectrum:
+      case fileType::EnsembleIterationBinnedSpectrum:
+      case fileType::ModeModeMatrix:
+      case fileType::InstrumentEffectsMatrix:
+      case fileType::BinningMatrix:
+      case fileType::UnbinningMatrix:
+      case fileType::BinnedInstrumentEffectsMatrix:
+      case fileType::InverseBinnedInstrumentMatrix:
+      //case fileType::BinCouplingMatrix:
+      //case fileType::ModeCouplingMatrix:
+      //case fileType::InverseBinMatrix:
+      //case fileType::InverseModeMatrix:
         return getMatrixD();
       case fileType::AlmData:
       case fileType::AlmWeights:
+      case fileType::WeightedAlm:
       case fileType::AlmNoise:
+      case fileType::AlmWeightedNoise:
       case fileType::AlmFilter:
       case fileType::AlmBeam:
         return getCubeCD();
@@ -1456,6 +1582,7 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
     case fileType::InputBeam:
       hduName = "RAW_BEAM";
       break;
+    /*
     case fileType::BinCouplingMatrix:
       hduName = "BIN_COUPLING_MATRIX";
       break;
@@ -1467,6 +1594,43 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
       break;
     case fileType::InverseModeMatrix:
       hduName = "INVERSE_MODE_COUPLING_MATRIX";
+      break;
+    */
+    case fileType::EnsembleIterationNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::EnsembleIterationSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::ModeModeMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::BinningMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::UnbinningMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
       break;
   }
 
@@ -1910,6 +2074,9 @@ vectorData<double> *fitsManager::getVectorD()
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "PIXEL_NOISE";
       break;
+    case fileType::PixelizedWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
     case fileType::PixelizedFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "PIXEL_FILTER";
@@ -1926,9 +2093,16 @@ vectorData<double> *fitsManager::getVectorD()
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "INVERSE_MASK";
       break;
+    case fileType::WeightedInverse:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "INVERSE_MASK";
+      break;
     case fileType::InverseNoise:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "INVERSE_NOISE";
+      break;
+    case fileType::InverseWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::InverseFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -1954,6 +2128,9 @@ vectorData<double> *fitsManager::getVectorD()
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_NOISE";
       break;
+    case fileType::TransformedWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
     case fileType::TransformedFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_FILTER";
@@ -1962,6 +2139,24 @@ vectorData<double> *fitsManager::getVectorD()
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::EnsembleAveragedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::BinnedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+
+    /*
     case fileType::SpectralData:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "PSEUDO-SPECTRAL_DATA";
@@ -1969,6 +2164,7 @@ vectorData<double> *fitsManager::getVectorD()
     case fileType::EnsembleData:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
+    */
   }
 
   try
@@ -1979,11 +2175,14 @@ vectorData<double> *fitsManager::getVectorD()
       case fileType::PixelizedWeights:
       case fileType::WeightedPixel:
       case fileType::PixelizedNoise:
+      case fileType::PixelizedWeightedNoise:
       case fileType::PixelizedFilter:
       case fileType::PixelizedBeam:
       case fileType::InverseData:
       case fileType::InverseWeights:
+      case fileType::WeightedInverse:
       case fileType::InverseNoise:
+      case fileType::InverseWeightedNoise:
       case fileType::InverseFilter:
       case fileType::InverseBeam:
         dataImage->readKey("NSIDES",sides);
@@ -1994,6 +2193,7 @@ vectorData<double> *fitsManager::getVectorD()
       case fileType::TransformedWeights:
       case fileType::WeightedTransform:
       case fileType::TransformedNoise:
+      case fileType::TransformedWeightedNoise:
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
         // if it is transformed it should also be pixelized
@@ -2005,8 +2205,13 @@ vectorData<double> *fitsManager::getVectorD()
         dataImage->readKey("MAXINDEX",maxIndex);
         dataImage->readKey("MININDEX",minIndex);
         break;
-      case fileType::SpectralData:
-      case fileType::EnsembleData:
+      //case fileType::SpectralData:
+      //case fileType::EnsembleData:
+      case fileType::EnsembleAveragedNoise:
+      case fileType::EnsembleAveragedSpectrum:
+      case fileType::BinnedSpectrum:
+      case fileType::EnsembleAveragedBinnedSpectrum:
+
         // if it is spectral it should also be pixelized and transformed
         dataImage->readKey("NSIDES",sides);
         dataImage->readKey("PIXLAYOUT",layout);
@@ -2055,10 +2260,13 @@ vectorData<double> *fitsManager::getVectorD()
     d_vec->pixelScheme(HealPIX);
     d_vec->numberOfPixels(12 * sides * sides);
 
-    s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
-    s_association->pixelizationEngine()->pixelLayout(d_vec->layout());
-    s_association->pixelizationEngine()->pixelizerScheme(d_vec->pixelScheme());
-    s_association->pixelizationEngine()->scale(sides);
+    if(!s_association->exists(dataEngines::Pixelization))
+    {
+      s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
+      s_association->pixelizationEngine()->pixelLayout(d_vec->layout());
+      s_association->pixelizationEngine()->pixelizerScheme(d_vec->pixelScheme());
+      s_association->pixelizationEngine()->scale(sides);
+    }
   }
   else {
     d_vec->pixelScheme(NotPixelized);
@@ -2069,10 +2277,13 @@ vectorData<double> *fitsManager::getVectorD()
   {
     d_vec->transformerScheme(Rsht);
 
-    s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
-    s_association->transformationEngine()->transformerScheme(d_vec->transformerScheme());
-    s_association->transformationEngine()->minIndex(d_vec->minYIndex());
-    s_association->transformationEngine()->maxIndex(d_vec->maxYIndex());
+    if(!s_association->exists(dataEngines::Transformation))
+    {
+      s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
+      s_association->transformationEngine()->transformerScheme(d_vec->transformerScheme());
+      s_association->transformationEngine()->minIndex(d_vec->minYIndex());
+      s_association->transformationEngine()->maxIndex(d_vec->maxYIndex());
+    }
   }
   else
     d_vec->transformerScheme(NotTransformed);
@@ -2116,6 +2327,9 @@ matrixData<double> *fitsManager::getMatrixD() {
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_NOISE";
       break;
+    case fileType::InputWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
     case fileType::InputFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
@@ -2124,6 +2338,7 @@ matrixData<double> *fitsManager::getMatrixD() {
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_BEAM";
       break;
+    /*
     case fileType::BinCouplingMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "BIN_COUPLING_MATRIX";
@@ -2139,6 +2354,43 @@ matrixData<double> *fitsManager::getMatrixD() {
     case fileType::InverseModeMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "INVERSE_MODE_COUPLING_MATRIX";
+      break;
+    */
+    case fileType::EnsembleIterationNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::EnsembleIterationSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::ModeModeMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::BinningMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::UnbinningMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "RAW_FILTER";
       break;
   }
 
@@ -2205,9 +2457,16 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "ALM_MASK";
       break;
+    case fileType::WeightedAlm:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "INVERSE_MASK";
+      break;
     case fileType::AlmNoise:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "ALM_NOISE";
+      break;
+    case fileType::AlmWeightedNoise:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::AlmFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -2269,18 +2528,24 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
 
   if(scheme == "HealPIX")
   {
-    s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
-    s_association->pixelizationEngine()->pixelLayout(dc_cube->layout());
-    s_association->pixelizationEngine()->pixelizerScheme(dc_cube->pixelScheme());
-    s_association->pixelizationEngine()->scale(stoi(sides));
+    if(!s_association->exists(dataEngines::Pixelization))
+    {
+      s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
+      s_association->pixelizationEngine()->pixelLayout(dc_cube->layout());
+      s_association->pixelizationEngine()->pixelizerScheme(dc_cube->pixelScheme());
+      s_association->pixelizationEngine()->scale(stoi(sides));
+    }
   }
 
   if (trans == "Rsht")
   {
-    s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
-    s_association->transformationEngine()->transformerScheme(dc_cube->transformerScheme());
-    s_association->transformationEngine()->minIndex(dc_cube->transMinIndex());
-    s_association->transformationEngine()->maxIndex(dc_cube->transMaxIndex());
+    if(!s_association->exists(dataEngines::Transformation))
+    {
+      s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
+      s_association->transformationEngine()->transformerScheme(dc_cube->transformerScheme());
+      s_association->transformationEngine()->minIndex(dc_cube->transMinIndex());
+      s_association->transformationEngine()->maxIndex(dc_cube->transMaxIndex());
+    }
   }
 
   data = dc_cube->rwAccess();

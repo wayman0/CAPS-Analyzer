@@ -297,12 +297,24 @@ void csvManager::save(int* numTypes, FILETYPE* dataTypes)
       case fileType::InputWeights:
       case fileType::WeightedData:
       case fileType::InputNoise:
+      case fileType::InputWeightedNoise:
       case fileType::InputFilter:
       case fileType::InputBeam:
+      case fileType::EnsembleIterationNoise:
+      case fileType::EnsembleIterationSpectrum:
+      case fileType::EnsembleIterationBinnedSpectrum:
+      case fileType::ModeModeMatrix:
+      case fileType::InstrumentEffectsMatrix:
+      case fileType::BinningMatrix:
+      case fileType::UnbinningMatrix:
+      case fileType::BinnedInstrumentEffectsMatrix:
+      case fileType::InverseBinnedInstrumentMatrix:
+      /*
       case fileType::BinCouplingMatrix:
       case fileType::ModeCouplingMatrix:
       case fileType::InverseBinMatrix:
       case fileType::InverseModeMatrix:
+      */
         m_dimensions = 2;
         m_parts = 1;
         if (!saveMatrixD((matrixData<double>*)data))
@@ -310,7 +322,9 @@ void csvManager::save(int* numTypes, FILETYPE* dataTypes)
         break;
       case fileType::AlmData:
       case fileType::AlmWeights:
+      case fileType::WeightedAlm:
       case fileType::AlmNoise:
+      case fileType::AlmWeightedNoise:
       case fileType::AlmFilter:
       case fileType::AlmBeam:
         m_dimensions = 4;
@@ -414,9 +428,15 @@ bool csvManager::saveVectorD(vectorData<double> *v)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "PIXEL_MASK";
       break;
+    case fileType::WeightedPixel:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
     case fileType::PixelizedNoise:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "PIXEL_NOISE";
+      break;
+    case fileType::PixelizedWeightedNoise:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::PixelizedFilter:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -434,9 +454,16 @@ bool csvManager::saveVectorD(vectorData<double> *v)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "INVERSE_MASK";
       break;
+    case fileType::WeightedInverse:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "INVERSE_MASK";
+      break;
     case fileType::InverseNoise:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "INVERSE_NOISE";
+      break;
+    case fileType::InverseWeightedNoise:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::InverseFilter:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -454,9 +481,16 @@ bool csvManager::saveVectorD(vectorData<double> *v)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "TRANSFORMED_MASK";
       break;
+    case fileType::WeightedTransform:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "INVERSE_MASK";
+      break;
     case fileType::TransformedNoise:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "TRANSFORMED_NOISE";
+      break;
+    case fileType::TransformedWeightedNoise:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::TransformedFilter:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -466,12 +500,30 @@ bool csvManager::saveVectorD(vectorData<double> *v)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "TRANSFORMED_BEAM";
       break;
+    /*
     case fileType::SpectralData:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "PSEUDO-SPECTRAL_DATA";
       break;
     case fileType::EnsembleData:
       dataName = dataTypeNames[(int)(m_fileDataType)];
+    */
+    case fileType::EnsembleAveragedNoise:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::BinnedSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
   }
 
    *m_ptr << "[DATANAME] == " << dataName << "\n";
@@ -507,19 +559,37 @@ bool csvManager::saveVectorD(vectorData<double> *v)
     case fileType::PixelizedData:
     case fileType::PixelizedWeights:
     case fileType::WeightedPixel:
+    case fileType::PixelizedNoise:
+    case fileType::PixelizedWeightedNoise:
+    case fileType::PixelizedFilter:
+    case fileType::PixelizedBeam:
     case fileType::InverseData:
     case fileType::InverseWeights:
+    case fileType::WeightedInverse:
+    case fileType::InverseNoise:
+    case fileType::InverseWeightedNoise:
+    case fileType::InverseFilter:
+    case fileType::InverseBeam:
       *m_ptr << "[NSIDES] == " << v->sides() << '\n';
       *m_ptr << "[PIXLAYOUT] == " << layout <<'\n';
       * m_ptr << "[PIXSCHEME] == " << scheme <<'\n';
       break;
     case fileType::TransformedData:
     case fileType::TransformedWeights:
+    case fileType::WeightedTransform:
+    case fileType::TransformedNoise:
+    case fileType::TransformedWeightedNoise:
+    case fileType::TransformedFilter:
+    case fileType::TransformedBeam:
       *m_ptr << "[MAXINDEX] == " << v->maxYIndex() << '\n';
       *m_ptr << "[MININDEX] == " << v->minYIndex() << '\n';
       *m_ptr << "[TRANSFORMERSCHEME] == " << trans << '\n';
       break;
-    case fileType::SpectralData:
+    //case fileType::SpectralData:
+    case fileType::EnsembleAveragedNoise:
+    case fileType::EnsembleAveragedSpectrum:
+    case fileType::BinnedSpectrum:
+    case fileType::EnsembleAveragedBinnedSpectrum:
       *m_ptr << "[MAXINDEX] == " << v->maxYIndex() << '\n';
       *m_ptr << "[MININDEX] == " << v->minYIndex() << '\n';
       *m_ptr << "[MAXVALUE] == " << v->maxValue() << '\n';
@@ -564,9 +634,15 @@ bool csvManager::saveMatrixD(matrixData<double> *m)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "RAW_MASK";
       break;
+    case fileType::WeightedData:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
     case fileType::InputNoise:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "RAW_NOISE";
+      break;
+    case fileType::InputWeightedNoise:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::InputFilter:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -576,6 +652,7 @@ bool csvManager::saveMatrixD(matrixData<double> *m)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "RAW_BEAM";
       break;
+    /*
     case fileType::BinCouplingMatrix:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "BIN_COUPLING_MATRIX";
@@ -591,6 +668,43 @@ bool csvManager::saveMatrixD(matrixData<double> *m)
     case fileType::InverseModeMatrix:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "INVERSE_MODE_COUPLING_MATRIX";
+      break;
+    */
+    case fileType::EnsembleIterationNoise:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
+      break;
+    case fileType::EnsembleIterationSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
+      break;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
+      break;
+    case fileType::ModeModeMatrix:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
+      break;
+    case fileType::BinningMatrix:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
+      break;
+    case fileType::UnbinningMatrix:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //dataName = "RAW_FILTER";
       break;
   }
 
@@ -625,8 +739,6 @@ bool csvManager::saveMatrixD(matrixData<double> *m)
 //      informProgress(currOp / updateUnit);
   }
 
-
-
   return true;
 }
 
@@ -646,9 +758,15 @@ bool csvManager::saveCubeCD(cubeData<complex<double> > *c)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "ALM_MASK";
       break;
+    case fileType::WeightedAlm:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
     case fileType::AlmNoise:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "ALM_NOISE";
+      break;
+    case fileType::AlmWeightedNoise:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::AlmFilter:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -697,8 +815,6 @@ bool csvManager::saveCubeCD(cubeData<complex<double> > *c)
 //    if(m_showProgress && !(currOp % updateUnit))
 //      informProgress(currOp / updateUnit);
   }
-
-
 
   return true;
 }
@@ -1026,24 +1142,39 @@ baseData *csvManager::data() {
       return 0;
     case fileType::InputData:
     case fileType::InputWeights:
+    case fileType::WeightedData:
     case fileType::InputBeam:
     case fileType::InputFilter:
     case fileType::InputNoise:
+    case fileType::InputWeightedNoise:
       if (m_observatory == Egret || m_observatory == Fermi)
 //      if (m_observatory != Analyzer && m_observatory != Telescope_Array && m_observatory != Auger && m_observatory != Kascade)
         return data(m_minSlice,m_maxSlice);
       if (m_observatory == Telescope_Array || m_observatory == Auger || m_observatory == Kascade)
         return data(m_minE[0],m_maxE[0]);
+    /*
     case fileType::BinCouplingMatrix:
     case fileType::ModeCouplingMatrix:
     case fileType::InverseBinMatrix:
     case fileType::InverseModeMatrix:
+    */
+    case fileType::EnsembleIterationNoise:
+    case fileType::EnsembleIterationSpectrum:
+    case fileType::EnsembleIterationBinnedSpectrum:
+    case fileType::ModeModeMatrix:
+    case fileType::InstrumentEffectsMatrix:
+    case fileType::BinningMatrix:
+    case fileType::UnbinningMatrix:
+    case fileType::BinnedInstrumentEffectsMatrix:
+    case fileType::InverseBinnedInstrumentMatrix:
       return getMatrixD();
     case fileType::AlmData:
     case fileType::AlmWeights:
+    case fileType::WeightedAlm:
     case fileType::AlmBeam:
     case fileType::AlmFilter:
     case fileType::AlmNoise:
+    case fileType::AlmWeightedNoise:
       return getCubeCD();
     case fileType::PixelOccupancy:
       return getVectorI();
@@ -1445,8 +1576,17 @@ vectorData<double> *csvManager::getVectorD()
     case fileType::PixelizedData:
     case fileType::PixelizedWeights:
     case fileType::WeightedPixel:
+    case fileType::PixelizedNoise:
+    case fileType::PixelizedWeightedNoise:
+    case fileType::PixelizedFilter:
+    case fileType::PixelizedBeam:
     case fileType::InverseData:
     case fileType::InverseWeights:
+    case fileType::WeightedInverse:
+    case fileType::InverseNoise:
+    case fileType::InverseWeightedNoise:
+    case fileType::InverseFilter:
+    case fileType::InverseBeam:
     {
     /*
       if (m_headerData.find("NSIDES") == m_headerData.end())
@@ -1483,6 +1623,11 @@ vectorData<double> *csvManager::getVectorD()
     }
     case fileType::TransformedData:
     case fileType::TransformedWeights:
+    case fileType::WeightedTransform:
+    case fileType::TransformedNoise:
+    case fileType::TransformedWeightedNoise:
+    case fileType::TransformedFilter:
+    case fileType::TransformedBeam:
       /*
       if (m_headerData.find("MAXINDEX") == m_headerData.end())
         m_err = fileNoKeyError;
@@ -1515,7 +1660,11 @@ vectorData<double> *csvManager::getVectorD()
         m_err = fileNoKeyError;
 
       break;
-    case fileType::SpectralData:
+    //case fileType::SpectralData:
+    case fileType::EnsembleAveragedNoise:
+    case fileType::EnsembleAveragedSpectrum:
+    case fileType::BinnedSpectrum:
+    case fileType::EnsembleAveragedBinnedSpectrum:
       /*
       if (m_headerData.find("MAXINDEX") == m_headerData.end())
         m_err = fileNoKeyError;

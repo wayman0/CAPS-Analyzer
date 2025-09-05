@@ -103,6 +103,11 @@ int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int ran
       pixout = dataClasses->pixelizedWeights();
       pixOccupancy = dataClasses->pixelOccupancy();
       break;
+    case fileType::WeightedData:
+      input = dataClasses->weightedInput();
+      pixout = dataClasses->weightedPixel();
+      pixOccupancy = dataClasses->pixelOccupancy();
+      break;
     case fileType::InputFilter:
       input = dataClasses->inputFilter();
       pixout = dataClasses->pixelizedFilter();
@@ -118,6 +123,11 @@ int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int ran
       pixout = dataClasses->pixelizedNoise();
       pixOccupancy = dataClasses->pixelOccupancy();
       break;
+    case fileType::InputWeightedNoise:
+      input = dataClasses->weightedInputNoise();
+      pixout = dataClasses->weightedPixelizedNoise();
+      pixOccupancy = dataClasses->pixelOccupancy();
+      break;
     default:
       return 0;
   }
@@ -130,7 +140,8 @@ int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int ran
   healpix->SetNside((const int)m_sides,(Healpix_Ordering_Scheme)(m_layout-1));
   long i = x, j = y;
 
-  for (count = 0;count < range;++count) {
+  for (count = 0;count < range;++count)
+  {
     // update progress bar
 //    dataClasses->informProgress((double)count / (double)range);
 
@@ -253,9 +264,17 @@ double HealPIXPixelizer::calculateAverage(FILETYPE dataType, association* assoc)
         if (assoc->exists(fileType::PixelizedWeights))
           data = new vectorData<double>(assoc->pixelizedWeights());
         break;
+      case fileType::WeightedPixel:
+        if(assoc->exists(fileType::WeightedPixel))
+          data = new vectorData<double>(assoc->weightedPixel());
+        break;
       case fileType::PixelizedNoise:
         if (assoc->exists(fileType::PixelizedNoise))
           data = new vectorData<double>(assoc->pixelizedNoise());
+        break;
+      case fileType::PixelizedWeightedNoise:
+        if(assoc->exists(fileType::PixelizedWeightedNoise))
+          data = new vectorData<double>(assoc->weightedPixelizedNoise());
         break;
       case fileType::PixelizedFilter:
         if (assoc->exists(fileType::PixelizedFilter))
@@ -301,16 +320,21 @@ double HealPIXPixelizer::calculateAverage(FILETYPE dataType, association* assoc)
     else
     {
       numberDataPoints += (*hits)[row];
-      if(data && dataType != fileType::PixelizedWeights)
+      if(data && dataType != fileType::PixelizedWeights
+              && dataType != fileType::WeightedPixel
+              && dataType != fileType::PixelizedWeightedNoise)
       {
-        //double dataValue = (*data)[row] * (*hits)[row];
-        if(weights)
-          //globalAve += dataValue * (*weights)[row];
-          globalAve += (*data)[row] * (*weights)[row];
-        else
-          //globalAve += dataValue;
-          globalAve += (*data)[row];
+          //double dataValue = (*data)[row] * (*hits)[row];
+          if(weights)
+            //globalAve += dataValue * (*weights)[row];
+            globalAve += (*data)[row] * (*weights)[row];
+          else
+            //globalAve += dataValue;
+            globalAve += (*data)[row];
       }
+      else if(dataType == fileType::WeightedPixel ||
+              dataType == fileType::PixelizedWeightedNoise)
+        globalAve += (*data)[row];
       else if (weights)
         globalAve += (*weights)[row];
       else
@@ -351,9 +375,17 @@ double HealPIXPixelizer::calculateVariance(FILETYPE dataType, association* assoc
         if (assoc->exists(fileType::PixelizedWeights))
           data = assoc->pixelizedWeights();
         break;
+      case fileType::WeightedPixel:
+        if(assoc->exists(fileType::WeightedPixel))
+          data = assoc->weightedPixel();
+        break;
       case fileType::PixelizedNoise:
         if (assoc->exists(fileType::PixelizedNoise))
           data = assoc->pixelizedNoise();
+        break;
+      case fileType::PixelizedWeightedNoise:
+        if (assoc->exists(fileType::PixelizedWeightedNoise))
+          data = assoc->weightedPixelizedNoise();
         break;
       case fileType::PixelizedFilter:
         if (assoc->exists(fileType::PixelizedFilter))
@@ -426,9 +458,17 @@ vectorData<double>* HealPIXPixelizer::meanNormalize(FILETYPE dataType, associati
         if (assoc->exists(fileType::PixelizedWeights))
           data = assoc->pixelizedWeights();
         break;
+      case fileType::WeightedPixel:
+        if(assoc->exists(fileType::WeightedPixel))
+          data = assoc->weightedPixel();
+        break;
       case fileType::PixelizedNoise:
         if (assoc->exists(fileType::PixelizedNoise))
           data = assoc->pixelizedNoise();
+        break;
+      case fileType::PixelizedWeightedNoise:
+        if(assoc->exists(fileType::PixelizedWeightedNoise))
+          data = assoc->weightedPixelizedNoise();
         break;
       case fileType::PixelizedFilter:
         if (assoc->exists(fileType::PixelizedFilter))
@@ -512,9 +552,17 @@ vectorData<double>* HealPIXPixelizer::minmaxNormalize(FILETYPE dataType, associa
         if (assoc->exists(fileType::PixelizedWeights))
           data = assoc->pixelizedWeights();
         break;
+      case fileType::WeightedPixel:
+        if(assoc->exists(fileType::WeightedPixel))
+          data = assoc->weightedPixel();
+        break;
       case fileType::PixelizedNoise:
         if (assoc->exists(fileType::PixelizedNoise))
           data = assoc->pixelizedNoise();
+        break;
+      case fileType::PixelizedWeightedNoise:
+        if (assoc->exists(fileType::PixelizedWeightedNoise))
+          data = assoc->weightedPixelizedNoise();
         break;
       case fileType::PixelizedFilter:
         if (assoc->exists(fileType::PixelizedFilter))
@@ -601,10 +649,18 @@ baseData* HealPIXPixelizer::calculateAverageVector(FILETYPE dataType, associatio
           data = assoc->pixelizedWeights();
           //data = new vectorData<double>(assoc->pixelizedWeights());
         break;
+      case fileType::WeightedPixel:
+        if(assoc->exists(fileType::WeightedPixel))
+          data = assoc->weightedPixel();
+        break;
       case fileType::PixelizedNoise:
         if (assoc->exists(fileType::PixelizedNoise))
           data = assoc->pixelizedNoise();
           //data = new vectorData<double>(assoc->pixelizedNoise());
+        break;
+      case fileType::PixelizedWeightedNoise:
+        if (assoc->exists(fileType::PixelizedWeightedNoise))
+          data = assoc->weightedPixelizedNoise();
         break;
       case fileType::PixelizedFilter:
         if (assoc->exists(fileType::PixelizedFilter))
@@ -702,17 +758,28 @@ baseData* HealPIXPixelizer::calculateAverageVector(FILETYPE dataType, associatio
     }
     else
     {
-      if(data && dataType != fileType::PixelizedWeights) // data average should be divided by how many items got mapped to it
+      if(data && dataType != fileType::PixelizedWeights
+              && dataType != fileType::WeightedPixel
+              && dataType != fileType::PixelizedWeightedNoise) // data average should be divided by how many items got mapped to it
       {
         int denom = (*hits)[row];
         if(!denom)
           denom = 1;
 
+        // we shouldn't calculate a weighted average
+        // when we use pixel average we don't see the
+        // weighted pixel graph because we pixelize
+        // the data before we pixelize the weights
+        // but when we pixelize the noise we already
+        // pixelized the weights causing the graph
+        // to look like it is weighted even though it isn't
+        /*
         if(weights)
           //(*oldData)[row] += ((*data)[row] * (*weights)[row]) / denom;
           //(*data)[row] += ((*data)[row] * (*weights)[row]) / denom;
           (*data)[row] = ((*data)[row] * (*weights)[row]) / denom;
         else
+        */
           //(*oldData)[row] += (*data)[row] / denom;
           //(*data)[row] += (*data)[row] / denom;
           (*data)[row] = (*data)[row] / denom;
@@ -725,7 +792,9 @@ baseData* HealPIXPixelizer::calculateAverageVector(FILETYPE dataType, associatio
         if((*data)[row] < minValue)
           minValue = (*data)[row];
       }
-      else if(data && dataType == fileType::PixelizedWeights)
+      else if(data && (dataType == fileType::PixelizedWeights ||
+                       dataType == fileType::WeightedPixel    ||
+                       dataType == fileType::PixelizedWeightedNoise))
       {
         int denom = (*hits)[row];
         if(!denom)
@@ -760,7 +829,6 @@ baseData* HealPIXPixelizer::calculateAverageVector(FILETYPE dataType, associatio
         //if((*oldData)[row] < minValue) minValue = (*oldData)[row];
         if((*data)[row] < minValue)
           minValue = (*data)[row];
-
       }
       else
         throw incompleteDatasetError;
@@ -820,10 +888,18 @@ vectorData<double>* oldData = 0;
           data = assoc->pixelizedWeights();
           //data = new vectorData<double>(assoc->pixelizedWeights());
         break;
+      case fileType::WeightedPixel:
+        if(assoc->exists(fileType::WeightedPixel))
+          data = assoc->weightedPixel();
+        break;
       case fileType::PixelizedNoise:
         if (assoc->exists(fileType::PixelizedNoise))
           data = assoc->pixelizedNoise();
           //data = new vectorData<double>(assoc->pixelizedNoise());
+        break;
+      case fileType::PixelizedWeightedNoise:
+        if (assoc->exists(fileType::PixelizedWeightedNoise))
+          data = assoc->weightedPixelizedNoise();
         break;
       case fileType::PixelizedFilter:
         if (assoc->exists(fileType::PixelizedFilter))
@@ -922,7 +998,9 @@ vectorData<double>* oldData = 0;
     }
     else
     {
-      if(data && dataType != fileType::PixelizedWeights) // data average should be divided by how many items got mapped to it
+      if(data && dataType != fileType::PixelizedWeights
+              && dataType != fileType::WeightedPixel
+              && dataType != fileType::PixelizedWeightedNoise) // data average should be divided by how many items got mapped to it
       {
         int denom = (*hits)[row];
         if(!denom)
@@ -945,7 +1023,9 @@ vectorData<double>* oldData = 0;
         if((*data)[row] < minValue)
           minValue = (*data)[row];
       }
-      else if(data && dataType == fileType::PixelizedWeights)
+      else if(data && (dataType == fileType::PixelizedWeights ||
+                       dataType == fileType::WeightedPixel    ||
+                       dataType == fileType::PixelizedWeightedNoise))
       {
         int denom = (*hits)[row];
         if(!denom)
@@ -1031,10 +1111,18 @@ baseData* HealPIXPixelizer::calculateVarianceVector(FILETYPE dataType, associati
        if (assoc->exists(fileType::PixelizedWeights))
          data = assoc->pixelizedWeights();
        break;
-     case fileType::PixelizedNoise:
+     case fileType::WeightedPixel:
+        if(assoc->exists(fileType::WeightedPixel))
+          data = assoc->weightedPixel();
+        break;
+      case fileType::PixelizedNoise:
        if (assoc->exists(fileType::PixelizedNoise))
          data = assoc->pixelizedNoise();
        break;
+      case fileType::PixelizedWeightedNoise:
+        if (assoc->exists(fileType::PixelizedWeightedNoise))
+          data = assoc->weightedPixelizedNoise();
+        break;
      case fileType::PixelizedFilter:
        if (assoc->exists(fileType::PixelizedFilter))
          data = assoc->pixelizedFilter();

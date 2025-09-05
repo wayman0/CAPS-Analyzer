@@ -57,7 +57,7 @@ spectrumDialog::spectrumDialog() :
   ui->setupUi(this);
 
   ui->binCheckBox->setChecked(true);
-  ui->inverseCheckBox->setChecked(false);
+  ui->inverseCheckBox->setChecked(true);
   ui->maskSpinBox->setValue(0);
   ui->countSpinBox->setValue(1);
   
@@ -69,13 +69,14 @@ spectrumDialog::spectrumDialog() :
   /* initialize internal variables*/
 //  currentHandle = -1;
 //  dataHandle = -1;
-  bin  = true;
-  inverse = false;
-  weigh = false;
+  bin     = true;
+  inverse = true;
+  weigh   = false;
   binSize = 1;
   ensIter = 1;
-  mask = 0;
-  dirty = false;
+  mask   = 0;
+  dirty  = false;
+
   isConfigured = false;
   
   /* set initially displayed values */
@@ -109,6 +110,7 @@ void spectrumDialog::configure() {
       ui->inverseCheckBox->setChecked(true);
     else
       ui->inverseCheckBox->setChecked(false);
+
     ui->maskSpinBox->setValue(mask);
     ui->countSpinBox->setValue(binSize);
     ui->ensembleIter->setValue(ensIter);

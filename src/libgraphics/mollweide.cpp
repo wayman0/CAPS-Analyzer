@@ -72,10 +72,11 @@ int MollweideMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* data
   switch (dataTypes) {
     /* Data types which require pixelizer and defined pixelized data... */
     case fileType::PixelizedData:
-    //case fileType::WeightedPixel: // we don't have a WeightedPixel data type in association
+    case fileType::WeightedPixel:
     case fileType::PixelizedWeights:
     case fileType::PixelOccupancy:
     case fileType::PixelizedNoise:
+    case fileType::PixelizedWeightedNoise:
     case fileType::PixelizedFilter:
     case fileType::PixelizedBeam:
       if (dataTypes == fileType::PixelOccupancy) {
@@ -93,6 +94,7 @@ int MollweideMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* data
     case fileType::InverseWeights:
     case fileType::WeightedInverse:
     case fileType::InverseNoise:
+    case fileType::InverseWeightedNoise:
     case fileType::InverseFilter:
     case fileType::InverseBeam:
       if (((vectorData<double>*)dataClasses->getData(dataTypes))->pixelScheme() == HealPIX)
@@ -104,12 +106,27 @@ int MollweideMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* data
     case fileType::TransformedFilter:
     case fileType::TransformedData:
     case fileType::TransformedWeights:
-    case fileType::SpectralData:
     case fileType::AlmData:
+    /*
+    case fileType::SpectralData:
     case fileType::BinCouplingMatrix:
     case fileType::ModeCouplingMatrix:
     case fileType::InverseBinMatrix:
     case fileType::InverseModeMatrix:
+    */
+    case fileType::EnsembleAveragedNoise:
+    case fileType::EnsembleIterationNoise:
+    case fileType::EnsembleAveragedSpectrum:
+    case fileType::EnsembleIterationSpectrum:
+    case fileType::BinnedSpectrum:
+    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::EnsembleIterationBinnedSpectrum:
+    case fileType::ModeModeMatrix:
+    case fileType::BinningMatrix:
+    case fileType::UnbinningMatrix:
+    case fileType::InstrumentEffectsMatrix:
+    case fileType::BinnedInstrumentEffectsMatrix:
+    case fileType::InverseBinnedInstrumentMatrix:
     case fileType::Null:
       break;
     /* Doesn't matter--data type will not use pixelizer... */
@@ -139,11 +156,15 @@ int MollweideMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, associatio
       pri_mat_ptr = dataClasses->inputWeights();
       break;
     case fileType::WeightedData:
-      pri_mat_ptr = dataClasses->inputData();
-      sec_mat_ptr = dataClasses->inputWeights();
+      //pri_mat_ptr = dataClasses->inputData();
+      //sec_mat_ptr = dataClasses->inputWeights();
+      pri_mat_ptr = dataClasses->weightedInput();
       break;
     case fileType::InputNoise:
       pri_mat_ptr = dataClasses->inputNoise();
+      break;
+    case fileType::InputWeightedNoise:
+      pri_mat_ptr = dataClasses->weightedInputNoise();
       break;
     case fileType::InputFilter:
       pri_mat_ptr = dataClasses->inputFilter();
@@ -158,15 +179,19 @@ int MollweideMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, associatio
       pri_vec_ptr = dataClasses->pixelizedWeights();
       break;
     case fileType::WeightedPixel:
-      pri_vec_ptr = dataClasses->pixelizedData();
-      sec_vec_ptr = dataClasses->pixelizedWeights();
-       break;
+      //pri_vec_ptr = dataClasses->pixelizedData();
+      //sec_vec_ptr = dataClasses->pixelizedWeights();
+      pri_vec_ptr = dataClasses->weightedPixel();
+      break;
     case fileType::PixelOccupancy:
       vec_int_ptr = dataClasses->pixelOccupancy();
       sec_vec_ptr = dataClasses->pixelizedWeights();
       break;
     case fileType::PixelizedNoise:
       pri_vec_ptr = dataClasses->pixelizedNoise();
+      break;
+    case fileType::PixelizedWeightedNoise:
+      pri_vec_ptr = dataClasses->weightedPixelizedNoise();
       break;
     case fileType::PixelizedFilter:
       pri_vec_ptr = dataClasses->pixelizedFilter();
@@ -181,11 +206,15 @@ int MollweideMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, associatio
       pri_vec_ptr = dataClasses->inverseWeights();
       break;
     case fileType::WeightedInverse:
-      pri_vec_ptr = dataClasses->inverseData();
-      sec_vec_ptr = dataClasses->inverseWeights();
+      //pri_vec_ptr = dataClasses->inverseData();
+      //sec_vec_ptr = dataClasses->inverseWeights();
+      pri_vec_ptr = dataClasses->weightedInverse();
       break;
     case fileType::InverseNoise:
       pri_vec_ptr = dataClasses->inverseNoise();
+      break;
+    case fileType::InverseWeightedNoise:
+      pri_vec_ptr = dataClasses->weightedInverseNoise();
       break;
     case fileType::InverseFilter:
       pri_vec_ptr = dataClasses->inverseFilter();
@@ -234,7 +263,8 @@ int MollweideMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, associatio
       double value = 0;
       long xPos, yPos;
 
-      if (pri_mat_ptr) {
+      if (pri_mat_ptr)
+      {
         /* Convert latitude and longitude to degrees... */
         lat *= 180.0/M_PI;
         lon *= 180.0/M_PI;

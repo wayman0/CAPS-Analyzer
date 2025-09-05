@@ -95,24 +95,29 @@ class RshtTransformer : public Transformer {
 //    association* association() {return m_association;}
     Healpix_Map<double>* dataMap() {return m_dataMap;}
     Healpix_Map<double>* weightsMap() {return m_weightsMap;}
-    Healpix_Map<double>* map() {return m_map;}
+    Healpix_Map<double>* weightedDataMap() {return m_weightedDataMap;}
     Healpix_Map<double>* filterMap() {return m_filterMap;}
     Healpix_Map<double>* beamMap() {return m_beamMap;}
     Healpix_Map<double>* noiseMap() {return m_noiseMap;}
+    Healpix_Map<double>* weightedNoiseMap() {return m_weightedNoiseMap; }
+
     Healpix_Map<double>* invDataMap() {return m_invDataMap;}
     Healpix_Map<double>* invMaskMap() {return m_invMaskMap;}
+    Healpix_Map<double>* invWeightedDataMap()     {return m_invWeightedDataMap;}
     Healpix_Map<double>* invFilterMap() {return m_invFilterMap;}
     Healpix_Map<double>* invBeamMap() {return m_invBeamMap;}
     Healpix_Map<double>* invNoiseMap() {return m_invNoiseMap;}
+    Healpix_Map<double>* invWeightedNoiseMap() {return m_invWeightedNoiseMap; }
+
     Alm<hPoint>* almDataValue() {return m_almDataValue;}
     Alm<hPoint>* almDataGrad() {return m_almDataGrad;}
     Alm<hPoint>* almDataCurl() {return m_almDataCurl;}
     Alm<hPoint>* almWeightsValue() {return m_almWeightsValue;}
     Alm<hPoint>* almWeightsGrad() {return m_almWeightsGrad;}
     Alm<hPoint>* almWeightsCurl() {return m_almWeightsCurl;}
-    Alm<hPoint>* almValue() {return m_almValue;}
-    Alm<hPoint>* almGrad() {return m_almGrad;}
-    Alm<hPoint>* almCurl() {return m_almCurl;}
+    Alm<hPoint>* weightedAlmValue() {return m_weightedAlmValue;}
+    Alm<hPoint>* weightedAlmGrad() {return m_weightedAlmGrad;}
+    Alm<hPoint>* weightedAlmCurl() {return m_weightedAlmCurl;}
     Alm<hPoint>* almFilterValue() {return m_almFilterValue;}
     Alm<hPoint>* almFilterGrad() {return m_almFilterGrad;}
     Alm<hPoint>* almFilterCurl() {return m_almFilterCurl;}
@@ -122,6 +127,11 @@ class RshtTransformer : public Transformer {
     Alm<hPoint>* almNoiseValue() {return m_almNoiseValue;}
     Alm<hPoint>* almNoiseGrad() {return m_almNoiseGrad;}
     Alm<hPoint>* almNoiseCurl() {return m_almNoiseCurl;}
+    Alm<hPoint>* almWeightedNoiseValue() {return m_almWeightedNoiseValue;}
+    Alm<hPoint>* almWeightedNoiseGrad()  {return m_almWeightedNoiseGrad;}
+    Alm<hPoint>* almWeightedNoiseCurl()  {return m_almWeightedNoiseCurl;}
+
+
     PowSpec* spectrum() {return m_spectrum;}
 
     void sides(int sides){m_sides = sides;}
@@ -133,24 +143,29 @@ class RshtTransformer : public Transformer {
 //    association         *m_association;
     Healpix_Map<double> *m_dataMap;
     Healpix_Map<double> *m_weightsMap;
-    Healpix_Map<double> *m_map;
+    Healpix_Map<double> *m_weightedDataMap;
     Healpix_Map<double> *m_filterMap;
     Healpix_Map<double> *m_beamMap;
     Healpix_Map<double> *m_noiseMap;
+    Healpix_Map<double> *m_weightedNoiseMap;
+
     Healpix_Map<double> *m_invDataMap;
     Healpix_Map<double> *m_invMaskMap;
+    Healpix_Map<double> *m_invWeightedDataMap;
     Healpix_Map<double> *m_invFilterMap;
     Healpix_Map<double> *m_invBeamMap;
     Healpix_Map<double> *m_invNoiseMap;
+    Healpix_Map<double> *m_invWeightedNoiseMap;
+
     Alm<hPoint>         *m_almDataValue;
     Alm<hPoint>         *m_almDataGrad;
     Alm<hPoint>         *m_almDataCurl;
     Alm<hPoint>         *m_almWeightsValue;
     Alm<hPoint>         *m_almWeightsGrad;
     Alm<hPoint>         *m_almWeightsCurl;
-    Alm<hPoint>         *m_almValue;
-    Alm<hPoint>         *m_almGrad;
-    Alm<hPoint>         *m_almCurl;
+    Alm<hPoint>         *m_weightedAlmValue;
+    Alm<hPoint>         *m_weightedAlmGrad;
+    Alm<hPoint>         *m_weightedAlmCurl;
     Alm<hPoint>         *m_almFilterValue;
     Alm<hPoint>         *m_almFilterGrad;
     Alm<hPoint>         *m_almFilterCurl;
@@ -160,6 +175,11 @@ class RshtTransformer : public Transformer {
     Alm<hPoint>         *m_almNoiseValue;
     Alm<hPoint>         *m_almNoiseGrad;
     Alm<hPoint>         *m_almNoiseCurl;
+    Alm<hPoint>         *m_almWeightedNoiseValue;
+    Alm<hPoint>         *m_almWeightedNoiseGrad;
+    Alm<hPoint>         *m_almWeightedNoiseCurl;
+
+
     PowSpec             *m_spectrum;
 };
 

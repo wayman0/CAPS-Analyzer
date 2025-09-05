@@ -43,24 +43,29 @@ RshtTransformer::RshtTransformer()
 //  m_association     = 0;
   m_dataMap         = 0;
   m_weightsMap      = 0;
-  m_map             = 0;
+  m_weightedDataMap = 0;
   m_filterMap       = 0;
   m_beamMap         = 0;
   m_noiseMap        = 0;
+  m_weightedNoiseMap = 0;
+
   m_invDataMap      = 0;
   m_invMaskMap      = 0;
+  m_invWeightedDataMap = 0;
   m_invFilterMap    = 0;
   m_invBeamMap      = 0;
   m_invNoiseMap     = 0;
+  m_invWeightedNoiseMap = 0;
+
   m_almDataValue    = 0;
   m_almDataGrad     = 0;
   m_almDataCurl     = 0;
   m_almWeightsValue = 0;
   m_almWeightsGrad  = 0;
   m_almWeightsCurl  = 0;
-  m_almValue        = 0;
-  m_almGrad         = 0;
-  m_almCurl         = 0;
+  m_weightedAlmValue        = 0;
+  m_weightedAlmGrad         = 0;
+  m_weightedAlmCurl         = 0;
   m_almFilterValue  = 0;
   m_almFilterGrad   = 0;
   m_almFilterCurl   = 0;
@@ -70,6 +75,11 @@ RshtTransformer::RshtTransformer()
   m_almNoiseValue   = 0;
   m_almNoiseGrad    = 0;
   m_almNoiseCurl    = 0;
+  m_almWeightedNoiseValue   = 0;
+  m_almWeightedNoiseGrad    = 0;
+  m_almWeightedNoiseCurl    = 0;
+
+
   m_spectrum        = 0;
   m_cosThetaCut     = 0.0;
   m_scheme          = Rsht;
@@ -82,24 +92,29 @@ RshtTransformer::RshtTransformer(RshtTransformer* from)
 //  m_association     = from->association();
   m_dataMap         = from->dataMap();
   m_weightsMap      = from->weightsMap();
-  m_map             = from->map();
+  m_weightedDataMap = from->weightedDataMap();
   m_filterMap       = from->filterMap();
   m_beamMap         = from->beamMap();
   m_noiseMap        = from->noiseMap();
+  m_invWeightedNoiseMap = from->weightedNoiseMap();
+
   m_invDataMap      = from->invDataMap();
   m_invMaskMap      = from->invMaskMap();
+  m_invWeightedDataMap          = from->invWeightedDataMap();
   m_invFilterMap    = from->invFilterMap();
   m_invBeamMap      = from->invBeamMap();
   m_invNoiseMap     = from->invNoiseMap();
+  m_invWeightedNoiseMap = from->invWeightedNoiseMap();
+
   m_almDataValue    = from->almDataValue();
   m_almDataGrad     = from->almDataGrad();;
   m_almDataCurl     = from->almDataCurl();
   m_almWeightsValue = from->almWeightsValue();
   m_almWeightsGrad  = from->almWeightsGrad();
   m_almWeightsCurl  = from->almWeightsCurl();
-  m_almValue        = from->almValue();
-  m_almGrad         = from->almGrad();
-  m_almCurl         = from->almCurl();;
+  m_weightedAlmValue = from->weightedAlmValue();
+  m_weightedAlmGrad  = from->weightedAlmGrad();
+  m_weightedAlmCurl  = from->weightedAlmCurl();;
   m_almFilterValue  = from->almFilterValue();
   m_almFilterGrad   = from->almFilterGrad();
   m_almFilterCurl   = from->almFilterCurl();
@@ -109,6 +124,10 @@ RshtTransformer::RshtTransformer(RshtTransformer* from)
   m_almNoiseValue   = from->almNoiseValue();
   m_almNoiseGrad    = from->almNoiseGrad();
   m_almNoiseCurl    = from->almNoiseCurl();
+  m_almWeightedNoiseValue   = from->almWeightedNoiseValue();
+  m_almWeightedNoiseGrad    = from->almWeightedNoiseGrad();
+  m_almWeightedNoiseCurl    = from->almWeightedNoiseCurl();
+
   m_spectrum        = from->spectrum();
   m_cosThetaCut     = from->cosThetaCut();
   m_scheme          = from->scheme();
@@ -156,6 +175,21 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
         m_almWeightsCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
       }
       break;
+    case fileType::WeightedPixel:
+      pix = dataClasses->weightedPixel();
+      m_sides = pix->sides();
+      if(pix->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      m_weightedDataMap = new Healpix_Map<double>(m_sides, order, SET_NSIDE);
+      m_weightedAlmValue = new Alm<hPoint>(m_maxIndex, m_maxIndex);
+      if(m_polarization > 1)
+      {
+        m_weightedAlmGrad = new Alm<hPoint>(m_maxIndex, m_maxIndex);
+        m_weightedAlmCurl = new Alm<hPoint>(m_maxIndex, m_maxIndex);
+      }
+      break;
     case fileType::PixelizedNoise:
       pix = dataClasses->pixelizedNoise();
       m_sides = pix->sides();
@@ -168,6 +202,22 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
       if (m_polarization > 1) {
         m_almNoiseGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
         m_almNoiseCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      }
+      break;
+    case fileType::PixelizedWeightedNoise:
+      pix = dataClasses->weightedPixelizedNoise();
+      m_sides = pix->sides();
+      if(pix->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      m_weightedNoiseMap = new Healpix_Map<double>(m_sides, order, SET_NSIDE);
+      m_almWeightedNoiseValue = new Alm<hPoint>(m_maxIndex, m_maxIndex);
+
+      if(m_polarization > 1)
+      {
+        m_almWeightedNoiseGrad = new Alm<hPoint>(m_maxIndex, m_maxIndex);
+        m_almWeightedNoiseCurl = new Alm<hPoint>(m_maxIndex, m_maxIndex);
       }
       break;
     case fileType::PixelizedFilter:
@@ -226,6 +276,21 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
         m_almWeightsCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
       }
       break;
+    case fileType::WeightedAlm:
+      almCube = dataClasses->weightedAlm();
+      m_sides = almCube->sides();
+      if(almCube->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      m_invWeightedDataMap = new Healpix_Map<double>(m_sides, order, SET_NSIDE);
+      m_weightedAlmValue = new Alm<hPoint>(m_maxIndex, m_maxIndex);
+      if (m_polarization > 1)
+      {
+        m_weightedAlmGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+        m_weightedAlmCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      }
+      break;
     case fileType::AlmNoise:
       almCube = dataClasses->almNoise();
       m_sides = almCube->sides();
@@ -238,6 +303,22 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
       if (m_polarization > 1) {
         m_almNoiseGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
         m_almNoiseCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      }
+      break;
+    case fileType::AlmWeightedNoise:
+      almCube = dataClasses->weightedAlmNoise();
+      m_sides = almCube->sides();
+      if(almCube->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      m_invWeightedNoiseMap   = new Healpix_Map<double>(m_sides, order, SET_NSIDE);
+      m_almWeightedNoiseValue = new Alm<hPoint>(m_maxIndex, m_maxIndex);
+
+      if(m_polarization > 1)
+      {
+        m_almWeightedNoiseGrad = new Alm<hPoint>(m_maxIndex, m_maxIndex);
+        m_almWeightedNoiseCurl = new Alm<hPoint>(m_maxIndex, m_maxIndex);
       }
       break;
     case fileType::AlmFilter:
@@ -283,7 +364,8 @@ int RshtTransformer::initialize(association* dataClasses) {
 //  m_association = dataClasses;
   
   while (type != fileType::InverseData) {
-    if (type == fileType::PixelOccupancy || type == fileType::WeightedPixel) {
+    if (type == fileType::PixelOccupancy) //|| type == fileType::WeightedPixel) {
+    {
       type = static_cast<FILETYPE>(++numType);
       continue;
     }
@@ -308,9 +390,14 @@ int RshtTransformer::loadMap(association* dataClasses, FILETYPE type) {
   std::vector<double> *vec = 0;
    
   /* Do input variable checks */
-  if (!(type == fileType::PixelizedData || type == fileType::PixelizedWeights ||
-        type == fileType::PixelizedFilter || type == fileType::PixelizedNoise || type == fileType::PixelizedBeam))
+  if (!(type == fileType::PixelizedData   || type == fileType::PixelizedWeights || type == fileType::WeightedPixel ||
+        type == fileType::PixelizedFilter || type == fileType::PixelizedNoise   || type == fileType::PixelizedWeightedNoise ||
+        type == fileType::PixelizedBeam) &&
+      !(type == fileType::InverseData     || type == fileType::InverseWeights   || type == fileType::WeightedInverse ||
+        type == fileType::InverseFilter   || type == fileType::InverseNoise     || type == fileType::InverseWeightedNoise ||
+        type == fileType::InverseBeam))
     return -1;
+
   if (!dataClasses)
     return -1;
 
@@ -323,6 +410,10 @@ int RshtTransformer::loadMap(association* dataClasses, FILETYPE type) {
       pix = dataClasses->pixelizedWeights();
       map = m_weightsMap;
       break;
+    case fileType::WeightedPixel:
+      pix = dataClasses->weightedPixel();
+      map = m_weightedDataMap;
+      break;
     case fileType::PixelizedFilter:
       pix = dataClasses->pixelizedFilter();
       map = m_filterMap;
@@ -334,6 +425,39 @@ int RshtTransformer::loadMap(association* dataClasses, FILETYPE type) {
     case fileType::PixelizedNoise:
       pix = dataClasses->pixelizedNoise();
       map = m_noiseMap;
+      break;
+    case fileType::PixelizedWeightedNoise:
+      pix = dataClasses->weightedPixelizedNoise();
+      map = m_weightedNoiseMap;
+      break;
+
+    case fileType::InverseData:
+      pix = dataClasses->inverseData();
+      map = m_invDataMap;
+      break;
+    case fileType::InverseWeights:
+      pix = dataClasses->inverseWeights();
+      map = m_invMaskMap;
+      break;
+    case fileType::WeightedInverse:
+      pix = dataClasses->weightedInverse();
+      map = m_invWeightedDataMap;
+      break;
+    case fileType::InverseFilter:
+      pix = dataClasses->inverseFilter();
+      map = m_invFilterMap;
+      break;
+    case fileType::InverseBeam:
+      pix = dataClasses->inverseBeam();
+      map = m_invBeamMap;
+      break;
+    case fileType::InverseNoise:
+      pix = dataClasses->inverseNoise();
+      map = m_invNoiseMap;
+      break;
+    case fileType::InverseWeightedNoise:
+      pix = dataClasses->weightedInverseNoise();
+      map = m_invWeightedNoiseMap;
       break;
     default:
       return -1;
@@ -351,6 +475,7 @@ int RshtTransformer::loadMap(association* dataClasses, FILETYPE type) {
   return size;
 }
 
+// copy our cube data object into a healpix alm object
 int RshtTransformer::loadAlmMap(association* dataClasses, FILETYPE type) {
   cubeData<std::complex<double> > *data = 0;
   Alm<hPoint> *value = 0, *grad = 0, *curl = 0;
@@ -358,9 +483,11 @@ int RshtTransformer::loadAlmMap(association* dataClasses, FILETYPE type) {
   unsigned int slice, col, row;
 
   /* Do input variable checks */
-  if (!(type == fileType::AlmData || type == fileType::AlmWeights ||
-                type == fileType::AlmBeam || type == fileType::AlmFilter || type == fileType::AlmNoise))
+  if (!(type == fileType::AlmData || type == fileType::AlmWeights || type == fileType::WeightedAlm ||
+        type == fileType::AlmBeam || type == fileType::AlmFilter  || type == fileType::AlmNoise ||
+        type == fileType::AlmWeightedNoise))
     return -1;
+
   if (!dataClasses)
     return -1;
 
@@ -376,6 +503,12 @@ int RshtTransformer::loadAlmMap(association* dataClasses, FILETYPE type) {
       value = m_almWeightsValue;
       grad = m_almWeightsGrad;
       curl = m_almWeightsCurl;
+      break;
+    case fileType::WeightedAlm:
+      data = dataClasses->weightedAlm();
+      value = m_weightedAlmValue;
+      grad  = m_weightedAlmGrad;
+      curl  = m_weightedAlmCurl;
       break;
     case fileType::AlmFilter:
       data = dataClasses->almFilter();
@@ -394,6 +527,12 @@ int RshtTransformer::loadAlmMap(association* dataClasses, FILETYPE type) {
       value = m_almNoiseValue;
       grad = m_almNoiseGrad;
       curl = m_almNoiseCurl;
+      break;
+    case fileType::AlmWeightedNoise:
+      data  = dataClasses->weightedAlmNoise();
+      value = m_almWeightedNoiseValue;
+      grad  = m_almWeightedNoiseGrad;
+      curl  = m_almWeightedNoiseCurl;
       break;
     default:
       return -1;
@@ -413,8 +552,10 @@ int RshtTransformer::loadAlmMap(association* dataClasses, FILETYPE type) {
           ((*grad)(col,row)).real((*vec)[1][col][row].real());
           ((*grad)(col,row)).imag((*vec)[1][col][row].imag());
         case 1:
-          ((*value)(col,row)).real((*vec)[0][col][row].real());
-          ((*value)(col,row)).imag((*vec)[0][col][row].imag());
+          //((*value)(col,row)).real((*vec)[0][col][row].real());
+          //((*value)(col,row)).imag((*vec)[0][col][row].imag());
+          ((*value)(col, row)).real((*data)[0][col][row].real());
+          ((*value)(col, row)).real((*data)[0][col][row].real());
         default:
           break;
       }
@@ -427,6 +568,7 @@ int RshtTransformer::loadAlmMap(association* dataClasses, FILETYPE type) {
   return data->roAccess().size();
 }
 
+// copy a healpix alm object into our cube data object
 int RshtTransformer::storeAlmMap(association* dataClasses, FILETYPE type) {
   cubeData<std::complex<double> > *data = 0;
   Alm<hPoint> *value = 0, *grad = 0, *curl = 0;
@@ -435,9 +577,11 @@ int RshtTransformer::storeAlmMap(association* dataClasses, FILETYPE type) {
   std::complex<double> zeroValue = std::complex<double>(0.0,0.0);
 
   /* Do input variable checks */
-  if (!(type == fileType::AlmData || type == fileType::AlmWeights ||
-        type == fileType::AlmBeam || type == fileType::AlmFilter || type == fileType::AlmNoise))
+  if (!(type == fileType::AlmData || type == fileType::AlmWeights || type == fileType::WeightedAlm ||
+        type == fileType::AlmBeam || type == fileType::AlmFilter  || type == fileType::AlmNoise ||
+        type == fileType::AlmWeightedNoise))
     return -1;
+
   if (!dataClasses)
     return -1;
 
@@ -453,6 +597,12 @@ int RshtTransformer::storeAlmMap(association* dataClasses, FILETYPE type) {
       value = m_almWeightsValue;
       grad = m_almWeightsGrad;
       curl = m_almWeightsCurl;
+      break;
+    case fileType::WeightedAlm:
+      data = dataClasses->weightedAlm();
+      value = m_weightedAlmValue;
+      grad  = m_weightedAlmGrad;
+      curl  = m_weightedAlmCurl;
       break;
     case fileType::AlmFilter:
       data = dataClasses->almFilter();
@@ -472,46 +622,16 @@ int RshtTransformer::storeAlmMap(association* dataClasses, FILETYPE type) {
       grad = m_almNoiseGrad;
       curl = m_almNoiseCurl;
       break;
+    case fileType::AlmWeightedNoise:
+      data = dataClasses->weightedAlmNoise();
+      value = m_almWeightedNoiseValue;
+      grad  = m_almWeightedNoiseGrad;
+      curl  = m_almWeightedNoiseCurl;
+      break;
     default:
       return -1;
   }
 
-  /*
-  vec = new std::vector<std::vector<std::vector<std::complex<double> > > >(data->roAccess().size());
-  *vec = data->rwAccess();
-
-  for (col = 0; col < m_maxIndex; col++)
-  {
-    for (row = 0; row < m_maxIndex; row++)
-    {
-      switch ((unsigned int)m_polarization)
-      {
-        case 3:
-          (*vec)[2][col][row].real(((*curl)(col,row)).real());
-          (*vec)[2][col][row].imag(((*curl)(col,row)).imag());
-          if (row > col)
-            (*vec)[2][col][row] = zeroValue;
-        case 2:
-          (*vec)[1][col][row].real(((*grad)(col,row)).real());
-          (*vec)[1][col][row].imag(((*grad)(col,row)).imag());
-          if (row > col)
-            (*vec)[1][col][row] = zeroValue;
-        case 1:
-          std::cout << (*value)(col, row).real() << ", ";
-          (*vec)[0][col][row].real(((*value)(col,row)).real());
-          (*vec)[0][col][row].imag(((*value)(col,row)).imag());
-          if (row > col)
-            (*vec)[0][col][row] = zeroValue;
-        default:
-          break;
-      }
-    }
-    std::cout << "\n";
-  }
-  */
-
-  std::vector<std::vector<std::vector<std::complex<double>>>> dVec = data->rwAccess();
-  std::vector<std::vector<std::vector<std::complex<double>>>>* dataVector = &dVec;
   for (col = 0; col < m_maxIndex; col++)
   {
     for (row = 0; row < m_maxIndex; row++)
@@ -531,8 +651,8 @@ int RshtTransformer::storeAlmMap(association* dataClasses, FILETYPE type) {
         case 1:
           (*data)[0][col][row].real((*value)(col, row).real());
           (*data)[0][col][row].imag((*value)(col, row).imag());
-          if (row > col)
-            (*data)[0][col][row] = zeroValue;
+          //if (row > col)
+          //  (*data)[0][col][row] = zeroValue;
         default:
           break;
       }
@@ -552,9 +672,11 @@ void RshtTransformer::transform(association* dataClasses, FILETYPE type) {
   Healpix_Map<double>* map = 0;
 
   /* Do input variable checks */
-  if (!(type == fileType::TransformedData || type == fileType::TransformedWeights ||
-        type == fileType::TransformedBeam || type == fileType::TransformedFilter || type == fileType::TransformedNoise))
+  if (!(type == fileType::TransformedData || type == fileType::TransformedWeights || type == fileType::WeightedTransform ||
+        type == fileType::TransformedBeam || type == fileType::TransformedFilter || type == fileType::TransformedNoise ||
+        type == fileType::TransformedWeightedNoise))
     return;
+
   if (!dataClasses)
     return;
 
@@ -568,6 +690,11 @@ void RshtTransformer::transform(association* dataClasses, FILETYPE type) {
       data = dataClasses->transformedWeights();
       map = m_weightsMap;
       alm = m_almWeightsValue;
+      break;
+    case fileType::WeightedTransform:
+      data = dataClasses->weightedTransform();
+      map = m_weightedDataMap;
+      alm = m_weightedAlmValue;
       break;
     case fileType::TransformedFilter:
       data = dataClasses->transformedFilter();
@@ -584,9 +711,15 @@ void RshtTransformer::transform(association* dataClasses, FILETYPE type) {
       map = m_noiseMap;
       alm = m_almNoiseValue;
       break;
+    case fileType::TransformedWeightedNoise:
+      data = dataClasses->weightedTransformedNoise();
+      map = m_weightedNoiseMap;
+      alm = m_almWeightedNoiseValue;
+      break;
     default:
       return;
   }
+
   if (!data)
     return;
   
@@ -624,8 +757,9 @@ void RshtTransformer::transformFromAlm(association* dataClasses, FILETYPE type)
   Healpix_Map<double>* map = 0;
 
   /* Do input variable checks */
-  if (!(type == fileType::AlmData || type == fileType::AlmWeights ||
-        type == fileType::AlmBeam || type == fileType::AlmFilter  || type == fileType::AlmNoise))
+  if (!(type == fileType::AlmData || type == fileType::AlmWeights || type == fileType::WeightedAlm ||
+        type == fileType::AlmBeam || type == fileType::AlmFilter  || type == fileType::AlmNoise ||
+        type == fileType::AlmWeightedNoise))
     return;
 
   if (!dataClasses)
@@ -642,6 +776,10 @@ void RshtTransformer::transformFromAlm(association* dataClasses, FILETYPE type)
       //map = m_weightsMap;
       alm = m_almWeightsValue;
       break;
+    case fileType::WeightedAlm:
+      data = dataClasses->weightedTransform();
+      alm = m_weightedAlmValue;
+      break;
     case fileType::AlmFilter:
       data = dataClasses->transformedFilter();
       //map = m_filterMap;
@@ -655,6 +793,10 @@ void RshtTransformer::transformFromAlm(association* dataClasses, FILETYPE type)
     case fileType::AlmNoise:
       data = dataClasses->transformedNoise();
       //map = m_noiseMap;
+      alm = m_almNoiseValue;
+      break;
+    case fileType::AlmWeightedNoise:
+      data = dataClasses->weightedTransformedNoise();
       alm = m_almNoiseValue;
       break;
     default:
@@ -694,8 +836,9 @@ void RshtTransformer::invert(association* dataClasses, FILETYPE type) {
         type == fileType::TransformedBeam || type == fileType::TransformedFilter || type == fileType::TransformedNoise))
     return;
   */
-  if (!(type == fileType::AlmData || type == fileType::AlmWeights ||
-        type == fileType::AlmBeam || type == fileType::AlmFilter || type == fileType::AlmNoise))
+  if (!(type == fileType::AlmData || type == fileType::AlmWeights || type == fileType::WeightedAlm ||
+        type == fileType::AlmBeam || type == fileType::AlmFilter  || type == fileType::AlmNoise ||
+        type == fileType::AlmWeightedNoise))
     return;
 
   if (!dataClasses)
@@ -712,6 +855,11 @@ void RshtTransformer::invert(association* dataClasses, FILETYPE type) {
       map = m_invMaskMap;
       alm = m_almWeightsValue;
       break;
+    case fileType::WeightedAlm:
+      data = dataClasses->weightedInverse();
+      map = m_invWeightedDataMap;
+      alm = m_weightedAlmValue;
+      break;
     case fileType::AlmFilter: //TransformedFilter:
       data = dataClasses->inverseFilter();
       map = m_invFilterMap;
@@ -726,6 +874,11 @@ void RshtTransformer::invert(association* dataClasses, FILETYPE type) {
       data = dataClasses->inverseNoise();
       map = m_invNoiseMap;
       alm = m_almNoiseValue;
+      break;
+    case fileType::AlmWeightedNoise:
+      data = dataClasses->weightedInverseNoise();
+      map = m_invWeightedNoiseMap;
+      alm = m_almWeightedNoiseValue;
       break;
     default:
       return;
@@ -801,15 +954,15 @@ void RshtTransformer::clearAlms()
     delete m_almWeightsCurl;
   m_almWeightsCurl = 0;
 
-  if (m_almValue)
-    delete m_almValue;
-  m_almValue = 0;
-  if (m_almGrad)
-    delete m_almGrad;
-  m_almGrad = 0;
-  if (m_almCurl)
-    delete m_almCurl;
-  m_almCurl = 0;
+  if (m_weightedAlmValue)
+    delete m_weightedAlmValue;
+  m_weightedAlmValue = 0;
+  if (m_weightedAlmGrad)
+    delete m_weightedAlmGrad;
+  m_weightedAlmGrad = 0;
+  if (m_weightedAlmCurl)
+    delete m_weightedAlmCurl;
+  m_weightedAlmCurl = 0;
 
   if (m_almFilterValue)
     delete m_almFilterValue;
@@ -841,6 +994,16 @@ void RshtTransformer::clearAlms()
     delete m_almNoiseCurl;
   m_almNoiseCurl = 0;
 
+  if (m_almWeightedNoiseValue)
+    delete m_almWeightedNoiseValue;
+  m_almWeightedNoiseValue = 0;
+  if (m_almWeightedNoiseGrad)
+    delete m_almWeightedNoiseGrad;
+  m_almWeightedNoiseGrad = 0;
+  if (m_almWeightedNoiseCurl)
+    delete m_almWeightedNoiseCurl;
+  m_almWeightedNoiseCurl = 0;
+
   return;
 }
 
@@ -854,9 +1017,9 @@ void RshtTransformer::clearMaps()
     delete m_weightsMap;
   m_weightsMap = 0;
   
-  if (m_map)
-    delete m_map;
-  m_map = 0;
+  if (m_weightedDataMap)
+    delete m_weightedDataMap;
+  m_weightedDataMap = 0;
   
   if (m_filterMap)
     delete m_filterMap;
@@ -866,6 +1029,14 @@ void RshtTransformer::clearMaps()
     delete m_beamMap;
   m_beamMap = 0;
   
+  if(m_noiseMap)
+    delete m_noiseMap;
+  m_noiseMap = 0;
+
+  if(m_weightedNoiseMap)
+    delete m_weightedNoiseMap;
+  m_weightedNoiseMap = 0;
+
   if (m_invDataMap)
     delete m_invDataMap;
   m_invDataMap = 0;
@@ -874,6 +1045,10 @@ void RshtTransformer::clearMaps()
     delete m_invMaskMap;
   m_invMaskMap = 0;
   
+  if(m_invWeightedDataMap)
+    delete m_invWeightedDataMap;
+  m_invWeightedDataMap = 0;
+
   if (m_invBeamMap)
     delete m_invBeamMap;
   m_invBeamMap = 0;
@@ -886,5 +1061,9 @@ void RshtTransformer::clearMaps()
     delete m_invNoiseMap;
   m_invNoiseMap = 0;
   
+  if(m_invWeightedNoiseMap)
+    delete m_invWeightedNoiseMap;
+  m_invWeightedNoiseMap = 0;
+
   return;
 }

@@ -76,422 +76,342 @@ Spectrum::Spectrum(Spectrum* from) {
   m_ensIter = from->ensembleIterations();
 }
 
-
 Spectrum::~Spectrum() {
   clear();
 }
 
-void Spectrum::initialize() {
-  m_mode_modeMatrix   = gsl_matrix_calloc(m_maxIndex,m_maxIndex);
-  m_inverseModeMatrix = gsl_matrix_calloc(m_maxIndex,m_maxIndex);
+void Spectrum::initialize()
+{
+  if(m_maxIndex % m_lPerBin != 0)
+    throw dataMismatchError;
 
-  if (m_binning) {
-    m_maxBin = m_maxIndex / m_indices;
-    if (m_maxIndex%m_maxBin)
-      m_maxBin++;
-    m_minBin = m_minIndex / m_indices;
+  m_numBins = m_maxIndex / m_lPerBin;
 
-    m_bin_indexMatrix  = gsl_matrix_calloc(m_maxBin,m_maxIndex);
-    m_index_binMatrix  = gsl_matrix_calloc(m_maxIndex,m_maxBin);
-    m_bin_binMatrix    = gsl_matrix_calloc(m_maxBin,m_maxBin);
-    m_inverseBinMatrix = gsl_matrix_calloc(m_maxBin,m_maxBin);
+  m_ModeModeMatrix                 = gsl_matrix_calloc(m_maxIndex, m_maxIndex); // mll
+  m_InverseModeModeMatrix          = gsl_matrix_calloc(m_maxIndex, m_maxIndex); // mll-1
+  m_InstrumentEffectsMatrix        = gsl_matrix_calloc(m_maxIndex, m_maxIndex); // kll = mll fl bl2
+  m_InverseInstrumentEffectsMatrix = gsl_matrix_calloc(m_maxIndex, m_maxIndex); // kll-1
+  m_BinningMatrix                  = gsl_matrix_calloc(m_numBins,  m_maxIndex); // Pbl
+  m_InverseBinningMatrix           = gsl_matrix_calloc(m_numBins,  m_maxIndex); // Pbl-1
+  m_UnbinningMatrix                = gsl_matrix_calloc(m_maxIndex, m_numBins);  // Qlb
+  m_InverseUnbinningMatrix         = gsl_matrix_calloc(m_maxIndex, m_numBins);  // Qlb-1
+  m_BinnedInstrumentEffectsMatrix  = gsl_matrix_calloc(m_numBins,  m_numBins); // kbb = Pbl Kll Qlb
+  m_InverseBinnedInstrumentMatrix  = gsl_matrix_calloc(m_numBins,  m_numBins); // kbb -1
+
+  m_configured = true;
+}
+
+// copy our matrixData to a gsl_matrix
+void Spectrum::loadIntoGslMatrix(association *asc, FILETYPE ft)
+{
+  matrixData<double>* matData = 0;
+  gsl_matrix*         gslData = 0;
+
+  switch(ft)
+  {
+    case fileType::ModeModeMatrix:
+      matData = asc->ModeModeMatrix();
+      gslData = m_ModeModeMatrix;
+      break;
+    case fileType::BinningMatrix:
+      matData = asc->BinningMatrix();
+      gslData = m_BinningMatrix;
+      break;
+    case fileType::UnbinningMatrix:
+      matData = asc->UnbinningMatrix();
+      gslData = m_UnbinningMatrix;
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      matData = asc->InstrumentEffectsMatrix();
+      gslData = m_InstrumentEffectsMatrix;
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      matData = asc->BinnedInstrumentEffectsMatrix();
+      gslData = m_BinnedInstrumentEffectsMatrix;
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      matData = asc->InverseBinnedInstrumentMatrix();
+      gslData = m_InverseBinnedInstrumentMatrix;
+      break;
+    default:
+      return;
   }
 
- m_configured = true;
+  for (int r = 0; r < gslData->size1; r++)
+    for (int c = 0; c < gslData->size2; c++)
+      gsl_matrix_set(gslData, r, c, (*matData)[c][r]);
 }
 
-void Spectrum::loadCouplingMatrix(association *asc) {
-  long i,j;
+// copy a gsl_matrix to our matrixData
+void Spectrum::loadIntoMatrixData(association* asc, FILETYPE ft)
+{
+  matrixData<double>* matData = 0;
+  gsl_matrix*         gslData = 0;
 
-  if (asc->couplingMatrix()->format() == Mode)
-    for (i = 0; i < m_maxIndex; i++)
-      for (j = 0; j < m_maxIndex; j++)
-        gsl_matrix_set(m_mode_modeMatrix,i,j,(*asc->couplingMatrix())[i][j]);
-  else
-    for (i = 0; i < m_maxBin; i++)
-      for (j = 0; j < m_maxBin; j++)
-        gsl_matrix_set(m_bin_binMatrix,i,j,(*asc->couplingMatrix())[i][j]);
+  switch(ft)
+  {
+    case fileType::ModeModeMatrix:
+      matData = asc->ModeModeMatrix();
+      gslData = m_ModeModeMatrix;
+      break;
+    case fileType::BinningMatrix:
+      matData = asc->BinningMatrix();
+      gslData = m_BinningMatrix;
+      break;
+    case fileType::UnbinningMatrix:
+      matData = asc->UnbinningMatrix();
+      gslData = m_UnbinningMatrix;
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      matData = asc->InstrumentEffectsMatrix();
+      gslData = m_InstrumentEffectsMatrix;
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      matData = asc->BinnedInstrumentEffectsMatrix();
+      gslData = m_BinnedInstrumentEffectsMatrix;
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      matData = asc->InverseBinnedInstrumentMatrix();
+      gslData = m_InverseBinnedInstrumentMatrix;
+      break;
+    default:
+      return;
+  }
+
+  for (int r = 0; r < gslData->size1; r++)
+    for (int c = 0; c < gslData->size2; c++)
+      (*matData)[c][r] = gsl_matrix_get(gslData, r, c);
 }
 
-void Spectrum::createModeCouplingMatrix(association *asc) {
+void Spectrum::createModeModeMatrix(association *asc)
+{
   long l1, l2, l3;  // individual l values
   double sum_l3;    // sum of l3 contributions
   double cg2;       // Clebsch-Gordan coefficient squared
   double value;     // value stored in mode matrix
+  matrixData<double>* modeMatrix = asc->ModeModeMatrix();
 
-  for (l1 = 0; l1 < m_maxIndex; l1++) {
-    for (l2 = 0; l2 < m_maxIndex; l2++) {
+  for (l1 = 0; l1 < m_maxIndex; l1++)
+  {
+    for (l2 = 0; l2 < m_maxIndex; l2++)
+    {
       sum_l3 = 0.0;
-      for (l3 = 0; l3 < m_maxIndex; l3++) {
+      for (l3 = 0; l3 < m_maxIndex; l3++)
+      {
         cg2     = coupling_3j(l1,l2,l3);
         cg2    *= cg2;
         sum_l3 += (*(asc->transformedWeights()))[l3] * (2 * l3 + 1) * cg2;
       }
+
       value = (2 * l2 + 1) * sum_l3 / (4 * M_PI);
-      if (asc->transformedFilter())
-        value *= (*(asc->transformedFilter()))[l2];
-      if (asc->transformedBeam())
-        value *= (*(asc->transformedBeam()))[l2] * (*asc->transformedBeam())[l2];
 
-      gsl_matrix_set(m_mode_modeMatrix,l1,l2,value);
-      if (!asc->couplingMatrix()->initialized())
-        (asc->couplingMatrix())->initialize();
-      (*(asc->couplingMatrix()))[l1][l2] = value;
+      gsl_matrix_set(m_ModeModeMatrix, l1, l2, value);
+
+      if (!modeMatrix->initialized())
+        modeMatrix->initialize();
+
+      // our matrixes are column row indexing so this is backwards!
+      //(*modeMatrix)[l1][l2] = value;
+      (*modeMatrix)[l2][l1] = value;
     }
   }
 }
 
-void Spectrum::calculateBinCouplingMatrix(association *asc) {
-  long i, j, bin1, bin2;
-  double value;
-
-  for (bin1 = 0; bin1 < m_maxBin; bin1++) {
-    for (bin2 = 0; bin2 < m_maxBin; bin2++) {
-      value = 0.0;
-      for (i = 0; i < m_maxIndex; i++)
-        for (j = 0; j < m_maxIndex; j++)
-          value += gsl_matrix_get(m_bin_indexMatrix,bin1,i) * gsl_matrix_get(m_mode_modeMatrix,i,j) * gsl_matrix_get(m_index_binMatrix,j,bin2);
-      gsl_matrix_set(m_bin_binMatrix,bin1,bin2,value);
-      if (asc->couplingMatrix()->format() == Bin)
-        (*asc->couplingMatrix())[bin1][bin2] = value;
-    }
-  }
-}
-
-void Spectrum::calculateBinIndexMatrix(long binOffset, long indexOffset, long binRecords, long indexRecords) {
-  long bin = 0, index = 0;
-  double value;
-
-  if (binOffset == 0 && indexOffset == 0)  // at start of matrix
-    m_lowBinL = 0;
-
-  for (bin = binOffset; bin < binOffset + binRecords; bin++) {
-    for (index = indexOffset; index < indexOffset + indexRecords; index++) {
-      if (index < m_lowBinL || index >= m_lowBinL+m_indices)
-        value = 0.0;
-      else {
-        if (m_weight)
-          if (index == 0)
-            value = 1.0 / (2.0 * M_PI * (double)m_indices);
-          else
-            value = index * (index+1) / (2 * M_PI * (double)m_indices);
-        else
-          value = 1.0 / (double)m_indices;
-      }
-      gsl_matrix_set(m_bin_indexMatrix,bin,index,value);
-    }
-    if (index >= m_lowBinL + m_indices)
-      m_lowBinL += m_indices;
-  }
-}
-
-void Spectrum::calculateIndexBinMatrix(long binOffset, long indexOffset, long binRecords, long indexRecords) {
-  long bin = 0, index = 0;
-  double value;
-
-  if (binOffset == 0 && indexOffset == 0)
-    m_lowBinL = 0;
-  for (bin = binOffset; bin < binOffset + binRecords; bin++) {
-    for (index = indexOffset; index < indexOffset + indexRecords; index++) {
-      if (index < m_lowBinL || index >= m_lowBinL+m_indices)
-        value = 0.0;
-      else {
-        if (m_weight)
-          if (index == 0)
-            value = 2.0 * M_PI;
-          else
-            value = (2.0 * M_PI) / (index * (index + 1));
-        else
-          value = 1.0;
-      }
-      gsl_matrix_set(m_index_binMatrix,index,bin,value);
-    }
-    if (index >= m_lowBinL + m_indices)
-      m_lowBinL += m_indices;
-  }
-}
-
-void Spectrum::loadInverseMatrix(association *asc) {
-  int i, j;
-
-  if (asc->inverseMatrix()->format() == Bin)
-    for (i = 0; i < m_maxBin; i++)
-      for (j = 0;j < m_maxBin;j++)
-        gsl_matrix_set(m_inverseBinMatrix,i,j,(*asc->inverseMatrix())[i][j]);
-  else
-    for (i = 0; i < m_maxIndex; i++)
-      for (j = 0; j < m_maxIndex; j++)
-        gsl_matrix_set(m_inverseModeMatrix,i,j,(*asc->inverseMatrix())[i][j]);
-}
-
-int Spectrum::invertMatrix(association *asc) {
-  int gslErrorNumber = 0;
-  gsl_permutation *p;
-  int i, j;
-
-  if (m_binning) {
-    p = gsl_permutation_alloc(m_maxBin);
-    gsl_linalg_LU_decomp(m_bin_binMatrix,p,&gslErrorNumber);
-
-    if (gsl_linalg_LU_det(m_bin_binMatrix,gslErrorNumber) == 0)	{
-      gsl_permutation_free(p);
-      return -1;
-    }
-
-    gsl_linalg_LU_invert((const gsl_matrix*)m_bin_binMatrix,(const gsl_permutation*)p,m_inverseBinMatrix);
-    for (i = 0;i < m_maxBin;i++)
-      for (j = 0;j < m_maxBin;j++)
-      {
-	double valueIn = gsl_matrix_get(m_inverseBinMatrix,i,j);
-	double valueOut = (*asc->inverseMatrix())[i][j];
-        (*asc->inverseMatrix())[i][j] = gsl_matrix_get(m_inverseBinMatrix,i,j);
-      }
-  }
-  else {
-    p = gsl_permutation_alloc(m_maxIndex);
-    gsl_linalg_LU_decomp(m_mode_modeMatrix,p,&gslErrorNumber);
-    if (gsl_linalg_LU_det(m_mode_modeMatrix,gslErrorNumber) == 0) {
-      gsl_permutation_free(p);
-      return -1;
-    }
-    gsl_linalg_LU_invert((const gsl_matrix*)m_mode_modeMatrix,(const gsl_permutation*)p,m_inverseModeMatrix);
-    for (i = 0;i < m_maxIndex;i++)
-      for (j = 0;j < m_maxIndex;j++)
-        (*asc->inverseMatrix())[i][j] = gsl_matrix_get(m_inverseModeMatrix,i,j);
-  }
-
-  gsl_permutation_free(p);
-  return 0;
-}
-
-void Spectrum::calculateSpectrum(association* asc) {
-  long element, i, j;
-  double value, intermediate, max, min;
-
-  for (element = 0; element < m_maxIndex; element++) {
-    value = 0.0;
-    if (m_binning) {
-      for (i = 0; i < m_maxBin; i++) {
-        for (j = 0; j < m_maxIndex; j++) {
-          intermediate = gsl_matrix_get(m_inverseBinMatrix,element,i) * gsl_matrix_get(m_bin_indexMatrix,i,j);
-          if (asc->transformedNoise())
-            intermediate *= (double)((*asc->transformedData())[j]) - (double)((*asc->transformedNoise())[j]);
-          else
-            intermediate *= (double)((*asc->transformedData())[j]);
-          value += intermediate;
-        }
-      }
-    }
-    else {
-      for (i = 0; i < m_maxIndex; i++) {
-        intermediate = gsl_matrix_get(m_inverseModeMatrix,element,i);
-        if (asc->transformedNoise())
-          intermediate *= (double)((*asc->transformedData())[i]) - (double)((*asc->transformedNoise())[i]);
-        else
-          intermediate *= (double)((*asc->transformedData())[i]);
-        value += intermediate;
-      }
-    }
-
-//    if (value < 0.0)  // need to validate making these positive
-//      value = -value;
-
-    (*asc->spectrumData())[element] = value;
-  }
-
-  max = min = (*asc->spectrumData())[0];
-
-  for (element = 1; element < m_maxIndex; element++) {
-    value = (*asc->spectrumData())[element];
-    if (value > max)
-      max = value;
-    if (value < min)
-      min = value;
-  }
-
-  asc->spectrumData()->maxValue(max);
-  asc->spectrumData()->minValue(min);
-}
-
-void Spectrum::calculatePseudoSpectrum(association* asc)
+void Spectrum::calculateInstrumentEffectsMatrix(association* asc)
 {
-  Healpix_Map<double>* dataMap = 0;
-  Healpix_Map<double>* wgtMap = 0;
-  Healpix_Ordering_Scheme layout;
-  int numPix = 0;
-  int nside = 0;
+  matrixData<double>* Mll = asc->ModeModeMatrix();
+  vectorData<double>* f   = asc->transformedFilter();
+  vectorData<double>* b   = asc->transformedBeam();
+  vectorData<double>* b2  = b->elementMult(b);
+  vectorData<double>* fb2 = f->elementMult(b2);
+  matrixData<double>* Kll = Mll->elementMult(fb2);
 
-  if(asc->exists(fileType::PixelizedData))
-  {
-    vectorData<double>* pixData = (vectorData<double>*)asc->getData(fileType::PixelizedData);
-
-    if(pixData->layout() == Ring)
-      layout = RING;
-    else
-      layout = NEST;
-
-    dataMap = new Healpix_Map<double>(pixData->sides(), layout, SET_NSIDE);
-
-    nside = pixData->sides();
-    numPix = pixData->size();
-    for(int i = 0; i < pixData->size(); i += 1)
-      (*dataMap)[i] = (*pixData)[i];
-  }
-  else if(asc->exists(fileType::InverseData))
-  {
-    vectorData<double>* pixData = (vectorData<double>*)asc->getData(fileType::InverseData);
-
-    nside = pixData->sides();
-    numPix = pixData->size();
-    if(pixData->layout() == Ring)
-      layout = RING;
-    else
-      layout = NEST;
-
-    dataMap = new Healpix_Map<double>(nside, layout, SET_NSIDE);
-
-    for(int i = 0; i < pixData->size(); i += 1)
-      (*dataMap)[i] = (*pixData)[i];
-  }
-  else if(asc->exists(fileType::AlmData))
-  {
-    asc->generateInverseData(asc->transformationEngine(), fileType::AlmData);
-    vectorData<double>* pixData = (vectorData<double>*)asc->getData(fileType::InverseData);
-
-    if(pixData->layout() == Ring)
-      layout = RING;
-    else
-      layout = NEST;
-
-    dataMap = new Healpix_Map<double>(pixData->sides(), layout, SET_NSIDE);
-
-    nside = pixData->sides();
-    numPix = pixData->size();
-    for(int i = 0; i < pixData->size(); i += 1)
-      (*dataMap)[i] = (*pixData)[i];
-  }
-  else
-    throw dataMismatchError;
-
-
-  if(asc->exists(fileType::PixelizedWeights))
-  {
-    vectorData<double>* pixWgt = (vectorData<double>*)asc->getData(fileType::PixelizedWeights);
-
-    if(pixWgt->layout() == Ring)
-      layout = RING;
-    else
-      layout = NEST;
-
-    wgtMap = new Healpix_Map<double>(pixWgt->sides(), layout, SET_NSIDE);
-
-    for(int i = 0; i < pixWgt->size(); i += 1)
-      (*wgtMap)[i] = (*pixWgt)[i];
-  }
-  else if(asc->exists(fileType::InverseWeights))
-  {
-    vectorData<double>* pixWgt = (vectorData<double>*)asc->getData(fileType::InverseWeights);
-
-    if(pixWgt->layout() == Ring)
-      layout = RING;
-    else
-      layout = NEST;
-
-    wgtMap = new Healpix_Map<double>(pixWgt->sides(), layout, SET_NSIDE);
-
-    for(int i = 0; i < pixWgt->size(); i += 1)
-      (*wgtMap)[i] = (*pixWgt)[i];
-
-    /*
-    if(asc->exists(fileType::AlmWeights))
-    {
-      cubeData<complex<double>>* alm = (cubeData<complex<double>>*)asc->getData(fileType::AlmWeights);
-      std::vector<std::vector<std::vector<complex<double>>>> vec = alm->rwAccess();
-      Alm<std::complex<double>>* wgtAlm = new Alm<std::complex<double>>(alm->cols(), alm->rows());
-
-      nside = alm->sides();
-
-      wgtMap = new Healpix_Map<double>(alm->sides(), RING, SET_NSIDE);
-
-      for (int col = 0; col < m_maxIndex; col++)
-      {
-        for (int row = 0; row < m_maxIndex; row++)
-        {
-          switch ((unsigned int)alm->polarization())
-          {
-            case 3:
-              ((*wgtAlm)(col,row)).real((vec)[2][col][row].real());
-              ((*wgtAlm)(col,row)).imag((vec)[2][col][row].imag());
-            case 2:
-              ((*wgtAlm)(col,row)).real((vec)[1][col][row].real());
-              ((*wgtAlm)(col,row)).imag((vec)[1][col][row].imag());
-            case 1:
-              ((*wgtAlm)(col,row)).real((vec)[0][col][row].real());
-              ((*wgtAlm)(col,row)).imag((vec)[0][col][row].imag());
-            default:
-              break;
-          }
-        }
-      }
-      alm2map(*wgtAlm, *wgtMap);
-      */
-  }
-  else if(asc->exists(fileType::AlmWeights))
-  {
-    asc->generateInverseData(asc->transformationEngine(), fileType::AlmWeights);
-    vectorData<double>* pixWgt = (vectorData<double>*)asc->getData(fileType::InverseWeights);
-
-    if(pixWgt->layout() == Ring)
-      layout = RING;
-    else
-      layout = NEST;
-
-    dataMap = new Healpix_Map<double>(pixWgt->sides(), layout, SET_NSIDE);
-
-    for(int i = 0; i < pixWgt->size(); i += 1)
-      (*wgtMap)[i] = (*pixWgt)[i];
-  }
-  else
-    throw dataMismatchError;
-
-  Healpix_Map<double>* wgtDataMap = new Healpix_Map<double>(nside, layout, SET_NSIDE);
-  for(int i = 0; i < 12 * nside * nside; i += 1)
-  {
-    //std::cout << (*dataMap)[i] << " * " << (*wgtMap)[i] << "\n";
-    (*wgtDataMap)[i] = (*dataMap)[i] * (*wgtMap)[i];
-  }
-
-  Alm<hPoint>* alm = new Alm<hPoint>(m_maxIndex,m_maxIndex);
-  arr<double> wgtRing(2*nside);
-  wgtRing.fill(1);
-
-  map2alm(*wgtDataMap, *alm, wgtRing);
-  PowSpec* pseudoSpec = new PowSpec(1, m_maxIndex);
-
-  extract_powspec(*alm, *pseudoSpec);
-
-  vectorData<double>* spectralData = (vectorData<double>*)asc->getData(fileType::SpectralData);
-  for(int i = 0; i < m_maxIndex; i += 1)
-    (*spectralData)[i] = pseudoSpec->tt()[i];
-
+  Kll->dataType(fileType::InstrumentEffectsMatrix);
+  asc->addData(Kll);
 }
 
-void Spectrum::calculateEnsembleAverage(association* asc, int size) {
-/*
-In the HealPIX c++ code, there is a routine called create_alm (and create_alm_pol for polarized spectra). It uses an inputted power spectra (would this be the C_l defined in equation 13 in the Hivon paper?). I'm thinking of creating a method that takes the PCL created by the program based on equation 13 as well as the number of simulated PCLs that you want to use in the averaging. For each iteration of the loop, the method would pass the original PCL and the random number generator to create_alm, then put the randomized alm into HealPIX's extract_powspec to get out the associated PCL. This would be loaded into an array with max_l rows and n columns, where n is the number of simulated PCLs passed into the routine. Once this is loaded via the loop, a final PCL would be created by summing each element and then dividing by n to get the ensemble average. This would be passed back out of the method. Does this sound like a reasonable way to create the ensemble average?
-*/
-  /* create and initialize an array to store the various pseudo-power spectra created for averaging */
-  int i = 0;
-  std::vector<std::vector<double> > ensemblePseudoCl(size);
-  int length = asc->spectrumData()->rows();
-  for (i = 0; i < size; ++i)
-      ensemblePseudoCl[i].resize(length);
+void Spectrum::calculateBinningMatrix(association *asc)
+{
+  matrixData<double>* Pbl = asc->BinningMatrix();
+  //gsl_matrix* Pbl = m_BinningMatrix;
 
-  /* initialize gsl random number generator */
+  //if(Pbl->size1 != m_numBins)
+  if(Pbl->rows() != m_numBins)
+    throw dataMismatchError;
+
+  for(int b = 0; b < m_numBins; b += 1)
+  {
+    int lBLow  = b * m_lPerBin;
+    int lB1Low = lBLow + m_lPerBin;
+
+    for(int l = 0; l < m_maxIndex; l += 1)
+    {
+      if(2 <= l && lBLow <= l && l < lB1Low)
+      {
+        // our matrixes are column then row indexing
+        (*Pbl)[l][b] = (l * (l+1))/(2*M_PI*m_lPerBin);
+        //gsl_matrix_set(Pbl, b, l, (l * (l+1))/(2*M_PI * m_lPerBin));
+      }
+    }
+  }
+}
+
+void Spectrum::calculateUnbinningMatrix(association* asc)
+{
+  matrixData<double>* Qlb = asc->UnbinningMatrix();
+  //gsl_matrix* Qlb = m_UnbinningMatrix;
+
+  //if(Qlb->size2 != m_numBins)
+  if(Qlb->cols() != m_numBins)
+    throw dataMismatchError;
+
+  for(int l = 0; l < m_maxIndex; l += 1)
+  {
+    for(int b = 0; b < m_numBins; b += 1)
+    {
+      int lBLow  = b * m_lPerBin;
+      int lB1Low = lBLow + m_lPerBin;
+
+      if(2 <= l && lBLow <= l && l < lB1Low)
+      {
+        // our matrixes are column then row indexing
+        (*Qlb)[b][l] = (2*M_PI)/(l * (l+1));
+
+        //gsl_matrix_set(Qlb, l, b, (2*M_PI)/(l*(l+1)));
+      }
+    }
+  }
+}
+
+void Spectrum::calculateBinnedSpectrum(association* asc)
+{
+  matrixData<double>* inverseBinInstrEffMat  = asc->InverseBinnedInstrumentMatrix();
+  matrixData<double>* binMatrix              = asc->BinningMatrix();
+  vectorData<double>* ensSpectrum            = asc->EnsembleAveragedSpectrum();
+  vectorData<double>* ensNoise               = asc->EnsembleAveragedNoise();
+  vectorData<double>* CN                     = ensSpectrum->elementSub(ensNoise);
+  vectorData<double>* PCN                    = binMatrix->matrixMult(CN);
+  vectorData<double>* KPCN                   = inverseBinInstrEffMat->matrixMult(PCN);
+
+  KPCN->dataType(fileType::BinnedSpectrum);
+  asc->addData(KPCN);
+}
+
+void Spectrum::calculateBinnedInstrumentEffectsMatrix(association* asc)
+{
+  /*
+  matrixData<double>* Pbl = asc->BinningMatrix();
+  matrixData<double>* Kll = asc->InstrumentEffectsMatrix();
+  matrixData<double>* Qlb = asc->UnbinningMatrix();
+  matrixData<double>* KllQlb = Kll->matrixMult(Qlb);
+  matrixData<double>* PlbKllQlb = Pbl->matrixMult(KllQlb);
+
+  PlbKllQlb->dataType(fileType::BinnedInstrumentEffectsMatrix);
+  asc->addData(PlbKllQlb);
+  */
+
+  gsl_matrix* Pbl = m_BinningMatrix;
+  gsl_matrix* Kll = m_InstrumentEffectsMatrix;
+  gsl_matrix* Qlb = m_UnbinningMatrix;
+
+  gsl_matrix* KllQlb    = gsl_matrix_calloc(m_maxIndex, m_numBins);
+  gsl_matrix* PblKllQlb = m_BinnedInstrumentEffectsMatrix;
+
+  gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, Kll, Qlb,    0.0, KllQlb);
+  gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, Pbl, KllQlb, 0.0, PblKllQlb);
+
+  loadIntoMatrixData(asc, fileType::BinnedInstrumentEffectsMatrix);
+}
+
+void Spectrum::invertMatrix(association* asc, FILETYPE ft)
+{
+  int gslErrorNumber    = 0;
+  gsl_permutation *p    = 0;
+  gsl_matrix* gslOrig   = 0;
+  gsl_matrix* gslOrigLU = 0;
+  gsl_matrix* gslInvert = 0;
+
+  switch(ft)
+  {
+    case fileType::ModeModeMatrix:
+      gslOrig = m_ModeModeMatrix;
+      gslInvert = m_InverseModeModeMatrix;
+      break;
+    case fileType::BinningMatrix:
+      gslOrig = m_BinningMatrix;
+      gslInvert = m_InverseBinningMatrix;
+      break;
+    case fileType::UnbinningMatrix:
+      gslOrig = m_UnbinningMatrix;
+      gslInvert = m_InverseUnbinningMatrix;
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      gslOrig = m_InstrumentEffectsMatrix;
+      gslInvert = m_InverseInstrumentEffectsMatrix;
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      gslOrig = m_BinnedInstrumentEffectsMatrix;
+      gslOrigLU = m_BinnedInstrumentEffectsMatrix;
+      gslInvert = m_InverseBinnedInstrumentMatrix;
+      break;
+    default:
+      return;
+  }
+
+  int gslOrigDet = gsl_linalg_LU_det(gslOrig, gslErrorNumber);
+
+  if (gslOrigDet == 0)
+  {
+    std::cout << "MATRIX ISN'T INVERTABLE\n";
+    throw undefinedError;
+  }
+  else
+  {
+    p = gsl_permutation_alloc(gslOrigLU->size1);
+    gsl_linalg_LU_decomp(gslOrigLU, p, &gslErrorNumber);
+
+    gsl_linalg_LU_invert((const gsl_matrix*)gslOrigLU, (const gsl_permutation*)p, gslInvert);
+    gsl_permutation_free(p);
+  }
+}
+
+void Spectrum::calculateEnsembleAverage(association *asc, FILETYPE ft)
+{
+  int i = 0;
+  int length; //m_maxIndex;
+  vectorData<double>* base;
+  vectorData<double>* avgData;
+  matrixData<double>* iterData;
+
+  switch(ft)
+  {
+    case fileType::EnsembleAveragedNoise:
+      length = m_maxIndex;
+      base = asc->weightedTransformedNoise();
+      avgData = asc->EnsembleAveragedNoise();
+      iterData = asc->EnsembleIterationNoise();
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      length = m_maxIndex;
+      base = asc->weightedTransform();
+      avgData = asc->EnsembleAveragedSpectrum();
+      iterData = asc->EnsembleIterationSpectrum();
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      length = m_numBins;
+      base = asc->BinnedSpectrum();
+      avgData = asc->EnsembleAveragedBinnedSpectrum();
+      iterData = asc->EnsembleIterationBinnedSpectrum();
+      break;
+    default:
+      return;
+  }
+
+  // initialize gsl random number generator
   int seed = 1234;
   planck_rng *generator = new planck_rng(seed);
 
-  /* set up HealPIX objects */
+  // set up HealPIX objects
   PowSpec *original = 0, *randomized = 0;
   Alm<xcomplex<double> > *randAlm = 0;
 
@@ -499,92 +419,62 @@ In the HealPIX c++ code, there is a routine called create_alm (and create_alm_po
   randomized = new PowSpec(1,length);
   randAlm = new Alm<xcomplex<double> >(length,length);
   for (i = 0; i < length; ++i)
-    original->tt(i) = (*(asc->spectrumData()))[i];
+    original->tt(i) = (*base)[i];
 
-  /* create randomized alm instances of the psuedo power spectrum */
-  int row = 0;
-  for (i = 0; i < size; ++i) {
-    // this will take the sqrt of the data at each l, which since some of the data can be negative will throw nan.
+  // create randomized alm instances of the psuedo power spectrum //
+  for (i = 0; i < m_ensIter; ++i)
+  {
     create_alm(*original,*randAlm,*generator);
     extract_powspec(*randAlm,*randomized);
-    for (row = 0; row < length; ++row)
-      ensemblePseudoCl[i][row] = randomized->tt(row);
+
+    for (int l = 0; l < length; l += 1)
+      (*iterData)[l][i] = randomized->tt(l);
   }
 
-  /* average each l value */
-  for (row = 0; row < length; ++row)
+  for(int l = 0; l < length; l += 1)
   {
-    (*asc->ensembleData())[row] = 0;
-    double sum = 0.0;
-    for (i = 0; i < size; ++i)
-      sum += ensemblePseudoCl[i][row];
+    double sum = 0;
+    for(int iter = 0; iter < m_ensIter; iter += 1)
+      sum += (*iterData)[l][iter];
 
-    (*asc->ensembleData())[row] = sum / size;
+    (*avgData)[l] = sum / m_ensIter;
   }
-}
-
-void Spectrum::ensembleAverageTimesInverse(association* assoc)
-{
-  matrixData<double>* inverse = 0;
-  vectorData<double>* ensemble = 0;
-
-  if(assoc->exists(fileType::InverseBinMatrix) ||
-     assoc->exists(fileType::InverseModeMatrix))
-    inverse = assoc->inverseMatrix();
-  else
-    throw incompleteDatasetError;
-
-  if(assoc->exists(fileType::EnsembleData))
-    ensemble = assoc->ensembleData();
-  else
-    throw incompleteDatasetError;
-
-  vectorData<double>* multEns = new vectorData<double>(inverse->rows());
-  multEns->initialize();
-
-  // this version produces positive spectrum data
-  // that appears to be very similar to the pseudo
-  // but appears to do matrix * vector wrong?
-  for(int col = 0; col < inverse->cols(); col += 1)
-  {
-    for(int row = 0; row < inverse->rows(); row += 1)
-    {
-      (*multEns)[col] += (*ensemble)[col] * (*inverse)[col][row];
-    }
-  }
-
-  // this version produces negative spectrum data
-  // but appears to do matrix * vector properly
-  /*
-  for(int row = 0; row < inverse->rows(); row += 1)
-  {
-      for(int col = 0; col < inverse->cols(); col += 1)
-        (*multEns)[row] += (*inverse)[col][row] * (*ensemble)[col];
-  }
-  */
-  for(int i = 0; i < multEns->size(); i += 1)
-    (*ensemble)[i] = (*multEns)[i];
 }
 
 void Spectrum::clear() {
   if (!m_configured)
     return;
 
-  if (m_mode_modeMatrix)
-    gsl_matrix_free(m_mode_modeMatrix);
-  if (m_inverseModeMatrix)
-    gsl_matrix_free(m_inverseModeMatrix);
+  if (m_ModeModeMatrix)
+    gsl_matrix_free(m_ModeModeMatrix);
 
-  if (m_binning) {
-    if (m_bin_indexMatrix)
-      gsl_matrix_free(m_bin_indexMatrix);
-    if (m_index_binMatrix)
-      gsl_matrix_free(m_index_binMatrix);
-    if (m_bin_binMatrix)
-      gsl_matrix_free(m_bin_binMatrix);
-    if (m_inverseBinMatrix)
-      gsl_matrix_free(m_inverseBinMatrix);
-  }
+  if (m_InstrumentEffectsMatrix)
+    gsl_matrix_free(m_InstrumentEffectsMatrix);
+
+  if (m_BinningMatrix)
+    gsl_matrix_free(m_BinningMatrix);
+
+  if (m_UnbinningMatrix)
+    gsl_matrix_free(m_UnbinningMatrix);
+
+  if (m_BinnedInstrumentEffectsMatrix)
+    gsl_matrix_free(m_BinnedInstrumentEffectsMatrix);
+
+  if (m_InverseModeModeMatrix)
+    gsl_matrix_free(m_InverseModeModeMatrix);
+
+  if (m_InverseInstrumentEffectsMatrix)
+    gsl_matrix_free(m_InverseInstrumentEffectsMatrix);
+
+  if (m_InverseBinningMatrix)
+    gsl_matrix_free(m_InverseBinningMatrix);
+
+  if (m_InverseUnbinningMatrix)
+    gsl_matrix_free(m_InverseUnbinningMatrix);
+
+  if (m_InverseBinnedInstrumentMatrix)
+    gsl_matrix_free(m_InverseBinnedInstrumentMatrix);
+
 
   m_active = false;
   m_configured = false;

@@ -86,63 +86,107 @@ association::association() {
   m_tmpSpace = 0;
   m_inputData = 0;
   m_inputWeights = 0;
+  m_weightedInput = 0;
   m_inputFilter = 0;
   m_inputBeam = 0;
   m_inputNoise = 0;
+  m_weightedNoise = 0;
+
   m_pixelData = 0;
   m_pixelWeights = 0;
+  m_weightedPixel = 0;
   m_pixelOccupancy = 0;
   m_pixelFilter = 0;
   m_pixelBeam = 0;
   m_pixelNoise = 0;
+  m_pixelWeightedNoise = 0;
+
   m_invData = 0;
   m_invWeights = 0;
+  m_weightedInverse = 0;
   m_invFilter = 0;
   m_invBeam = 0;
   m_invNoise = 0;
+  m_invWeightedNoise = 0;
+
   m_transData = 0;
   m_transWeights = 0;
   m_transFilter = 0;
   m_transNoise = 0;
   m_transBeam = 0;
-  m_spectData = 0;
-  m_ensembleSpectData = 0;
+  m_weightedTransform = 0;
+  m_transWeightedNoise = 0;
+
+  m_ensembleAveragedNoise = 0;
+  m_ensembleIterationNoise = 0;
+  m_ensembleAveragedSpectrum = 0;
+  m_ensembleIterationSpectrum = 0;
+  m_binnedSpectrum = 0;
+  m_ensembleAveragedBinnedSpectrum = 0;
+  m_ensembleIterationBinnedSpectrum = 0;
+
+  //m_spectData = 0;
+  //m_ensembleSpectData = 0;
+
   m_almData = 0;
   m_almWeights = 0;
+  m_weightedAlm = 0;
   m_almFilter = 0;
   m_almBeam = 0;
   m_almNoise = 0;
-  m_couplingMatrix = 0;
-  m_inverseMatrix = 0;
-  
+  m_weightedNoiseAlm = 0;
+
+  //m_couplingMatrix = 0;
+  //m_inverseMatrix = 0;
+  m_ModeModeMatrix = 0;
+  m_InstrumentEffectsMatrix = 0;
+  m_BinningMatrix = 0;
+  m_UnbinningMatrix = 0;
+  m_BinnedInstrumentEffectsMatrix = 0;
+  m_InverseBinnedInstrumentMatrix = 0;
+
   m_inputDataMap = 0;
   m_inputWeightsMap = 0;
+  m_weightedInputMap = 0;
   m_inputMap = 0;
   m_inputNoiseMap = 0;
   m_inputFilterMap = 0;
   m_inputBeamMap = 0;
+  m_weightedNoiseMap = 0;
+
   m_pixelDataMap = 0;
   m_pixelWeightsMap = 0;
+  m_weightedPixelMap = 0;
   m_pixelMap = 0;
   m_pixelOccupancyMap = 0;
   m_pixelNoiseMap = 0;
   m_pixelFilterMap = 0;
   m_pixelBeamMap = 0;
+  m_pixelWeightedNoiseMap = 0;
+
   m_invDataMap = 0;
   m_invWeightsMap = 0;
+  m_weightedInverseMap = 0;
   m_invMap = 0;
   m_invNoiseMap = 0;
   m_invFilterMap = 0;
   m_invBeamMap = 0;
+  m_invWeightedNoiseMap = 0;
   
   m_transDataGraph = 0;
   m_transWeightsGraph = 0;
+  m_weightedTransformGraph = 0;
   m_transGraph = 0;
   m_spectDataGraph = 0;
   m_ensembleDataGraph = 0;
   m_transFilterGraph = 0;
   m_transNoiseGraph = 0;
   m_transBeamGraph = 0;
+  m_transWeightedNoiseGraph = 0;
+  m_ensembleAveragedNoiseGraph = 0;
+  m_ensembleAveragedSpectrumGraph = 0;
+  m_binnedSpectrumGraph = 0;
+  m_ensembleAveragedBinnedSpectrumGraph = 0;
 
   m_fileIOEngine = 0;
   m_mapEngine = 0;
@@ -161,63 +205,107 @@ association::association() {
 association::association(association* from) {
   m_inputData         = new matrixData<double>(from->inputData());
   m_inputWeights      = new matrixData<double>(from->inputWeights());
+  m_weightedInput     = new matrixData<double>(from->weightedInput());
   m_inputFilter       = new matrixData<double>(from->inputFilter());
   m_inputNoise        = new matrixData<double>(from->inputNoise());
   m_inputBeam         = new matrixData<double>(from->inputBeam());
+  m_weightedNoise     = new matrixData<double>(from->weightedInputNoise());
+
   m_pixelData         = new vectorData<double>(from->pixelizedData());
   m_pixelWeights      = new vectorData<double>(from->pixelizedWeights());
+  m_weightedPixel     = new vectorData<double>(from->weightedPixel());
   m_pixelOccupancy    = new vectorData<int>(from->pixelOccupancy());
   m_pixelFilter       = new vectorData<double>(from->pixelizedFilter());
   m_pixelNoise        = new vectorData<double>(from->pixelizedNoise());
   m_pixelBeam         = new vectorData<double>(from->pixelizedBeam());
+  m_pixelWeightedNoise= new vectorData<double>(from->weightedPixelizedNoise());
+
   m_invData           = new vectorData<double>(from->inverseData());
   m_invWeights        = new vectorData<double>(from->inverseWeights());
+  m_weightedInverse   = new vectorData<double>(from->weightedInverse());
   m_invNoise          = new vectorData<double>(from->inverseNoise());
   m_invFilter         = new vectorData<double>(from->inverseFilter());
   m_invBeam           = new vectorData<double>(from->inverseBeam());
+  m_invWeightedNoise  = new vectorData<double>(from->weightedInverseNoise());
+
   m_transData         = new vectorData<double>(from->transformedData());
   m_transWeights      = new vectorData<double>(from->transformedWeights());
+  m_weightedTransform = new vectorData<double>(from->weightedTransform());
   m_transFilter       = new vectorData<double>(from->transformedFilter());
   m_transNoise        = new vectorData<double>(from->transformedNoise());
   m_transBeam         = new vectorData<double>(from->transformedBeam());
-  m_spectData         = new vectorData<double>(from->spectrumData());
-  m_ensembleSpectData = new vectorData<double>(from->ensembleData());
-  m_couplingMatrix  = new matrixData<double>(from->couplingMatrix());
-  m_inverseMatrix   = new matrixData<double>(from->inverseMatrix());
+  m_transWeightedNoise= new vectorData<double>(from->weightedTransformedNoise());
+
+  m_ensembleAveragedNoise           = new vectorData<double>(from->EnsembleAveragedNoise());
+  m_ensembleIterationNoise          = new matrixData<double>(from->EnsembleIterationNoise());
+  m_ensembleAveragedSpectrum        = new vectorData<double>(from->EnsembleAveragedSpectrum());
+  m_ensembleIterationSpectrum       = new matrixData<double>(from->EnsembleIterationSpectrum());
+  m_binnedSpectrum                  = new vectorData<double>(from->BinnedSpectrum());
+  m_ensembleAveragedBinnedSpectrum  = new vectorData<double>(from->EnsembleAveragedBinnedSpectrum());
+  m_ensembleIterationBinnedSpectrum = new matrixData<double>(from->EnsembleIterationBinnedSpectrum());
+  m_ModeModeMatrix                  = new matrixData<double>(from->ModeModeMatrix());
+  m_InstrumentEffectsMatrix         = new matrixData<double>(from->InstrumentEffectsMatrix());
+  m_BinningMatrix                   = new matrixData<double>(from->BinningMatrix());
+  m_UnbinningMatrix                 = new matrixData<double>(from->UnbinningMatrix());
+  m_BinnedInstrumentEffectsMatrix   = new matrixData<double>(from->BinnedInstrumentEffectsMatrix());
+  m_InverseBinnedInstrumentMatrix   = new matrixData<double>(from->InverseBinnedInstrumentMatrix());
+
+  //m_spectData         = new vectorData<double>(from->spectrumData());
+  //m_ensembleSpectData = new vectorData<double>(from->ensembleData());
+  //m_couplingMatrix  = new matrixData<double>(from->couplingMatrix());
+  //m_inverseMatrix   = new matrixData<double>(from->inverseMatrix());
   m_almData         = new cubeData<std::complex<double> >(from->almData());
   m_almWeights      = new cubeData<std::complex<double> >(from->almWeights());
+  m_weightedAlm     = new cubeData<std::complex<double> >(from->weightedAlm());
   m_almNoise        = new cubeData<std::complex<double> >(from->almNoise());
   m_almFilter       = new cubeData<std::complex<double> >(from->almFilter());
   m_almBeam         = new cubeData<std::complex<double> >(from->almBeam());
-  
+  m_weightedNoiseAlm= new cubeData<std::complex<double> >(from->weightedAlmNoise());
+
   m_inputDataMap      = new dataMap(from->inputDataMap());
   m_inputWeightsMap   = new dataMap(from->inputWeightsMap());
+  m_weightedInputMap  = new dataMap(from->weightedInputMap());
   m_inputMap          = new dataMap(from->inputMap());
-  m_pixelDataMap      = new dataMap(from->pixelDataMap());
-  m_pixelWeightsMap   = new dataMap(from->pixelWeightsMap());
-  m_pixelMap          = new dataMap(from->pixelMap());
-  m_pixelOccupancyMap = new dataMap(from->pixelOccupancyMap());
-  m_invDataMap        = new dataMap(from->invDataMap());
-  m_invWeightsMap     = new dataMap(from->invWeightsMap());
-  m_invMap            = new dataMap(from->invMap());
   m_inputNoiseMap     = new dataMap(from->inputNoiseMap());
   m_inputFilterMap    = new dataMap(from->inputFilterMap());
   m_inputBeamMap      = new dataMap(from->inputBeamMap());
-  m_pixelNoiseMap     = new dataMap(from->pixelNoiseMap());
-  m_pixelFilterMap    = new dataMap(from->pixelFilterMap());
-  m_pixelBeamMap      = new dataMap(from->pixelBeamMap());
-  m_invNoiseMap       = new dataMap(from->invNoiseMap());
-  m_invFilterMap      = new dataMap(from->invFilterMap());
-  m_invBeamMap        = new dataMap(from->invBeamMap());
+  m_weightedNoiseMap  = new dataMap(from->weightedNoiseMap());
+
+  m_pixelDataMap          = new dataMap(from->pixelDataMap());
+  m_pixelWeightsMap       = new dataMap(from->pixelWeightsMap());
+  m_weightedPixelMap      = new dataMap(from->weightedPixelMap());
+  m_pixelMap              = new dataMap(from->pixelMap());
+  m_pixelOccupancyMap     = new dataMap(from->pixelOccupancyMap());
+  m_pixelNoiseMap         = new dataMap(from->pixelNoiseMap());
+  m_pixelFilterMap        = new dataMap(from->pixelFilterMap());
+  m_pixelBeamMap          = new dataMap(from->pixelBeamMap());
+  m_pixelWeightedNoiseMap = new dataMap(from->pixelWeightedNoiseMap());
+
+  m_invDataMap          = new dataMap(from->invDataMap());
+  m_invWeightsMap       = new dataMap(from->invWeightsMap());
+  m_weightedInverseMap  = new dataMap(from->weightedInverseMap());
+  m_invMap              = new dataMap(from->invMap());
+  m_invNoiseMap         = new dataMap(from->invNoiseMap());
+  m_invFilterMap        = new dataMap(from->invFilterMap());
+  m_invBeamMap          = new dataMap(from->invBeamMap());
+  m_invWeightedNoiseMap = new dataMap(from->invWeightedNoiseMap());
+
   
-  m_transDataGraph     = new dataSpectrum(from->transDataGraph());
-  m_transWeightsGraph  = new dataSpectrum(from->transWeightsGraph());
-  m_transGraph         = new dataSpectrum(from->transGraph());
-  m_spectDataGraph     = new dataSpectrum(from->spectrumGraph());
-  m_ensembleDataGraph  = new dataSpectrum(from->ensembleGraph());
-  m_transFilterGraph   = new dataSpectrum(from->transFilterGraph());
-  m_transNoiseGraph    = new dataSpectrum(from->transNoiseGraph());
-  m_transBeamGraph     = new dataSpectrum(from->transBeamGraph());
+  m_transDataGraph         = new dataSpectrum(from->transDataGraph());
+  m_transWeightsGraph      = new dataSpectrum(from->transWeightsGraph());
+  m_weightedTransformGraph = new dataSpectrum(from->weightedTransformGraph());
+  m_transGraph             = new dataSpectrum(from->transGraph());
+  //m_spectDataGraph         = new dataSpectrum(from->spectrumGraph());
+  //m_ensembleDataGraph      = new dataSpectrum(from->ensembleGraph());
+  m_transFilterGraph       = new dataSpectrum(from->transFilterGraph());
+  m_transNoiseGraph        = new dataSpectrum(from->transNoiseGraph());
+  m_transBeamGraph         = new dataSpectrum(from->transBeamGraph());
+  m_transWeightedNoiseGraph= new dataSpectrum(from->transWeightedNoiseGraph());
+
+  m_ensembleAveragedNoiseGraph          = new dataSpectrum(from->EnsembleAveragedNoiseGraph());
+  m_ensembleAveragedSpectrumGraph       = new dataSpectrum(from->EnsembleAveragedSpectrumGraph());
+  m_binnedSpectrumGraph                 = new dataSpectrum(from->BinnedSpectrumGraph());
+  m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum(from->EnsembleAveragedBinnedSpectrumGraph());
 
   m_selectedIOEngine        = from->fileIOEngineType();
   m_selectedMapEngine       = from->mappingEngineType();
@@ -231,19 +319,23 @@ association::association(association* from) {
     m_fileIOEngine    = new fitsManager((fitsManager*)(from->fileIOEngine()));
   else
     m_fileIOEngine    = 0;
+
   if (from->mappingEngine()->layout() == Mollweide)
     m_mapEngine         = new MollweideMapper((MollweideMapper*)(from->mappingEngine()));
   else
     m_mapEngine         = 0;
+
   m_graphEngine = from->graphingEngine();
   if (from->pixelizationEngine()->pixelizerScheme() == HealPIX)
     m_pixelEngine      = new HealPIXPixelizer((HealPIXPixelizer*)(from->pixelizationEngine()));
   else
     m_pixelEngine      = 0;
+
   if (from->transformationEngine()->transformerScheme() == Rsht)
     m_transformEngine  = new RshtTransformer((RshtTransformer*)(from->transformationEngine()));
   else
     m_transformEngine  = 0;
+
   m_powSpectEngine     = new Spectrum(from->powerSpectraEngine());
 
 //  m_uiObject     = from->userInterface();
@@ -254,63 +346,106 @@ association::association(association* from) {
 association& association::operator=(association& other) {
   *m_inputData         = *other.inputData();
   *m_inputWeights      = *other.inputWeights();
+  *m_weightedInput     = *other.weightedInput();
   *m_inputNoise        = *other.inputNoise();
   *m_inputFilter       = *other.inputFilter();
   *m_inputBeam         = *other.inputBeam();
+  *m_weightedNoise     = *other.weightedInputNoise();
+
   *m_pixelData         = *other.pixelizedData();
   *m_pixelWeights      = *other.pixelizedWeights();
+  *m_weightedPixel     = *other.weightedPixel();
   *m_pixelOccupancy    = *other.pixelOccupancy();
   *m_pixelFilter       = *other.pixelizedFilter();
   *m_pixelNoise        = *other.pixelizedNoise();
   *m_pixelBeam         = *other.pixelizedBeam();
+  *m_pixelWeightedNoise= *other.weightedPixelizedNoise();
+
   *m_invData           = *other.inverseData();
   *m_invWeights        = *other.inverseWeights();
+  *m_weightedInverse   = *other.weightedInverse();
   *m_invNoise          = *other.inverseNoise();
   *m_invFilter         = *other.inverseFilter();
   *m_invBeam           = *other.inverseBeam();
+  *m_invWeightedNoise  = *other.weightedInverseNoise();
+
   *m_transData         = *other.transformedData();
   *m_transWeights      = *other.transformedWeights();
+  *m_weightedTransform = *other.weightedTransform();
   *m_transFilter       = *other.transformedFilter();
   *m_transNoise        = *other.transformedNoise();
   *m_transBeam         = *other.transformedBeam();
-  *m_spectData         = *other.spectrumData();
-  *m_ensembleSpectData = *other.ensembleData();
-  *m_couplingMatrix    = *other.couplingMatrix();
-  *m_inverseMatrix     = *other.inverseMatrix();
+  *m_transWeightedNoise= *other.weightedTransformedNoise();
+
+  *m_ensembleAveragedNoise           = *other.EnsembleAveragedNoise();
+  *m_ensembleIterationNoise          = *other.EnsembleIterationNoise();
+  *m_ensembleAveragedSpectrum        = *other.EnsembleAveragedSpectrum();
+  *m_ensembleIterationSpectrum       = *other.EnsembleIterationSpectrum();
+  *m_binnedSpectrum                  = *other.BinnedSpectrum();
+  *m_ensembleAveragedBinnedSpectrum  = *other.EnsembleAveragedBinnedSpectrum();
+  *m_ensembleIterationBinnedSpectrum = *other.EnsembleIterationBinnedSpectrum();
+  *m_ModeModeMatrix                  = *other.ModeModeMatrix();
+  *m_InstrumentEffectsMatrix         = *other.InstrumentEffectsMatrix();
+  *m_BinningMatrix                   = *other.BinningMatrix();
+  *m_UnbinningMatrix                 = *other.UnbinningMatrix();
+  *m_BinnedInstrumentEffectsMatrix   = *other.BinnedInstrumentEffectsMatrix();
+  *m_InverseBinnedInstrumentMatrix   = *other.InverseBinnedInstrumentMatrix();
+
+  //*m_spectData         = *other.spectrumData();
+  //*m_ensembleSpectData = *other.ensembleData();
+  //*m_couplingMatrix    = *other.couplingMatrix();
+  //*m_inverseMatrix     = *other.inverseMatrix();
   *m_almData           = *other.almData();
   *m_almWeights        = *other.almWeights();
+  *m_weightedAlm       = *other.weightedAlm();
   *m_almFilter         = *other.almFilter();
   *m_almBeam           = *other.almBeam();
   *m_almNoise          = *other.almNoise();
+  *m_weightedNoiseAlm  = *other.weightedAlmNoise();
 
   *m_inputDataMap      = *other.inputDataMap();
   *m_inputWeightsMap   = *other.inputWeightsMap();
   *m_inputMap          = *other.inputMap();
+  *m_weightedInputMap  = *other.weightedInputMap();
   *m_inputNoiseMap     = *other.inputNoiseMap();
   *m_inputFilterMap    = *other.inputFilterMap();
   *m_inputBeamMap      = *other.inputBeamMap();
-  *m_pixelDataMap      = *other.pixelDataMap();
-  *m_pixelWeightsMap   = *other.pixelWeightsMap();
-  *m_pixelMap          = *other.pixelMap();
-  *m_pixelOccupancyMap = *other.pixelOccupancyMap();
-  *m_invDataMap        = *other.invDataMap();
-  *m_invWeightsMap     = *other.invWeightsMap();
-  *m_invMap            = *other.invMap();
-  *m_pixelNoiseMap     = *other.pixelNoiseMap();
-  *m_pixelFilterMap    = *other.pixelFilterMap();
-  *m_pixelBeamMap      = *other.pixelBeamMap();
-  *m_invNoiseMap       = *other.invNoiseMap();
-  *m_invFilterMap      = *other.invFilterMap();
-  *m_invBeamMap        = *other.invBeamMap();
+  *m_weightedNoiseMap  = *other.weightedNoiseMap();
 
-  *m_transDataGraph    = *other.transDataGraph();
-  *m_transWeightsGraph = *other.transWeightsGraph();
-  *m_transGraph        = *other.transGraph();
-  *m_spectDataGraph    = *other.spectrumGraph();
-  *m_ensembleDataGraph = *other.ensembleGraph();
-  *m_transFilterGraph  = *other.transFilterGraph();
-  *m_transNoiseGraph   = *other.transNoiseGraph();
-  *m_transBeamGraph    = *other.transBeamGraph();
+  *m_pixelDataMap          = *other.pixelDataMap();
+  *m_pixelWeightsMap       = *other.pixelWeightsMap();
+  *m_weightedPixelMap      = *other.weightedPixelMap();
+  *m_pixelMap              = *other.pixelMap();
+  *m_pixelOccupancyMap     = *other.pixelOccupancyMap();
+  *m_pixelNoiseMap         = *other.pixelNoiseMap();
+  *m_pixelFilterMap        = *other.pixelFilterMap();
+  *m_pixelBeamMap          = *other.pixelBeamMap();
+  *m_pixelWeightedNoiseMap = *other.pixelWeightedNoiseMap();
+
+  *m_invDataMap          = *other.invDataMap();
+  *m_invWeightsMap       = *other.invWeightsMap();
+  *m_weightedInverseMap  = *other.weightedInverseMap();
+  *m_invMap              = *other.invMap();
+  *m_invNoiseMap         = *other.invNoiseMap();
+  *m_invFilterMap        = *other.invFilterMap();
+  *m_invBeamMap          = *other.invBeamMap();
+  *m_invWeightedNoiseMap = *other.invWeightedNoiseMap();
+
+  *m_transDataGraph          = *other.transDataGraph();
+  *m_transWeightsGraph       = *other.transWeightsGraph();
+  *m_weightedTransformGraph  = *other.weightedTransformGraph();
+  *m_transGraph              = *other.transGraph();
+  //*m_spectDataGraph        = *other.spectrumGraph();
+  //*m_ensembleDataGraph     = *other.ensembleGraph();
+  *m_transFilterGraph        = *other.transFilterGraph();
+  *m_transNoiseGraph         = *other.transNoiseGraph();
+  *m_transBeamGraph          = *other.transBeamGraph();
+  *m_transWeightedNoiseGraph = *other.transWeightedNoiseGraph();
+
+  *m_ensembleAveragedNoiseGraph          = *other.EnsembleAveragedNoiseGraph();
+  *m_ensembleAveragedSpectrumGraph       = *other.EnsembleAveragedSpectrumGraph();
+  *m_binnedSpectrumGraph                 = *other.BinnedSpectrumGraph();
+  *m_ensembleAveragedBinnedSpectrumGraph = *other.EnsembleAveragedBinnedSpectrumGraph();
 
   *m_fileIOEngine      = *other.fileIOEngine();
   *m_mapEngine         = *other.mappingEngine();
@@ -335,154 +470,320 @@ association& association::operator=(association& other) {
 association& association::merge(association& other, bool replace) {
   if (replace)
     *this = other;
-  else {
+
+  else
+  {
     if (!exists(fileType::InputData) && other.exists(fileType::InputData))
       m_inputData = new matrixData<double>(other.inputData());
+
     if (!exists(fileType::InputWeights) && other.exists(fileType::InputWeights))
       m_inputWeights = new matrixData<double>(other.inputWeights());
-    if(!exists(fileType::PixelizedData) && other.exists(fileType::PixelizedData))
-      m_pixelData = new vectorData<double>(other.pixelizedData());
-    if (!exists(fileType::PixelizedWeights) && other.exists(fileType::PixelizedWeights))
-      m_pixelWeights = new vectorData<double>(other.pixelizedWeights());
-    if (!exists(fileType::PixelOccupancy) && other.exists(fileType::PixelOccupancy))
-      m_pixelOccupancy = new vectorData<int>(other.pixelOccupancy());
-    if (!exists(fileType::InverseData) && other.exists(fileType::InverseData))
-      m_invData = new vectorData<double>(other.inverseData());
-    if (!exists(fileType::InverseWeights) && other.exists(fileType::InverseWeights))
-      m_invWeights = new vectorData<double>(other.inverseWeights());
-    if (!exists(fileType::TransformedData) && other.exists(fileType::TransformedData))
-      m_transData = new vectorData<double>(other.transformedData());
-    if (!exists(fileType::TransformedWeights) && other.exists(fileType::TransformedWeights))
-      m_transWeights = new vectorData<double>(other.transformedWeights());
+
+    if (!exists(fileType::WeightedData) && other.exists(fileType::WeightedData))
+      m_weightedInput = new matrixData<double>(other.weightedInput());
+
     if (!exists(fileType::InputFilter) && other.exists(fileType::InputFilter))
       m_inputFilter = new matrixData<double>(other.inputFilter());
-    if (!exists(fileType::PixelizedFilter) && other.exists(fileType::PixelizedFilter))
-      m_pixelFilter = new vectorData<double>(other.pixelizedFilter());
-    if (!exists(fileType::InverseFilter) && other.exists(fileType::InverseFilter))
-      m_invFilter = new vectorData<double>(other.inverseFilter());
-    if (!exists(fileType::InverseNoise) && other.exists(fileType::InverseNoise))
-      m_invNoise = new vectorData<double>(other.inverseNoise());
-    if (!exists(fileType::InverseBeam) && other.exists(fileType::InverseBeam))
-      m_invBeam = new vectorData<double>(other.inverseBeam());
-    if (!exists(fileType::TransformedFilter) && other.exists(fileType::TransformedFilter))
-      m_transFilter = new vectorData<double>(other.transformedFilter());
+
     if (!exists(fileType::InputNoise) && other.exists(fileType::InputNoise))
       m_inputNoise = new matrixData<double>(other.inputNoise());
-    if (!exists(fileType::PixelizedNoise) && other.exists(fileType::PixelizedNoise))
-      m_pixelNoise = new vectorData<double>(other.pixelizedNoise());
-    if (!exists(fileType::TransformedNoise) && other.exists(fileType::TransformedNoise))
-      m_transNoise = new vectorData<double>(other.transformedNoise());
+
     if (!exists(fileType::InputBeam) && other.exists(fileType::InputBeam))
       m_inputBeam = new matrixData<double>(other.inputBeam());
+
+    if (!exists(fileType::InputWeightedNoise) && other.exists(fileType::InputWeightedNoise))
+      m_weightedNoise = new matrixData<double>(other.weightedInputNoise());
+
+    if(!exists(fileType::PixelizedData) && other.exists(fileType::PixelizedData))
+      m_pixelData = new vectorData<double>(other.pixelizedData());
+
+    if (!exists(fileType::PixelizedWeights) && other.exists(fileType::PixelizedWeights))
+      m_pixelWeights = new vectorData<double>(other.pixelizedWeights());
+
+    if (!exists(fileType::WeightedPixel) && other.exists(fileType::WeightedPixel))
+      m_pixelWeights = new vectorData<double>(other.weightedPixel());
+
+    if (!exists(fileType::PixelOccupancy) && other.exists(fileType::PixelOccupancy))
+      m_pixelOccupancy = new vectorData<int>(other.pixelOccupancy());
+
+    if (!exists(fileType::PixelizedFilter) && other.exists(fileType::PixelizedFilter))
+      m_pixelFilter = new vectorData<double>(other.pixelizedFilter());
+
+    if (!exists(fileType::PixelizedNoise) && other.exists(fileType::PixelizedNoise))
+      m_pixelNoise = new vectorData<double>(other.pixelizedNoise());
+
+    if (!exists(fileType::PixelizedWeightedNoise) && other.exists(fileType::PixelizedWeightedNoise))
+      m_pixelWeightedNoise = new vectorData<double>(other.weightedPixelizedNoise());
+
     if (!exists(fileType::PixelizedBeam) && other.exists(fileType::PixelizedBeam))
       m_pixelBeam = new vectorData<double>(other.pixelizedBeam());
+
+    if (!exists(fileType::InverseData) && other.exists(fileType::InverseData))
+      m_invData = new vectorData<double>(other.inverseData());
+
+    if (!exists(fileType::InverseWeights) && other.exists(fileType::InverseWeights))
+      m_invWeights = new vectorData<double>(other.inverseWeights());
+
+    if (!exists(fileType::WeightedInverse) && other.exists(fileType::WeightedInverse))
+      m_weightedInverse = new vectorData<double>(other.weightedInverse());
+
+    if (!exists(fileType::InverseFilter) && other.exists(fileType::InverseFilter))
+      m_invFilter = new vectorData<double>(other.inverseFilter());
+
+    if (!exists(fileType::InverseNoise) && other.exists(fileType::InverseNoise))
+      m_invNoise = new vectorData<double>(other.inverseNoise());
+
+    if (!exists(fileType::InverseWeightedNoise) && other.exists(fileType::InverseWeightedNoise))
+      m_invWeightedNoise = new vectorData<double>(other.weightedInverseNoise());
+
+    if (!exists(fileType::InverseBeam) && other.exists(fileType::InverseBeam))
+      m_invBeam = new vectorData<double>(other.inverseBeam());
+
+    if (!exists(fileType::TransformedData) && other.exists(fileType::TransformedData))
+      m_transData = new vectorData<double>(other.transformedData());
+
+    if (!exists(fileType::TransformedWeights) && other.exists(fileType::TransformedWeights))
+      m_transWeights = new vectorData<double>(other.transformedWeights());
+
+    if (!exists(fileType::WeightedTransform) && other.exists(fileType::WeightedTransform))
+      m_weightedTransform = new vectorData<double>(other.weightedTransform());
+
+    if (!exists(fileType::TransformedFilter) && other.exists(fileType::TransformedFilter))
+      m_transFilter = new vectorData<double>(other.transformedFilter());
+
+    if (!exists(fileType::TransformedNoise) && other.exists(fileType::TransformedNoise))
+      m_transNoise = new vectorData<double>(other.transformedNoise());
+
+    if (!exists(fileType::TransformedWeightedNoise) && other.exists(fileType::TransformedWeightedNoise))
+      m_transWeightedNoise = new vectorData<double>(other.weightedTransformedNoise());
+
     if (!exists(fileType::TransformedBeam) && other.exists(fileType::TransformedBeam))
       m_transBeam = new vectorData<double>(other.transformedBeam());
+
+    /*
     if (!exists(fileType::SpectralData) && other.exists(fileType::SpectralData))
       m_spectData = new vectorData<double>(other.spectrumData());
+
     if (!exists(fileType::EnsembleData) && other.exists(fileType::EnsembleData))
       m_ensembleSpectData = new vectorData<double>(other.ensembleData());
+
     if ((   !exists(fileType::BinCouplingMatrix) && other.exists(fileType::BinCouplingMatrix))
         && (!exists(fileType::ModeCouplingMatrix) && other.exists(fileType::ModeCouplingMatrix)))
       m_couplingMatrix = new matrixData<double>(other.couplingMatrix());
+
     if ((   !exists(fileType::InverseBinMatrix) && other.exists(fileType::InverseBinMatrix))
         && (!exists(fileType::InverseModeMatrix) && other.exists(fileType::InverseModeMatrix)))
       m_inverseMatrix = new matrixData<double>(other.inverseMatrix());
+    */
+
+    if(!exists(fileType::EnsembleAveragedNoise) && other.exists(fileType::EnsembleAveragedNoise))
+      m_ensembleAveragedNoise = new vectorData<double>(other.EnsembleAveragedNoise());
+
+    if(!exists(fileType::EnsembleIterationNoise) && other.exists(fileType::EnsembleIterationNoise))
+      m_ensembleIterationNoise = new matrixData<double>(other.EnsembleIterationNoise());
+
+    if(!exists(fileType::EnsembleAveragedSpectrum) && other.exists(fileType::EnsembleAveragedSpectrum))
+      m_ensembleAveragedSpectrum = new vectorData<double>(other.EnsembleAveragedSpectrum());
+
+    if(!exists(fileType::EnsembleIterationSpectrum) && other.exists(fileType::EnsembleIterationSpectrum))
+      m_ensembleIterationSpectrum = new matrixData<double>(other.EnsembleIterationSpectrum());
+
+    if(!exists(fileType::BinnedSpectrum) && other.exists(fileType::BinnedSpectrum))
+      m_binnedSpectrum = new vectorData<double>(other.BinnedSpectrum());
+
+    if(!exists(fileType::EnsembleAveragedBinnedSpectrum) && other.exists(fileType::EnsembleAveragedBinnedSpectrum))
+      m_ensembleAveragedBinnedSpectrum = new vectorData<double>(other.EnsembleAveragedBinnedSpectrum());
+
+    if(!exists(fileType::EnsembleIterationBinnedSpectrum) && other.exists(fileType::EnsembleIterationBinnedSpectrum))
+      m_ensembleIterationBinnedSpectrum = new matrixData<double>(other.EnsembleIterationBinnedSpectrum());
+
+    if(!exists(fileType::ModeModeMatrix) && other.exists(fileType::ModeModeMatrix))
+      m_ModeModeMatrix = new matrixData<double>(other.ModeModeMatrix());
+
+    if(!exists(fileType::InstrumentEffectsMatrix) && other.exists(fileType::InstrumentEffectsMatrix))
+      m_InstrumentEffectsMatrix = new matrixData<double>(other.InstrumentEffectsMatrix());
+
+    if(!exists(fileType::BinningMatrix) && other.exists(fileType::BinningMatrix))
+      m_BinningMatrix = new matrixData<double>(other.BinningMatrix());
+
+    if(!exists(fileType::UnbinningMatrix) && other.exists(fileType::UnbinningMatrix))
+      m_UnbinningMatrix = new matrixData<double>(other.UnbinningMatrix());
+
+    if(!exists(fileType::BinnedInstrumentEffectsMatrix) && other.exists(fileType::BinnedInstrumentEffectsMatrix))
+      m_BinnedInstrumentEffectsMatrix = new matrixData<double>(other.BinnedInstrumentEffectsMatrix());
+
+    if(!exists(fileType::InverseBinnedInstrumentMatrix) && other.exists(fileType::InverseBinnedInstrumentMatrix))
+      m_InverseBinnedInstrumentMatrix = new matrixData<double>(other.InverseBinnedInstrumentMatrix());
+
     if (!exists(fileType::AlmData) && other.exists(fileType::AlmData))
       m_almData = new cubeData<std::complex<double> >(other.almData());
+
     if (!exists(fileType::AlmWeights) && other.exists(fileType::AlmWeights))
       m_almWeights = new cubeData<std::complex<double> >(other.almWeights());
+
+    if (!exists(fileType::WeightedAlm) && other.exists(fileType::WeightedAlm))
+      m_weightedAlm = new cubeData<std::complex<double>>(other.weightedAlm());
+
     if (!exists(fileType::AlmFilter) && other.exists(fileType::AlmFilter))
       m_almFilter = new cubeData<std::complex<double> >(other.almFilter());
+
     if (!exists(fileType::AlmNoise) && other.exists(fileType::AlmNoise))
       m_almNoise = new cubeData<std::complex<double> >(other.almNoise());
+
+    if (!exists(fileType::AlmWeightedNoise) && other.exists(fileType::AlmWeightedNoise))
+      m_weightedNoiseAlm = new cubeData<std::complex<double> >(other.weightedAlmNoise());
+
     if (!exists(fileType::AlmBeam) && other.exists(fileType::AlmBeam))
       m_almBeam = new cubeData<std::complex<double> >(other.almBeam());
   
+
+
     if (!exists(associatedMap::InputDataMap) && other.exists(associatedMap::InputDataMap))
       m_inputDataMap = new dataMap(other.inputDataMap());
+
     if (!exists(associatedMap::InputWeightsMap) && other.exists(associatedMap::InputWeightsMap))
       m_inputWeightsMap = new dataMap(other.inputWeightsMap());
+
     if (!exists(associatedMap::WeightedDataMap) && other.exists(associatedMap::WeightedDataMap))
+      //m_weightedInputMap = new dataMap(other.weightedInputMap());
       m_inputMap = new dataMap(other.inputMap());
-    if (!exists(associatedMap::PixelizedDataMap) && other.exists(associatedMap::PixelizedDataMap))
-      m_pixelDataMap = new dataMap(other.pixelDataMap());
-    if (!exists(associatedMap::PixelizedWeightsMap) && other.exists(associatedMap::PixelizedWeightsMap))
-      m_pixelWeightsMap = new dataMap(other.pixelWeightsMap());
-    if (!exists(associatedMap::WeightedPixelMap) && other.exists(associatedMap::WeightedPixelMap))
-      m_pixelMap = new dataMap(other.pixelMap());
-    if(!exists(associatedMap::PixelOccupancyMap) && other.exists(associatedMap::PixelOccupancyMap))
-      m_pixelOccupancyMap = new dataMap(other.pixelOccupancyMap());
-    if (!exists(associatedMap::InverseDataMap) && other.exists(associatedMap::InverseDataMap))
-      m_invDataMap = new dataMap(other.invDataMap());
-    if (!exists(associatedMap::InverseWeightsMap) && other.exists(associatedMap::InverseWeightsMap))
-      m_invWeightsMap = new dataMap(other.invWeightsMap());
-    if (!exists(associatedMap::WeightedInverseMap) && other.exists(associatedMap::WeightedInverseMap))
-      m_invMap = new dataMap(other.invMap());
+
     if (!exists(associatedMap::InputNoiseMap) && other.exists(associatedMap::InputNoiseMap))
       m_inputNoiseMap = new dataMap(other.inputNoiseMap());
+
+    if (!exists(associatedMap::InputWeightedNoiseMap) && other.exists(associatedMap::InputWeightedNoiseMap))
+      m_weightedInputMap = new dataMap(other.weightedNoiseMap());
+
     if (!exists(associatedMap::InputFilterMap) && other.exists(associatedMap::InputFilterMap))
       m_inputFilterMap = new dataMap(other.inputFilterMap());
+
     if (!exists(associatedMap::InputBeamMap) && other.exists(associatedMap::InputBeamMap))
       m_inputBeamMap = new dataMap(other.inputBeamMap());
+
+    if (!exists(associatedMap::PixelizedDataMap) && other.exists(associatedMap::PixelizedDataMap))
+      m_pixelDataMap = new dataMap(other.pixelDataMap());
+
+    if (!exists(associatedMap::PixelizedWeightsMap) && other.exists(associatedMap::PixelizedWeightsMap))
+      m_pixelWeightsMap = new dataMap(other.pixelWeightsMap());
+
+    if (!exists(associatedMap::WeightedPixelMap) && other.exists(associatedMap::WeightedPixelMap))
+      m_pixelMap = new dataMap(other.pixelMap());
+
+    if(!exists(associatedMap::PixelOccupancyMap) && other.exists(associatedMap::PixelOccupancyMap))
+      m_pixelOccupancyMap = new dataMap(other.pixelOccupancyMap());
+
     if (!exists(associatedMap::PixelizedNoiseMap) && other.exists(associatedMap::PixelizedNoiseMap))
       m_pixelNoiseMap = new dataMap(other.pixelNoiseMap());
+
+    if (!exists(associatedMap::PixelizedWeightedNoiseMap) && other.exists(associatedMap::PixelizedWeightedNoiseMap))
+      m_pixelWeightedNoiseMap = new dataMap(other.pixelWeightedNoiseMap());
+
     if (!exists(associatedMap::PixelizedFilterMap) && other.exists(associatedMap::PixelizedFilterMap))
       m_pixelFilterMap = new dataMap(other.pixelFilterMap());
+
     if (!exists(associatedMap::PixelizedBeamMap) && other.exists(associatedMap::PixelizedBeamMap))
       m_pixelBeamMap = new dataMap(other.pixelBeamMap());
+
+    if (!exists(associatedMap::InverseDataMap) && other.exists(associatedMap::InverseDataMap))
+      m_invDataMap = new dataMap(other.invDataMap());
+
+    if (!exists(associatedMap::InverseWeightsMap) && other.exists(associatedMap::InverseWeightsMap))
+      m_invWeightsMap = new dataMap(other.invWeightsMap());
+
+    if (!exists(associatedMap::WeightedInverseMap) && other.exists(associatedMap::WeightedInverseMap))
+      m_invMap = new dataMap(other.invMap());
+
     if (!exists(associatedMap::InverseNoiseMap) && other.exists(associatedMap::InverseNoiseMap))
       m_invNoiseMap = new dataMap(other.invNoiseMap());
+
+    if (!exists(associatedMap::InverseWeightedNoiseMap) && other.exists(associatedMap::InverseWeightedNoiseMap))
+      m_invWeightedNoiseMap = new dataMap(other.invWeightedNoiseMap());
+
     if (!exists(associatedMap::InverseFilterMap) && other.exists(associatedMap::InverseFilterMap))
       m_invFilterMap = new dataMap(other.invFilterMap());
+
     if (!exists(associatedMap::InverseBeamMap) && other.exists(associatedMap::InverseBeamMap))
       m_invBeamMap = new dataMap(other.invBeamMap());
-  
+
     if (!exists(associatedSpectrum::TransformedDataSpectrum) && other.exists(associatedSpectrum::TransformedDataSpectrum))
       m_transDataGraph = new dataSpectrum(other.transDataGraph());
+
     if (!exists(associatedSpectrum::TransformedWeightsSpectrum) && other.exists(associatedSpectrum::TransformedWeightsSpectrum))
       m_transWeightsGraph = new dataSpectrum(other.transWeightsGraph());
+
     if (!exists(associatedSpectrum::WeightedTransformSpectrum) && other.exists(associatedSpectrum::WeightedTransformSpectrum))
       m_transGraph = new dataSpectrum(other.transGraph());
+
+    /*
     if (!exists(associatedSpectrum::SpectralDataSpectrum) && other.exists(associatedSpectrum::SpectralDataSpectrum))
       m_spectDataGraph = new dataSpectrum(other.spectrumGraph());
+
     if (!exists(associatedSpectrum::EnsembleDataSpectrum) && other.exists(associatedSpectrum::EnsembleDataSpectrum))
       m_ensembleDataGraph = new dataSpectrum(other.ensembleGraph());
+    */
+
     if (!exists(associatedSpectrum::TransformedFilterSpectrum) && other.exists(associatedSpectrum::TransformedFilterSpectrum))
       m_transFilterGraph = new dataSpectrum(other.transFilterGraph());
+
     if (!exists(associatedSpectrum::TransformedNoiseSpectrum) && other.exists(associatedSpectrum::TransformedNoiseSpectrum))
       m_transNoiseGraph = new dataSpectrum(other.transNoiseGraph());
+
+    if (!exists(associatedSpectrum::TransformedWeightedNoiseSpectrum) && other.exists(associatedSpectrum::TransformedWeightedNoiseSpectrum))
+      m_transWeightedNoiseGraph = new dataSpectrum(other.transWeightedNoiseGraph());
+
     if (!exists(associatedSpectrum::TransformedBeamSpectrum) && other.exists(associatedSpectrum::TransformedBeamSpectrum))
       m_transBeamGraph = new dataSpectrum(other.transBeamGraph());
 
-    if (!exists(dataEngines::fileIO) && other.exists(dataEngines::fileIO)) {
+    if(!exists(associatedSpectrum::EnsembleAveragedNoiseSpectrum) && other.exists(associatedSpectrum::EnsembleAveragedNoiseSpectrum))
+      m_ensembleAveragedNoiseGraph = new dataSpectrum(other.EnsembleAveragedNoiseGraph());
+
+    if(!exists(associatedSpectrum::EnsembleAveragedSpectrumSpectrum) && other.exists(associatedSpectrum::EnsembleAveragedSpectrumSpectrum))
+      m_ensembleAveragedSpectrumGraph = new dataSpectrum(other.EnsembleAveragedSpectrumGraph());
+
+    if(!exists(associatedSpectrum::BinnedSpectrumSpectrum) && other.exists(associatedSpectrum::BinnedSpectrumSpectrum))
+      m_binnedSpectrumGraph = new dataSpectrum(other.BinnedSpectrumGraph());
+
+    if(!exists(associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum) && other.exists(associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum))
+      m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum(other.EnsembleAveragedBinnedSpectrumGraph());
+
+    if (!exists(dataEngines::fileIO) && other.exists(dataEngines::fileIO))
+    {
       if (other.fileIOEngine()->fileFormat() == CSV)
         m_fileIOEngine = new csvManager((csvManager*)other.fileIOEngine());
       else if (other.fileIOEngine()->fileFormat() == Fits)
         m_fileIOEngine = new fitsManager((fitsManager*)other.fileIOEngine());
     }
+
     if (!exists(dataEngines::Mapping) && other.exists(dataEngines::Mapping))
       if (other.mappingEngine()->layout() == Mollweide)
         m_mapEngine = new MollweideMapper((MollweideMapper*)other.mappingEngine());
+
     if (!exists(dataEngines::Graphing) && other.exists(dataEngines::Graphing))
       m_graphEngine = new Grapher(other.graphingEngine());
+
     if (!exists(dataEngines::Pixelization) && other.exists(dataEngines::Pixelization))
       if (other.pixelizationEngine()->pixelizerScheme() == HealPIX)
         m_pixelEngine = new HealPIXPixelizer((HealPIXPixelizer*)other.pixelizationEngine());
+
     if (!exists(dataEngines::Transformation) && other.exists(dataEngines::Transformation))
       if (other.transformationEngine()->scheme() == Rsht)
         m_transformEngine = new RshtTransformer((RshtTransformer*)other.transformationEngine());
+
     if (!exists(dataEngines::PseudoSpectrum) && other.exists(dataEngines::PseudoSpectrum))
       m_powSpectEngine = new Spectrum(other.powerSpectraEngine());
 
     if (!m_selectedIOEngine && other.fileIOEngineType())
       m_selectedIOEngine = other.fileIOEngineType();
+
     if (!m_selectedMapEngine && other.mappingEngineType())
       m_selectedMapEngine = other.mappingEngineType();
+
     if (!m_selectedPixelEngine && other.pixelizationEngineType())
       m_selectedPixelEngine = other.pixelizationEngineType();
+
     if (!m_selectedTransformEngine && other.transformationEngineType())
       m_selectedTransformEngine = other.transformationEngineType();
+
     if (!m_sequence && other.sequenceStep())
       m_sequence = other.sequenceStep();
 
@@ -503,7 +804,8 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
 
   baseData* bdPtr = 0;
 
-  switch (dataType) {
+  switch (dataType)
+  {
     case fileType::InputData:
       if (m_inputData == 0)
         m_inputData = new matrixData<double>((matrixData<double>*)other);
@@ -522,6 +824,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_inputWeights;
       break;
+    case fileType::WeightedData:
+      if(m_weightedInput == 0)
+        m_weightedInput = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_weightedInput && replace)
+          m_weightedInput = (matrixData<double>*)other;
+      }
+      bdPtr = m_weightedInput;
+      break;
     case fileType::InputNoise:
       if (m_inputNoise == 0)
         m_inputNoise = new matrixData<double>((matrixData<double>*)other);
@@ -531,6 +843,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_inputNoise;
       break;
+    case fileType::InputWeightedNoise:
+      if (m_weightedNoise == 0)
+        m_weightedNoise = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_weightedNoise && replace)
+          m_weightedNoise = (matrixData<double>*)other;
+      }
+      bdPtr = m_weightedNoise;
+      break;
     case fileType::InputFilter:
       if (m_inputFilter == 0)
         m_inputFilter = new matrixData<double>((matrixData<double>*)other);
@@ -539,7 +861,7 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
           m_inputFilter = (matrixData<double>*)other;
       }
       bdPtr = m_inputFilter;
-      break; *m_inputFilter;
+      break; //*m_inputFilter;
     case fileType::InputBeam:
       if (m_inputBeam == 0)
         m_inputBeam = new matrixData<double>((matrixData<double>*)other);
@@ -549,7 +871,7 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_inputBeam;
       break;
-    case fileType::BinCouplingMatrix:
+    /*case fileType::BinCouplingMatrix:
     case fileType::ModeCouplingMatrix:
       if (m_couplingMatrix == 0)
         m_couplingMatrix = new matrixData<double>((matrixData<double>*)other);
@@ -559,6 +881,7 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_couplingMatrix;
       break;
+    */
     case fileType::PixelizedData:
       if (m_pixelData == 0)
         m_pixelData = new vectorData<double>((vectorData<double>*)other);
@@ -577,6 +900,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_pixelWeights;
       break;
+    case fileType::WeightedPixel:
+      if(m_weightedPixel == 0)
+        m_weightedPixel = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_weightedPixel && replace)
+          m_weightedPixel = (vectorData<double>*)other;
+      }
+      bdPtr = m_weightedPixel;
+      break;
     case fileType::PixelizedNoise:
       if (m_pixelNoise == 0)
         m_pixelNoise = new vectorData<double>((vectorData<double>*)other);
@@ -586,6 +919,17 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_pixelNoise;
       break;
+    case fileType::PixelizedWeightedNoise:
+      if (m_pixelWeightedNoise == 0)
+        m_pixelWeightedNoise = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_pixelWeightedNoise && replace)
+          m_pixelWeightedNoise = (vectorData<double>*)other;
+      }
+      bdPtr = m_pixelWeightedNoise;
+      break;
+
     case fileType::PixelizedFilter:
       if (m_pixelFilter == 0)
         m_pixelFilter = new vectorData<double>((vectorData<double>*)other);
@@ -631,6 +975,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_transWeights;
       break;
+    case fileType::WeightedTransform:
+      if(m_weightedTransform == 0)
+        m_weightedTransform = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_weightedTransform && replace)
+          m_weightedTransform = (vectorData<double>*)other;
+      }
+      bdPtr = m_weightedTransform;
+      break;
     case fileType::TransformedNoise:
       if (m_transNoise == 0)
         m_transNoise = new vectorData<double>((vectorData<double>*)other);
@@ -639,6 +993,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
           m_transNoise = (vectorData<double>*)other;
       }
       bdPtr = m_transNoise;
+      break;
+    case fileType::TransformedWeightedNoise:
+      if (m_transWeightedNoise == 0)
+        m_transWeightedNoise = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_transWeightedNoise && replace)
+          m_transWeightedNoise = (vectorData<double>*)other;
+      }
+      bdPtr = m_transWeightedNoise;
       break;
     case fileType::TransformedFilter:
       if (m_transFilter == 0)
@@ -658,6 +1022,7 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_transBeam;
       break;
+    /*
     case fileType::SpectralData:
       if (m_spectData == 0)
         m_spectData = new vectorData<double>((vectorData<double>*)other);
@@ -675,6 +1040,137 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
           m_ensembleSpectData = (vectorData<double>*)other;
       }
       bdPtr = m_ensembleSpectData;
+      break;
+    */
+    case fileType::EnsembleAveragedNoise:
+      if(m_ensembleAveragedNoise == 0)
+        m_ensembleAveragedNoise = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_ensembleAveragedNoise && replace)
+          m_ensembleAveragedNoise = (vectorData<double>*)other;
+      }
+      bdPtr = m_ensembleAveragedNoise;
+      break;
+    case fileType::EnsembleIterationNoise:
+      if(m_ensembleIterationNoise == 0)
+        m_ensembleIterationNoise = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_ensembleIterationNoise && replace)
+          m_ensembleIterationNoise = (matrixData<double>*)other;
+      }
+      bdPtr = m_ensembleIterationNoise;
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      if(m_ensembleAveragedSpectrum == 0)
+        m_ensembleAveragedSpectrum = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_ensembleAveragedSpectrum && replace)
+          m_ensembleAveragedSpectrum = (vectorData<double>*)other;
+      }
+      bdPtr = m_ensembleAveragedSpectrum;
+      break;
+    case fileType::EnsembleIterationSpectrum:
+      if(m_ensembleIterationSpectrum == 0)
+        m_ensembleIterationSpectrum = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_ensembleIterationSpectrum && replace)
+          m_ensembleIterationSpectrum = (matrixData<double>*)other;
+      }
+      bdPtr = m_ensembleIterationSpectrum;
+      break;
+    case fileType::BinnedSpectrum:
+      if(m_binnedSpectrum == 0)
+        m_binnedSpectrum = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_binnedSpectrum && replace)
+          m_binnedSpectrum = (vectorData<double>*)other;
+      }
+      bdPtr = m_binnedSpectrum;
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      if(m_ensembleAveragedBinnedSpectrum == 0)
+        m_ensembleAveragedBinnedSpectrum = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_ensembleAveragedBinnedSpectrum && replace)
+          m_ensembleAveragedBinnedSpectrum = (vectorData<double>*)other;
+      }
+      bdPtr = m_ensembleAveragedBinnedSpectrum;
+      break;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      if(m_ensembleIterationBinnedSpectrum == 0)
+        m_ensembleIterationBinnedSpectrum = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_ensembleIterationBinnedSpectrum && replace)
+          m_ensembleIterationBinnedSpectrum = (matrixData<double>*)other;
+      }
+      bdPtr = m_ensembleIterationBinnedSpectrum;
+      break;
+    case fileType::ModeModeMatrix:
+      if(m_ModeModeMatrix == 0)
+        m_ModeModeMatrix = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_ModeModeMatrix && replace)
+          m_ModeModeMatrix = (matrixData<double>*)other;
+      }
+      bdPtr = m_ModeModeMatrix;
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      if(m_InstrumentEffectsMatrix == 0)
+        m_InstrumentEffectsMatrix = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_InstrumentEffectsMatrix && replace)
+          m_InstrumentEffectsMatrix = (matrixData<double>*)other;
+      }
+      bdPtr = m_InstrumentEffectsMatrix;
+      break;
+    case fileType::BinningMatrix:
+      if(m_BinningMatrix == 0)
+        m_BinningMatrix = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_BinningMatrix && replace)
+          m_BinningMatrix = (matrixData<double>*)other;
+      }
+      bdPtr = m_BinningMatrix;
+      break;
+    case fileType::UnbinningMatrix:
+      if(m_UnbinningMatrix == 0)
+        m_UnbinningMatrix = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_UnbinningMatrix && replace)
+          m_UnbinningMatrix = (matrixData<double>*)other;
+      }
+      bdPtr = m_UnbinningMatrix;
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      if(m_BinnedInstrumentEffectsMatrix == 0)
+        m_BinnedInstrumentEffectsMatrix = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_BinnedInstrumentEffectsMatrix && replace)
+          m_BinnedInstrumentEffectsMatrix = (matrixData<double>*)other;
+      }
+      bdPtr = m_BinnedInstrumentEffectsMatrix;
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      if(m_InverseBinnedInstrumentMatrix == 0)
+        m_InverseBinnedInstrumentMatrix = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_InverseBinnedInstrumentMatrix && replace)
+          m_InverseBinnedInstrumentMatrix = (matrixData<double>*)other;
+      }
+      bdPtr = m_InverseBinnedInstrumentMatrix;
       break;
     case fileType::InverseData:
       if (m_invData == 0)
@@ -694,6 +1190,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_invWeights;
       break;
+    case fileType::WeightedInverse:
+      if(m_weightedInverse == 0)
+        m_weightedInverse = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_weightedInverse && replace)
+          m_weightedInverse = (vectorData<double>*)other;
+      }
+      bdPtr = m_weightedInverse;
+      break;
     case fileType::InverseNoise:
       if (m_invNoise == 0)
         m_invNoise = new vectorData<double>((vectorData<double>*)other);
@@ -703,6 +1209,17 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_invNoise;
       break;
+    case fileType::InverseWeightedNoise:
+      if (m_invWeightedNoise == 0)
+        m_invWeightedNoise = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_invWeightedNoise && replace)
+          m_invWeightedNoise = (vectorData<double>*)other;
+      }
+      bdPtr = m_invWeightedNoise;
+      break;
+
     case fileType::InverseFilter:
       if (m_invFilter == 0)
         m_invFilter = new vectorData<double>((vectorData<double>*)other);
@@ -739,6 +1256,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_almWeights;
       break;
+    case fileType::WeightedAlm:
+      if(m_weightedAlm == 0)
+        m_weightedAlm = new cubeData<std::complex<double>>((cubeData<std::complex<double>>*)other);
+      else
+      {
+        if(m_weightedAlm && replace)
+          m_weightedAlm = (cubeData<std::complex<double>>*)other;
+      }
+      bdPtr = m_weightedAlm;
+      break;
     case fileType::AlmNoise:
       if (m_almNoise == 0)
         m_almNoise = new cubeData<std::complex<double> >((cubeData<std::complex<double> >*)other);
@@ -747,6 +1274,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
           m_almNoise = (cubeData<std::complex<double> >* )other;
       }
       bdPtr = m_almNoise;
+      break;
+    case fileType::AlmWeightedNoise:
+      if (m_weightedNoiseAlm == 0)
+        m_weightedNoiseAlm = new cubeData<std::complex<double>>((cubeData<std::complex<double>>*)other);
+      else
+      {
+        if(m_weightedNoiseAlm && replace)
+          m_weightedNoiseAlm = (cubeData<std::complex<double>>*)other;
+      }
+      bdPtr = m_weightedNoiseAlm;
       break;
     case fileType::AlmFilter:
       if (m_almFilter == 0)
@@ -774,7 +1311,8 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
 dataMap& association::merge(ASSOCIATEDMAP mapType, dataMap* other, bool replace) {
   dataMap* dmPtr = 0;
 
-  switch (mapType) {
+  switch (mapType)
+  {
     case associatedMap::InputDataMap:
       if (m_inputDataMap == 0)
         m_inputDataMap = new dataMap((dataMap*)other);
@@ -810,6 +1348,16 @@ dataMap& association::merge(ASSOCIATEDMAP mapType, dataMap* other, bool replace)
           m_inputNoiseMap = other;
       }
       dmPtr = m_inputNoiseMap;
+      break;
+    case associatedMap::InputWeightedNoiseMap:
+      if (m_weightedNoiseMap == 0)
+        m_weightedNoiseMap = new dataMap((dataMap*)other);
+      else
+      {
+        if (m_weightedNoiseMap && replace)
+          m_weightedNoiseMap = other;
+      }
+      dmPtr = m_weightedNoiseMap;
       break;
     case associatedMap::InputFilterMap:
       if (m_inputFilterMap == 0)
@@ -874,6 +1422,16 @@ dataMap& association::merge(ASSOCIATEDMAP mapType, dataMap* other, bool replace)
       }
       dmPtr = m_pixelNoiseMap;
       break;
+    case associatedMap::PixelizedWeightedNoiseMap:
+      if (m_pixelWeightedNoiseMap == 0)
+        m_pixelWeightedNoiseMap = new dataMap((dataMap*)other);
+      else
+      {
+        if (m_pixelWeightedNoiseMap && replace)
+          m_pixelWeightedNoiseMap = other;
+      }
+      dmPtr = m_pixelWeightedNoiseMap;
+      break;
     case associatedMap::PixelizedFilterMap:
       if (m_pixelFilterMap == 0)
         m_pixelFilterMap = new dataMap((dataMap*)other);
@@ -928,6 +1486,16 @@ dataMap& association::merge(ASSOCIATEDMAP mapType, dataMap* other, bool replace)
       }
       dmPtr = m_invNoiseMap;
       break;
+    case associatedMap::InverseWeightedNoiseMap:
+      if (m_invWeightedNoiseMap == 0)
+        m_invWeightedNoiseMap = new dataMap((dataMap*)other);
+      else
+      {
+        if (m_invWeightedNoiseMap && replace)
+          m_invWeightedNoiseMap = other;
+      }
+      dmPtr = m_invWeightedNoiseMap;
+      break;
     case associatedMap::InverseFilterMap:
       if (m_invFilterMap == 0)
         m_invFilterMap = new dataMap((dataMap*)other);
@@ -954,7 +1522,8 @@ dataMap& association::merge(ASSOCIATEDMAP mapType, dataMap* other, bool replace)
 dataSpectrum& association::merge(ASSOCIATEDSPECTRUM graphType, dataSpectrum* other, bool replace) {
   dataSpectrum* dsPtr = 0;
 
-  switch (graphType) {
+  switch (graphType)
+  {
     case associatedSpectrum::TransformedDataSpectrum:
       if (m_transDataGraph == 0)
         m_transDataGraph = new dataSpectrum((dataSpectrum*)other);
@@ -991,6 +1560,16 @@ dataSpectrum& association::merge(ASSOCIATEDSPECTRUM graphType, dataSpectrum* oth
       }
       dsPtr = m_transNoiseGraph;
       break;
+    case associatedSpectrum::TransformedWeightedNoiseSpectrum:
+      if (m_transWeightedNoiseGraph == 0)
+        m_transWeightedNoiseGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_transWeightedNoiseGraph && replace)
+          m_transWeightedNoiseGraph = other;
+      }
+      dsPtr = m_transWeightedNoiseGraph;
+      break;
     case associatedSpectrum::TransformedFilterSpectrum:
       if (m_transFilterGraph == 0)
         m_transFilterGraph = new dataSpectrum((dataSpectrum*)other);
@@ -1009,7 +1588,8 @@ dataSpectrum& association::merge(ASSOCIATEDSPECTRUM graphType, dataSpectrum* oth
       }
       dsPtr = m_transBeamGraph;
       break;
-    case associatedSpectrum::SpectralDataSpectrum:
+    /*
+     case associatedSpectrum::SpectralDataSpectrum:
       if (m_spectDataGraph == 0)
         m_spectDataGraph = new dataSpectrum((dataSpectrum*)other);
       else {
@@ -1026,6 +1606,47 @@ dataSpectrum& association::merge(ASSOCIATEDSPECTRUM graphType, dataSpectrum* oth
           m_ensembleDataGraph = other;
       }
       dsPtr = m_ensembleDataGraph;
+      break;
+    */
+    case associatedSpectrum::EnsembleAveragedNoiseSpectrum:
+      if(m_ensembleAveragedNoiseGraph == 0)
+        m_ensembleAveragedNoiseGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_ensembleAveragedNoiseGraph && replace)
+          m_ensembleAveragedNoiseGraph = other;
+      }
+      dsPtr = m_ensembleAveragedNoiseGraph;
+      break;
+    case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
+      if(m_ensembleAveragedSpectrumGraph == 0)
+        m_ensembleAveragedSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_ensembleAveragedSpectrumGraph && replace)
+          m_ensembleAveragedSpectrumGraph = other;
+      }
+      dsPtr = m_ensembleAveragedSpectrumGraph;
+      break;
+    case associatedSpectrum::BinnedSpectrumSpectrum:
+      if(m_binnedSpectrumGraph == 0)
+        m_binnedSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_binnedSpectrumGraph && replace)
+          m_binnedSpectrumGraph = other;
+      }
+      dsPtr = m_binnedSpectrumGraph;
+      break;
+    case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
+      if(m_ensembleAveragedBinnedSpectrumGraph == 0)
+        m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_ensembleAveragedBinnedSpectrumGraph && replace)
+          m_ensembleAveragedBinnedSpectrumGraph = other;
+      }
+      dsPtr = m_ensembleAveragedBinnedSpectrumGraph;
       break;
   }
 
@@ -1139,16 +1760,23 @@ bool association::exists(FILETYPE ft) {
       return (bool) m_inputData;
     case fileType::InputWeights:
       return (bool) m_inputWeights;
+    case fileType::WeightedData:
+      return (bool) m_weightedInput;
     case fileType::InputFilter:
       return (bool) m_inputFilter;
     case fileType::InputNoise:
       return (bool) m_inputNoise;
+    case fileType::InputWeightedNoise:
+      return (bool) m_weightedNoise;
     case fileType::InputBeam:
       return (bool) m_inputBeam;
+
     case fileType::PixelizedData:
       return (bool) m_pixelData;
     case fileType::PixelizedWeights:
       return (bool) m_pixelWeights;
+    case fileType::WeightedPixel:
+      return (bool) m_weightedPixel;
     case fileType::PixelOccupancy:
       return (bool) m_pixelOccupancy;
     case fileType::PixelizedFilter:
@@ -1157,36 +1785,81 @@ bool association::exists(FILETYPE ft) {
       return (bool) m_pixelBeam;
     case fileType::PixelizedNoise:
       return (bool) m_pixelNoise;
+    case fileType::PixelizedWeightedNoise:
+      return (bool) m_pixelWeightedNoise;
+
     case fileType::TransformedData:
       return (bool) m_transData;
     case fileType::TransformedWeights:
       return (bool) m_transWeights;
+    case fileType::WeightedTransform:
+      return (bool) m_weightedTransform;
     case fileType::TransformedNoise:
       return (bool) m_transNoise;
+    case fileType::TransformedWeightedNoise:
+      return (bool) m_transWeightedNoise;
     case fileType::TransformedFilter:
       return (bool) m_transFilter;
     case fileType::TransformedBeam:
       return (bool) m_transBeam;
+
     case fileType::AlmData:
       return (bool) m_almData;
     case fileType::AlmWeights:
       return (bool) m_almWeights;
+    case fileType::WeightedAlm:
+      return (bool) m_weightedAlm;
     case fileType::AlmNoise:
       return (bool) m_almNoise;
+    case fileType::AlmWeightedNoise:
+      return (bool) m_weightedNoiseAlm;
     case fileType::AlmFilter:
       return (bool) m_almFilter;
     case fileType::AlmBeam:
       return (bool) m_almBeam;
+
     case fileType::InverseData:
       return (bool) m_invData;
     case fileType::InverseWeights:
       return (bool) m_invWeights;
+    case fileType::WeightedInverse:
+      return (bool) m_weightedInverse;
     case fileType::InverseFilter:
       return (bool) m_invFilter;
     case fileType::InverseNoise:
       return (bool) m_invNoise;
+    case fileType::InverseWeightedNoise:
+      return (bool) m_invWeightedNoise;
     case fileType::InverseBeam:
       return (bool) m_invBeam;
+
+    case fileType::EnsembleAveragedNoise:
+      return (bool) m_ensembleAveragedNoise;
+    case fileType::EnsembleIterationNoise:
+      return (bool) m_ensembleIterationNoise;
+    case fileType::EnsembleAveragedSpectrum:
+      return (bool) m_ensembleAveragedSpectrum;
+    case fileType::EnsembleIterationSpectrum:
+      return (bool) m_ensembleIterationSpectrum;
+    case fileType::BinnedSpectrum:
+      return (bool) m_binnedSpectrum;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      return (bool) m_ensembleAveragedBinnedSpectrum;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      return (bool) m_ensembleIterationBinnedSpectrum;
+    case fileType::ModeModeMatrix:
+      return (bool) m_ModeModeMatrix;
+    case fileType::InstrumentEffectsMatrix:
+      return (bool) m_InstrumentEffectsMatrix;
+    case fileType::BinningMatrix:
+      return (bool) m_BinningMatrix;
+    case fileType::UnbinningMatrix:
+      return (bool) m_UnbinningMatrix;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      return (bool) m_BinnedInstrumentEffectsMatrix;
+    case fileType::InverseBinnedInstrumentMatrix:
+      return (bool) m_InverseBinnedInstrumentMatrix;
+    /*
     case fileType::SpectralData:
       return (bool) m_spectData;
     case fileType::EnsembleData:
@@ -1197,15 +1870,16 @@ bool association::exists(FILETYPE ft) {
     case fileType::InverseBinMatrix:
     case fileType::InverseModeMatrix:
       return (bool)m_inverseMatrix && (m_inverseMatrix->dataType() == ft);
-
-    /* Pseudo targets: these are really dependencies. */
+    */
+    /*
+    // Pseudo targets: these are really dependencies.
     case fileType::WeightedData:
       return (bool) m_inputData && (bool) m_inputWeights;
     case fileType::WeightedPixel:
       return (bool) m_pixelData && (bool) m_pixelWeights;
     case fileType::WeightedTransform:
       return (bool) m_transData && (bool) m_transWeights;
-
+    */
     case fileType::Null:
     default:
       break;
@@ -1227,6 +1901,9 @@ bool association::exists(ASSOCIATEDMAP mt) {
       return (bool) m_inputBeamMap;
     case associatedMap::WeightedDataMap:
       return (bool) m_inputMap;
+    case associatedMap::InputWeightedNoiseMap:
+      return (bool) m_weightedNoiseMap;
+
     case associatedMap::PixelizedDataMap:
       return (bool) m_pixelDataMap;
     case associatedMap::PixelizedWeightsMap:
@@ -1235,25 +1912,29 @@ bool association::exists(ASSOCIATEDMAP mt) {
       return (bool) m_pixelMap;
     case associatedMap::PixelOccupancyMap:
       return (bool) m_pixelOccupancyMap;
-    case associatedMap::InverseDataMap:
-      return (bool) m_invDataMap;
-    case associatedMap::InverseWeightsMap:
-      return (bool) m_invWeightsMap;
-    case associatedMap::WeightedInverseMap:
-      return (bool) m_invMap;
     case associatedMap::PixelizedNoiseMap:
       return (bool) m_pixelNoiseMap;
     case associatedMap::PixelizedFilterMap:
       return (bool) m_pixelFilterMap;
     case associatedMap::PixelizedBeamMap:
       return (bool) m_pixelBeamMap;
+    case associatedMap::PixelizedWeightedNoiseMap:
+      return (bool) m_pixelWeightedNoiseMap;
+
+    case associatedMap::InverseDataMap:
+      return (bool) m_invDataMap;
+    case associatedMap::InverseWeightsMap:
+      return (bool) m_invWeightsMap;
+    case associatedMap::WeightedInverseMap:
+      return (bool) m_invMap;
     case associatedMap::InverseNoiseMap:
       return (bool) m_invNoiseMap;
     case associatedMap::InverseFilterMap:
       return (bool) m_invFilterMap;
     case associatedMap::InverseBeamMap:
       return (bool) m_invBeamMap;
-
+    case associatedMap::InverseWeightedNoiseMap:
+      return (bool) m_invWeightedNoiseMap;
     case associatedMap::Null:
     default:
       break;
@@ -1269,16 +1950,29 @@ bool association::exists(ASSOCIATEDSPECTRUM st) {
       return (bool) m_transWeightsGraph;
     case associatedSpectrum::WeightedTransformSpectrum:
       return (bool) m_transGraph;
+    /*
     case associatedSpectrum::SpectralDataSpectrum:
       return (bool) m_spectDataGraph;
     case associatedSpectrum::EnsembleDataSpectrum:
       return (bool) m_ensembleDataGraph;
+    */
     case associatedSpectrum::TransformedFilterSpectrum:
       return (bool) m_transFilterGraph;
     case associatedSpectrum::TransformedNoiseSpectrum:
       return (bool) m_transNoiseGraph;
     case associatedSpectrum::TransformedBeamSpectrum:
       return (bool) m_transBeamGraph;
+    case associatedSpectrum::TransformedWeightedNoiseSpectrum:
+      return (bool) m_transWeightedNoiseGraph;
+
+    case associatedSpectrum::EnsembleAveragedNoiseSpectrum:
+      return (bool) m_ensembleAveragedNoiseGraph;
+    case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
+      return (bool) m_ensembleAveragedSpectrumGraph;
+    case associatedSpectrum::BinnedSpectrumSpectrum:
+      return (bool) m_binnedSpectrumGraph;
+    case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
+      return (bool) m_ensembleAveragedBinnedSpectrumGraph;
 
     case associatedSpectrum::Null:
     default:
@@ -1315,54 +2009,79 @@ baseData* association::getData(FILETYPE ft) {
       return m_inputData;
     case fileType::InputWeights:
       return m_inputWeights;
+    case fileType::WeightedData:
+      return m_weightedInput;
     case fileType::InputNoise:
       return m_inputNoise;
     case fileType::InputFilter:
       return m_inputFilter;
     case fileType::InputBeam:
       return m_inputBeam;
+    case fileType::InputWeightedNoise:
+      return m_weightedNoise;
+
     case fileType::PixelizedData:
       return m_pixelData;
     case fileType::PixelizedWeights:
       return m_pixelWeights;
+    case fileType::WeightedPixel:
+      return m_weightedPixel;
     case fileType::PixelOccupancy:
       return m_pixelOccupancy;
+    case fileType::PixelizedNoise:
+      return m_pixelNoise;
+    case fileType::PixelizedFilter:
+      return m_pixelFilter;
+    case fileType::PixelizedBeam:
+      return m_pixelBeam;
+    case fileType::PixelizedWeightedNoise:
+      return m_pixelWeightedNoise;
+
     case fileType::TransformedData:
       return m_transData;
     case fileType::TransformedWeights:
       return m_transWeights;
+    case fileType::WeightedTransform:
+      return m_weightedTransform;
+    case fileType::TransformedNoise:
+      return m_transNoise;
+    case fileType::TransformedFilter:
+      return m_transFilter;
+    case fileType::TransformedBeam:
+      return m_transBeam;
+    case fileType::TransformedWeightedNoise:
+      return m_transWeightedNoise;
+
     case fileType::AlmData:
       return m_almData;
     case fileType::AlmWeights:
       return m_almWeights;
+    case fileType::WeightedAlm:
+      return m_weightedAlm;
     case fileType::AlmNoise:
       return m_almNoise;
     case fileType::AlmFilter:
       return m_almFilter;
     case fileType::AlmBeam:
       return m_almBeam;
+    case fileType::AlmWeightedNoise:
+      return m_weightedNoiseAlm;
+
     case fileType::InverseData:
       return m_invData;
     case fileType::InverseWeights:
       return m_invWeights;
+    case fileType::WeightedInverse:
+      return m_weightedInverse;
     case fileType::InverseBeam:
       return m_invBeam;
     case fileType::InverseNoise:
       return m_invNoise;
     case fileType::InverseFilter:
       return m_invFilter;
-    case fileType::PixelizedNoise:
-      return m_pixelNoise;
-    case fileType::TransformedNoise:
-      return m_transNoise;
-    case fileType::PixelizedFilter:
-      return m_pixelFilter;
-    case fileType::TransformedFilter:
-      return m_transFilter;
-    case fileType::PixelizedBeam:
-      return m_pixelBeam;
-    case fileType::TransformedBeam:
-      return m_transBeam;
+    case fileType::InverseWeightedNoise:
+      return m_invWeightedNoise;
+    /*
     case fileType::SpectralData:
       return m_spectData;
     case fileType::EnsembleData:
@@ -1373,6 +2092,34 @@ baseData* association::getData(FILETYPE ft) {
     case fileType::InverseBinMatrix:
     case fileType::InverseModeMatrix:
       return m_inverseMatrix;
+    */
+    case fileType::EnsembleAveragedNoise:
+      return m_ensembleAveragedNoise;
+    case fileType::EnsembleIterationNoise:
+      return m_ensembleIterationNoise;
+    case fileType::EnsembleAveragedSpectrum:
+      return m_ensembleAveragedSpectrum;
+    case fileType::EnsembleIterationSpectrum:
+      return m_ensembleIterationSpectrum;
+    case fileType::BinnedSpectrum:
+      return m_binnedSpectrum;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      return m_ensembleAveragedBinnedSpectrum;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      return m_ensembleIterationBinnedSpectrum;
+    case fileType::ModeModeMatrix:
+      return m_ModeModeMatrix;
+    case fileType::InstrumentEffectsMatrix:
+      return m_InstrumentEffectsMatrix;
+    case fileType::BinningMatrix:
+      return m_BinningMatrix;
+    case fileType::UnbinningMatrix:
+      return m_UnbinningMatrix;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      return m_BinnedInstrumentEffectsMatrix;
+    case fileType::InverseBinnedInstrumentMatrix:
+      return m_InverseBinnedInstrumentMatrix;
+
     default:
       break;
   }
@@ -1387,6 +2134,15 @@ dataMap* association::getMap(ASSOCIATEDMAP mt) {
       return m_inputWeightsMap;
     case associatedMap::WeightedDataMap:
       return m_inputMap;
+    case associatedMap::InputNoiseMap:
+      return m_inputNoiseMap;
+    case associatedMap::InputFilterMap:
+      return m_inputFilterMap;
+    case associatedMap::InputBeamMap:
+      return m_inputBeamMap;
+    case associatedMap::InputWeightedNoiseMap:
+      return m_weightedNoiseMap;
+
     case associatedMap::PixelizedDataMap:
       return m_pixelDataMap;
     case associatedMap::PixelizedWeightsMap:
@@ -1395,6 +2151,15 @@ dataMap* association::getMap(ASSOCIATEDMAP mt) {
       return m_pixelMap;
     case associatedMap::PixelOccupancyMap:
       return m_pixelOccupancyMap;
+    case associatedMap::PixelizedNoiseMap:
+      return m_pixelNoiseMap;
+    case associatedMap::PixelizedFilterMap:
+      return m_pixelFilterMap;
+    case associatedMap::PixelizedBeamMap:
+      return m_pixelBeamMap;
+    case associatedMap::PixelizedWeightedNoiseMap:
+      return m_pixelWeightedNoiseMap;
+
     case associatedMap::InverseDataMap:
       return m_invDataMap;
     case associatedMap::InverseWeightsMap:
@@ -1407,18 +2172,8 @@ dataMap* association::getMap(ASSOCIATEDMAP mt) {
       return m_invFilterMap;
     case associatedMap::InverseBeamMap:
       return m_invBeamMap;
-    case associatedMap::InputNoiseMap:
-      return m_inputNoiseMap;
-    case associatedMap::InputFilterMap:
-      return m_inputFilterMap;
-    case associatedMap::InputBeamMap:
-      return m_inputBeamMap;
-    case associatedMap::PixelizedNoiseMap:
-      return m_pixelNoiseMap;
-    case associatedMap::PixelizedFilterMap:
-      return m_pixelFilterMap;
-    case associatedMap::PixelizedBeamMap:
-      return m_pixelBeamMap;
+    case associatedMap::InverseWeightedNoiseMap:
+      return m_invWeightedNoiseMap;
     case associatedMap::Null:
     default:
       break;
@@ -1434,16 +2189,29 @@ dataSpectrum* association::getGraph(ASSOCIATEDSPECTRUM st) {
       return m_transWeightsGraph;
     case associatedSpectrum::WeightedTransformSpectrum:
       return m_transGraph;
+    /*
     case associatedSpectrum::SpectralDataSpectrum:
       return m_spectDataGraph;
     case associatedSpectrum::EnsembleDataSpectrum:
       return m_ensembleDataGraph;
+    */
     case associatedSpectrum::TransformedFilterSpectrum:
       return m_transFilterGraph;
     case associatedSpectrum::TransformedNoiseSpectrum:
       return m_transNoiseGraph;
     case associatedSpectrum::TransformedBeamSpectrum:
       return m_transBeamGraph;
+    case associatedSpectrum::TransformedWeightedNoiseSpectrum:
+      return m_transWeightedNoiseGraph;
+    case associatedSpectrum::EnsembleAveragedNoiseSpectrum:
+      return m_ensembleAveragedNoiseGraph;
+    case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
+      return m_ensembleAveragedSpectrumGraph;
+    case associatedSpectrum::BinnedSpectrumSpectrum:
+      return m_binnedSpectrumGraph;
+    case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
+      return m_ensembleAveragedBinnedSpectrumGraph;
+
     case associatedSpectrum::Null:
     default:
       break;
@@ -1476,7 +2244,7 @@ void association::addEngine(DATAENGINES de, ...) {
   ERRORCODES recursiveError = noErrors;
 
   if (exists(de)) {
-    int offset = (int)de + (int)allTypes::SpectralDataSpectrum;
+    int offset = (int)de + (int)allTypes::EnsembleAveragedBinnedSpectrum;//SpectralDataSpectrum;
     reset((ALLTYPES)offset);
   }
 
@@ -1650,6 +2418,60 @@ void association::workSpaceTo(FILETYPE type, M_OP operation) {
       m_inputWeights->dataType(fileType::InputWeights);
       m_inputWeights->mapType(associatedMap::InputWeightsMap);
       break;
+    case fileType::InputNoise:
+      if(operation == Replace)
+      {
+        if(m_inputNoise)
+          delete m_inputNoise;
+        m_inputNoise = m_workSpace;
+        m_workSpace = 0;
+      }
+      else
+      {
+        if(!m_inputNoise)
+          m_inputNoise = new inputMatrixData(m_workSpace);
+        else
+          matrixTransfer(m_inputNoise, m_workSpace, operation);
+      }
+      m_inputNoise->dataType(fileType::InputNoise);
+      m_inputNoise->mapType(associatedMap::InputNoiseMap);
+      break;
+    case fileType::InputFilter:
+      if(operation == Replace)
+      {
+        if(m_inputFilter)
+          delete m_inputFilter;
+        m_inputFilter = m_workSpace;
+        m_workSpace = 0;
+      }
+      else
+      {
+        if(!m_inputFilter)
+          m_inputFilter = new inputMatrixData(m_workSpace);
+        else
+          matrixTransfer(m_inputFilter, m_workSpace, operation);
+      }
+      m_inputFilter->dataType(fileType::InputFilter);
+      m_inputFilter->mapType(associatedMap::InputFilterMap);
+      break;
+    case fileType::InputBeam:
+      if(operation == Replace)
+      {
+        if(m_inputBeam)
+          delete m_inputBeam;
+        m_inputBeam = m_workSpace;
+        m_workSpace = 0;
+      }
+      else
+      {
+        if(!m_inputBeam)
+          m_inputBeam = new inputMatrixData(m_workSpace);
+        else
+          matrixTransfer(m_inputBeam, m_workSpace, operation);
+      }
+      m_inputBeam->dataType(fileType::InputBeam);
+      m_inputBeam->mapType(associatedMap::InputBeamMap);
+      break;
     default:
       break;
   }
@@ -1730,8 +2552,14 @@ void association::addEmpty(FILETYPE type, int x, int y, int z) {
     case fileType::InputWeights:
       m_inputWeights = new matrixData<double>(x,y,type);
       break;
+    case fileType::WeightedData:
+      m_weightedInput = new matrixData<double>(x, y, type);
+      break;
     case fileType::InputNoise:
       m_inputNoise = new matrixData<double>(x,y,type);
+      break;
+    case fileType::InputWeightedNoise:
+      m_weightedNoise = new matrixData<double>(x, y, type);
       break;
     case fileType::InputFilter:
       m_inputFilter = new matrixData<double>(x,y,type);
@@ -1739,11 +2567,15 @@ void association::addEmpty(FILETYPE type, int x, int y, int z) {
     case fileType::InputBeam:
       m_inputBeam = new matrixData<double>(x,y,type);
       break;
+
     case fileType::PixelizedData:
       m_pixelData = new vectorData<double>(x,type);
       break;
     case fileType::PixelizedWeights:
       m_pixelWeights = new vectorData<double>(x,type);
+      break;
+    case fileType::WeightedPixel:
+      m_weightedPixel = new vectorData<double>(x, type);
       break;
     case fileType::PixelOccupancy:
       m_pixelOccupancy = new vectorData<int>(x,type);
@@ -1754,20 +2586,43 @@ void association::addEmpty(FILETYPE type, int x, int y, int z) {
     case fileType::PixelizedNoise:
       m_pixelNoise = new vectorData<double>(x,type);
       break;
+    case fileType::PixelizedWeightedNoise:
+      m_pixelWeightedNoise = new vectorData<double>(x, type);
+      break;
     case fileType::PixelizedBeam:
       m_pixelBeam = new vectorData<double>(x,type);
       break;
+
     case fileType::InverseData:
       m_invData = new vectorData<double>(x,type);
       break;
     case fileType::InverseWeights:
       m_invWeights = new vectorData<double>(x,type);
       break;
+    case fileType::WeightedInverse:
+      m_weightedInverse = new vectorData<double>(x, type);
+      break;
+    case fileType::InverseFilter:
+      m_invFilter = new vectorData<double>(x, type);
+      break;
+    case fileType::InverseBeam:
+      m_invBeam = new vectorData<double>(x, type);
+      break;
+    case fileType::InverseNoise:
+      m_invNoise = new vectorData<double>(x, type);
+      break;
+    case fileType::InverseWeightedNoise:
+      m_invWeightedNoise = new vectorData<double>(x, type);
+      break;
+
     case fileType::TransformedData:
       m_transData = new vectorData<double>(x,type);
       break;
     case fileType::TransformedWeights:
       m_transWeights = new vectorData<double>(x,type);
+      break;
+    case fileType::WeightedTransform:
+      m_weightedTransform = new vectorData<double>(x, type);
       break;
     case fileType::TransformedBeam:
       m_transBeam = new vectorData<double>(x,type);
@@ -1775,15 +2630,35 @@ void association::addEmpty(FILETYPE type, int x, int y, int z) {
     case fileType::TransformedNoise:
       m_transNoise = new vectorData<double>(x,type);
       break;
+    case fileType::TransformedWeightedNoise:
+      m_transWeightedNoise = new vectorData<double>(x, type);
+      break;
     case fileType::TransformedFilter:
       m_transFilter = new vectorData<double>(x,type);
       break;
+
     case fileType::AlmData:
       m_almData = new cubeData<std::complex<double> >(x,y,z,type);
       break;
     case fileType::AlmWeights:
       m_almWeights = new cubeData<std::complex<double> >(x,y,z,type);
       break;
+    case fileType::WeightedAlm:
+      m_weightedAlm = new cubeData<std::complex<double> >(x, y, z, type);
+      break;
+    case fileType::AlmFilter:
+      m_almFilter = new cubeData<std::complex<double> >(x, y, z, type);
+      break;
+    case fileType::AlmBeam:
+      m_almBeam = new cubeData<std::complex<double> >(x, y, z, type);
+      break;
+    case fileType::AlmNoise:
+      m_almNoise = new cubeData<std::complex<double> >(x, y, z, type);
+      break;
+    case fileType::AlmWeightedNoise:
+      m_weightedNoiseAlm = new cubeData<std::complex<double> >(x, y, z, type);
+      break;
+    /*
     case fileType::SpectralData:
       m_spectData = new vectorData<double>(x,type);
       break;
@@ -1799,6 +2674,46 @@ void association::addEmpty(FILETYPE type, int x, int y, int z) {
     case fileType::InverseModeMatrix:
       m_inverseMatrix = new matrixData<double>(x,y,type);
       m_inverseMatrix->format((type == fileType::InverseBinMatrix) ? Bin : Mode);
+      break;
+    */
+    case fileType::EnsembleAveragedNoise:
+      m_ensembleAveragedNoise = new vectorData<double>(x, type);
+      break;
+    case fileType::EnsembleIterationNoise:
+      m_ensembleIterationNoise = new matrixData<double>(x, y, type);
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      m_ensembleAveragedSpectrum  = new vectorData<double>(x, type);;
+      break;
+    case fileType::EnsembleIterationSpectrum:
+      m_ensembleIterationSpectrum = new matrixData<double>(x, y, type);
+      break;
+    case fileType::BinnedSpectrum:
+      m_binnedSpectrum  = new vectorData<double>(x, type);
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      m_ensembleAveragedBinnedSpectrum  = new vectorData<double>(x, type);
+      break;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      m_ensembleIterationBinnedSpectrum = new matrixData<double>(x, y, type);
+      break;
+    case fileType::ModeModeMatrix:
+      m_ModeModeMatrix = new matrixData<double>(x, y, type);
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      m_InstrumentEffectsMatrix = new matrixData<double>(x, y, type);
+      break;
+    case fileType::BinningMatrix:
+      m_BinningMatrix = new matrixData<double>(x, y, type);
+      break;
+    case fileType::UnbinningMatrix:
+      m_UnbinningMatrix = new matrixData<double>(x, y, type);
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      m_BinnedInstrumentEffectsMatrix = new matrixData<double>(x, y, type);
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      m_InverseBinnedInstrumentMatrix = new matrixData<double>(x, y, type);
       break;
     default:
       break;
@@ -1820,11 +2735,23 @@ void association::getResolution(FILETYPE dataType, double& RARes, double& decRes
       RARes = inputWeights()->RARes();
       decRes = inputWeights()->DecRes();;
       break;
+    case fileType::WeightedData:
+      if(!exists(dataType))
+        throw undefinedSizeError;
+      RARes = weightedInput()->RARes();
+      decRes = weightedInput()->DecRes();
+      break;
     case fileType::InputNoise:
       if (!exists(dataType))
         throw undefinedSizeError;
       RARes = inputNoise()->RARes();
-      decRes = inputNoise()->DecRes();;
+      decRes = inputNoise()->DecRes();
+      break;
+    case fileType::InputWeightedNoise:
+      if (!exists(dataType))
+          throw undefinedSizeError;
+      RARes = weightedInputNoise()->RARes();
+      decRes = weightedInputNoise()->DecRes();
       break;
     case fileType::InputFilter:
       if (!exists(dataType))
@@ -2016,8 +2943,10 @@ void association::createWhiteNoise(vectorData<double>* vdd) {
 void association::createShotNoise(vectorData<double>* vdd) {
   if (!m_pixelEngine)
     throw noPixelizerError;
+
   if (m_pixelEngine->pixelizerScheme() != HealPIX)
     throw noPixelizerError;
+
   HealPIXPixelizer* hp = (HealPIXPixelizer*)m_pixelEngine;
 
   if (!m_transData)
@@ -2036,6 +2965,103 @@ void association::createShotNoise(vectorData<double>* vdd) {
   return;
 }
 
+void association::generateWeightedData(FILETYPE ft) {
+  matrixData<double>* dataInput  = 0; //m_inputData;
+  matrixData<double>* dataWeight = 0; //m_inputWeights;
+  matrixData<double>* weightedData;
+
+  vectorData<double>* pixelData   = 0; //m_pixelData;
+  vectorData<double>* pixelWeight = 0; //m_pixelWeights;
+  vectorData<double>* weightedPixel;
+
+  switch(ft)
+  {
+    case fileType::WeightedData:
+      if(m_inputData == 0 ||
+         m_inputWeights == 0)
+        return;
+
+      dataInput = m_inputData;
+      dataWeight = m_inputWeights;
+
+      weightedData = new matrixData<double>(dataInput->cols(), dataInput->rows(), fileType::WeightedData);
+      weightedData->initialize();
+
+      for(int r = 0; r < dataInput->rows(); r += 1)
+      {
+        for(int c = 0; c < dataInput->cols(); c += 1)
+        {
+          (*weightedData)[c][r] = (*dataInput)[c][r] * (*dataWeight)[c][r];
+        }
+      }
+      addData(weightedData);
+      break;
+    case fileType::InputWeightedNoise:
+      if(m_inputNoise == 0 ||
+         m_inputWeights == 0)
+        return;
+
+      dataInput = m_inputNoise;
+      dataWeight = m_inputWeights;
+
+      weightedData = new matrixData<double>(dataInput->cols(), dataInput->rows(), fileType::InputWeightedNoise);
+      weightedData->initialize();
+
+      for(int r = 0; r < dataInput->rows(); r += 1)
+      {
+        for(int c = 0; c < dataInput->cols(); c += 1)
+        {
+          (*weightedData)[c][r] = (*dataInput)[c][r] * (*dataWeight)[c][r];
+        }
+      }
+
+      addData(weightedData);
+      break;
+    case fileType::WeightedPixel:
+      if(m_pixelData ==0 ||
+         m_pixelWeights == 0)
+        return;
+
+      pixelData = m_pixelData;
+      pixelWeight = m_pixelWeights;
+
+      weightedPixel = new vectorData<double>(pixelData->rows(), fileType::WeightedPixel);
+      weightedPixel->initialize();
+
+      // set all the pixelizer info
+      weightedPixel->sides(pixelData->sides());
+      weightedPixel->pixelScheme(pixelData->pixelScheme());
+      weightedPixel->layout(pixelData->layout());
+
+      for(int r = 0; r < pixelData->rows(); r += 1)
+        (*weightedPixel)[r] = (*pixelData)[r] * (*pixelWeight)[r];
+
+      addData(weightedPixel);
+      break;
+    case fileType::PixelizedWeightedNoise:
+      if(m_pixelNoise == 0 ||
+         m_pixelWeights == 0)
+        return;
+
+      pixelData = m_pixelNoise;
+      pixelWeight = m_pixelWeights;
+
+      weightedPixel = new vectorData<double>(pixelData->rows(), fileType::PixelizedWeightedNoise);
+      weightedPixel->initialize();
+
+      weightedPixel->sides(pixelData->sides());
+      weightedPixel->pixelScheme(pixelData->pixelScheme());
+      weightedPixel->layout(pixelData->layout());
+
+      for(int r = 0; r < pixelData->rows(); r += 1)
+        (*weightedPixel)[r] = (*pixelData)[r] * (*pixelWeight)[r];
+      addData(weightedPixel);
+      break;
+    default:
+      return;
+  }
+}
+
 /* Added for new lib layer compat on Novemer 2, 2010 by J.D.
 Modified version of above functions which does not assume "ownership"
 of pixelizer; returns true on success, false otherwise... */
@@ -2052,16 +3078,19 @@ void association::generatePixelData(Pixelizer *pixelizer, FILETYPE ft) {
   if (!exists(ft))
     throw noDataError;
 
+  if (ft > fileType::InputBeam)
+    throw noDataError;
+
   nPixels = 12 * pixelizer->scale() * pixelizer->scale();
   m_pixelAverage  = 0;
   m_pixelVariance = 0;
 
   int offset = (int)fileType::PixelizedData - (int)fileType::InputData;
   FILETYPE pt = static_cast<FILETYPE>((int)ft + offset);
-  if (ft > fileType::InputBeam)
-    throw noDataError;
+
   if (pt >= fileType::PixelOccupancy)
     pt = static_cast<FILETYPE>((int)pt + 1);
+
   discardRelation(pt);
   addEmpty(pt,nPixels);
 
@@ -2084,6 +3113,15 @@ void association::generatePixelData(Pixelizer *pixelizer, FILETYPE ft) {
         addEmpty(fileType::PixelOccupancy, nPixels);
       }
       pix = m_pixelWeights;
+      occ = m_pixelOccupancy;
+      break;
+    case fileType::WeightedData:
+      if(!m_pixelOccupancy)
+      {
+        discardRelation(fileType::PixelOccupancy);
+        addEmpty(fileType::PixelOccupancy, nPixels);
+      }
+      pix = m_weightedPixel;
       occ = m_pixelOccupancy;
       break;
     case fileType::InputNoise:
@@ -2120,6 +3158,15 @@ void association::generatePixelData(Pixelizer *pixelizer, FILETYPE ft) {
       pix = m_pixelBeam;
       occ = m_pixelOccupancy;
       break;
+    case fileType::InputWeightedNoise:
+      if(!m_pixelOccupancy)
+      {
+        discardRelation(fileType::PixelOccupancy);
+        addEmpty(fileType::PixelOccupancy, nPixels);
+      }
+      pix = m_pixelWeightedNoise;
+      occ = m_pixelOccupancy;
+      break;
   }
   pix->initialize();
 
@@ -2128,7 +3175,7 @@ void association::generatePixelData(Pixelizer *pixelizer, FILETYPE ft) {
   pix->sides(pixelizer->scale());
   
   if (occ) {
-   occ->initialize();
+    occ->initialize();
     occ->pixelScheme(pixelizer->pixelizerScheme());
     occ->layout(pixelizer->pixelLayout());
     occ->sides(pixelizer->scale());
@@ -2189,26 +3236,24 @@ bool association::generateTransformedData(Transformer *transformer, FILETYPE ft)
   if (!transformer)
     return false;
 
+  if (ft < fileType::PixelizedData || ft > fileType::PixelizedBeam)
+    throw noDataError;
+
   int ftID = static_cast<int>(ft);
-  // if we are transforming data or weights
-  if(ftID <= static_cast<int>(fileType::PixelizedWeights))
-  {
-    // and we don't have a pixelized data or weight
-    if(!exists(ft))
-      return false;
-  }
 
   int transOffset = (int)fileType::TransformedData - (int)fileType::PixelizedData;
   int almOffset   = (int)fileType::AlmData - (int)fileType::PixelizedData;
+
   FILETYPE transType = static_cast<FILETYPE>((int)ft + transOffset);
   FILETYPE almType   = static_cast<FILETYPE>((int) ft + almOffset);
 
-  if (ft < fileType::PixelizedData || ft > fileType::PixelizedBeam)
-    throw noDataError;
-  if (ft >= fileType::PixelOccupancy) {
-    transType = static_cast<FILETYPE>((int)ft + 1);
-    almType   = static_cast<FILETYPE>((int)ft + 1);
+  if (ft >= fileType::PixelOccupancy)
+  {
+    transType = static_cast<FILETYPE>((int)transType - 1);
+    almType   = static_cast<FILETYPE>((int)almType - 1);
   }
+
+
   discardRelation(transType);
   addEmpty(transType,transformer->maxIndex());
   addEmpty(almType,transformer->maxIndex(),transformer->maxIndex());
@@ -2233,6 +3278,11 @@ bool association::generateTransformedData(Transformer *transformer, FILETYPE ft)
       pix  = m_pixelWeights;
       trans = m_transWeights;
       alm = m_almWeights;
+      break;
+    case fileType::WeightedPixel:
+      pix = m_weightedPixel;
+      trans = m_weightedTransform;
+      alm = m_weightedAlm;
       break;
     case fileType::PixelizedNoise:
 //      discardRelation(fileType::TransformedNoise);
@@ -2263,6 +3313,11 @@ bool association::generateTransformedData(Transformer *transformer, FILETYPE ft)
       pix = m_pixelBeam;
       trans = m_transBeam;
       alm = m_almBeam;
+      break;
+    case fileType::PixelizedWeightedNoise:
+      pix = m_pixelWeightedNoise;
+      trans = m_transWeightedNoise;
+      alm = m_weightedNoiseAlm;
       break;
     default:
       return false;
@@ -2332,6 +3387,11 @@ bool association::generateTransformedDataFromAlm(Transformer* transformer, FILET
       trans = m_transWeights;
       alm = m_almWeights;
       break;
+    case fileType::WeightedAlm:
+      m_weightedTransform = new vectorData<double>(maxInd, transType);
+      trans = m_weightedTransform;
+      alm = m_weightedAlm;
+      break;
     case fileType::AlmNoise:
       m_transNoise = new vectorData<double>(maxInd, transType);
       trans = m_transNoise;
@@ -2346,6 +3406,11 @@ bool association::generateTransformedDataFromAlm(Transformer* transformer, FILET
       m_transBeam = new vectorData<double>(maxInd, transType);
       trans = m_transBeam;
       alm = m_almBeam;
+      break;
+    case fileType::AlmWeightedNoise:
+      m_transWeightedNoise = new vectorData<double>(maxInd, transType);
+      trans = m_transWeightedNoise;
+      alm = m_weightedNoiseAlm;
       break;
     default:
       return false;
@@ -2372,6 +3437,7 @@ bool association::generateTransformedDataFromAlm(Transformer* transformer, FILET
   // this will copy our alm to a Alm<hPoint> for HealPix
   transformer->loadAlmMap(this, ft);
   transformer->transformFromAlm(this, ft);
+  //transformer->storeMap(this, ft);
 
   m_sequence = transform;
   return true;
@@ -2381,9 +3447,151 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   if (!spect)
     return false;
 
-  if (!m_transData || !m_transWeights)
+  if (!m_transData || !m_transWeights || !m_weightedTransform)
     return false;
 
+  spect->initialize();
+
+  //if(exists(fileType::TransformedNoise))
+  if(exists(fileType::TransformedWeightedNoise))
+  {
+    if(!exists(fileType::EnsembleAveragedNoise))
+    {
+      // this calls discard relation which deletes all our data!
+      //addEmpty(fileType::EnsembleAveragedNoise, spect->maxIndex());
+      m_ensembleAveragedNoise = new vectorData<double>(spect->maxIndex(), fileType::EnsembleAveragedNoise);
+      m_ensembleAveragedNoise->initialize();
+
+      //addEmpty(fileType::EnsembleIterationNoise, spect->maxIndex(), spect->ensembleIterations());
+      m_ensembleIterationNoise = new matrixData<double>(spect->maxIndex(), spect->ensembleIterations(), fileType::EnsembleIterationNoise);
+      m_ensembleIterationNoise->initialize();
+
+      spect->calculateEnsembleAverage(this, fileType::EnsembleAveragedNoise);
+    }
+    //else
+    //  spect->calculateEnsembleAverage(this, fileType::EnsembleAveragedNoise);
+  }
+  else
+    throw dataMismatchError;
+
+  if(exists(fileType::WeightedTransform))
+  {
+    if(!exists(fileType::EnsembleAveragedSpectrum))
+    {
+      //addEmpty(fileType::EnsembleAveragedSpectrum, spect->maxIndex());
+      m_ensembleAveragedSpectrum = new vectorData<double>(spect->maxIndex(), fileType::EnsembleAveragedSpectrum);
+      m_ensembleAveragedSpectrum->initialize();
+
+      //addEmpty(fileType::EnsembleIterationSpectrum, spect->maxIndex(), spect->ensembleIterations());
+      m_ensembleIterationSpectrum  = new matrixData<double>(spect->maxIndex(), spect->ensembleIterations(), fileType::EnsembleIterationSpectrum);
+      m_ensembleIterationSpectrum->initialize();
+
+      spect->calculateEnsembleAverage(this, fileType::EnsembleAveragedSpectrum);
+    }
+    //else
+    //  spect->calculateEnsembleAverage(this, fileType::EnsembleAveragedSpectrum);
+  }
+  else
+    throw dataMismatchError;
+
+
+  if(exists(fileType::ModeModeMatrix))
+    spect->loadIntoGslMatrix(this, fileType::ModeModeMatrix);
+  else
+  {
+    //addEmpty(fileType::ModeModeMatrix, spect->maxIndex(), spect->maxIndex());
+    m_ModeModeMatrix = new matrixData<double>(spect->maxIndex(), spect->maxIndex(), fileType::ModeModeMatrix);
+    m_ModeModeMatrix->initialize();
+
+    spect->createModeModeMatrix(this);
+    spect->loadIntoGslMatrix(this, fileType::ModeModeMatrix);
+  }
+
+  if(exists(fileType::InstrumentEffectsMatrix))
+    spect->loadIntoGslMatrix(this, fileType::InstrumentEffectsMatrix);
+  else
+  {
+    //addEmpty(fileType::InstrumentEffectsMatrix, spect->maxIndex(), spect->maxIndex());
+    m_InstrumentEffectsMatrix = new matrixData<double>(spect->maxIndex(), spect->maxIndex(), fileType::InstrumentEffectsMatrix);
+    m_InstrumentEffectsMatrix->initialize();
+
+    spect->calculateInstrumentEffectsMatrix(this);
+    spect->loadIntoGslMatrix(this, fileType::InstrumentEffectsMatrix);
+  }
+
+  if(exists(fileType::BinningMatrix))
+    spect->loadIntoGslMatrix(this, fileType::BinningMatrix);
+  else
+  {
+    //addEmpty(fileType::BinningMatrix, spect->maxIndex(), spect->numBins());
+    m_BinningMatrix = new matrixData<double>(spect->maxIndex(), spect->numBins(), fileType::BinningMatrix);
+    m_BinningMatrix->initialize();
+
+    spect->calculateBinningMatrix(this);
+    spect->loadIntoGslMatrix(this, fileType::BinningMatrix);
+  }
+
+  if(exists(fileType::UnbinningMatrix))
+    spect->loadIntoGslMatrix(this, fileType::UnbinningMatrix);
+  else
+  {
+    //addEmpty(fileType::UnbinningMatrix, spect->maxIndex(), spect->numBins());
+    m_UnbinningMatrix = new matrixData<double>(spect->numBins(), spect->maxIndex(), fileType::UnbinningMatrix);
+    m_UnbinningMatrix->initialize();
+
+    spect->calculateUnbinningMatrix(this);
+    spect->loadIntoGslMatrix(this, fileType::UnbinningMatrix);
+  }
+
+  if(exists(fileType::BinnedInstrumentEffectsMatrix))
+    spect->loadIntoGslMatrix(this, fileType::BinnedInstrumentEffectsMatrix);
+  else
+  {
+    //addEmpty(fileType::BinnedInstrumentEffectsMatrix, spect->numBins(), spect->numBins());
+    m_BinnedInstrumentEffectsMatrix = new matrixData<double>(spect->numBins(), spect->numBins(), fileType::BinnedInstrumentEffectsMatrix);
+    m_BinnedInstrumentEffectsMatrix->initialize();
+
+    spect->calculateBinnedInstrumentEffectsMatrix(this);
+    spect->loadIntoGslMatrix(this, fileType::BinnedInstrumentEffectsMatrix);
+  }
+
+  if(exists(fileType::InverseBinnedInstrumentMatrix))
+    spect->loadIntoGslMatrix(this, fileType::InverseBinnedInstrumentMatrix);
+  else
+  {
+    //addEmpty(fileType::InverseBinnedInstrumentMatrix, spect->numBins(), spect->numBins());
+    m_InverseBinnedInstrumentMatrix = new matrixData<double>(spect->numBins(), spect->numBins(), fileType::InverseBinnedInstrumentMatrix);
+    m_InverseBinnedInstrumentMatrix->initialize();
+
+    // matrix isn't invertible because the first row and column is 0 due to the binning and unbinning matrixes being 0 for the first 2 l's
+    //spect->invertMatrix(this, fileType::BinnedInstrumentEffectsMatrix);
+    //spect->loadIntoGslMatrix(this, fileType::InverseBinnedInstrumentMatrix);
+  }
+
+  if(!exists(fileType::BinnedSpectrum))
+  {
+    //addEmpty(fileType::BinnedSpectrum, spect->numBins());
+    m_binnedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedSpectrum);
+    m_binnedSpectrum->initialize();
+
+    //spect->calculateBinnedSpectrum(this);
+  }
+
+
+  if(!exists(fileType::EnsembleAveragedBinnedSpectrum))
+  {
+    //addEmpty(fileType::EnsembleAveragedBinnedSpectrum, spect->numBins());
+    m_ensembleAveragedBinnedSpectrum = new vectorData<double>(spect->numBins(), fileType::EnsembleAveragedBinnedSpectrum);
+    m_ensembleAveragedBinnedSpectrum->initialize();
+
+    //addEmpty(fileType::EnsembleIterationBinnedSpectrum, spect->numBins(), spect->ensembleIterations());
+    m_ensembleIterationBinnedSpectrum = new matrixData<double>(spect->numBins(), spect->ensembleIterations(), fileType::EnsembleIterationBinnedSpectrum);
+    m_ensembleIterationBinnedSpectrum->initialize();
+
+    //spect->calculateEnsembleAverage(this, fileType::EnsembleAveragedBinnedSpectrum);
+  }
+
+  /*
   addEmpty(fileType::SpectralData,m_transData->size());
   spect->maxIndex(m_transData->maxYIndex());
 
@@ -2394,12 +3602,13 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     addEmpty(fileType::ModeCouplingMatrix,m_transData->size(),m_transData->size());
     spect->createModeCouplingMatrix(this);
   }
+
   if (m_couplingMatrix->format() == Mode)
     spect->loadCouplingMatrix(this);
 
-  /* Maybe some checks here, but think that most checking applies to
-  existing file loaded matrices: therefore should be in a different
-  "process from file" function... */
+  // Maybe some checks here, but think that most checking applies to
+  //existing file loaded matrices: therefore should be in a different
+  //"process from file" function...
 
   long max_index = spect->maxIndex(), max_bin = spect->maxBin();
   long indices = spect->indices();
@@ -2410,7 +3619,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   if (spect->binning()) {
     op_total = max_bin * indices;
 
-    /* Calculating bin-index coupling matrix */
+    //Calculating bin-index coupling matrix
     for (i = 0; i < max_bin; ++i) {
       minL = i * indices;
       maxL = minL + indices;
@@ -2423,7 +3632,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
       }
     }
 
-    /* Calculating index-bin coupling matrix */
+    // Calculating index-bin coupling matrix
     for (i = 0; i < max_bin; ++i) {
       minL = i * indices;
       maxL = minL + indices;
@@ -2477,11 +3686,12 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
 //        return false;
 //    }
 
-  /* Calculating spectral data */
+  // Calculating spectral data //
   spect->calculateSpectrum(this);
 
   m_spectData->mask(spect->maskIndex());
 //  }
+*/
 
   m_sequence = powerSpectrum;
   return true;
@@ -2489,7 +3699,8 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
 
 bool association::generateEnsembleSpectrumData(Spectrum *spect)
 {
-if (!spect)
+  /*
+  if (!spect)
     return false;
 
   if (!m_spectData)
@@ -2510,9 +3721,9 @@ if (!spect)
   if (m_couplingMatrix->format() == Mode)
     spect->loadCouplingMatrix(this);
 
-  /* Maybe some checks here, but think that most checking applies to
-  existing file loaded matrices: therefore should be in a different
-  "process from file" function... */
+  // Maybe some checks here, but think that most checking applies to
+  // existing file loaded matrices: therefore should be in a different
+  // "process from file" function...
 
   long max_index = spect->maxIndex(), max_bin = spect->maxBin();
   long indices = spect->indices();
@@ -2524,7 +3735,7 @@ if (!spect)
   {
     op_total = max_bin * indices;
 
-    /* Calculating bin-index coupling matrix */
+    // Calculating bin-index coupling matrix
     for (i = 0; i < max_bin; ++i) {
       minL = i * indices;
       maxL = minL + indices;
@@ -2537,7 +3748,7 @@ if (!spect)
       }
     }
 
-    /* Calculating index-bin coupling matrix */
+    // Calculating index-bin coupling matrix
     for (i = 0; i < max_bin; ++i) {
       minL = i * indices;
       maxL = minL + indices;
@@ -2576,11 +3787,13 @@ if (!spect)
   }
   spect->loadInverseMatrix(this);
 
-  /* Calculating spectral data */
+  // Calculating spectral data
   spect->calculateEnsembleAverage(this, spect->ensembleIterations());
   spect->ensembleAverageTimesInverse(this);
 
   m_ensembleSpectData->mask(spect->maskIndex());
+
+  */
 
   m_sequence = powerSpectrum;
   return true;
@@ -2634,6 +3847,15 @@ bool association::generateInverseData(Transformer *transformer, FILETYPE ft) {
       //almType = fileType::AlmWeights;
       invType = fileType::InverseWeights;
       break;
+    case fileType::WeightedAlm:
+      if(!m_weightedAlm)
+        return false;
+      alm = m_weightedAlm;
+      size = alm->sides() * alm->sides() * 12;
+      addEmpty(fileType::WeightedInverse, size);
+      inv = m_weightedInverse;
+      invType = fileType::WeightedInverse;
+      break;
     case fileType::AlmFilter: //TransformedFilter:
       if (!m_almFilter)
         return false;
@@ -2663,6 +3885,15 @@ bool association::generateInverseData(Transformer *transformer, FILETYPE ft) {
       inv = m_invNoise;
       //almType = fileType::AlmNoise;
       invType = fileType::InverseNoise;
+      break;
+    case fileType::AlmWeightedNoise:
+      if(!m_weightedNoiseAlm)
+        return false;
+      alm = m_weightedNoiseAlm;
+      size = alm->sides() * alm->sides() * 12;
+      addEmpty(fileType::InverseWeightedNoise, size);
+      inv = m_invWeightedNoise;
+      invType = fileType::InverseWeightedNoise;
       break;
     default:
       return false;
@@ -2729,8 +3960,10 @@ void association::generateMap(FILETYPE type) {
         m_inputWeightsMap = new dataMap(map);
       break;
     case fileType::WeightedData:
-      if (!m_inputData || !m_inputWeights)
+      if (!m_weightedInput)
         throw noDataError;
+      //if (!m_inputData || !m_inputWeights)
+      //  throw noDataError;
       m_mapEngine->makeMap(map,type,this);
       if (m_inputMap)
         *m_inputMap = *map;
@@ -2745,6 +3978,15 @@ void association::generateMap(FILETYPE type) {
         *m_inputNoiseMap = *map;
       else
         m_inputNoiseMap = new dataMap(map);
+      break;
+    case fileType::InputWeightedNoise:
+      if(!m_weightedNoise)
+        throw noDataError;
+      m_mapEngine->makeMap(map, type, this);
+      if(m_weightedNoiseMap)
+        *m_weightedNoiseMap = *map;
+      else
+        m_weightedNoiseMap = new dataMap(map);
       break;
     case fileType::InputFilter:
       if (!m_inputFilter)
@@ -2783,8 +4025,10 @@ void association::generateMap(FILETYPE type) {
         m_pixelWeightsMap = new dataMap(map);
       break;
     case fileType::WeightedPixel:
-      if (!m_pixelData || !m_pixelWeights)
+      if (!m_weightedPixel)
         throw noDataError;
+      //if (!m_pixelData || !m_pixelWeights)
+      //  throw noDataError;
       m_mapEngine->makeMap(map,type,this);
       if (m_pixelMap)
         *m_pixelMap = *map;
@@ -2808,6 +4052,15 @@ void association::generateMap(FILETYPE type) {
         *m_pixelNoiseMap = *map;
       else
         m_pixelNoiseMap = new dataMap(map);
+      break;
+    case fileType::PixelizedWeightedNoise:
+      if (!m_pixelWeightedNoise)
+        throw noDataError;
+      m_mapEngine->makeMap(map,type,this);
+      if (m_pixelWeightedNoiseMap)
+        *m_pixelWeightedNoiseMap = *map;
+      else
+        m_pixelWeightedNoiseMap = new dataMap(map);
       break;
     case fileType::PixelizedFilter:
       if (!m_pixelFilter)
@@ -2846,8 +4099,10 @@ void association::generateMap(FILETYPE type) {
         m_invWeightsMap = new dataMap(map);
       break;
     case fileType::WeightedInverse:
-      if (!m_invData || !m_invWeights)
+      if (!m_weightedInverse)
         throw noDataError;
+      //if (!m_invData || !m_invWeights)
+      //  throw noDataError;
       m_mapEngine->makeMap(map,type,this);
       if (m_invMap)
         *m_invMap = *map;
@@ -2862,6 +4117,15 @@ void association::generateMap(FILETYPE type) {
         *m_invNoiseMap = *map;
       else
         m_invNoiseMap = new dataMap(map);
+      break;
+    case fileType::InverseWeightedNoise:
+      if (!m_invWeightedNoise)
+        throw noDataError;
+      m_mapEngine->makeMap(map,type,this);
+      if (m_invWeightedNoiseMap)
+        *m_invWeightedNoiseMap = *map;
+      else
+        m_invWeightedNoiseMap = new dataMap(map);
       break;
     case fileType::InverseFilter:
       if (!m_invFilter)
@@ -2891,6 +4155,7 @@ void association::generateMap(FILETYPE type) {
     case fileType::InputWeights:
     case fileType::WeightedData:
     case fileType::InputNoise:
+    case fileType::InputWeightedNoise:
     case fileType::InputFilter:
     case fileType::InputBeam:
       m_sequence = mapSky;
@@ -2900,6 +4165,7 @@ void association::generateMap(FILETYPE type) {
     case fileType::WeightedPixel:
     case fileType::PixelOccupancy:
     case fileType::PixelizedNoise:
+    case fileType::PixelizedWeightedNoise:
     case fileType::PixelizedFilter:
     case fileType::PixelizedBeam:
       m_sequence = mapPixel;
@@ -2908,6 +4174,7 @@ void association::generateMap(FILETYPE type) {
     case fileType::InverseWeights:
     case fileType::WeightedInverse:
     case fileType::InverseNoise:
+    case fileType::InverseWeightedNoise:
     case fileType::InverseFilter:
     case fileType::InverseBeam:
       m_sequence = mapInverse;
@@ -2928,6 +4195,7 @@ bool association::generateGraph(FILETYPE type) {
    return false;
 
   name = dataTypeNames[(int)type];
+
   graph->title(name);
   graph->aspect(m_graphEngine->aspectRatio());
   graph->initialize(m_graphEngine->width(),m_graphEngine->height());
@@ -2952,8 +4220,10 @@ bool association::generateGraph(FILETYPE type) {
         m_transWeightsGraph = new dataSpectrum(graph);
       break;
     case fileType::WeightedTransform:
-      if (!m_transData || !m_transWeights)
+      if(!m_weightedTransform)
         return false;
+      //if (!m_transData || !m_transWeights)
+      //  return false;
       m_graphEngine->makeGraph(graph,type,this);
       if (m_transGraph)
         *m_transGraph = *graph;
@@ -2968,6 +4238,15 @@ bool association::generateGraph(FILETYPE type) {
         *m_transNoiseGraph = *graph;
       else
         m_transNoiseGraph = new dataSpectrum(graph);
+      break;
+    case fileType::TransformedWeightedNoise:
+      //if (!m_pixelNoise)
+      //  return false;
+      m_graphEngine->makeGraph(graph,type,this);
+      if (m_transWeightedNoiseGraph)
+        *m_transWeightedNoiseGraph = *graph;
+      else
+        m_transWeightedNoiseGraph = new dataSpectrum(graph);
       break;
     case fileType::TransformedFilter:
       //if (!m_pixelFilter)
@@ -2987,6 +4266,7 @@ bool association::generateGraph(FILETYPE type) {
       else
         m_transBeamGraph = new dataSpectrum(graph);
       break;
+    /*
     case fileType::SpectralData:
       if (!m_spectData)
         return false;
@@ -3005,6 +4285,43 @@ bool association::generateGraph(FILETYPE type) {
       else
         m_ensembleDataGraph = new dataSpectrum(graph);
       break;
+    */
+    case fileType::EnsembleAveragedNoise:
+      if (!m_ensembleAveragedNoise)
+        return false;
+      m_graphEngine->makeGraph(graph,type,this);
+      if (m_ensembleAveragedNoiseGraph)
+        *m_ensembleAveragedNoiseGraph = *graph;
+      else
+        m_ensembleAveragedNoiseGraph = new dataSpectrum(graph);
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      if (!m_ensembleAveragedSpectrum)
+        return false;
+      m_graphEngine->makeGraph(graph,type,this);
+      if (m_ensembleAveragedSpectrumGraph)
+        *m_ensembleAveragedSpectrumGraph = *graph;
+      else
+        m_ensembleAveragedSpectrumGraph = new dataSpectrum(graph);
+      break;
+    case fileType::BinnedSpectrum:
+      if (!m_binnedSpectrum)
+        return false;
+      m_graphEngine->makeGraph(graph,type,this);
+      if (m_binnedSpectrumGraph)
+        *m_binnedSpectrumGraph= *graph;
+      else
+        m_binnedSpectrumGraph = new dataSpectrum(graph);
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      if (!m_ensembleAveragedBinnedSpectrum)
+        return false;
+      m_graphEngine->makeGraph(graph,type,this);
+      if (m_ensembleAveragedBinnedSpectrumGraph)
+        *m_ensembleAveragedBinnedSpectrumGraph = *graph;
+      else
+        m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum(graph);
+      break;
     default:
       return false;
   }
@@ -3015,12 +4332,17 @@ bool association::generateGraph(FILETYPE type) {
     case fileType::TransformedWeights:
     case fileType::WeightedTransform:
     case fileType::TransformedNoise:
+    case fileType::TransformedWeightedNoise:
     case fileType::TransformedFilter:
     case fileType::TransformedBeam:
       m_sequence = graphTransform;
       break;
-    case fileType::SpectralData:
-    case fileType::EnsembleData:
+    //case fileType::SpectralData:
+    //case fileType::EnsembleData:
+    case fileType::EnsembleAveragedNoise:
+    case fileType::EnsembleAveragedSpectrum:
+    case fileType::BinnedSpectrum:
+    case fileType::EnsembleAveragedBinnedSpectrum:
       m_sequence = graphPowerSpectrum;
       break;
   }
@@ -3041,8 +4363,14 @@ void association::addData(baseData *item) {
     case fileType::InputWeights:
       m_inputWeights = (matrixData<double>*)item;
       break;
+    case fileType::WeightedData:
+      m_weightedInput = (matrixData<double>*)item;
+      break;
     case fileType::InputNoise:
       m_inputNoise = (matrixData<double>*)item;
+      break;
+    case fileType::InputWeightedNoise:
+      m_weightedNoise = (matrixData<double>*)item;
       break;
     case fileType::InputFilter:
       m_inputFilter = (matrixData<double>*)item;
@@ -3050,11 +4378,15 @@ void association::addData(baseData *item) {
     case fileType::InputBeam:
       m_inputBeam = (matrixData<double>*)item;
       break;
+
     case fileType::PixelizedData:
       m_pixelData = (vectorData<double>*)item;
       break;
     case fileType::PixelizedWeights:
       m_pixelWeights = (vectorData<double>*)item;
+      break;
+    case fileType::WeightedPixel:
+      m_weightedPixel = (vectorData<double>*)item;
       break;
     case fileType::PixelOccupancy:
       m_pixelOccupancy = (vectorData<int>*)item;
@@ -3062,23 +4394,46 @@ void association::addData(baseData *item) {
     case fileType::PixelizedNoise:
       m_pixelNoise = (vectorData<double>*)item;
       break;
+    case fileType::PixelizedWeightedNoise:
+      m_pixelWeightedNoise = (vectorData<double>*)item;
+      break;
     case fileType::PixelizedFilter:
       m_pixelFilter = (vectorData<double>*)item;
       break;
     case fileType::PixelizedBeam:
       m_pixelBeam = (vectorData<double>*)item;
       break;
+
     case fileType::InverseData:
       m_invData = (vectorData<double>*)item;
       break;
     case fileType::InverseWeights:
       m_invWeights = (vectorData<double>*)item;
       break;
+    case fileType::WeightedInverse:
+      m_weightedInverse = (vectorData<double>*)item;
+      break;
+    case fileType::InverseFilter:
+      m_invFilter = (vectorData<double>*)item;
+      break;
+    case fileType::InverseBeam:
+      m_invBeam = (vectorData<double>*)item;
+      break;
+    case fileType::InverseNoise:
+      m_invNoise = (vectorData<double>*)item;
+      break;
+    case fileType::InverseWeightedNoise:
+      m_invWeightedNoise = (vectorData<double>*)item;
+      break;
+
     case fileType::TransformedData:
       m_transData = (vectorData<double>*)item;
       break;
     case fileType::TransformedWeights:
       m_transWeights = (vectorData<double>*)item;
+      break;
+    case fileType::WeightedTransform:
+      m_weightedTransform = (vectorData<double>*)item;
       break;
     case fileType::TransformedFilter:
       m_transFilter = (vectorData<double>*)item;
@@ -3089,17 +4444,77 @@ void association::addData(baseData *item) {
     case fileType::TransformedNoise:
       m_transNoise = (vectorData<double>*)item;
       break;
+    case fileType::TransformedWeightedNoise:
+      m_transWeightedNoise = (vectorData<double>*)item;
+      break;
+
     case fileType::AlmData:
       m_almData = (cubeData<std::complex<double> >*)item;
       break;
     case fileType::AlmWeights:
       m_almWeights = (cubeData<std::complex<double> >*)item;
       break;
+    case fileType::WeightedAlm:
+      m_weightedAlm = (cubeData<std::complex<double> >*)item;
+      break;
+    case fileType::AlmFilter:
+      m_almFilter = (cubeData<std::complex<double>>*)item;
+      break;
+    case fileType::AlmBeam:
+      m_almBeam = (cubeData<std::complex<double>>*)item;
+      break;
+    case fileType::AlmNoise:
+      m_almNoise = (cubeData<std::complex<double>>*)item;
+      break;
+    case fileType::AlmWeightedNoise:
+      m_weightedNoiseAlm = (cubeData<std::complex<double>>*)item;
+      break;
+    /*
     case fileType::SpectralData:
       m_spectData = (vectorData<double>*)item;
       break;
     case fileType::EnsembleData:
       m_ensembleSpectData = (vectorData<double>*)item;
+      break;
+    */
+    case fileType::EnsembleAveragedNoise:
+      m_ensembleAveragedNoise = (vectorData<double>*)item;
+      break;
+    case fileType::EnsembleIterationNoise:
+      m_ensembleIterationNoise = (matrixData<double>*)item;
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      m_ensembleAveragedSpectrum = (vectorData<double>*)item;
+      break;
+    case fileType::EnsembleIterationSpectrum:
+      m_ensembleIterationSpectrum = (matrixData<double>*)item;
+      break;
+    case fileType::BinnedSpectrum:
+      m_binnedSpectrum = (vectorData<double>*)item;
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      m_ensembleAveragedBinnedSpectrum = (vectorData<double>*)item;
+      break;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      m_ensembleIterationBinnedSpectrum = (matrixData<double>*)item;
+      break;
+    case fileType::ModeModeMatrix:
+      m_ModeModeMatrix = (matrixData<double>*)item;
+      break;
+    case fileType::InstrumentEffectsMatrix:
+      m_InstrumentEffectsMatrix = (matrixData<double>*)item;
+      break;
+    case fileType::BinningMatrix:
+      m_BinningMatrix = (matrixData<double>*)item;
+      break;
+    case fileType::UnbinningMatrix:
+      m_UnbinningMatrix = (matrixData<double>*)item;
+      break;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      m_BinnedInstrumentEffectsMatrix = (matrixData<double>*)item;
+      break;
+    case fileType::InverseBinnedInstrumentMatrix:
+      m_InverseBinnedInstrumentMatrix = (matrixData<double>*)item;
       break;
     default:
       break;
@@ -3117,9 +4532,11 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
         seq = pixelize;
       if (m_transData)
         seq = transform;
-      if (m_spectData)
+      //if (m_spectData)
+      if(m_weightedTransform)
         seq = powerSpectrum;
-      if (m_ensembleSpectData)
+      //if (m_ensembleSpectData)
+      if(m_ensembleAveragedBinnedSpectrum)
         seq = DONE;
       break;
     case Weights:
@@ -3129,9 +4546,11 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
         seq = pixelize;
       if (m_transWeights)
         seq = transform;
-      if (m_spectData)
+      //if (m_spectData)
+      if(m_weightedTransform)
         seq = powerSpectrum;
-      if (m_ensembleSpectData)
+      //if (m_ensembleSpectData)
+      if(m_ensembleAveragedBinnedSpectrum)
         seq = DONE;
       break;
     case Noise:
@@ -3141,9 +4560,11 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
         seq = pixelize;
       if (m_transNoise)
         seq = transform;
-      if (m_spectData)
+      //if (m_spectData)
+      if(m_weightedTransform)
         seq = powerSpectrum;
-      if (m_ensembleSpectData)
+      //if (m_ensembleSpectData)
+      if(m_ensembleAveragedBinnedSpectrum)
         seq = DONE;
       break;
     case Filter:
@@ -3153,9 +4574,11 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
         seq = pixelize;
       if (m_transFilter)
         seq = transform;
-      if (m_spectData)
+      //if (m_spectData)
+      if(m_weightedTransform)
         seq = powerSpectrum;
-      if (m_ensembleSpectData)
+      //if (m_ensembleSpectData)
+      if(m_ensembleAveragedBinnedSpectrum)
         seq = DONE;
       break;
     case Beam:
@@ -3165,9 +4588,11 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
         seq = pixelize;
       if (m_transBeam)
         seq = transform;
-      if (m_spectData)
+      //if (m_spectData)
+      if(m_weightedTransform)
         seq = powerSpectrum;
-      if (m_ensembleSpectData)
+      //if (m_ensembleSpectData)
+      if(m_ensembleAveragedBinnedSpectrum)
         seq = DONE;
       break;
     case NoGeneric:
@@ -3192,10 +4617,12 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
       if (!m_transData)
         break;
       seq = transform;
-      if (!m_spectData)
+      //if (!m_spectData)
+      if(!m_weightedTransform)
         break;
       seq = powerSpectrum;
-      if (!m_ensembleSpectData)
+      //if (!m_ensembleSpectData)
+      if(!m_ensembleAveragedBinnedSpectrum)
         break;
       seq = DONE;
       break;
@@ -3209,10 +4636,12 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
       if (!m_transWeights)
         break;
       seq = transform;
-      if (!m_spectData)
+      //if (!m_spectData)
+      if(!m_weightedTransform)
         break;
       seq = powerSpectrum;
-      if (!m_ensembleSpectData)
+      //if (!m_ensembleSpectData)
+      if(!m_ensembleAveragedBinnedSpectrum)
         break;
       seq = DONE;
       break;
@@ -3226,10 +4655,12 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
       if (!m_transNoise)
         break;
       seq = transform;
-      if (!m_spectData)
+      //if (!m_spectData)
+      if(!m_weightedTransform)
         break;
       seq = powerSpectrum;
-      if (!m_ensembleSpectData)
+      //if (!m_ensembleSpectData)
+      if(!m_ensembleAveragedBinnedSpectrum)
         break;
       seq = DONE;
       break;
@@ -3243,10 +4674,12 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
       if (!m_transFilter)
         break;
       seq = transform;
-      if (!m_spectData)
+      //if (!m_spectData)
+      if(!m_weightedTransform)
         break;
       seq = powerSpectrum;
-      if (!m_ensembleSpectData)
+      //if (!m_ensembleSpectData)
+      if(!m_ensembleAveragedBinnedSpectrum)
         break;
       seq = DONE;
       break;
@@ -3260,10 +4693,12 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
       if (!m_transBeam)
         break;
       seq = transform;
-      if (!m_spectData)
+      //if (!m_spectData)
+      if(!m_weightedTransform)
         break;
       seq = powerSpectrum;
-      if (!m_ensembleSpectData)
+      //if (!m_ensembleSpectData)
+      if(!m_ensembleAveragedBinnedSpectrum)
         break;
       seq = DONE;
       break;
@@ -3327,6 +4762,28 @@ void association::discardRelation(FILETYPE type) {
       m_invWeights = 0;
       break;
     /* End of input weights fall through stack */
+    case fileType::WeightedData:
+      if(m_weightedInput)
+        delete m_weightedInput;
+      m_weightedInput = 0;
+    case fileType::WeightedPixel:
+      if(m_weightedPixel)
+        delete m_weightedPixel;
+      m_weightedPixel = 0;
+    case fileType::WeightedTransform:
+      if(m_weightedTransform)
+        delete m_weightedTransform;
+      m_weightedTransform = 0;
+    case fileType::WeightedAlm:
+      if(m_weightedAlm)
+        delete m_weightedAlm;
+      m_weightedAlm = 0;
+    case fileType::WeightedInverse:
+      if(m_weightedInverse)
+        delete m_weightedInverse;
+      m_weightedInverse = 0;
+      break;
+      /* End of weighted fall through stack */
     case fileType::InputFilter:
       if (m_inputFilter)
         delete m_inputFilter;
@@ -3399,6 +4856,7 @@ void association::discardRelation(FILETYPE type) {
         delete m_pixelOccupancy;
       m_pixelOccupancy = 0;
       break;
+    /*
     case fileType::SpectralData:
       if (m_spectData)
         delete m_spectData;
@@ -3419,6 +4877,59 @@ void association::discardRelation(FILETYPE type) {
         delete m_ensembleSpectData;
       m_ensembleSpectData = 0;
       break;
+    */
+    case fileType::EnsembleAveragedNoise:
+      if(m_ensembleAveragedNoise)
+        delete m_ensembleAveragedNoise;
+      m_ensembleAveragedNoise = 0;
+    case fileType::EnsembleIterationNoise:
+      if(m_ensembleIterationNoise)
+        delete m_ensembleIterationNoise;
+      m_ensembleIterationNoise = 0;
+    case fileType::EnsembleAveragedSpectrum:
+      if(m_ensembleAveragedSpectrum)
+        delete m_ensembleAveragedSpectrum;
+      m_ensembleAveragedSpectrum = 0;
+    case fileType::EnsembleIterationSpectrum:
+      if(m_ensembleIterationSpectrum)
+        delete m_ensembleIterationSpectrum;
+      m_ensembleIterationSpectrum = 0;
+    case fileType::BinnedSpectrum:
+      if(m_binnedSpectrum)
+        delete m_binnedSpectrum;
+      m_binnedSpectrum = 0;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      if(m_ensembleAveragedBinnedSpectrum)
+        delete m_ensembleAveragedBinnedSpectrum;
+      m_ensembleAveragedBinnedSpectrum = 0;
+    case fileType::EnsembleIterationBinnedSpectrum:
+      if(m_ensembleIterationBinnedSpectrum)
+        delete m_ensembleIterationBinnedSpectrum;
+      m_ensembleIterationBinnedSpectrum = 0;
+    case fileType::ModeModeMatrix:
+      if(m_ModeModeMatrix)
+        delete m_ModeModeMatrix;
+      m_ModeModeMatrix = 0;
+    case fileType::InstrumentEffectsMatrix:
+      if(m_InstrumentEffectsMatrix)
+        delete m_InstrumentEffectsMatrix;
+      m_InstrumentEffectsMatrix = 0;
+    case fileType::BinningMatrix:
+      if(m_BinningMatrix)
+        delete m_BinningMatrix;
+      m_BinningMatrix = 0;
+    case fileType::UnbinningMatrix:
+      if(m_UnbinningMatrix)
+        delete m_UnbinningMatrix;
+      m_UnbinningMatrix = 0;
+    case fileType::BinnedInstrumentEffectsMatrix:
+      if(m_BinnedInstrumentEffectsMatrix)
+        delete m_BinnedInstrumentEffectsMatrix;
+      m_BinnedInstrumentEffectsMatrix = 0;
+    case fileType::InverseBinnedInstrumentMatrix:
+      if(m_InverseBinnedInstrumentMatrix)
+        delete m_InverseBinnedInstrumentMatrix;
+      m_InverseBinnedInstrumentMatrix = 0;
     default:
       break;
   }
@@ -3458,11 +4969,21 @@ void association::reset(ALLTYPES id) {
         delete m_inputWeights;
       m_inputWeights = 0;
       break;
+    case allTypes::WeightedData:
+      if(m_weightedInput)
+        delete m_weightedInput;
+      m_weightedInput = 0;
+      break;
     case allTypes::InputNoise:
       if (m_inputNoise)
         delete m_inputNoise;
        m_inputNoise = 0;
        break;
+    case allTypes::InputWeightedNoise:
+      if(m_weightedNoise)
+        delete m_weightedNoise;
+      m_weightedNoise = 0;
+      break;
     case allTypes::InputFilter:
       if (m_inputFilter)
         delete m_inputFilter;
@@ -3473,6 +4994,7 @@ void association::reset(ALLTYPES id) {
         delete m_inputBeam;
        m_inputBeam = 0;
        break;
+
     case allTypes::PixelizedData:
       if (m_pixelData)
         delete m_pixelData;
@@ -3483,11 +5005,21 @@ void association::reset(ALLTYPES id) {
         delete m_pixelWeights;
        m_pixelWeights = 0;
        break;
+    case allTypes::WeightedPixel:
+      if(m_weightedPixel)
+        delete m_weightedPixel;
+      m_weightedPixel = 0;
+      break;
     case allTypes::PixelizedNoise:
       if (m_pixelNoise)
         delete m_pixelNoise;
        m_pixelNoise = 0;
        break;
+    case allTypes::PixelizedWeightedNoise:
+      if(m_pixelWeightedNoise)
+        delete m_pixelWeightedNoise;
+      m_pixelWeightedNoise = 0;
+      break;
     case allTypes::PixelizedFilter:
       if (m_pixelFilter)
         delete m_pixelFilter;
@@ -3503,6 +5035,7 @@ void association::reset(ALLTYPES id) {
         delete m_pixelOccupancy;
        m_pixelOccupancy = 0;
        break;
+
     case allTypes::InverseData:
       if (m_invData)
         delete m_invData;
@@ -3513,11 +5046,21 @@ void association::reset(ALLTYPES id) {
         delete m_invWeights;
        m_invWeights = 0;
        break;
+    case allTypes::WeightedInverse:
+      if(m_weightedInverse)
+        delete m_weightedInverse;
+      m_weightedInverse = 0;
+      break;
     case allTypes::InverseNoise:
       if (m_invNoise)
         delete m_invNoise;
        m_invNoise = 0;
        break;
+    case allTypes::InverseWeightedNoise:
+      if(m_invWeightedNoise)
+        delete m_invWeightedNoise;
+      m_invWeightedNoise = 0;
+      break;
     case allTypes::InverseFilter:
       if (m_invFilter)
         delete m_invFilter;
@@ -3528,6 +5071,7 @@ void association::reset(ALLTYPES id) {
         delete m_invBeam;
        m_invBeam = 0;
        break;
+
     case allTypes::TransformedData:
       if (m_transData)
         delete m_transData;
@@ -3538,11 +5082,21 @@ void association::reset(ALLTYPES id) {
         delete m_transWeights;
        m_transWeights = 0;
        break;
+    case allTypes::WeightedTransform:
+      if(m_weightedTransform)
+        delete m_weightedTransform;
+      m_weightedTransform = 0;
+      break;
     case allTypes::TransformedNoise:
       if (m_transNoise)
         delete m_transNoise;
        m_transNoise = 0;
        break;
+    case allTypes::TransformedWeightedNoise:
+      if(m_transWeightedNoise)
+          delete m_transWeightedNoise;
+      m_transWeightedNoise = 0;
+      break;
     case allTypes::TransformedFilter:
       if (m_transFilter)
         delete m_transFilter;
@@ -3553,6 +5107,7 @@ void association::reset(ALLTYPES id) {
         delete m_transBeam;
        m_transBeam = 0;
        break;
+    /*
     case allTypes::SpectralData:
       if (m_spectData)
         delete m_spectData;
@@ -3563,6 +5118,7 @@ void association::reset(ALLTYPES id) {
         delete m_ensembleSpectData;
        m_ensembleSpectData = 0;
        break;
+    */
     case allTypes::AlmData:
       if (m_almData)
         delete m_almData;
@@ -3573,11 +5129,21 @@ void association::reset(ALLTYPES id) {
         delete m_almWeights;
        m_almWeights = 0;
        break;
+    case allTypes::WeightedAlm:
+      if(m_weightedAlm)
+        delete m_weightedAlm;
+      m_weightedAlm = 0;
+      break;
     case allTypes::AlmNoise:
       if (m_almNoise)
         delete m_almNoise;
        m_almNoise = 0;
        break;
+    case allTypes::AlmWeightedNoise:
+      if(m_weightedNoiseAlm)
+        delete m_weightedNoiseAlm;
+      m_weightedNoiseAlm = 0;
+      break;
     case allTypes::AlmFilter:
       if (m_almFilter)
         delete m_almFilter;
@@ -3588,6 +5154,7 @@ void association::reset(ALLTYPES id) {
         delete m_almBeam;
        m_almBeam = 0;
        break;
+    /*
     case allTypes::BinCouplingMatrix:
     case allTypes::ModeCouplingMatrix:
       if (m_couplingMatrix)
@@ -3600,6 +5167,74 @@ void association::reset(ALLTYPES id) {
         delete m_inverseMatrix;
        m_inverseMatrix = 0;
        break;
+    */
+
+    case allTypes::EnsembleAveragedNoise:
+      if(m_ensembleAveragedNoise)
+        delete m_ensembleAveragedNoise;
+      m_ensembleAveragedNoise = 0;
+      break;
+    case allTypes::EnsembleIterationNoise:
+      if(m_ensembleIterationNoise)
+        delete m_ensembleIterationNoise;
+      m_ensembleIterationNoise = 0;
+      break;
+    case allTypes::EnsembleAveragedSpectrum:
+      if(m_ensembleAveragedSpectrum)
+        delete m_ensembleAveragedSpectrum;
+      m_ensembleAveragedSpectrum = 0;
+      break;
+    case allTypes::EnsembleIterationSpectrum:
+      if(m_ensembleIterationSpectrum)
+        delete m_ensembleIterationSpectrum;
+      m_ensembleIterationSpectrum = 0;
+      break;
+    case allTypes::BinnedSpectrum:
+      if(m_binnedSpectrum)
+        delete m_binnedSpectrum;
+      m_binnedSpectrum = 0;
+      break;
+    case allTypes::EnsembleAveragedBinnedSpectrum:
+      if(m_ensembleAveragedBinnedSpectrum)
+        delete m_ensembleAveragedBinnedSpectrum;
+      m_ensembleAveragedBinnedSpectrum = 0;
+      break;
+    case allTypes::EnsembleIterationBinnedSpectrum:
+      if(m_ensembleIterationBinnedSpectrum)
+        delete m_ensembleIterationBinnedSpectrum;
+      m_ensembleIterationBinnedSpectrum = 0;
+      break;
+    case allTypes::ModeModeMatrix:
+      if(m_ModeModeMatrix)
+        delete m_ModeModeMatrix;
+      m_ModeModeMatrix = 0;
+      break;
+    case allTypes::InstrumentEffectsMatrix:
+      if(m_InstrumentEffectsMatrix)
+        delete m_InstrumentEffectsMatrix;
+      m_InstrumentEffectsMatrix = 0;
+      break;
+    case allTypes::BinningMatrix:
+      if(m_BinningMatrix)
+        delete m_BinningMatrix;
+      m_BinningMatrix = 0;
+      break;
+    case allTypes::UnbinningMatrix:
+      if(m_UnbinningMatrix)
+        delete m_UnbinningMatrix;
+      m_UnbinningMatrix = 0;
+      break;
+    case allTypes::BinnedInstrumentEffectsMatrix:
+      if(m_BinnedInstrumentEffectsMatrix)
+        delete m_BinnedInstrumentEffectsMatrix;
+      m_BinnedInstrumentEffectsMatrix = 0;
+      break;
+    case allTypes::InverseBinnedInstrumentMatrix:
+      if(m_InverseBinnedInstrumentMatrix)
+        delete m_InverseBinnedInstrumentMatrix;
+      m_InverseBinnedInstrumentMatrix = 0;
+      break;
+
     case allTypes::InputDataMap:
       if (m_inputDataMap)
         delete m_inputDataMap;
@@ -3620,6 +5255,11 @@ void association::reset(ALLTYPES id) {
         delete m_inputNoiseMap;
        m_inputNoiseMap = 0;
        break;
+    case allTypes::InputWeightedNoiseMap:
+      if(m_weightedNoiseMap)
+        delete m_weightedNoiseMap;
+      m_weightedNoiseMap = 0;
+      break;
     case allTypes::InputFilterMap:
       if (m_inputFilterMap)
         delete m_inputFilterMap;
@@ -3630,6 +5270,7 @@ void association::reset(ALLTYPES id) {
         delete m_inputBeamMap;
        m_inputBeamMap = 0;
        break;
+
     case allTypes::PixelizedDataMap:
       if (m_pixelDataMap)
         delete m_pixelDataMap;
@@ -3655,6 +5296,11 @@ void association::reset(ALLTYPES id) {
         delete m_pixelNoiseMap;
        m_pixelNoiseMap = 0;
        break;
+    case allTypes::PixelizedWeightedNoiseMap:
+      if(m_pixelWeightedNoiseMap)
+        delete m_pixelWeightedNoiseMap;
+      m_pixelWeightedNoiseMap = 0;
+      break;
     case allTypes::PixelizedFilterMap:
       if (m_pixelFilterMap)
         delete m_pixelFilterMap;
@@ -3665,6 +5311,7 @@ void association::reset(ALLTYPES id) {
         delete m_pixelBeamMap;
        m_pixelBeamMap = 0;
        break;
+
     case allTypes::InverseDataMap:
       if (m_invDataMap)
         delete m_invDataMap;
@@ -3685,11 +5332,17 @@ void association::reset(ALLTYPES id) {
         delete m_invNoiseMap;
        m_invNoiseMap = 0;
        break;
+    case allTypes::InverseWeightedNoiseMap:
+      if(m_invWeightedNoiseMap)
+        delete m_invWeightedNoiseMap;
+      m_invWeightedNoiseMap = 0;
+      break;
     case allTypes::InverseBeamMap:
       if (m_invBeamMap)
         delete m_invBeamMap;
        m_invBeamMap = 0;
        break;
+
     case allTypes::TransformedDataSpectrum:
       if (m_transDataGraph)
         delete m_transDataGraph;
@@ -3710,6 +5363,11 @@ void association::reset(ALLTYPES id) {
         delete m_transNoiseGraph;
        m_transNoiseGraph = 0;
        break;
+    case allTypes::TransformedWeightedNoiseSpectrum:
+      if(m_transWeightedNoiseGraph)
+        delete m_transWeightedNoiseGraph;
+      m_transWeightedNoiseGraph = 0;
+      break;
     case allTypes::TransformedFilterSpectrum:
       if (m_transFilterGraph)
         delete m_transFilterGraph;
@@ -3720,7 +5378,7 @@ void association::reset(ALLTYPES id) {
         delete m_transBeamGraph;
        m_transBeamGraph = 0;
        break;
-    case allTypes::SpectralDataSpectrum:
+    /*case allTypes::SpectralDataSpectrum:
       if (m_spectDataGraph)
         delete m_spectDataGraph;
        m_spectDataGraph = 0;
@@ -3730,6 +5388,28 @@ void association::reset(ALLTYPES id) {
         delete m_ensembleDataGraph;
        m_ensembleDataGraph = 0;
        break;
+    */
+    case allTypes::EnsembleAveragedNoiseSpectrum:
+      if(m_ensembleAveragedNoiseGraph)
+        delete m_ensembleAveragedNoiseGraph;
+      m_ensembleAveragedNoiseGraph = 0;
+      break;
+    case allTypes::EnsembleAveragedSpectrumSpectrum:
+      if(m_ensembleAveragedSpectrumGraph)
+        delete m_ensembleAveragedSpectrumGraph;
+      m_ensembleAveragedSpectrumGraph = 0;
+      break;
+    case allTypes::BinnedSpectrumSpectrum:
+      if(m_binnedSpectrumGraph)
+        delete m_binnedSpectrumGraph;
+      m_binnedSpectrumGraph = 0;
+      break;
+    case allTypes::EnsembleAveragedBinnedSpectrumSpectrum:
+      if(m_ensembleAveragedBinnedSpectrumGraph)
+        delete m_ensembleAveragedBinnedSpectrumGraph;
+      m_ensembleAveragedBinnedSpectrumGraph = 0;
+      break;
+
     case allTypes::fileIO:
       if (m_fileIOEngine)
         delete m_fileIOEngine;
@@ -3775,6 +5455,27 @@ void association::resetData() {
     delete m_inputWeights;
   m_inputWeights = 0;
 
+  if(m_weightedInput)
+    delete m_weightedInput;
+  m_weightedInput = 0;
+
+  if (m_inputFilter)
+    delete m_inputFilter;
+  m_inputFilter = 0;
+
+  if (m_inputNoise)
+    delete m_inputNoise;
+  m_inputNoise = 0;
+
+  if(m_weightedNoise)
+    delete m_weightedNoise;
+  m_weightedNoise = 0;
+
+  if (m_inputBeam)
+    delete m_inputBeam;
+  m_inputBeam = 0;
+
+  /*********************************/
   if (m_pixelData)
     delete m_pixelData;
   m_pixelData = 0;
@@ -3783,10 +5484,31 @@ void association::resetData() {
     delete m_pixelWeights;
   m_pixelWeights = 0;
 
+  if(m_weightedPixel)
+    delete m_weightedPixel;
+  m_weightedPixel = 0;
+
   if (m_pixelOccupancy)
     delete m_pixelOccupancy;
   m_pixelOccupancy = 0;
 
+  if (m_pixelFilter)
+    delete m_pixelFilter;
+  m_pixelFilter = 0;
+
+  if (m_pixelNoise)
+    delete m_pixelNoise;
+  m_pixelNoise = 0;
+
+  if(m_pixelWeightedNoise)
+    delete m_pixelWeightedNoise;
+  m_pixelWeightedNoise = 0;
+
+  if (m_pixelBeam)
+    delete m_pixelBeam;
+  m_pixelBeam = 0;
+
+  /*********************************/
   if (m_invData)
     delete m_invData;
   m_invData = 0;
@@ -3795,6 +5517,27 @@ void association::resetData() {
     delete m_invWeights;
   m_invWeights = 0;
 
+  if(m_weightedInverse)
+    delete m_weightedInverse;
+  m_weightedInverse = 0;
+
+  if(m_invFilter)
+    delete m_invFilter;
+  m_invFilter = 0;
+
+  if(m_invBeam)
+    delete m_invBeam;
+  m_invBeam =0;
+
+  if(m_invNoise)
+    delete m_invNoise;
+  m_invNoise = 0;
+
+  if(m_invWeightedNoise)
+    delete m_invWeightedNoise;
+  m_invWeightedNoise = 0;
+
+  /*********************************/
   if (m_transData)
     delete m_transData;
   m_transData = 0;
@@ -3803,50 +5546,23 @@ void association::resetData() {
     delete m_transWeights;
   m_transWeights = 0;
 
-  if (m_inputFilter)
-    delete m_inputFilter;
-  m_inputFilter = 0;
-  
-  if (m_pixelFilter)
-    delete m_pixelFilter;
-  m_pixelFilter = 0;
+  if(m_weightedTransform)
+    delete m_weightedTransform;
+  m_weightedTransform = 0;
 
   if (m_transFilter)
     delete m_transFilter;
   m_transFilter = 0;
 
-  if (m_inputNoise)
-    delete m_inputNoise;
-  m_inputNoise = 0;
-  
-  if (m_pixelNoise)
-    delete m_pixelNoise;
-  m_pixelNoise = 0;
-
   if (m_transNoise)
     delete m_transNoise;
   m_transNoise = 0;
-
-  if (m_inputBeam)
-    delete m_inputBeam;
-  m_inputBeam = 0;
-  
-  if (m_pixelBeam)
-    delete m_pixelBeam;
-  m_pixelBeam = 0;
 
   if (m_transBeam)
     delete m_transBeam;
   m_transBeam = 0;
 
-  if (m_spectData)
-    delete m_spectData;
-  m_spectData = 0;
-
-  if (m_ensembleSpectData)
-    delete m_ensembleSpectData;
-  m_ensembleSpectData = 0;
-
+  /********************************/
   if (m_almData)
     delete m_almData;
   m_almData = 0;
@@ -3855,6 +5571,35 @@ void association::resetData() {
     delete m_almWeights;
   m_almWeights = 0;
 
+  if(m_weightedAlm)
+    delete m_weightedAlm;
+  m_weightedAlm = 0;
+
+  if(m_almFilter)
+    delete m_almFilter;
+  m_almFilter = 0;
+
+  if(m_almBeam)
+    delete m_almBeam;
+  m_almBeam = 0;
+
+  if(m_almNoise)
+    delete m_almNoise;
+  m_almNoise = 0;
+
+  if(m_weightedNoiseAlm)
+    delete m_weightedNoiseAlm;
+  m_weightedNoiseAlm = 0;
+
+  /*
+  if (m_spectData)
+    delete m_spectData;
+  m_spectData = 0;
+
+  if (m_ensembleSpectData)
+    delete m_ensembleSpectData;
+  m_ensembleSpectData = 0;
+
   if (m_couplingMatrix)
     delete m_couplingMatrix;
   m_couplingMatrix = 0;
@@ -3862,6 +5607,59 @@ void association::resetData() {
   if (m_inverseMatrix)
     delete m_inverseMatrix;
   m_inverseMatrix = 0;
+  */
+
+  if(m_ensembleAveragedNoise)
+    delete m_ensembleAveragedNoise;
+  m_ensembleAveragedNoise = 0;
+
+  if(m_ensembleIterationNoise)
+    delete m_ensembleIterationNoise;
+  m_ensembleIterationNoise = 0;
+
+  if(m_ensembleAveragedSpectrum)
+    delete m_ensembleAveragedSpectrum;
+  m_ensembleAveragedSpectrum = 0;
+
+  if(m_ensembleIterationSpectrum)
+    delete m_ensembleIterationSpectrum;
+  m_ensembleIterationSpectrum = 0;
+
+  if(m_binnedSpectrum)
+    delete m_binnedSpectrum;
+  m_binnedSpectrum = 0;
+
+  if(m_ensembleAveragedBinnedSpectrum)
+    delete m_ensembleAveragedBinnedSpectrum;
+  m_ensembleAveragedBinnedSpectrum = 0;
+
+  if(m_ensembleIterationBinnedSpectrum)
+    delete m_ensembleIterationBinnedSpectrum;
+  m_ensembleIterationBinnedSpectrum = 0;
+
+  if(m_ModeModeMatrix)
+    delete m_ModeModeMatrix;
+  m_ModeModeMatrix = 0;
+
+  if(m_InstrumentEffectsMatrix)
+    delete m_InstrumentEffectsMatrix;
+  m_InstrumentEffectsMatrix = 0;
+
+  if(m_BinningMatrix)
+    delete m_BinningMatrix;
+  m_BinningMatrix = 0;
+
+  if(m_UnbinningMatrix)
+    delete m_UnbinningMatrix;
+  m_UnbinningMatrix = 0;
+
+  if(m_BinnedInstrumentEffectsMatrix)
+    delete m_BinnedInstrumentEffectsMatrix;
+  m_BinnedInstrumentEffectsMatrix = 0;
+
+  if(m_InverseBinnedInstrumentMatrix)
+    delete m_InverseBinnedInstrumentMatrix;
+  m_InverseBinnedInstrumentMatrix = 0;
 }
 
 void association::resetMaps() {
@@ -3908,10 +5706,18 @@ void association::resetMaps() {
   if (m_inputNoiseMap)
     delete m_inputNoiseMap;
   m_inputNoiseMap = 0;
+
+  if(m_weightedNoiseMap)
+    delete m_weightedNoiseMap;
+  m_weightedNoiseMap = 0;
   
   if (m_pixelNoiseMap)
     delete m_pixelNoiseMap;
   m_pixelNoiseMap = 0;
+
+  if(m_pixelWeightedNoiseMap)
+    delete m_pixelWeightedNoiseMap;
+  m_pixelWeightedNoiseMap = 0;
   
   if (m_inputFilterMap)
     delete m_inputFilterMap;
@@ -3939,9 +5745,17 @@ void association::resetGraphs() {
     delete m_transWeightsGraph;
   m_transWeightsGraph = 0;
 
+  if(m_transGraph)
+    delete m_transGraph;
+  m_transGraph = 0;
+
   if (m_transNoiseGraph)
     delete m_transNoiseGraph;
   m_transNoiseGraph = 0;
+
+  if(m_transWeightedNoiseGraph)
+    delete m_transWeightedNoiseGraph;
+  m_transWeightedNoiseGraph = 0;
 
   if (m_transFilterGraph)
     delete m_transFilterGraph;
@@ -3951,6 +5765,7 @@ void association::resetGraphs() {
     delete m_transBeamGraph;
   m_transBeamGraph = 0;
 
+  /*
   if (m_spectDataGraph)
     delete m_spectDataGraph;
   m_spectDataGraph = 0;
@@ -3958,6 +5773,22 @@ void association::resetGraphs() {
   if (m_ensembleDataGraph)
     delete m_ensembleDataGraph;
   m_ensembleDataGraph = 0;
+  */
+  if(m_ensembleAveragedNoiseGraph)
+    delete m_ensembleAveragedNoiseGraph;
+  m_ensembleAveragedNoiseGraph = 0;
+
+  if(m_ensembleAveragedSpectrumGraph)
+    delete m_ensembleAveragedSpectrumGraph;
+  m_ensembleAveragedSpectrumGraph = 0;
+
+  if(m_binnedSpectrumGraph)
+    delete m_binnedSpectrumGraph;
+  m_binnedSpectrumGraph = 0;
+
+  if(m_ensembleAveragedBinnedSpectrumGraph)
+    delete m_ensembleAveragedBinnedSpectrumGraph;
+  m_ensembleAveragedBinnedSpectrumGraph = 0;
 }
 
 void association::resetEngines() {

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1055</width>
-    <height>310</height>
+    <width>1173</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,9 +23,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>30</y>
-     <width>1041</width>
-     <height>221</height>
+     <y>40</y>
+     <width>1141</width>
+     <height>371</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -37,320 +37,681 @@
    <property name="title">
     <string>Select Data Types</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QCheckBox" name="inputDataCB">
     <property name="geometry">
      <rect>
-      <x>32</x>
-      <y>40</y>
-      <width>979</width>
-      <height>168</height>
+      <x>8</x>
+      <y>34</y>
+      <width>92</width>
+      <height>22</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="text">
+     <string>Input Data</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="inputWeightCB">
+    <property name="geometry">
+     <rect>
+      <x>149</x>
+      <y>34</y>
+      <width>96</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Input Mask</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="WeightedInputCB">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>34</y>
+      <width>122</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Input</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="inputNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>34</y>
+      <width>98</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Input Noise</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="pixelNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>62</y>
+      <width>117</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pixelized Noise</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="transNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>90</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Transformed Noise</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="noiseAlmCB">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>118</y>
+      <width>130</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Noise Alm Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="invNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>146</y>
+      <width>109</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Inverse Noise</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="pixelDataCB">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>62</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pixelized Data</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="transDataCB">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>90</y>
+      <width>135</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Transformed Data</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="dataAlmCB">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>118</y>
+      <width>124</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Data Alm Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="invDataCB">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>146</y>
+      <width>103</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Inverse Data</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="pixelWeightsCB">
+    <property name="geometry">
+     <rect>
+      <x>149</x>
+      <y>62</y>
+      <width>115</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pixelized Mask</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="transWeightCB">
+    <property name="geometry">
+     <rect>
+      <x>149</x>
+      <y>90</y>
+      <width>139</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Transformed Mask</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="weightAlmCB">
+    <property name="geometry">
+     <rect>
+      <x>149</x>
+      <y>118</y>
+      <width>128</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Mask Alm Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="invWeightsCB">
+    <property name="geometry">
+     <rect>
+      <x>149</x>
+      <y>146</y>
+      <width>107</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Inverse Mask</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="WeightedPixelCB">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>62</y>
+      <width>117</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Pixel</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="WeightedTransformCB">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>90</y>
+      <width>150</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Transform</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="weightedAlmCB">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>118</y>
+      <width>154</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Alm Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="WeightedInverseCB">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>146</y>
+      <width>133</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Inverse</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>180</y>
+      <width>1061</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="EnsIterNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>200</y>
+      <width>231</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Noise Ensemble Iteration Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="EnsIterSpectrumCB">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>230</y>
+      <width>231</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pseudo Ensemble Iteration Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="EnsIterBinnedSpectrumCB">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>260</y>
+      <width>231</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Binned Ensemble Iteration Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="EnsAvgSpectrumCB">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>191</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pseudo Ensemble Average</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="EnsAvgNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>191</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Noise Ensemble Average</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="EnsAvgBinnedSpectrumCB">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>260</y>
+      <width>191</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Binned Ensemble Average</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="modeMatrixCB">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>200</y>
+      <width>201</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Mode-Mode Coupling Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="binningMatrixCB">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>230</y>
+      <width>116</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Binning Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="unbinningMatrixCB">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>260</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Unbinning Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="instrumentEffectsMatrixCB">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>200</y>
+      <width>191</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Instrument Effects Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="binnedInstrumentEffectsMatrixCB">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>230</y>
+      <width>231</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Binned Instrument Effects Matrix</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>320</y>
+      <width>408</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="buttonLayout">
      <item>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="inputDataCB">
-         <property name="text">
-          <string>Input Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QCheckBox" name="inputWeightCB">
-         <property name="text">
-          <string>Input Mask</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QCheckBox" name="inputNoiseCB">
-         <property name="text">
-          <string>Input Noise</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QCheckBox" name="inputFilterCB">
-         <property name="text">
-          <string>Input Filter</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="QCheckBox" name="inputBeamCB">
-         <property name="text">
-          <string>Input Beam</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="5">
-        <widget class="QCheckBox" name="binCB">
-         <property name="text">
-          <string>Bin-Bin Coupling Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="pixelDataCB">
-         <property name="text">
-          <string>Pixelized Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QCheckBox" name="pixelWeightsCB">
-         <property name="text">
-          <string>Pixelized Mask</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QCheckBox" name="pixelNoiseCB">
-         <property name="text">
-          <string>Pixelized Noise</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QCheckBox" name="pixelFilterCB">
-         <property name="text">
-          <string>Pixelized Filter</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QCheckBox" name="pixelBeamCB">
-         <property name="text">
-          <string>Pixelized Beam</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="5">
-        <widget class="QCheckBox" name="invBinCB">
-         <property name="text">
-          <string>Inverse Bin-Bin Coupling Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="transDataCB">
-         <property name="text">
-          <string>Transformed Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QCheckBox" name="transWeightCB">
-         <property name="text">
-          <string>Transformed Mask</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QCheckBox" name="transNoiseCB">
-         <property name="text">
-          <string>Transformed Noise</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QCheckBox" name="transFilterCB">
-         <property name="text">
-          <string>Transformed Filter</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QCheckBox" name="transBeamCB">
-         <property name="text">
-          <string>Transformed Beam</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="5">
-        <widget class="QCheckBox" name="modeCB">
-         <property name="text">
-          <string>Mode-Mode Coupling Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QCheckBox" name="dataAlmCB">
-         <property name="text">
-          <string>Data Alm Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="weightAlmCB">
-         <property name="text">
-          <string>Mask Alm Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QCheckBox" name="noiseAlmCB">
-         <property name="text">
-          <string>Noise Alm Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3">
-        <widget class="QCheckBox" name="filterAlmCB">
-         <property name="text">
-          <string>Filter Alm Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="4">
-        <widget class="QCheckBox" name="beamAlmCB">
-         <property name="text">
-          <string>Beam Alm Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="5">
-        <widget class="QCheckBox" name="invModeCB">
-         <property name="text">
-          <string>Inverse Mode-Mode Coupling Matrix</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QCheckBox" name="invDataCB">
-         <property name="text">
-          <string>Inverse Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QCheckBox" name="invWeightsCB">
-         <property name="text">
-          <string>Inverse Mask</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QCheckBox" name="invNoiseCB">
-         <property name="text">
-          <string>Inverse Noise</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="3">
-        <widget class="QCheckBox" name="invFilterCB">
-         <property name="text">
-          <string>Inverse Filter</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="4">
-        <widget class="QCheckBox" name="invBeamCB">
-         <property name="text">
-          <string>Inverse Beam</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="5">
-        <widget class="QCheckBox" name="comboSpectrumCB">
-         <property name="text">
-          <string>Combined Transformation</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>338</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="ensembleCB">
-         <property name="text">
-          <string>Angular Power Spectrum</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>448</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+      <spacer name="buttonSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::MinimumExpanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>100</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
+   </widget>
+   <widget class="QCheckBox" name="inverseBinnedInstrumentMatrixCB">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>260</y>
+      <width>248</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Inverse Binned Instrument Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="transFilterCB">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>86</y>
+      <width>138</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Transformed Filter</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="beamAlmCB">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>114</y>
+      <width>130</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Beam Alm Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="filterAlmCB">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>114</y>
+      <width>126</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Filter Alm Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="inputBeamCB">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>30</y>
+      <width>98</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Input Beam</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="invFilterCB">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>142</y>
+      <width>106</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Inverse Filter</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="pixelFilterCB">
+    <property name="geometry">
+     <rect>
+      <x>829</x>
+      <y>58</y>
+      <width>114</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pixelized Filter</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="pixelBeamCB">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>58</y>
+      <width>117</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pixelized Beam</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="invBeamCB">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>142</y>
+      <width>109</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Inverse Beam</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="transBeamCB">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>86</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Transformed Beam</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="inputFilterCB">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>30</y>
+      <width>95</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Input Filter</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="invWeightedNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>144</y>
+      <width>181</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Inverse Noise</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="noiseWeightedAlmCB">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>116</y>
+      <width>201</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Noise Alm Matrix</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="transWeightedNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>88</y>
+      <width>201</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Transformed Noise</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="inputWeightedNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>32</y>
+      <width>171</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Input Noise</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="pixelWeightedNoiseCB">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>60</y>
+      <width>181</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Weighted Pixelized Noise</string>
+    </property>
    </widget>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>630</x>
-     <y>260</y>
-     <width>408</width>
-     <height>36</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="buttonLayout">
-    <item>
-     <widget class="QDialogButtonBox" name="buttonBox">
-      <property name="minimumSize">
-       <size>
-        <width>300</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="standardButtons">
-       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <spacer name="buttonSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::MinimumExpanding</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>100</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="">
-   <property name="geometry">
-    <rect>
      <x>2</x>
      <y>0</y>
-     <width>1041</width>
+     <width>1141</width>
      <height>34</height>
     </rect>
    </property>
@@ -392,38 +753,5 @@
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>mapSelectDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>mapSelectDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

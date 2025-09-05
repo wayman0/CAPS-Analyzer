@@ -101,14 +101,30 @@ class Spectrum {
      */
     int minIndex() {return m_minIndex;}
     void minIndex(int value) {m_minIndex = value;}
+
     int maxIndex() {return m_maxIndex;}
     void maxIndex(int value) {m_maxIndex = value;}
+
+    int calculateNumberBins()
+    {
+      if(m_maxIndex % m_lPerBin == 0)
+        return m_maxIndex / m_lPerBin;
+
+      return 0;
+    }
+
+    int numLPerBin() {return m_lPerBin;}
+    void numLPerBin(int val) {m_lPerBin = val;}
+
+    int numBins() {return m_numBins;}
+    void numBins(int val) {m_numBins = val;}
 
     /**
      * power spectrum minimum and maximum bin indices
      */
     int minBin() {return m_minBin;}
     void minBin(int value) {m_minBin = value;}
+
     int maxBin() {return m_maxBin;}
     void maxBin(int value) {m_maxBin = value;}
 
@@ -123,51 +139,27 @@ class Spectrum {
      */
     void initialize();
 
-    /**
-     * calculate mode-mode coupling matrix
-     */
-    void loadCouplingMatrix(association *asc);
-    void createModeCouplingMatrix(association *asc);
 
     /**
-     * calculate bin-index conversion matrix
-     */
-    void calculateBinIndexMatrix(long binOffset,long indexOffset,long binRecords = 1,long indexRecords = 1);
-
+     * copy our matrixData to a gsl_matrix
+    */
+    void loadIntoGslMatrix(association *asc, FILETYPE ft);
     /**
-     * calculate index-bin conversion matrix
-     */
-    void calculateIndexBinMatrix(long binOffset,long indexOffset,long binRecords = 1,long indexRecords = 1);
+     * copy a gsl_matrix to our matrixData
+    */
+    void loadIntoMatrixData(association* asc, FILETYPE ft);
 
-    /**
-     * calculate bin-bin coupling matrix
-     */
-    void calculateBinCouplingMatrix(association *asc);
+    // invert a matrix
+    void invertMatrix(association* asc, FILETYPE ft);
 
-    /**
-     * invert coupling matrix
-     */
-    void loadInverseMatrix(association *asc);
-    int invertMatrix(association *asc);
+    void createModeModeMatrix(association *asc);
+    void calculateBinningMatrix(association* asc);
+    void calculateUnbinningMatrix(association* asc);
+    void calculateInstrumentEffectsMatrix(association* asc);
+    void calculateBinnedInstrumentEffectsMatrix(association* asc);
+    void calculateEnsembleAverage(association *asc, FILETYPE ft);
+    void calculateBinnedSpectrum(association* asc);
 
-    /**
-     * calculate power spectrum
-     */
-    void calculateSpectrum(association* asc);
-
-    // calculate the pseudo spectrum
-    void calculatePseudoSpectrum(association* asc);
-
-    /**
-     * calculate the ensemble average
-     */
-    void calculateEnsembleAverage(association *asc, int size);
-
-    void ensembleAverageTimesInverse(association* assoc);
-
-    /**
-     * clear the spectrum object
-     */
     void clear();
 
   private:
@@ -189,15 +181,31 @@ class Spectrum {
     int           m_ensIter;
     int           m_minIndex;
     int           m_maxIndex;
+    int           m_lPerBin;
+    int           m_numBins;
     int           m_minBin;
     int           m_maxBin;
     int           m_lowBinL;
+    /*
     gsl_matrix   *m_mode_modeMatrix;
     gsl_matrix   *m_bin_binMatrix;
     gsl_matrix   *m_bin_indexMatrix;
     gsl_matrix   *m_index_binMatrix;
     gsl_matrix   *m_inverseModeMatrix;
     gsl_matrix   *m_inverseBinMatrix;
+    */
+    gsl_matrix   *m_ModeModeMatrix;
+    gsl_matrix   *m_InstrumentEffectsMatrix;
+    gsl_matrix   *m_BinningMatrix;
+    gsl_matrix   *m_UnbinningMatrix;
+    gsl_matrix   *m_BinnedInstrumentEffectsMatrix;
+
+    gsl_matrix   *m_InverseModeModeMatrix;
+    gsl_matrix   *m_InverseInstrumentEffectsMatrix;
+    gsl_matrix   *m_InverseBinningMatrix;
+    gsl_matrix   *m_InverseUnbinningMatrix;
+    gsl_matrix   *m_InverseBinnedInstrumentMatrix;
+
     PowSpec      *m_healPIXPowerSpectrum;
 };
 

@@ -62,37 +62,131 @@ typedef data_type DATATYPE;
 enum class allTypes {
   Null = 0,
   InputData, InputWeights, WeightedData,
-  InputNoise, InputFilter, InputBeam,
+  InputNoise, InputWeightedNoise, InputFilter, InputBeam,
+
   PixelizedData, PixelizedWeights, WeightedPixel, PixelOccupancy,
-  PixelizedNoise, PixelizedFilter, PixelizedBeam,
+  PixelizedNoise, PixelizedWeightedNoise, PixelizedFilter, PixelizedBeam,
+
   InverseData, InverseWeights, WeightedInverse,
-  InverseNoise, InverseFilter, InverseBeam,
+  InverseNoise, InverseWeightedNoise, InverseFilter, InverseBeam,
+
   MAP_LIMIT,
-  TransformedData, TransformedWeights, WeightedTransform,
-  TransformedNoise, TransformedFilter, TransformedBeam,
-  SpectralData, EnsembleData,
+
+  TransformedData, TransformedWeights, WeightedTransform, // the pseudo spectrum
+  TransformedNoise, TransformedWeightedNoise, TransformedFilter, TransformedBeam,
+  BinnedSpectrum,             //Cb
+  EnsembleAveragedSpectrum,   //<Cl> tilde
+  EnsembleAveragedNoise,      //<Nl> tilde
+  EnsembleAveragedBinnedSpectrum, //<Cb> tilde
+  //SpectralData, EnsembleData,
   GRAPH_LIMIT,
-  AlmData, AlmWeights,
-  AlmNoise, AlmFilter, AlmBeam,
+
+  AlmData, AlmWeights, WeightedAlm,
+  AlmNoise, AlmWeightedNoise, AlmFilter, AlmBeam,
+
   TRANSFORM_LIMIT,
-  BinCouplingMatrix, ModeCouplingMatrix,
-  InverseBinMatrix, InverseModeMatrix,
+
+  EnsembleIterationSpectrum, // the matrix storing all the ensembled pseudo spectrums
+  EnsembleIterationNoise,    // the matrix storing all the ensembled pseudo noise spectrum
+  EnsembleIterationBinnedSpectrum, // the matrix storing all the ensembled binned spectrum
+  ModeModeMatrix,                  // Mll
+  InstrumentEffectsMatrix,           // Kll = MllFlB2L
+  BinningMatrix,                   // Pbl
+  UnbinningMatrix,                 // Qlb
+  BinnedInstrumentEffectsMatrix,          // Kbb = PblKllQlb
+  InverseBinnedInstrumentMatrix,   // Kbb ^-1
+  //BinCouplingMatrix, ModeCouplingMatrix,
+  //InverseBinMatrix, InverseModeMatrix,
   FILETYPE_LIMIT,
+
   InputDataMap, InputWeightsMap, WeightedDataMap,
-  InputNoiseMap, InputFilterMap, InputBeamMap,
+  InputNoiseMap, InputWeightedNoiseMap, InputFilterMap, InputBeamMap,
   PixelizedDataMap, PixelizedWeightsMap, WeightedPixelMap, PixelOccupancyMap,
-  PixelizedNoiseMap, PixelizedFilterMap, PixelizedBeamMap,
+  PixelizedNoiseMap, PixelizedWeightedNoiseMap, PixelizedFilterMap, PixelizedBeamMap,
   InverseDataMap, InverseWeightsMap, WeightedInverseMap,
-  InverseNoiseMap, InverseFilterMap, InverseBeamMap,
+  InverseNoiseMap, InverseWeightedNoiseMap, InverseFilterMap, InverseBeamMap,
   ASSOCIATEMAP_LIMIT,
-  TransformedDataSpectrum, TransformedWeightsSpectrum, WeightedTransformSpectrum,
-  TransformedNoiseSpectrum,TransformedFilterSpectrum, TransformedBeamSpectrum,
-  SpectralDataSpectrum, EnsembleDataSpectrum,
+  TransformedDataSpectrum, TransformedWeightsSpectrum, WeightedTransformSpectrum, // also the pseudo spectrum
+  TransformedNoiseSpectrum, TransformedWeightedNoiseSpectrum, TransformedFilterSpectrum, TransformedBeamSpectrum,
+  BinnedSpectrumSpectrum,
+  EnsembleAveragedSpectrumSpectrum, EnsembleAveragedNoiseSpectrum, EnsembleAveragedBinnedSpectrumSpectrum,
+  //SpectralDataSpectrum, EnsembleDataSpectrum,
   ASSOCIATEDSPECTRUM_LIMIT,
   fileIO, Mapping, Graphing, Pixelization, Transformation, PseudoSpectrum,
   ALLTYPE_LIMIT
 };
 typedef allTypes ALLTYPES;
+
+static std::string dataTypeNames[] = {
+  "No Data",
+  "Raw Data",
+  "Raw Data Mask",
+  "Raw Masked Data",
+  "Raw Noise Data",
+  "Raw Weighted Noise Data",
+  "Raw Filter Data",
+  "Raw Beam Data",
+
+  "Pixelized Data",
+  "Pixelized Mask",
+  "Pixelized Masked Data",
+  "Number of Data Points per Pixel",
+  "Pixelized Noise Data",
+  "Pixelized Weighted Noise Data",
+  "Pixelized Filter Data",
+  "Pixelized Beam Data",
+
+  "Inverse Data",
+  "Inverse Mask",
+  "Inversed Masked Data",
+  "Inverse Noise Data",
+  "Inverse Weighted Noise Data",
+  "Inverse Filter Data",
+  "Inverse Beam Data",
+
+  "End of Mappable Data",
+
+  "Transformed Data",
+  "Transformed Mask",
+  "Transformed Masked Data",
+  "Transformed Noise Data",
+  "Transformed Weighted Noise Data",
+  "Transformed Filter Data",
+  "Transformed Beam Data",
+  "Binned Spectrum",
+  "Ensemble Averaged Spectrum",
+  "Ensemble Averaged Noise",
+  "Ensemble Averaged Binned Spectrum",
+
+  //"Power Spectrum",
+  //"Ensemble Power Spectrum",
+  "End of Graphable Data",
+
+  "Alm Matrix",
+  "Mask Alm Matrix",
+  "Weighted Data Alm Matrix",
+  "Noise Alm Matrix",
+  "Weighted Noise Alm Matrix",
+  "Filter Alm Matrix",
+  "Beam Alm Matrix",
+
+  "End of Transformed Data",
+
+  "Ensemble Iteration Spectrum",
+  "Ensemble Iteration Noise",
+  "Ensemble Iteration Binned Spectrum",
+  "Mode Mode Matrix (Mll)",
+  "Instrumentation Effects Matrix (Kll = MllFlB2L)",
+  "Binning Matrix (Pbl)",
+  "Unbinning Matrix (Qlb)",
+  "Binned Instrument Effects Matrix (Kbb = PblKllQlb)",
+  "Inverse Binned Instrument Effects Matrix (Kbb-1)",
+  //"Bin-Bin Coupling Matrix",
+  //"Mode-Mode Coupling Matrix",
+  //"Inverse Bin-Bin Coupling Matrix",
+  //"Inverse Mode-Mode Coupling Matrix",
+  "End of Data Types"
+};
 
 /**
   * data file types
@@ -100,21 +194,34 @@ typedef allTypes ALLTYPES;
 enum class fileType {
   Null = 0,
   InputData, InputWeights, WeightedData,
-  InputNoise, InputFilter, InputBeam,
+  InputNoise, InputWeightedNoise, InputFilter, InputBeam,
   PixelizedData, PixelizedWeights, WeightedPixel, PixelOccupancy,
-  PixelizedNoise, PixelizedFilter, PixelizedBeam,
+  PixelizedNoise, PixelizedWeightedNoise, PixelizedFilter, PixelizedBeam,
   InverseData, InverseWeights, WeightedInverse,
-  InverseNoise, InverseFilter, InverseBeam,
+  InverseNoise, InverseWeightedNoise, InverseFilter, InverseBeam,
   MAP_LIMIT,
   TransformedData, TransformedWeights, WeightedTransform,
-  TransformedNoise, TransformedFilter, TransformedBeam,
-  SpectralData, EnsembleData,
+  TransformedNoise, TransformedWeightedNoise, TransformedFilter, TransformedBeam,
+  BinnedSpectrum,             //Cb
+  EnsembleAveragedSpectrum,   //<Cl> tilde
+  EnsembleAveragedNoise,      //<Nl> tilde
+  EnsembleAveragedBinnedSpectrum, //<Cb> tilde
+  //SpectralData, EnsembleData,
   GRAPH_LIMIT,
-  AlmData, AlmWeights,
-  AlmNoise, AlmFilter, AlmBeam,
+  AlmData, AlmWeights, WeightedAlm,
+  AlmNoise, AlmWeightedNoise, AlmFilter, AlmBeam,
   TRANSFORM_LIMIT,
-  BinCouplingMatrix, ModeCouplingMatrix,
-  InverseBinMatrix, InverseModeMatrix,
+  EnsembleIterationSpectrum, // the matrix storing all the ensembled pseudo spectrums
+  EnsembleIterationNoise,    // the matrix storing all the ensembled pseudo noise spectrum
+  EnsembleIterationBinnedSpectrum, // the matrix storing all the ensembled binned spectrum
+  ModeModeMatrix,                  // Mll
+  InstrumentEffectsMatrix,           // Kll = MllFlB2L
+  BinningMatrix,                   // Pbl
+  UnbinningMatrix,                 // Qlb
+  BinnedInstrumentEffectsMatrix,          // Kbb = PblKllQlb
+  InverseBinnedInstrumentMatrix,   // Kbb ^-1
+  //BinCouplingMatrix, ModeCouplingMatrix,
+  //InverseBinMatrix, InverseModeMatrix,
   FILETYPE_LIMIT
 };
 typedef fileType FILETYPE;
@@ -143,11 +250,11 @@ typedef m_op M_OP;
 enum class associatedMap {
   Null = 0,
   InputDataMap, InputWeightsMap, WeightedDataMap,
-  InputNoiseMap, InputFilterMap, InputBeamMap,
+  InputNoiseMap, InputWeightedNoiseMap, InputFilterMap, InputBeamMap,
   PixelizedDataMap, PixelizedWeightsMap, WeightedPixelMap, PixelOccupancyMap,
-  PixelizedNoiseMap, PixelizedFilterMap, PixelizedBeamMap,
+  PixelizedNoiseMap, PixelizedWeightedNoiseMap, PixelizedFilterMap, PixelizedBeamMap,
   InverseDataMap, InverseWeightsMap, WeightedInverseMap,
-  InverseNoiseMap, InverseFilterMap, InverseBeamMap,
+  InverseNoiseMap, InverseWeightedNoiseMap, InverseFilterMap, InverseBeamMap,
   ASSOCIATEDMAP_LIMIT
 };
 typedef associatedMap ASSOCIATEDMAP;
@@ -162,10 +269,12 @@ typedef colorScheme COLORSCHEME;
   * associated spectra
   */
 enum class associatedSpectrum {
-  Null = 20,
+  Null = (int)fileType::MAP_LIMIT, //20,
   TransformedDataSpectrum, TransformedWeightsSpectrum, WeightedTransformSpectrum,
-  TransformedNoiseSpectrum,TransformedFilterSpectrum, TransformedBeamSpectrum,
-  SpectralDataSpectrum, EnsembleDataSpectrum,
+  TransformedNoiseSpectrum, TransformedWeightedNoiseSpectrum, TransformedFilterSpectrum, TransformedBeamSpectrum,
+  BinnedSpectrumSpectrum,
+  EnsembleAveragedSpectrumSpectrum, EnsembleAveragedNoiseSpectrum, EnsembleAveragedBinnedSpectrumSpectrum,
+  //SpectralDataSpectrum, EnsembleDataSpectrum,
   ASSOCIATEDSPECTRUM_LIMIT
 };
 typedef associatedSpectrum ASSOCIATEDSPECTRUM;
@@ -373,49 +482,6 @@ static std::string errorText[] = {
   "Undefined error"
 };
 
-static std::string dataTypeNames[] = {
-  "No Data",
-  "Raw Data",
-  "Raw Data Mask",
-  "Raw Masked Data",
-  "Raw Noise Data",
-  "Raw Filter Data",
-  "Raw Beam Data",
-  "Pixelized Data",
-  "Pixelized Mask",
-  "Pixelized Masked Data",
-  "Number of Data Points per Pixel",
-  "Pixelized Noise Data",
-  "Pixelized Filter Data",
-  "Pixelized Beam Data",
-  "Inverse Data",
-  "Inverse Mask",
-  "Inversed Masked Data",
-  "Inverse Noise Data",
-  "Inverse Filter Data",
-  "Inverse Beam Data",
-  "End of Mappable Data",
-  "Transformed Data",
-  "Transformed Mask",
-  "Transformed Masked Data",
-  "Transformed Noise Data",
-  "Transformed Filter Data",
-  "Transformed Beam Data",
-  "Power Spectrum",
-  "Ensemble Power Spectrum",
-  "End of Graphable Data",
-  "Alm Matrix",
-  "Mask Alm Matrix",
-  "Noise Alm Matrix",
-  "Filter Alm Matrix",
-  "Beam Alm Matrix",
-  "End of Transformed Data",
-  "Bin-Bin Coupling Matrix",
-  "Mode-Mode Coupling Matrix",
-  "Inverse Bin-Bin Coupling Matrix",
-  "Inverse Mode-Mode Coupling Matrix",
-  "End of Data Types"
-};
 
 static std::string observatoryNames[] = {
   "Unknown",

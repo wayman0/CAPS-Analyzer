@@ -98,6 +98,10 @@ template <typename _Type> class vectorData : public baseData {
      */
     vectorData<_Type>& operator=(const vectorData<_Type>& other);
 
+    vectorData<_Type>* elementMult(vectorData<_Type>* that);
+    vectorData<_Type>* elementAdd(vectorData<_Type>* that);
+    vectorData<_Type>* elementSub(vectorData<_Type>* that);
+
     /**
      * access to binned flag
      */
@@ -243,6 +247,48 @@ template <typename _Type> vectorData<_Type>& vectorData<_Type>::operator=(const 
   m_binned            = other.binned();
 
   return *this;
+}
+
+template <typename _Type> vectorData<_Type>* vectorData<_Type>::elementMult(vectorData<_Type>* that)
+{
+  if(this->rows() != that->rows())
+    throw dataMismatchError;
+
+  vectorData<_Type>* result = new vectorData<_Type>(this->rows(), fileType::Null);
+  result->initialize();
+
+  for(int i = 0; i < this->rows(); i += 1)
+    (*result)[i] = (*this)[i] * (*that)[i];
+
+  return result;
+}
+
+template <typename _Type> vectorData<_Type>* vectorData<_Type>::elementAdd(vectorData<_Type>* that)
+{
+  if(this->rows() != that->rows())
+    throw dataMismatchError;
+
+  vectorData<_Type>* result = new vectorData<_Type>(this->rows(), fileType::Null);
+  result->initialize();
+
+  for(int i = 0; i < this->rows(); i += 1)
+    (*result)[i] = (*this)[i] + (*that)[i];
+
+  return result;
+}
+
+template <typename _Type> vectorData<_Type>* vectorData<_Type>::elementSub(vectorData<_Type>* that)
+{
+  if(this->rows() != that->rows())
+    throw dataMismatchError;
+
+  vectorData<_Type>* result = new vectorData<_Type>(this->rows(), fileType::Null);
+  result->initialize();
+
+  for(int i = 0; i < this->rows(); i += 1)
+    (*result)[i] = (*this)[i] - (*that)[i];
+
+  return result;
 }
 
 template <typename _Type> void vectorData<_Type>::print() {

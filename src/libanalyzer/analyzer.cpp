@@ -1957,7 +1957,7 @@ int analyzer_grapher_get_graph(analyzer_graph_hdl gh, analyzer_hdl ah, analyzer_
       *data_graph = collection->transGraph()->transferRGBData();
       break;
     case ANALYZER_SPECTRAL:
-      *data_graph = collection->spectrumGraph()->transferRGBData();
+      *data_graph = collection->BinnedSpectrumGraph()->transferRGBData(); //collection->spectrumGraph()->transferRGBData();
       break;
     case ANALYZER_TRANSFORM_NOISE:
       *data_graph = collection->transNoiseGraph()->transferRGBData();

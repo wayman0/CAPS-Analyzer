@@ -6,7 +6,7 @@ Build Directory Count=1
 Current Build Directory Index-Host System=0
 
 [CMake][CMake Build Directory 0]
-Build Directory Path=/mnt/research/software/CAPS-Analyzer/build/src/libgraphics
+Build Directory Path=/mnt/research/software/CAPS-Analyzer-underWork/build/src/libgraphics
 Build Type=Debug
 CMake Binary=/usr/bin/cmake
 CMake Executable=/usr/bin/cmake
@@ -14,3 +14,6 @@ Environment Profile=
 Extra Arguments=
 Install Directory=/usr/local
 Runtime=Host System
+
+[NinjaBuilder]
+Additional Options=-v

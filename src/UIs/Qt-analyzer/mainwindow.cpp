@@ -379,8 +379,59 @@ void mainWindow::openFile()
       return;
     }
 
-    //for(int i = 0; i < *numTypes; i += 1)
-    configureDisplay(dataTypes[0]);
+    // this vector represents whether
+    // we have to map or graph or both
+    std::vector<FILETYPE> types(2);
+    types.assign(2, fileType::Null);
+
+    for(int i = 0; i < *numTypes; i += 1)
+    {
+      switch(dataTypes[i])
+      {
+        // these are all maps
+        case fileType::InputData:
+        case fileType::InputWeights:
+        case fileType::WeightedData:
+        case fileType::InputNoise:
+        case fileType::InputWeightedNoise:
+        case fileType::InputFilter:
+        case fileType::InputBeam:
+        case fileType::PixelizedData:
+        case fileType::PixelizedWeights:
+        case fileType::WeightedPixel:
+        case fileType::PixelizedNoise:
+        case fileType::PixelizedWeightedNoise:
+        case fileType::PixelizedFilter:
+        case fileType::PixelizedBeam:
+        case fileType::InverseData:
+        case fileType::InverseWeights:
+        case fileType::WeightedInverse:
+        case fileType::InverseNoise:
+        case fileType::InverseWeightedNoise:
+        case fileType::InverseFilter:
+        case fileType::InverseBeam:
+          types[0] = dataTypes[i];
+          break;
+          // these are all graphs
+        case fileType::TransformedData:
+        case fileType::TransformedWeights:
+        case fileType::WeightedTransform:
+        case fileType::TransformedNoise:
+        case fileType::TransformedWeightedNoise:
+        case fileType::TransformedFilter:
+        case fileType::TransformedBeam:
+        case fileType::EnsembleAveragedNoise:
+        case fileType::EnsembleAveragedSpectrum:
+        case fileType::BinnedSpectrum:
+        case fileType::EnsembleAveragedBinnedSpectrum:
+          types[1] = dataTypes[i];
+          break;
+      }
+    }
+
+    for(fileType type : types)
+      configureDisplay(type);
+
   }
 }
 
@@ -575,6 +626,11 @@ void mainWindow::saveFile() {
       return;
     }
   }
+
+  QMessageBox saveSuccessful;
+  saveSuccessful.setText("Save Successful.");
+  saveSuccessful.setStandardButtons(QMessageBox::Ok);
+  saveSuccessful.exec();
 }
 
 void mainWindow::createControlData(FILETYPE dataType, bool complete)
@@ -725,6 +781,7 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
         }
         break;
     }
+
     try {
       s_association->createEmptyDataSet(dataType,ra,dec);
     }
@@ -831,6 +888,37 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
       break;
   }
 
+  if(s_association->exists(fileType::InputData) &&
+     s_association->exists(fileType::InputWeights) &&
+    !s_association->exists(fileType::WeightedData))
+  {
+    /*matrixData<double>* inData = s_association->inputData();
+    matrixData<double>* wgData = s_association->inputWeights();
+
+    matrixData<double>* weightedData = new matrixData<double>(inData->cols(), inData->rows(), fileType::WeightedData);
+    weightedData->initialize();
+
+    for(int r = 0; r < inData->rows(); r += 1)
+    {
+      for(int c = 0; c < inData->cols(); c += 1)
+      {
+        (*weightedData)[c][r] = (*inData)[c][r] * (*wgData)[c][r];
+        //std::cout << "ROW: " << r << " " << "COL: " << c << "VAL: " << (*weightedData)[r][c] << "\t";
+        //printf("%s: %04d %s: %04d = %s: %04f\t", "ROW", r, "COL", c, "VAL", (*weightedData)[r][c]);
+
+      }
+      //std::cout << "\n";
+    }
+    s_association->addData(weightedData);
+    */
+    s_association->generateWeightedData(fileType::WeightedData);
+  }
+
+  if(s_association->exists(fileType::InputNoise) &&
+     s_association->exists(fileType::InputWeights) &&
+     !s_association->exists(fileType::InputWeightedNoise))
+    s_association->generateWeightedData(fileType::InputWeightedNoise);
+
   configureDisplay(dataType);
 
   if (complete) {
@@ -886,6 +974,47 @@ bool mainWindow::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType) {
         if (!s_association->exists(pixelDataType))
           s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
       }
+      break;
+    case fileType::WeightedData:
+      if(!s_association->exists(fileType::WeightedData))
+      {
+        if(s_association->exists(fileType::InputData) &&
+           s_association->exists(fileType::InputWeights))
+        {
+          s_association->generateWeightedData(fileType::WeightedData);
+
+          if(!s_association->exists(pixelDataType))
+            s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
+        }
+      }
+
+      if(!s_association->exists(fileType::WeightedPixel))
+      {
+        if (s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
+            s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
+
+        if( s_association->exists(fileType::PixelizedData) &&
+            s_association->exists(fileType::PixelizedWeights) &&
+           !s_association->exists(fileType::WeightedPixel))
+          s_association->generateWeightedData(fileType::WeightedPixel);
+      }
+
+      break;
+    case fileType::InputWeightedNoise:
+      if(!s_association->exists(fileType::InputWeightedNoise))
+      {
+        if(s_association->exists(fileType::InputNoise) &&
+           s_association->exists(fileType::InputWeights))
+        {
+          s_association->generateWeightedData(fileType::InputWeightedNoise);
+
+          if(!s_association->exists(pixelDataType))
+            s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
+        }
+      }
+
+      if(s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
+        s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
       break;
     default:
       if (s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
@@ -964,11 +1093,35 @@ void mainWindow::pixelize() {
   int type = (int)fileType::InputData;
   int offset = (int)fileType::PixelizedData - (int)fileType::InputData;
 
-  while (inputChain <= fileType::InputBeam) {
-    if (s_association->exists(inputChain) && !s_association->exists(pixelChain)) {
+  while (inputChain <= fileType::InputBeam)
+  {
+    if (s_association->exists(inputChain) && !s_association->exists(pixelChain))
+    {
       if (pixelize(inputChain,pixelChain))
         count++;
     }
+    // have to account for possibly starting with a file that
+    // doesn't contain weighted data but we do have weights and data
+    // so we can generate weighted pixel
+    else if(pixelChain == fileType::WeightedPixel)
+    {
+      if(s_association->exists(fileType::PixelizedData) &&
+         s_association->exists(fileType::PixelizedWeights))
+      {
+        if(pixelize(inputChain, pixelChain))
+          count++;
+      }
+    }
+    else if(pixelChain == fileType::PixelizedWeightedNoise)
+    {
+      if(s_association->exists(fileType::PixelizedNoise) &&
+         s_association->exists(fileType::PixelizedWeights))
+      {
+        if(pixelize(inputChain, pixelChain))
+          count++;
+      }
+    }
+
     inputChain = static_cast<FILETYPE>(++type);
     pixelChain = static_cast<FILETYPE>(offset+type);
     if (pixelChain == fileType::PixelOccupancy) {
@@ -983,23 +1136,57 @@ void mainWindow::pixelize() {
   return;
 }
 
-bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType) {
-
-  // the problem is we try to transform our pixelized noise but we don't have it
+bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
+{
   if (!s_association->exists(pixelDataType))
   {
     if (!s_association->exists(dataEngines::Pixelization))
       selectPixelizer();
+
     int offset = (int)fileType::PixelizedData - (int)fileType::InputData;
     FILETYPE inputDataType = fileType::Null;
     if (pixelDataType >= fileType::PixelOccupancy)
       inputDataType = static_cast<FILETYPE>((int)pixelDataType - offset - 1);
     else
       inputDataType = static_cast<FILETYPE>((int)pixelDataType - offset);
+
     pixelize(inputDataType,pixelDataType);
   }
 
-  if (s_association->exists(pixelDataType) && !s_association->exists(transDataType)) {
+  switch(pixelDataType)
+  {
+    case fileType::WeightedPixel:
+      if(!s_association->exists(fileType::WeightedPixel))
+      {
+        if(s_association->exists(fileType::PixelizedData) &&
+           s_association->exists(fileType::PixelizedWeights))
+        {
+          s_association->generateWeightedData(fileType::WeightedPixel);
+
+          if(!s_association->exists(fileType::WeightedPixel))
+            s_association->generatePixelData(s_association->pixelizationEngine(), fileType::WeightedPixel);
+        }
+      }
+      break;
+    case fileType::PixelizedWeightedNoise:
+      if(!s_association->exists(fileType::PixelizedWeightedNoise))
+      {
+        if(s_association->exists(fileType::PixelizedNoise) &&
+           s_association->exists(fileType::PixelizedWeights))
+        {
+          s_association->generateWeightedData(fileType::PixelizedWeightedNoise);
+
+          if(!s_association->exists(fileType::PixelizedWeightedNoise))
+            s_association->generatePixelData(s_association->pixelizationEngine(), fileType::PixelizedWeightedNoise);
+        }
+      }
+      break;
+    default:
+      break;
+  }
+
+  if (s_association->exists(pixelDataType) && !s_association->exists(transDataType))
+  {
     s_association->generateTransformedData(s_association->transformationEngine(),pixelDataType);
     return true;
   }
@@ -1077,23 +1264,26 @@ void mainWindow::analyze() {
     s_association->powerSpectraEngine()->binning(specDlg->binSpectrum());
     s_association->powerSpectraEngine()->computeInverse(specDlg->invertTransforms());
     s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
-    s_association->powerSpectraEngine()->indices(specDlg->indicesPerBin());
+    s_association->powerSpectraEngine()->numLPerBin(specDlg->indicesPerBin());
     s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
     s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
     s_association->powerSpectraEngine()->configured(true);
   }
   else
-    if (s_association->powerSpectraEngine()->configured() == false) {
+  {
+    if (s_association->powerSpectraEngine()->configured() == false)
+    {
       s_association->reset(allTypes::PseudoSpectrum);
       s_association->addEngine(dataEngines::PseudoSpectrum);
       s_association->powerSpectraEngine()->binning(specDlg->binSpectrum());
       s_association->powerSpectraEngine()->computeInverse(specDlg->invertTransforms());
       s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
-      s_association->powerSpectraEngine()->indices(specDlg->indicesPerBin());
+      s_association->powerSpectraEngine()->numLPerBin(specDlg->indicesPerBin());
       s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
       s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
       s_association->powerSpectraEngine()->configured(true);
     }
+  }
 
   // check that all of the transformed data exists
   if (!s_association->exists(fileType::TransformedData))
@@ -1147,6 +1337,45 @@ void mainWindow::analyze() {
     }
   }
 
+  if (!s_association->exists(fileType::WeightedTransform))
+  {
+    if(!s_association->exists(fileType::WeightedAlm))
+    {
+      if(s_association->exists(fileType::PixelizedData) &&
+         s_association->exists(fileType::PixelizedWeights))
+      {
+        vectorData<double>* pixelData = s_association->pixelizedData();
+        vectorData<double>* pixelWeight = s_association->pixelizedWeights();
+        vectorData<double>* weightedPixel = new vectorData<double>(pixelData);
+
+        for(int i = 0; i < weightedPixel->rows(); i += 1)
+          (*weightedPixel)[i] = (*pixelData)[i] * (*pixelWeight)[i];
+
+        weightedPixel->dataType(fileType::WeightedPixel);
+        s_association->addData(weightedPixel);
+      }
+
+      if (!s_association->exists(dataEngines::Transformation))
+        selectTransformer();
+
+      if (!transform(fileType::WeightedPixel, fileType::WeightedTransform))
+      {
+        title = QString(tr("No weighted transformed data available"));
+        message = QString(tr("No weighted transformed data is available.\nPlease check your data entries to insure that one has been entered correctly."));
+        QMessageBox::critical(this,title,message);
+        return;
+      }
+    }
+    else
+    {
+      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::WeightedAlm);
+      configureDisplay(fileType::WeightedTransform);
+
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::WeightedAlm);
+      configureDisplay(fileType::WeightedInverse);
+    }
+  }
+
   if (!s_association->exists(fileType::TransformedNoise))
   {
     if(!s_association->exists(fileType::AlmNoise))
@@ -1161,7 +1390,11 @@ void mainWindow::analyze() {
 
         // fill vector with white noise
         //s_association->createWhiteNoise(s_association->transformedNoise());
-        s_association->createShotNoise(s_association->transformedNoise());
+        //s_association->createShotNoise(s_association->transformedNoise());
+
+        // this is wrong but the math says to subtract the noise which will give negatives
+        int rows = s_association->transformedNoise()->rows();
+        s_association->transformedNoise()->rwAccess().assign(rows, 0.0);
       }
     }
     else
@@ -1169,8 +1402,45 @@ void mainWindow::analyze() {
       s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmNoise);
       configureDisplay(fileType::TransformedNoise);
 
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeights);
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmNoise);
       configureDisplay(fileType::InverseNoise);
+    }
+  }
+
+  if (!s_association->exists(fileType::TransformedWeightedNoise))
+  {
+    if(!s_association->exists(fileType::AlmWeightedNoise))
+    {
+      if(s_association->exists(fileType::PixelizedNoise) &&
+         s_association->exists(fileType::PixelizedWeights))
+      {
+        s_association->generateWeightedData(fileType::PixelizedWeightedNoise);
+      }
+
+      if (!s_association->exists(dataEngines::Transformation))
+        selectTransformer();
+
+      if (!transform(fileType::PixelizedWeightedNoise, fileType::TransformedWeightedNoise))
+      {
+        s_association->merge(fileType::TransformedWeightedNoise, s_association->transformedData(), false);
+        s_association->weightedTransformedNoise()->dataType(fileType::TransformedWeightedNoise);
+        int rows = s_association->weightedTransformedNoise()->rows();
+        s_association->weightedTransformedNoise()->rwAccess().assign(rows, 0);
+        /*
+        title = QString(tr("No weighted transformed data available"));
+        message = QString(tr("No weighted transformed data is available.\nPlease check your data entries to insure that one has been entered correctly."));
+        QMessageBox::critical(this,title,message);
+        return;
+        */
+      }
+    }
+    else
+    {
+      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmWeightedNoise);
+      configureDisplay(fileType::AlmWeightedNoise);
+
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeightedNoise);
+      configureDisplay(fileType::AlmWeightedNoise);
     }
   }
 
@@ -1194,7 +1464,7 @@ void mainWindow::analyze() {
       s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmFilter);
       configureDisplay(fileType::TransformedFilter);
 
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeights);
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmFilter);
       configureDisplay(fileType::InverseFilter);
     }
   }
@@ -1219,18 +1489,18 @@ void mainWindow::analyze() {
       s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmBeam);
       configureDisplay(fileType::TransformedBeam);
 
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeights);
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmBeam);
       configureDisplay(fileType::InverseBeam);
     }
   }
 
-  // everything is here and ready to go, so carry out analysis
-  s_association->generatePowerSpectrumData(s_association->powerSpectraEngine());
-  s_association->powerSpectraEngine()->calculatePseudoSpectrum(s_association);
-  configureDisplay(fileType::SpectralData);
+  // set the number of ls in the spectra
+  s_association->powerSpectraEngine()->maxIndex(s_association->weightedTransform()->rows());
 
-  s_association->generateEnsembleSpectrumData(s_association->powerSpectraEngine());
-  //configureDisplay(fileType::SpectralData);
+  // everything is here and ready to go, so carry out analysis
+  // generatePowerSpectrumData will just do everything including ensembling
+  s_association->generatePowerSpectrumData(s_association->powerSpectraEngine());
+  configureDisplay(fileType::EnsembleAveragedBinnedSpectrum);
 
   return;
 }
@@ -1245,12 +1515,14 @@ void mainWindow::configureDisplay(FILETYPE dataType) {
     case fileType::InputWeights:
     case fileType::WeightedData:
     case fileType::InputNoise:
+    case fileType::InputWeightedNoise:
     case fileType::InputFilter:
     case fileType::InputBeam:
     case fileType::PixelizedData:
     case fileType::PixelizedWeights:
     case fileType::WeightedPixel:
     case fileType::PixelizedNoise:
+    case fileType::PixelizedWeightedNoise:
     case fileType::PixelizedFilter:
     case fileType::PixelizedBeam:
     case fileType::PixelOccupancy:
@@ -1258,6 +1530,7 @@ void mainWindow::configureDisplay(FILETYPE dataType) {
     case fileType::InverseWeights:
     case fileType::WeightedInverse:
     case fileType::InverseNoise:
+    case fileType::InverseWeightedNoise:
     case fileType::InverseFilter:
     case fileType::InverseBeam:
       configureMaps();
@@ -1266,10 +1539,15 @@ void mainWindow::configureDisplay(FILETYPE dataType) {
     case fileType::TransformedWeights:
     case fileType::WeightedTransform:
     case fileType::TransformedNoise:
+    case fileType::TransformedWeightedNoise:
     case fileType::TransformedFilter:
     case fileType::TransformedBeam:
-    case fileType::SpectralData:
-    case fileType::EnsembleData:
+    //case fileType::SpectralData:
+    //case fileType::EnsembleData:
+    case fileType::EnsembleAveragedNoise:
+    case fileType::EnsembleAveragedSpectrum:
+    case fileType::BinnedSpectrum:
+    case fileType::EnsembleAveragedBinnedSpectrum:
       configureGraphs();
       break;
     default:
@@ -1359,12 +1637,16 @@ void mainWindow::displayMap(ASSOCIATEDMAP map) {
     case associatedMap::InputNoiseMap:
       activeMap = s_association->inputNoiseMap()->transferRGBData();
       break;
+    case associatedMap::InputWeightedNoiseMap:
+      activeMap = s_association->weightedNoiseMap()->transferRGBData();
+      break;
     case associatedMap::InputFilterMap:
       activeMap = s_association->inputFilterMap()->transferRGBData();
       break;
     case associatedMap::InputBeamMap:
       activeMap = s_association->inputBeamMap()->transferRGBData();
       break;
+
     case associatedMap::PixelizedDataMap:
       activeMap = s_association->pixelDataMap()->transferRGBData();
       break;
@@ -1380,12 +1662,16 @@ void mainWindow::displayMap(ASSOCIATEDMAP map) {
     case associatedMap::PixelizedNoiseMap:
       activeMap = s_association->pixelNoiseMap()->transferRGBData();
       break;
+    case associatedMap::PixelizedWeightedNoiseMap:
+      activeMap = s_association->pixelWeightedNoiseMap()->transferRGBData();
+      break;
     case associatedMap::PixelizedFilterMap:
       activeMap = s_association->pixelFilterMap()->transferRGBData();
       break;
     case associatedMap::PixelizedBeamMap:
       activeMap = s_association->pixelBeamMap()->transferRGBData();
       break;
+
     case associatedMap::InverseDataMap:
       activeMap = s_association->invDataMap()->transferRGBData();
       break;
@@ -1397,6 +1683,9 @@ void mainWindow::displayMap(ASSOCIATEDMAP map) {
       break;
     case associatedMap::InverseNoiseMap:
       activeMap = s_association->invNoiseMap()->transferRGBData();
+      break;
+    case associatedMap::InverseWeightedNoiseMap:
+      activeMap = s_association->invWeightedNoiseMap()->transferRGBData();
       break;
     case associatedMap::InverseFilterMap:
       activeMap = s_association->invFilterMap()->transferRGBData();
@@ -1552,20 +1841,38 @@ void mainWindow::displayGraph(ASSOCIATEDSPECTRUM graph) {
     case associatedSpectrum::TransformedNoiseSpectrum:
       activeGraph = s_association->transNoiseGraph()->transferRGBData();
       break;
+    case associatedSpectrum::TransformedWeightedNoiseSpectrum:
+      activeGraph = s_association->transWeightedNoiseGraph()->transferRGBData();
+      break;
     case associatedSpectrum::TransformedFilterSpectrum:
       activeGraph = s_association->transFilterGraph()->transferRGBData();
       break;
     case associatedSpectrum::TransformedBeamSpectrum:
       activeGraph = s_association->transBeamGraph()->transferRGBData();
       break;
+    /*
     case associatedSpectrum::SpectralDataSpectrum:
       activeGraph = s_association->spectrumGraph()->transferRGBData();
       break;
     case associatedSpectrum::EnsembleDataSpectrum:
       activeGraph = s_association->ensembleGraph()->transferRGBData();
       break;
+    */
+    case associatedSpectrum::EnsembleAveragedNoiseSpectrum:
+      activeGraph = s_association->EnsembleAveragedNoiseGraph()->transferRGBData();
+      break;
+    case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
+      activeGraph = s_association->EnsembleAveragedSpectrumGraph()->transferRGBData();
+      break;
+    case associatedSpectrum::BinnedSpectrumSpectrum:
+      activeGraph = s_association->BinnedSpectrumGraph()->transferRGBData();
+      break;
+    case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
+      activeGraph = s_association->EnsembleAveragedBinnedSpectrumGraph()->transferRGBData();
+      break;
     default:
       activeGraph = 0;
+      break;
   }
 
   if (activeGraph == 0) {

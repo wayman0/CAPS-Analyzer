@@ -113,10 +113,11 @@ public:
         nestedButton = new QRadioButton(schemeBox);
         nestedButton->setObjectName(QString::fromUtf8("nestedButton"));
         nestedButton->setGeometry(QRect(10, 30, 111, 24));
-        nestedButton->setChecked(true);
+        nestedButton->setChecked(false);
         ringButton = new QRadioButton(schemeBox);
         ringButton->setObjectName(QString::fromUtf8("ringButton"));
         ringButton->setGeometry(QRect(10, 60, 111, 24));
+        ringButton->setChecked(true);
 
         horizontalLayout->addWidget(schemeBox);
 

@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer
+# Install script for directory: /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

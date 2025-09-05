@@ -94,8 +94,28 @@ dataSpectrum::dataSpectrum(FILETYPE type) {
     case fileType::TransformedWeights:
       m_title = "Transformed Weights Spectrum";
       break;
+    case fileType::WeightedTransform:
+      m_title = "Pseudo Spectrum?";
+      break;
+    case fileType::TransformedWeightedNoise:
+      m_title = "Transformed Weighted Noise";
+      break;
+    /*
     case fileType::SpectralData:
       m_title = "Extrapolated Data Spectrum";
+      break;
+    */
+    case fileType::EnsembleAveragedNoise:
+      m_title = "Ensembled Noise Spectrum";
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      m_title = "Ensembled Pseudo Spectrum";
+      break;
+    case fileType::BinnedSpectrum:
+      m_title = "Binned Spectrum";
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      m_title = "Ensembled Binned Spectrum";
       break;
     default:
       break;
@@ -169,7 +189,7 @@ long int dataSpectrum::initialize(long int x, long int y) {
 }
 
 void dataSpectrum::title(std::string value) {
-  m_title = value + " Spectrum";
+  m_title = value;// + " Spectrum";
 }
 
 unsigned char* dataSpectrum::transferRGBData() {

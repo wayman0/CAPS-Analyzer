@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>782</width>
-    <height>210</height>
+    <width>795</width>
+    <height>344</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QLabel" name="title">
      <property name="minimumSize">
@@ -47,130 +47,162 @@
      <property name="title">
       <string>Select Display Type</string>
      </property>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>751</width>
-        <height>98</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="3">
-        <widget class="QRadioButton" name="filterSkyButton">
-         <property name="text">
-          <string>Filter S&amp;ky Map</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QRadioButton" name="inverseWeightsButton">
-         <property name="text">
-          <string>In&amp;verse Weights</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QRadioButton" name="inverseDataButton">
-         <property name="text">
-          <string>&amp;Inverse Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QRadioButton" name="pixelDataButton">
-         <property name="text">
-          <string>&amp;Pixelized Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QRadioButton" name="combinedInverseButton">
-         <property name="text">
-          <string>Weigh&amp;ted Inverse Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QRadioButton" name="weightButton">
-         <property name="text">
-          <string>Input &amp;Weights</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QRadioButton" name="pixelOccupancyButton">
-         <property name="text">
-          <string>Pixel &amp;Occupancy</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QRadioButton" name="dataButton">
-         <property name="text">
-          <string>Input &amp;Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QRadioButton" name="noiseSkyButton">
-         <property name="text">
-          <string>Noise &amp;Sky Map</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QRadioButton" name="beamSkyButton">
-         <property name="text">
-          <string>Beam Sk&amp;y Map</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QRadioButton" name="combinedDataButton">
-         <property name="text">
-          <string>Wei&amp;ghted Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QRadioButton" name="combinedPixelButton">
-         <property name="text">
-          <string>Weig&amp;hted Pixelized Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QRadioButton" name="pixelWeightsButton">
-         <property name="text">
-          <string>Pi&amp;xelized Weights</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="QRadioButton" name="noiseButton">
-         <property name="text">
-          <string>Pixelized &amp;Noise Map</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QRadioButton" name="filterButton">
-         <property name="text">
-          <string>Pixelized &amp;Filter Map</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QRadioButton" name="beamButton">
-         <property name="text">
-          <string>Pixelized &amp;Beam Map</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="dataButton">
+        <property name="text">
+         <string>Input &amp;Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="pixelDataButton">
+        <property name="text">
+         <string>&amp;Pixelized Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QRadioButton" name="inverseDataButton">
+        <property name="text">
+         <string>&amp;Inverse Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="weightButton">
+        <property name="text">
+         <string>Input &amp;Weights</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QRadioButton" name="pixelWeightsButton">
+        <property name="text">
+         <string>Pi&amp;xelized Weights</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QRadioButton" name="inverseWeightsButton">
+        <property name="text">
+         <string>In&amp;verse Weights</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="combinedDataButton">
+        <property name="text">
+         <string>Wei&amp;ghted Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QRadioButton" name="combinedPixelButton">
+        <property name="text">
+         <string>Weig&amp;hted Pixelized Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QRadioButton" name="combinedInverseButton">
+        <property name="text">
+         <string>Weigh&amp;ted Inverse Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QRadioButton" name="noiseSkyButton">
+        <property name="text">
+         <string>Noise &amp;Sky Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QRadioButton" name="noiseButton">
+        <property name="text">
+         <string>Pixelized &amp;Noise Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QRadioButton" name="invNoiseButton">
+        <property name="text">
+         <string>Inverse Noise Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QRadioButton" name="weightedNoiseSkyButton">
+        <property name="text">
+         <string>Weighted Noise &amp;Sky Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QRadioButton" name="pixelWeightedNoiseButton">
+        <property name="text">
+         <string>Pixelized &amp;Weighted Noise Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QRadioButton" name="invWeightedNoiseButton">
+        <property name="text">
+         <string>Inverse Weighted Noise Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QRadioButton" name="filterSkyButton">
+        <property name="text">
+         <string>Filter S&amp;ky Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QRadioButton" name="filterButton">
+        <property name="text">
+         <string>Pixelized &amp;Filter Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QRadioButton" name="invFilterButton">
+        <property name="text">
+         <string>Inverse Filter Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QRadioButton" name="beamSkyButton">
+        <property name="text">
+         <string>Beam Sk&amp;y Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QRadioButton" name="beamButton">
+        <property name="text">
+         <string>Pixelized &amp;Beam Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QRadioButton" name="invBeamButton">
+        <property name="text">
+         <string>Inverse Beam Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QRadioButton" name="pixelOccupancyButton">
+        <property name="text">
+         <string>Pixel &amp;Occupancy</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="2" column="0">

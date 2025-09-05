@@ -68,20 +68,27 @@ mapSelectDialog::mapSelectDialog(association *assoc) :
   ui->dataButton->setEnabled(true);
   ui->weightButton->setEnabled(true);
   ui->combinedDataButton->setEnabled(true);
+  ui->noiseSkyButton->setEnabled(true);
+  ui->weightedNoiseSkyButton->setEnabled(true);
+  ui->filterSkyButton->setEnabled(true);
+  ui->beamSkyButton->setEnabled(true);
+
   ui->pixelDataButton->setEnabled(true);
   ui->pixelWeightsButton->setEnabled(true);
   ui->combinedPixelButton->setEnabled(true);
+  ui->noiseButton->setEnabled(true);
+  ui->pixelWeightedNoiseButton->setEnabled(true);
+  ui->filterButton->setEnabled(true);
+  ui->beamButton->setEnabled(true);
   ui->pixelOccupancyButton->setEnabled(true);
+
   ui->inverseDataButton->setEnabled(true);
   ui->inverseWeightsButton->setEnabled(true);
   ui->combinedInverseButton->setEnabled(true);
-  ui->noiseSkyButton->setEnabled(true);
-  ui->filterSkyButton->setEnabled(true);
-  ui->beamSkyButton->setEnabled(true);
-  ui->noiseButton->setEnabled(true);
-  ui->filterButton->setEnabled(true);
-  ui->beamButton->setEnabled(true);
-  ui->dataButton->setChecked(true);
+  ui->invNoiseButton->setEnabled(true);
+  ui->invWeightedNoiseButton->setEnabled(true);
+  ui->invFilterButton->setEnabled(true);
+  ui->invBeamButton->setEnabled(true);
    
   /* set up signals and slots */
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &mapSelectDialog::finalize);
@@ -105,30 +112,46 @@ void mapSelectDialog::validate() {
     mapType = associatedMap::WeightedDataMap;
   if (ui->pixelDataButton->isChecked())
     mapType = associatedMap::PixelizedDataMap;
+  if (ui->noiseSkyButton->isChecked())
+    mapType = associatedMap::InputNoiseMap;
+  if(ui->weightedNoiseSkyButton->isChecked())
+    mapType = associatedMap::InputWeightedNoiseMap;
+  if (ui->filterSkyButton->isChecked())
+    mapType = associatedMap::InputFilterMap;
+  if (ui->beamSkyButton->isChecked())
+    mapType = associatedMap::InputBeamMap;
+
+  if (ui->pixelDataButton->isChecked())
+    mapType = associatedMap::PixelizedDataMap;
   if (ui->pixelWeightsButton->isChecked())
     mapType = associatedMap::PixelizedWeightsMap;
   if (ui->combinedPixelButton->isChecked())
     mapType = associatedMap::WeightedPixelMap;
   if (ui->pixelOccupancyButton->isChecked())
     mapType = associatedMap::PixelOccupancyMap;
+  if (ui->noiseButton->isChecked())
+    mapType = associatedMap::PixelizedNoiseMap;
+  if(ui->pixelWeightedNoiseButton->isChecked())
+    mapType = associatedMap::PixelizedWeightedNoiseMap;
+  if (ui->filterButton->isChecked())
+    mapType = associatedMap::PixelizedFilterMap;
+  if (ui->beamButton->isChecked())
+    mapType = associatedMap::PixelizedBeamMap;
+
   if (ui->inverseDataButton->isChecked())
     mapType = associatedMap::InverseDataMap;
   if (ui->inverseWeightsButton->isChecked())
     mapType = associatedMap::InverseWeightsMap;
   if (ui->combinedInverseButton->isChecked())
     mapType = associatedMap::WeightedInverseMap;
-  if (ui->noiseSkyButton->isChecked())
-    mapType = associatedMap::InputNoiseMap;
-  if (ui->filterSkyButton->isChecked())
-    mapType = associatedMap::InputFilterMap;
-  if (ui->beamSkyButton->isChecked())
-    mapType = associatedMap::InputBeamMap;
-  if (ui->noiseButton->isChecked())
-    mapType = associatedMap::PixelizedNoiseMap;
-  if (ui->filterButton->isChecked())
-    mapType = associatedMap::PixelizedFilterMap;
-  if (ui->beamButton->isChecked())
-    mapType = associatedMap::PixelizedBeamMap;
+  if (ui->invNoiseButton->isChecked())
+    mapType = associatedMap::InverseNoiseMap;
+  if (ui->invWeightedNoiseButton->isChecked())
+    mapType = associatedMap::InverseWeightedNoiseMap;
+  if (ui->invFilterButton->isChecked())
+    mapType = associatedMap::InverseFilterMap;
+  if (ui->invBeamButton->isChecked())
+    mapType = associatedMap::InverseBeamMap;
 
   if (mapType != oldMapType)
     dirty = true;
@@ -143,21 +166,28 @@ void mapSelectDialog::configure(unsigned int availableMaps) {
   ui->dataButton->setEnabled(false);
   ui->weightButton->setEnabled(false);
   ui->combinedDataButton->setEnabled(false);
+  ui->noiseSkyButton->setEnabled(false);
+  ui->weightedNoiseSkyButton->setEnabled(false);
+  ui->filterSkyButton->setEnabled(false);
+  ui->beamSkyButton->setEnabled(false);
+
   ui->pixelDataButton->setEnabled(false);
   ui->pixelWeightsButton->setEnabled(false);
   ui->combinedPixelButton->setEnabled(false);
+  ui->noiseButton->setEnabled(false);
+  ui->pixelWeightedNoiseButton->setEnabled(false);
+  ui->filterButton->setEnabled(false);
+  ui->beamButton->setEnabled(false);
   ui->pixelOccupancyButton->setEnabled(false);
+
   ui->inverseDataButton->setEnabled(false);
   ui->inverseWeightsButton->setEnabled(false);
   ui->combinedInverseButton->setEnabled(false);
-  ui->noiseSkyButton->setEnabled(false);
-  ui->beamSkyButton->setEnabled(false);
-  ui->filterSkyButton->setEnabled(false);
-  ui->noiseButton->setEnabled(false);
-  ui->filterButton->setEnabled(false);
-  ui->beamButton->setEnabled(false);
-  ui->dataButton->setChecked(false);
-  
+  ui->invNoiseButton->setEnabled(false);
+  ui->invWeightedNoiseButton->setEnabled(false);
+  ui->invFilterButton->setEnabled(false);
+  ui->invBeamButton->setEnabled(false);
+
   // run through maps backwards to find earliest data type in chain that exists
   ASSOCIATEDMAP mapType = associatedMap::ASSOCIATEDMAP_LIMIT;
   int type = static_cast<int>(mapType);
@@ -171,7 +201,8 @@ void mapSelectDialog::configure(unsigned int availableMaps) {
     if (mapType == associatedMap::Null)
       break;
     
-    switch (mapType) {
+    switch (mapType)
+    {
       case associatedMap::InputDataMap:
         if (dataMgr->exists(mapType)) {
           ui->dataButton->setEnabled(true);
@@ -188,6 +219,31 @@ void mapSelectDialog::configure(unsigned int availableMaps) {
         if (dataMgr->exists(mapType)) {
           ui->combinedDataButton->setEnabled(true);
           ui->combinedDataButton->setChecked(true);
+        }
+        break;
+      case associatedMap::InputNoiseMap:
+        if (dataMgr->exists(mapType)) {
+          ui->noiseSkyButton->setEnabled(true);
+          ui->noiseSkyButton->setChecked(true);
+        }
+        break;
+      case associatedMap::InputWeightedNoiseMap:
+        if(dataMgr->exists(mapType))
+        {
+          ui->weightedNoiseSkyButton->setEnabled(true);
+          ui->weightedNoiseSkyButton->setChecked(true);
+        }
+        break;
+      case associatedMap::InputFilterMap:
+        if (dataMgr->exists(mapType)) {
+          ui->filterSkyButton->setEnabled(true);
+          ui->filterSkyButton->setChecked(true);
+        }
+        break;
+      case associatedMap::InputBeamMap:
+        if (dataMgr->exists(mapType)) {
+          ui->beamSkyButton->setEnabled(true);
+          ui->beamSkyButton->setChecked(true);
         }
         break;
       case associatedMap::PixelizedDataMap:
@@ -208,12 +264,38 @@ void mapSelectDialog::configure(unsigned int availableMaps) {
           ui->combinedPixelButton->setChecked(true);
         }
         break;
+      case associatedMap::PixelizedNoiseMap:
+        if (dataMgr->exists(mapType)) {
+          ui->noiseButton->setEnabled(true);
+          ui->noiseButton->setChecked(true);
+        }
+        break;
+      case associatedMap::PixelizedWeightedNoiseMap:
+        if(dataMgr->exists(mapType))
+        {
+          ui->pixelWeightedNoiseButton->setEnabled(true);
+          ui->pixelWeightedNoiseButton->setChecked(true);
+        }
+        break;
+      case associatedMap::PixelizedFilterMap:
+        if (dataMgr->exists(mapType)) {
+          ui->filterButton->setEnabled(true);
+          ui->filterButton->setChecked(true);
+        }
+        break;
+      case associatedMap::PixelizedBeamMap:
+        if (dataMgr->exists(mapType)) {
+          ui->beamButton->setEnabled(true);
+          ui->beamButton->setChecked(true);
+        }
+        break;
       case associatedMap::PixelOccupancyMap:
         if (dataMgr->exists(mapType)) {
           ui->pixelOccupancyButton->setEnabled(true);
           ui->pixelOccupancyButton->setChecked(true);
         }
         break;
+
       case associatedMap::InverseDataMap:
         if (dataMgr->exists(mapType)) {
           ui->inverseDataButton->setEnabled(true);
@@ -232,42 +314,33 @@ void mapSelectDialog::configure(unsigned int availableMaps) {
           ui->combinedInverseButton->setChecked(true);
         }
         break;
-      case associatedMap::InputNoiseMap:
+      case associatedMap::InverseNoiseMap:
         if (dataMgr->exists(mapType)) {
-          ui->noiseSkyButton->setEnabled(true);
-          ui->noiseSkyButton->setChecked(true);
+          ui->invNoiseButton->setEnabled(true);
+          ui->invNoiseButton->setChecked(true);
         }
         break;
-      case associatedMap::InputFilterMap:
-        if (dataMgr->exists(mapType)) {
-          ui->filterSkyButton->setEnabled(true);
-          ui->filterSkyButton->setChecked(true);
+      case associatedMap::InverseWeightedNoiseMap:
+        if(dataMgr->exists(mapType))
+        {
+          ui->invWeightedNoiseButton->setEnabled(true);
+          ui->invWeightedNoiseButton->setChecked(true);
         }
         break;
-      case associatedMap::InputBeamMap:
+      case associatedMap::InverseFilterMap:
         if (dataMgr->exists(mapType)) {
-          ui->beamSkyButton->setEnabled(true);
-          ui->beamSkyButton->setChecked(true);
-        }
-      case associatedMap::PixelizedNoiseMap:
-        if (dataMgr->exists(mapType)) {
-          ui->noiseButton->setEnabled(true);
-          ui->noiseButton->setChecked(true);
+          ui->invFilterButton->setEnabled(true);
+          ui->invFilterButton->setChecked(true);
         }
         break;
-      case associatedMap::PixelizedFilterMap:
+      case associatedMap::InverseBeamMap:
         if (dataMgr->exists(mapType)) {
-          ui->filterButton->setEnabled(true);
-          ui->filterButton->setChecked(true);
-        }
-        break;
-      case associatedMap::PixelizedBeamMap:
-        if (dataMgr->exists(mapType)) {
-          ui->beamButton->setEnabled(true);
-          ui->beamButton->setChecked(true);
+          ui->invBeamButton->setEnabled(true);
+          ui->invBeamButton->setChecked(true);
         }
         break;
     }
+
     mapType = static_cast<ASSOCIATEDMAP>(--type);
   }
 
@@ -277,22 +350,32 @@ void mapSelectDialog::configure(unsigned int availableMaps) {
 void mapSelectDialog::reset() {
   activeMaps = 0;
   mapType = associatedMap::Null;
+
   ui->dataButton->setEnabled(true);
   ui->weightButton->setEnabled(true);
   ui->combinedDataButton->setEnabled(true);
+  ui->noiseSkyButton->setEnabled(true);
+  ui->weightedNoiseSkyButton->setEnabled(true);
+  ui->filterSkyButton->setEnabled(true);
+  ui->beamSkyButton->setEnabled(true);
+
   ui->pixelDataButton->setEnabled(true);
   ui->pixelWeightsButton->setEnabled(true);
   ui->combinedPixelButton->setEnabled(true);
+  ui->noiseButton->setEnabled(true);
+  ui->pixelWeightedNoiseButton->setEnabled(true);
+  ui->filterButton->setEnabled(true);
+  ui->beamButton->setEnabled(true);
   ui->pixelOccupancyButton->setEnabled(true);
+
   ui->inverseDataButton->setEnabled(true);
   ui->inverseWeightsButton->setEnabled(true);
   ui->combinedInverseButton->setEnabled(true);
-  ui->noiseSkyButton->setEnabled(true);
-  ui->filterSkyButton->setEnabled(true);
-  ui->beamSkyButton->setEnabled(true);
-  ui->noiseButton->setEnabled(true);
-  ui->filterButton->setEnabled(true);
-  ui->beamButton->setEnabled(true);
+  ui->invNoiseButton->setEnabled(true);
+  ui->invWeightedNoiseButton->setEnabled(true);
+  ui->invFilterButton->setEnabled(true);
+  ui->invBeamButton->setEnabled(true);
+
   dirty = false;
 }
 

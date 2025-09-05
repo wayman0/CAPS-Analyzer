@@ -86,6 +86,7 @@ int GDALMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* dataClass
     case fileType::PixelizedWeights:
     case fileType::PixelOccupancy:
     case fileType::PixelizedNoise:
+    case fileType::PixelizedWeightedNoise:
     case fileType::PixelizedFilter:
     case fileType::PixelizedBeam:
       if (!dataClasses->exists(dataTypes))
@@ -102,21 +103,42 @@ int GDALMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* dataClass
     /* Data types which require pixelizer only... */
     case fileType::InverseData:
     case fileType::InverseWeights:
+    case fileType::WeightedInverse:
+    case fileType::InverseFilter:
+    case fileType::InverseBeam:
+    case fileType::InverseNoise:
+    case fileType::InverseWeightedNoise:
       if (((vectorData<double>*)dataClasses->getData(dataTypes))->pixelScheme() == HealPIX)
         return makeMapHealpix(map,dataTypes,dataClasses);
       break;
     /* Map operation is undefined on these data types... */
     case fileType::TransformedNoise:
+    case fileType::TransformedWeightedNoise:
     case fileType::TransformedBeam:
     case fileType::TransformedFilter:
     case fileType::TransformedData:
     case fileType::TransformedWeights:
-    case fileType::SpectralData:
     case fileType::AlmData:
+    /*
+    case fileType::SpectralData:
     case fileType::BinCouplingMatrix:
     case fileType::ModeCouplingMatrix:
     case fileType::InverseBinMatrix:
     case fileType::InverseModeMatrix:
+    */
+    case fileType::EnsembleAveragedNoise:
+    case fileType::EnsembleIterationNoise:
+    case fileType::EnsembleAveragedSpectrum:
+    case fileType::EnsembleIterationSpectrum:
+    case fileType::BinnedSpectrum:
+    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::EnsembleIterationBinnedSpectrum:
+    case fileType::ModeModeMatrix:
+    case fileType::BinningMatrix:
+    case fileType::UnbinningMatrix:
+    case fileType::InstrumentEffectsMatrix:
+    case fileType::BinnedInstrumentEffectsMatrix:
+    case fileType::InverseBinnedInstrumentMatrix:
     case fileType::Null:
       break;
     /* Doesn't matter--data type will not use pixelizer... */
@@ -146,8 +168,21 @@ int GDALMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
       mat_wht_ptr = dataClasses->inputWeights();
       break;
     case fileType::WeightedData:
-      mat_dat_ptr = dataClasses->inputData();
-      mat_wht_ptr = dataClasses->inputWeights();
+      //mat_dat_ptr = dataClasses->inputData();
+      //mat_wht_ptr = dataClasses->inputWeights();
+      mat_dat_ptr = dataClasses->weightedInput();
+      break;
+    case fileType::InputFilter:
+      mat_dat_ptr = dataClasses->inputFilter();
+      break;
+    case fileType::InputNoise:
+      mat_dat_ptr = dataClasses->inputNoise();
+      break;
+    case fileType::InputWeightedNoise:
+      mat_dat_ptr = dataClasses->weightedInputNoise();
+      break;
+    case fileType::InputBeam:
+      mat_dat_ptr = dataClasses->inputBeam();
       break;
     case fileType::PixelizedData:
       vec_dat_ptr = dataClasses->pixelizedData();
@@ -156,12 +191,26 @@ int GDALMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
       vec_wht_ptr = dataClasses->pixelizedWeights();
       break;
     case fileType::WeightedPixel:
-      vec_dat_ptr = dataClasses->pixelizedData();
-      vec_wht_ptr = dataClasses->pixelizedWeights();
-       break;
+      //vec_dat_ptr = dataClasses->pixelizedData();
+      //vec_wht_ptr = dataClasses->pixelizedWeights();
+      vec_dat_ptr = dataClasses->weightedPixel();
+      break;
     case fileType::PixelOccupancy:
       vec_int_ptr = dataClasses->pixelOccupancy();
       vec_wht_ptr = dataClasses->pixelizedWeights();
+      break;
+    case fileType::PixelizedFilter:
+      vec_dat_ptr = dataClasses->pixelizedFilter();
+      break;
+    case fileType::PixelizedNoise:
+      vec_dat_ptr = dataClasses->pixelizedNoise();
+      break;
+    case fileType::PixelizedWeightedNoise:
+      vec_dat_ptr = dataClasses->weightedPixelizedNoise();
+      vec_wht_ptr = dataClasses->pixelizedWeights();
+      break;
+    case fileType::PixelizedBeam:
+      vec_dat_ptr = dataClasses->pixelizedBeam();
       break;
     case fileType::InverseData:
       vec_dat_ptr = dataClasses->inverseData();
@@ -169,6 +218,33 @@ int GDALMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
     case fileType::InverseWeights:
       vec_wht_ptr = dataClasses->inverseWeights();
       break;
+    case fileType::WeightedInverse:
+      vec_dat_ptr = dataClasses->weightedInverse();
+      break;
+    case fileType::InverseFilter:
+      vec_dat_ptr = dataClasses->inverseFilter();
+      break;
+    case fileType::InverseNoise:
+      vec_dat_ptr = dataClasses->weightedInverseNoise();
+      vec_wht_ptr = dataClasses->inverseWeights();
+      break;
+    case fileType::InverseBeam:
+      vec_dat_ptr = dataClasses->inverseBeam();
+      break;
+    /*
+    case fileType::EnsembleAveragedNoise:
+      vec_dat_ptr = dataClasses->EnsembleAveragedNoise();
+      break;
+    case fileType::EnsembleAveragedSpectrum:
+      vec_dat_ptr = dataClasses->EnsembleAveragedSpectrum();
+      break;
+    case fileType::BinnedSpectrum:
+      vec_dat_ptr = dataClasses->BinnedSpectrum();
+      break;
+    case fileType::EnsembleAveragedBinnedSpectrum:
+      vec_dat_ptr = dataClasses->EnsembleAveragedBinnedSpectrum();
+      break;
+    */
     default:
       break;
   }
@@ -176,16 +252,32 @@ int GDALMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
   /* Do Healpix configuration... */
   switch (dataTypes) {
     case fileType::PixelizedData:
-    case fileType::PixelizedWeights:
-    case fileType::WeightedPixel:
-    case fileType::PixelOccupancy:
       healpix = new Healpix_Base();
       healpix->SetNside((const int)(dataClasses->pixelizedData()->sides()),(Healpix_Ordering_Scheme)(dataClasses->pixelizedData()->layout() - 1));
       break;
+    case fileType::PixelizedWeights:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->pixelizedWeights()->sides()),(Healpix_Ordering_Scheme)(dataClasses->pixelizedWeights()->layout() - 1));
+      break;
+    case fileType::WeightedPixel:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->weightedPixel()->sides()),(Healpix_Ordering_Scheme)(dataClasses->weightedPixel()->layout() - 1));
+      break;
+    case fileType::PixelOccupancy:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->pixelOccupancy()->sides()),(Healpix_Ordering_Scheme)(dataClasses->pixelOccupancy()->layout() - 1));
+      break;
     case fileType::InverseData:
-    case fileType::InverseWeights:
       healpix = new Healpix_Base();
       healpix->SetNside((const int)(dataClasses->inverseData()->sides()),(Healpix_Ordering_Scheme)(dataClasses->inverseData()->layout() - 1));
+      break;
+    case fileType::InverseWeights:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->inverseWeights()->sides()),(Healpix_Ordering_Scheme)(dataClasses->inverseWeights()->layout() - 1));
+      break;
+    case fileType::WeightedInverse:
+      healpix = new Healpix_Base();
+      healpix->SetNside((const int)(dataClasses->weightedInverse()->sides()),(Healpix_Ordering_Scheme)(dataClasses->weightedInverse()->layout() - 1));
       break;
     default:
       break;
@@ -232,16 +324,20 @@ int GDALMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
     default:
       break;
   }
+
   if (m_projection) {
     m_projection->Release();
     m_projection = 0;
   }
+
   m_projection = new OGRSpatialReference();
   m_projection->importFromProj4(m_projString.c_str());
+
   if (m_coordTransform) {
     m_coordTransform->DestroyCT(m_coordTransform);
     m_coordTransform = 0;
   }
+
   m_coordTransform = OGRCreateCoordinateTransformation(m_geodetic,m_projection);
 
 
@@ -291,7 +387,7 @@ int GDALMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
 //          lat  = lat - 90.0;
 //          lon  = 180.0 - lon;
           mat_dat_ptr->angle2bin(lat,lon,xPos,yPos);
-          value = (*mat_dat_ptr)[xPos][yPos] * (*mat_wht_ptr)[xPos][yPos];
+          value = (*mat_dat_ptr)[xPos][yPos];// * (*mat_wht_ptr)[xPos][yPos];
           break;
         case fileType::PixelizedData:
           lon  = M_PI - lon;
@@ -306,7 +402,7 @@ int GDALMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
         case fileType::WeightedPixel:
           lon  = M_PI - lon;
           xPos = (long)(healpix->ang2pix(pointing(lat,lon)));
-          value = (*vec_dat_ptr)[xPos] * (*vec_wht_ptr)[xPos];
+          value = (*vec_dat_ptr)[xPos];// * (*vec_wht_ptr)[xPos];
           break;
         case fileType::PixelOccupancy:
           lon  = M_PI - lon;
@@ -325,6 +421,11 @@ int GDALMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, association* da
           lon  = M_PI - lon;
           xPos = (long)(healpix->ang2pix(pointing(lat,lon)));
           value = (*vec_wht_ptr)[xPos];
+          break;
+        case fileType::WeightedInverse:
+          lon = M_PI - lon;
+          xPos = (long)(healpix->ang2pix(pointing(lat, lon)));
+          value = (*vec_dat_ptr)[xPos];
           break;
         default:
           break;
