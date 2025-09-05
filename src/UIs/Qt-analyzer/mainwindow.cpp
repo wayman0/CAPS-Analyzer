@@ -1114,6 +1114,11 @@ void mainWindow::analyze() {
     {
       // generate transformed data from the alm's
       s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmData);
+      configureDisplay(fileType::TransformedData);
+
+      // create the inverse map for use when creating the pseudo spectrum
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmData);
+      configureDisplay(fileType::InverseData);
     }
   }
 
@@ -1135,6 +1140,10 @@ void mainWindow::analyze() {
     else
     {
       s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmWeights);
+      configureDisplay(fileType::TransformedData);
+
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeights);
+      configureDisplay(fileType::InverseWeights);
     }
   }
 
@@ -1158,6 +1167,10 @@ void mainWindow::analyze() {
     else
     {
       s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmNoise);
+      configureDisplay(fileType::TransformedNoise);
+
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeights);
+      configureDisplay(fileType::InverseNoise);
     }
   }
 
@@ -1179,6 +1192,10 @@ void mainWindow::analyze() {
     else
     {
       s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmFilter);
+      configureDisplay(fileType::TransformedFilter);
+
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeights);
+      configureDisplay(fileType::InverseFilter);
     }
   }
 
@@ -1200,6 +1217,10 @@ void mainWindow::analyze() {
     else
     {
       s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmBeam);
+      configureDisplay(fileType::TransformedBeam);
+
+      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeights);
+      configureDisplay(fileType::InverseBeam);
     }
   }
 
@@ -1606,7 +1627,6 @@ void mainWindow::clearGraphs()
     ui->powerView->update();
   }
 }
-
 
 void mainWindow::selectPixelizer() {
   int count = 0, i = 1;

@@ -2590,11 +2590,13 @@ bool association::generateInverseData(Transformer *transformer, FILETYPE ft) {
   vectorData<double> *pix = 0, *inv = 0;
   cubeData<std::complex<double> >* alm = 0;
   int size = 0;
-  FILETYPE almType;
+  FILETYPE invType;
   
   if (!transformer)
     return false;
 
+  /*
+  // if we are creating inverse data we don't have pixelized data
   if (m_pixelNoise)
     pix = pixelizedNoise();
   if (m_pixelBeam)
@@ -2609,60 +2611,80 @@ bool association::generateInverseData(Transformer *transformer, FILETYPE ft) {
     return false;
   
   size = pix->size();
-  
+  */
+
   switch (ft) {
-    case fileType::TransformedData:
+    case fileType::AlmData: //TransformedData:
       if (!m_almData)
         return false;
       alm = m_almData;
+      size = alm->sides() * alm->sides() * 12;
       addEmpty(fileType::InverseData,size);
       inv = m_invData;
-      almType = fileType::AlmData;
+      //almType = fileType::AlmData;
+      invType = fileType::InverseData;
       break;
-    case fileType::TransformedWeights:
+    case fileType::AlmWeights: //TransformedWeights:
       if (!m_almWeights)
         return false;
       alm = m_almWeights;
+      size = alm->sides() * alm->sides() * 12;
       addEmpty(fileType::InverseWeights,size);
       inv = m_invWeights;
-      almType = fileType::AlmWeights;
+      //almType = fileType::AlmWeights;
+      invType = fileType::InverseWeights;
       break;
-    case fileType::TransformedFilter:
+    case fileType::AlmFilter: //TransformedFilter:
       if (!m_almFilter)
         return false;
       alm = m_almFilter;
+      size = alm->sides() * alm->sides() * 12;
       addEmpty(fileType::InverseFilter,size);
       inv = m_invFilter;
-      almType = fileType::AlmFilter;
+      //almType = fileType::AlmFilter;
+      invType = fileType::InverseFilter;
       break;
-    case fileType::TransformedBeam:
+    case fileType::AlmBeam: //TransformedBeam:
       if (!m_almBeam)
         return false;
       alm = m_almBeam;
+      size = alm->sides() * alm->sides() * 12;
       addEmpty(fileType::InverseBeam,size);
       inv = m_invBeam;
-      almType = fileType::AlmBeam;
+      //almType = fileType::AlmBeam;
+      invType = fileType::InverseBeam;
       break;
-    case fileType::TransformedNoise:
+    case fileType::AlmNoise: //TransformedNoise:
       if (!m_almNoise)
         return false;
       alm = m_almNoise;
+      size = alm->sides() * alm->sides() * 12;
       addEmpty(fileType::InverseNoise,size);
       inv = m_invNoise;
-      almType = fileType::AlmNoise;
+      //almType = fileType::AlmNoise;
+      invType = fileType::InverseNoise;
       break;
     default:
       return false;
   }
       
   /* Calculating Inverse Transformation */
-  transformer->loadAlmMap(this,almType);
-  transformer->invert(this,ft);
+  // this might be unnecessary since in the mainwindow.cpp file
+  // we say if we have alm we call association.generateTransformedDataFromAlm
+  // which calls transformer->initialize
+  // and transformer.loadAlmMap
 
-  inv->pixelScheme(pix->pixelScheme());
-  inv->layout(pix->layout());
-  inv->sides(int(sqrt(inv->size()/12)));
-  inv->numberOfPixels(inv->size());
+  // this will load the healpix inverse maps
+  transformer->initialize(this, ft);
+  // this will copy our alm to a healpix alm
+  transformer->loadAlmMap(this, ft);//almType);
+
+  transformer->invert(this, ft);
+
+  inv->pixelScheme(alm->pixelScheme());
+  inv->layout(alm->layout());
+  inv->sides(alm->sides());
+  inv->numberOfPixels(size);
 
   m_sequence = invert;
   return true;

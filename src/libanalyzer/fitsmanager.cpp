@@ -814,7 +814,6 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
 
   trans = c->transformerScheme() == Rsht? "Rsht":"NotTransformed";
 
-  std::cout << "SAVING STUFF\n";
   try
   {
     dataImage = m_ptr->addImage(hduName, fitsDouble, naxes);

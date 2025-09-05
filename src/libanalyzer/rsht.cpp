@@ -205,7 +205,7 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
         order = RING;
       else
         order = NEST;
-      //m_dataMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_invDataMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
       m_almDataValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
       if (m_polarization > 1) {
         m_almDataGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
@@ -219,7 +219,7 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
         order = RING;
       else
         order = NEST;
-      //m_weightsMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_invMaskMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
       m_almWeightsValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
       if (m_polarization > 1) {
         m_almWeightsGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
@@ -233,7 +233,7 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
         order = RING;
       else
         order = NEST;
-      //m_noiseMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_invNoiseMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
       m_almNoiseValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
       if (m_polarization > 1) {
         m_almNoiseGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
@@ -247,7 +247,7 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
         order = RING;
       else
         order = NEST;
-      //m_filterMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_invFilterMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
       m_almFilterValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
       if (m_polarization > 1) {
         m_almFilterGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
@@ -261,7 +261,7 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
         order = RING;
       else
         order = NEST;
-      //m_beamMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_invBeamMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
       m_almBeamValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
       if (m_polarization > 1) {
         m_almBeamGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
@@ -689,34 +689,40 @@ void RshtTransformer::invert(association* dataClasses, FILETYPE type) {
   Alm<hPoint>* alm = 0;
   Healpix_Map<double>* map = 0;
 
+  /*
   if (!(type == fileType::TransformedData || type == fileType::TransformedWeights ||
         type == fileType::TransformedBeam || type == fileType::TransformedFilter || type == fileType::TransformedNoise))
     return;
+  */
+  if (!(type == fileType::AlmData || type == fileType::AlmWeights ||
+        type == fileType::AlmBeam || type == fileType::AlmFilter || type == fileType::AlmNoise))
+    return;
+
   if (!dataClasses)
     return;
 
   switch (type) {
-    case fileType::TransformedData:
+    case fileType::AlmData: //TransformedData:
       data = dataClasses->inverseData();
       map = m_invDataMap;
       alm = m_almDataValue;
       break;
-    case fileType::TransformedWeights:
+    case fileType::AlmWeights: //TransformedWeights:
       data = dataClasses->inverseWeights();
       map = m_invMaskMap;
       alm = m_almWeightsValue;
       break;
-    case fileType::TransformedFilter:
+    case fileType::AlmFilter: //TransformedFilter:
       data = dataClasses->inverseFilter();
       map = m_invFilterMap;
       alm = m_almFilterValue;
       break;
-    case fileType::TransformedBeam:
+    case fileType::AlmBeam: //TransformedBeam:
       data = dataClasses->inverseBeam();
       map = m_invBeamMap;
       alm = m_almBeamValue;
       break;
-    case fileType::TransformedNoise:
+    case fileType::AlmNoise: // TransformedNoise:
       data = dataClasses->inverseNoise();
       map = m_invNoiseMap;
       alm = m_almNoiseValue;
@@ -724,6 +730,7 @@ void RshtTransformer::invert(association* dataClasses, FILETYPE type) {
     default:
       return;
   }
+
   if (!data)
     return;
 
@@ -732,7 +739,7 @@ void RshtTransformer::invert(association* dataClasses, FILETYPE type) {
 
   /* calculate individual alms */
   alm2map(*alm,*map);
-  map->Add(offset);
+  //map->Add(offset);
 
   for (i = 0; i < m_dataSize; i++)
     (*data)[i] = (*map)[i];

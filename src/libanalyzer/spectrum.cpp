@@ -295,7 +295,7 @@ void Spectrum::calculateSpectrum(association* asc) {
 
 //    if (value < 0.0)  // need to validate making these positive
 //      value = -value;
-    
+
     (*asc->spectrumData())[element] = value;
   }
 
@@ -317,13 +317,53 @@ void Spectrum::calculatePseudoSpectrum(association* asc)
 {
   Healpix_Map<double>* dataMap = 0;
   Healpix_Map<double>* wgtMap = 0;
+  Healpix_Ordering_Scheme layout;
   int numPix = 0;
   int nside = 0;
 
   if(asc->exists(fileType::PixelizedData))
   {
     vectorData<double>* pixData = (vectorData<double>*)asc->getData(fileType::PixelizedData);
-    dataMap = new Healpix_Map<double>(pixData->sides(), RING, SET_NSIDE);
+
+    if(pixData->layout() == Ring)
+      layout = RING;
+    else
+      layout = NEST;
+
+    dataMap = new Healpix_Map<double>(pixData->sides(), layout, SET_NSIDE);
+
+    nside = pixData->sides();
+    numPix = pixData->size();
+    for(int i = 0; i < pixData->size(); i += 1)
+      (*dataMap)[i] = (*pixData)[i];
+  }
+  else if(asc->exists(fileType::InverseData))
+  {
+    vectorData<double>* pixData = (vectorData<double>*)asc->getData(fileType::InverseData);
+
+    nside = pixData->sides();
+    numPix = pixData->size();
+    if(pixData->layout() == Ring)
+      layout = RING;
+    else
+      layout = NEST;
+
+    dataMap = new Healpix_Map<double>(nside, layout, SET_NSIDE);
+
+    for(int i = 0; i < pixData->size(); i += 1)
+      (*dataMap)[i] = (*pixData)[i];
+  }
+  else if(asc->exists(fileType::AlmData))
+  {
+    asc->generateInverseData(asc->transformationEngine(), fileType::AlmData);
+    vectorData<double>* pixData = (vectorData<double>*)asc->getData(fileType::InverseData);
+
+    if(pixData->layout() == Ring)
+      layout = RING;
+    else
+      layout = NEST;
+
+    dataMap = new Healpix_Map<double>(pixData->sides(), layout, SET_NSIDE);
 
     nside = pixData->sides();
     numPix = pixData->size();
@@ -331,50 +371,38 @@ void Spectrum::calculatePseudoSpectrum(association* asc)
       (*dataMap)[i] = (*pixData)[i];
   }
   else
-  {
-    if(asc->exists(fileType::AlmData))
-    {
-      cubeData<complex<double>>* alm = (cubeData<complex<double>>*)asc->getData(fileType::AlmData);
-      Alm<std::complex<double>>* dataAlm = new Alm<std::complex<double>>(alm->cols(), alm->rows());
+    throw dataMismatchError;
 
-      nside = alm->sides();
-
-      dataMap = new Healpix_Map<double>(alm->sides(), RING, SET_NSIDE);
-      for (int col = 0; col < m_maxIndex; col++)
-      {
-        for (int row = 0; row < m_maxIndex; row++)
-        {
-          switch ((unsigned int)alm->polarization())
-          {
-            case 3:
-              ((*dataAlm)(col,row)).real((*alm)[2][col][row].real());
-              ((*dataAlm)(col,row)).imag((*alm)[2][col][row].imag());
-            case 2:
-              ((*dataAlm)(col,row)).real((*alm)[1][col][row].real());
-              ((*dataAlm)(col,row)).imag((*alm)[1][col][row].imag());
-            case 1:
-              ((*dataAlm)(col,row)).real((*alm)[0][col][row].real());
-              ((*dataAlm)(col,row)).imag((*alm)[0][col][row].imag());
-            default:
-              break;
-          }
-        }
-      }
-      alm2map(*dataAlm, *dataMap);
-    }
-    else
-      throw dataMismatchError;
-  }
 
   if(asc->exists(fileType::PixelizedWeights))
   {
     vectorData<double>* pixWgt = (vectorData<double>*)asc->getData(fileType::PixelizedWeights);
-    wgtMap = new Healpix_Map<double>(pixWgt->sides(), RING, SET_NSIDE);
+
+    if(pixWgt->layout() == Ring)
+      layout = RING;
+    else
+      layout = NEST;
+
+    wgtMap = new Healpix_Map<double>(pixWgt->sides(), layout, SET_NSIDE);
+
     for(int i = 0; i < pixWgt->size(); i += 1)
       (*wgtMap)[i] = (*pixWgt)[i];
   }
-  else
+  else if(asc->exists(fileType::InverseWeights))
   {
+    vectorData<double>* pixWgt = (vectorData<double>*)asc->getData(fileType::InverseWeights);
+
+    if(pixWgt->layout() == Ring)
+      layout = RING;
+    else
+      layout = NEST;
+
+    wgtMap = new Healpix_Map<double>(pixWgt->sides(), layout, SET_NSIDE);
+
+    for(int i = 0; i < pixWgt->size(); i += 1)
+      (*wgtMap)[i] = (*pixWgt)[i];
+
+    /*
     if(asc->exists(fileType::AlmWeights))
     {
       cubeData<complex<double>>* alm = (cubeData<complex<double>>*)asc->getData(fileType::AlmWeights);
@@ -406,12 +434,27 @@ void Spectrum::calculatePseudoSpectrum(association* asc)
         }
       }
       alm2map(*wgtAlm, *wgtMap);
-    }
-    else
-      throw dataMismatchError;
+      */
   }
+  else if(asc->exists(fileType::AlmWeights))
+  {
+    asc->generateInverseData(asc->transformationEngine(), fileType::AlmWeights);
+    vectorData<double>* pixWgt = (vectorData<double>*)asc->getData(fileType::InverseWeights);
 
-  Healpix_Map<double>* wgtDataMap = new Healpix_Map<double>(nside, RING, SET_NSIDE);
+    if(pixWgt->layout() == Ring)
+      layout = RING;
+    else
+      layout = NEST;
+
+    dataMap = new Healpix_Map<double>(pixWgt->sides(), layout, SET_NSIDE);
+
+    for(int i = 0; i < pixWgt->size(); i += 1)
+      (*wgtMap)[i] = (*pixWgt)[i];
+  }
+  else
+    throw dataMismatchError;
+
+  Healpix_Map<double>* wgtDataMap = new Healpix_Map<double>(nside, layout, SET_NSIDE);
   for(int i = 0; i < 12 * nside * nside; i += 1)
   {
     //std::cout << (*dataMap)[i] << " * " << (*wgtMap)[i] << "\n";
@@ -468,37 +511,16 @@ In the HealPIX c++ code, there is a routine called create_alm (and create_alm_po
       ensemblePseudoCl[i][row] = randomized->tt(row);
   }
 
-  /*
-  for(int row = 0; row < size; row += 1)
-  {
-    std::cout << "Ensemble: " << row << "\t";
-    for(int c = 0; c < length; c += 1)
-      std::cout << ensemblePseudoCl[row][c] << ", ";
-    std::cout << "\n";
-  }
-
-  std::cout << "---------------------------------------------------------------------------------------------------------------------------------\n";
-  */
-
   /* average each l value */
-  for (row = 0; row < length; ++row) {
+  for (row = 0; row < length; ++row)
+  {
     (*asc->ensembleData())[row] = 0;
     double sum = 0.0;
     for (i = 0; i < size; ++i)
       sum += ensemblePseudoCl[i][row];
-    // since some data may be nan which is caused by sqrt negative value at l so replace with 0?
-    // or can we average between the element before and element after?
-   //if(std::isnan(sum))
-   //  (*asc->ensembleData())[row] = 0;
-   //else
+
     (*asc->ensembleData())[row] = sum / size;
   }
-
-  /*
-  for(int c = 0; c < asc->ensembleData()->size(); c += 1)
-    std::cout << (*asc->ensembleData())[c] << ", ";
-  std::cout << "\n";
-  */
 }
 
 void Spectrum::ensembleAverageTimesInverse(association* assoc)
@@ -517,17 +539,29 @@ void Spectrum::ensembleAverageTimesInverse(association* assoc)
   else
     throw incompleteDatasetError;
 
-  vectorData<double>* multEns = new vectorData<double>(ensemble->size());
+  vectorData<double>* multEns = new vectorData<double>(inverse->rows());
   multEns->initialize();
+
+  // this version produces positive spectrum data
+  // that appears to be very similar to the pseudo
+  // but appears to do matrix * vector wrong?
   for(int col = 0; col < inverse->cols(); col += 1)
   {
-    double ensembleElement = (*ensemble)[col];
     for(int row = 0; row < inverse->rows(); row += 1)
     {
-      (*multEns)[col] += ensembleElement * (*inverse)[col][row];
+      (*multEns)[col] += (*ensemble)[col] * (*inverse)[col][row];
     }
   }
 
+  // this version produces negative spectrum data
+  // but appears to do matrix * vector properly
+  /*
+  for(int row = 0; row < inverse->rows(); row += 1)
+  {
+      for(int col = 0; col < inverse->cols(); col += 1)
+        (*multEns)[row] += (*inverse)[col][row] * (*ensemble)[col];
+  }
+  */
   for(int i = 0; i < multEns->size(); i += 1)
     (*ensemble)[i] = (*multEns)[i];
 }
