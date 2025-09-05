@@ -47,7 +47,7 @@ cmake_ninja_workdir = /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-anal
 #############################################
 # Order-only phony target for Qt-analyzer
 
-build cmake_object_order_depends_target_Qt-analyzer: phony || Qt-analyzer_autogen Qt-analyzer_autogen/mocs_compilation.cpp Qt-analyzer_autogen/timestamp Qt-analyzer_autogen_timestamp_deps moc_controldatadlg.cpp moc_dataselectdlg.cpp moc_energydlg.cpp moc_graphdlg.cpp moc_graphselectdlg.cpp moc_healpixdlg.cpp moc_mainwindow.cpp moc_mapperdlg.cpp moc_mapselectdlg.cpp moc_pixelizerdlg.cpp moc_qledlabel.cpp moc_rshtdlg.cpp moc_spectrumdlg.cpp moc_transformerdlg.cpp qrc_mainwindow.cpp ui_controldatadlg.h ui_dataselectdlg.h ui_energydlg.h ui_graphdlg.h ui_graphselectdlg.h ui_healpixdlg.h ui_mainwindow.h ui_mapperdlg.h ui_mapselectdlg.h ui_pixelizerdlg.h ui_rshtdlg.h ui_spectrumdlg.h ui_transformerdlg.h
+build cmake_object_order_depends_target_Qt-analyzer: phony || Qt-analyzer_autogen Qt-analyzer_autogen/mocs_compilation.cpp Qt-analyzer_autogen/timestamp Qt-analyzer_autogen_timestamp_deps moc_controldatadlg.cpp moc_dataselectdlg.cpp moc_energydlg.cpp moc_graphdlg.cpp moc_graphselectdlg.cpp moc_healpixdlg.cpp moc_mainwindow.cpp moc_mapperdlg.cpp moc_mapselectdlg.cpp moc_multipleselectiondlg.cpp moc_pixelizerdlg.cpp moc_qledlabel.cpp moc_rshtdlg.cpp moc_spectrumdlg.cpp moc_transformerdlg.cpp qrc_mainwindow.cpp ui_controldatadlg.h ui_dataselectdlg.h ui_energydlg.h ui_graphdlg.h ui_graphselectdlg.h ui_healpixdlg.h ui_mainwindow.h ui_mapperdlg.h ui_mapselectdlg.h ui_multipleselectiondlg.h ui_pixelizerdlg.h ui_rshtdlg.h ui_spectrumdlg.h ui_transformerdlg.h
 
 build CMakeFiles/Qt-analyzer.dir/Qt-analyzer_autogen/mocs_compilation.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
@@ -84,6 +84,14 @@ build CMakeFiles/Qt-analyzer.dir/controldatadlg.cpp.o: CXX_COMPILER__Qt-analyzer
 build CMakeFiles/Qt-analyzer.dir/energydlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/energydlg.cpp.o.d
+  FLAGS = -g -fPIC
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
+  OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+
+build CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o.d
   FLAGS = -g -fPIC
   INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
@@ -201,6 +209,14 @@ build CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o: CXX_COMPILER__Qt-analyzer_
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
 
+build CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o.d
+  FLAGS = -g -fPIC
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
+  OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+
 build CMakeFiles/Qt-analyzer.dir/moc_mapperdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_mapperdlg.cpp.o.d
@@ -305,7 +321,7 @@ build CMakeFiles/Qt-analyzer.dir/qrc_mainwindow.cpp.o: CXX_COMPILER__Qt-analyzer
 #############################################
 # Link the executable Qt-analyzer
 
-build Qt-analyzer: CXX_EXECUTABLE_LINKER__Qt-analyzer_Debug CMakeFiles/Qt-analyzer.dir/Qt-analyzer_autogen/mocs_compilation.cpp.o CMakeFiles/Qt-analyzer.dir/main.cpp.o CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o CMakeFiles/Qt-analyzer.dir/controldatadlg.cpp.o CMakeFiles/Qt-analyzer.dir/energydlg.cpp.o CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o CMakeFiles/Qt-analyzer.dir/mapselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o CMakeFiles/Qt-analyzer.dir/graphselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/pixelizerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/healpixdlg.cpp.o CMakeFiles/Qt-analyzer.dir/transformerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/rshtdlg.cpp.o CMakeFiles/Qt-analyzer.dir/spectrumdlg.cpp.o CMakeFiles/Qt-analyzer.dir/qledlabel.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o CMakeFiles/Qt-analyzer.dir/moc_controldatadlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mapperdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mapselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_graphdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_graphselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_dataselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_pixelizerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_healpixdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_transformerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_rshtdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_spectrumdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_qledlabel.cpp.o CMakeFiles/Qt-analyzer.dir/qrc_mainwindow.cpp.o | /usr/lib64/libfreetype.so /usr/lib64/libgomp.so /mnt/research/software/lib64/libhealpix_cxx.so /mnt/research/software/lib64/libsharp.so /mnt/research/software/lib64/libCCfits.so /usr/lib64/libgsl.so /usr/lib64/libgslcblas.so /usr/lib64/libhdf5_hl_cpp.so /usr/lib64/libhdf5_hl.so /usr/lib64/libhdf5_cpp.so /usr/lib64/libhdf5.so /usr/lib64/libQt5Widgets.so.5.15.11 /usr/lib64/libQt5Gui.so.5.15.11 /usr/lib64/libQt5Core.so.5.15.11 || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+build Qt-analyzer: CXX_EXECUTABLE_LINKER__Qt-analyzer_Debug CMakeFiles/Qt-analyzer.dir/Qt-analyzer_autogen/mocs_compilation.cpp.o CMakeFiles/Qt-analyzer.dir/main.cpp.o CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o CMakeFiles/Qt-analyzer.dir/controldatadlg.cpp.o CMakeFiles/Qt-analyzer.dir/energydlg.cpp.o CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o CMakeFiles/Qt-analyzer.dir/mapselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o CMakeFiles/Qt-analyzer.dir/graphselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/pixelizerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/healpixdlg.cpp.o CMakeFiles/Qt-analyzer.dir/transformerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/rshtdlg.cpp.o CMakeFiles/Qt-analyzer.dir/spectrumdlg.cpp.o CMakeFiles/Qt-analyzer.dir/qledlabel.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o CMakeFiles/Qt-analyzer.dir/moc_controldatadlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mapperdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mapselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_graphdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_graphselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_dataselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_pixelizerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_healpixdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_transformerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_rshtdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_spectrumdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_qledlabel.cpp.o CMakeFiles/Qt-analyzer.dir/qrc_mainwindow.cpp.o | /usr/lib64/libfreetype.so /usr/lib64/libgomp.so /mnt/research/software/lib64/libhealpix_cxx.so /mnt/research/software/lib64/libsharp.so /mnt/research/software/lib64/libCCfits.so /usr/lib64/libgsl.so /usr/lib64/libgslcblas.so /usr/lib64/libhdf5_hl_cpp.so /usr/lib64/libhdf5_hl.so /usr/lib64/libhdf5_cpp.so /usr/lib64/libhdf5.so /usr/lib64/libQt5Widgets.so.5.15.11 /usr/lib64/libQt5Gui.so.5.15.11 /usr/lib64/libQt5Core.so.5.15.11 || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
   FLAGS = -g
   LINK_LIBRARIES = -Wl,-rpath,/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libanalyzer:/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libgraphics:/mnt/research/software/lib64  -lgraphics  -lanalyzer  /usr/lib64/libfreetype.so  -lsigc-2.0  /usr/lib64/libgomp.so  /mnt/research/software/lib64/libhealpix_cxx.so  /mnt/research/software/lib64/libsharp.so  -lCCfits  /usr/lib64/libgsl.so  /usr/lib64/libgslcblas.so  /usr/lib64/libhdf5_hl_cpp.so  /usr/lib64/libhdf5_hl.so  /usr/lib64/libhdf5_cpp.so  /usr/lib64/libhdf5.so  /usr/lib64/libQt5Widgets.so.5.15.11  /usr/lib64/libQt5Gui.so.5.15.11  /usr/lib64/libQt5Core.so.5.15.11
   LINK_PATH = -L/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libanalyzer   -L/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libgraphics   -L/mnt/research/software/lib64
@@ -376,6 +392,15 @@ build moc_controldatadlg.cpp | ${cmake_ninja_workdir}moc_controldatadlg.cpp: CUS
 build moc_energydlg.cpp | ${cmake_ninja_workdir}moc_energydlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
   COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_energydlg.cpp_parameters
   DESC = Generating moc_energydlg.cpp
+  restat = 1
+
+
+#############################################
+# Custom command for moc_multipleselectiondlg.cpp
+
+build moc_multipleselectiondlg.cpp | ${cmake_ninja_workdir}moc_multipleselectiondlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp_parameters
+  DESC = Generating moc_multipleselectiondlg.cpp
   restat = 1
 
 
@@ -502,6 +527,15 @@ build ui_controldatadlg.h | ${cmake_ninja_workdir}ui_controldatadlg.h: CUSTOM_CO
 build ui_energydlg.h | ${cmake_ninja_workdir}ui_energydlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
   COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_energydlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.ui
   DESC = Generating ui_energydlg.h
+  restat = 1
+
+
+#############################################
+# Custom command for ui_multipleselectiondlg.h
+
+build ui_multipleselectiondlg.h | ${cmake_ninja_workdir}ui_multipleselectiondlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_multipleselectiondlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.ui
+  DESC = Generating ui_multipleselectiondlg.h
   restat = 1
 
 

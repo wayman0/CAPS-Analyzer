@@ -184,6 +184,12 @@
 			null
 		],
 		[
+			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.h",
+			"mU",
+			"",
+			null
+		],
+		[
 			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.h",
 			"mU",
 			"",
@@ -270,6 +276,7 @@
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp",
+		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp",
@@ -285,6 +292,7 @@
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mainwindow.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mapperdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mapselectdlg.h",
+		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_multipleselectiondlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_pixelizerdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_rshtdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_spectrumdlg.h",
@@ -298,6 +306,7 @@
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.h",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.h",
+		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.h",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/qledlabel.h",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.h",
@@ -365,6 +374,11 @@
 			null
 		],
 		[
+			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.cpp",
+			"MU",
+			null
+		],
+		[
 			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.cpp",
 			"MU",
 			null
@@ -403,6 +417,7 @@
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp",
+		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp",
@@ -418,6 +433,7 @@
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mainwindow.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mapperdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mapselectdlg.h",
+		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_multipleselectiondlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_pixelizerdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_rshtdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_spectrumdlg.h",
@@ -431,6 +447,7 @@
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.ui",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.ui",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.ui",
+		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.ui",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.ui",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.ui",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.ui",

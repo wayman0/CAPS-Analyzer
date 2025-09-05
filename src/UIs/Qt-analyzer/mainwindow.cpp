@@ -97,6 +97,7 @@ mainWindow::mainWindow() :
   /* create dialogs needed to pass signals back and forth */
   ctrlDlg = new controlDataDialog(s_association);
   energyDlg = new energyDialog();
+  multSelDlg = new multipleSelectionDialog(s_association);
   pixSelectDlg = new pixelizerDialog(s_association);
   healpixDlg = new healpixDialog(s_association);
   transSelectDlg = new transformerDialog(s_association);
@@ -173,6 +174,8 @@ mainWindow::mainWindow() :
   connect(this, &mainWindow::readDataSets, [=](FILETYPE* dataTypes, int* numTypes){dataSelectDlg->configure(dataTypes, numTypes);});
 
   connect(this,&mainWindow::selectEnergies,[=](double low, double high){energyDlg->configure(low,high);});
+  connect(this,&mainWindow::selectSlices,[=](){multSelDlg->configure(); });
+
   connect(energyDlg,&energyDialog::energySelected,[=](double low, double high){readData(low,high);});
   connect(mapperDlg, &mapperDialog::mapperReady, [=](){buildMaps();});
   connect(this, &mainWindow::selectMapDisplay, [=](unsigned int selection){mapSelectDlg->configure(selection);});
@@ -344,11 +347,27 @@ void mainWindow::openFile()
 
       if (s_association->fileIOEngine()->slices() > 1)
       {
-        minEnergy = s_association->fileIOEngine()->min_energy();
-        maxEnergy = s_association->fileIOEngine()->max_energy();
+        if(obs == Fermi || obs == Egret)
+        {
+          connect(multSelDlg, &multipleSelectionDialog::slicesSelected,
+                  [=](int min, int max)
+                  {
+                    s_association->fileIOEngine()->minSlice(min);
+                    s_association->fileIOEngine()->maxSlice(max);
+                  });
 
-        // let user change energy range before reading data
-        Q_EMIT selectEnergies(minEnergy, maxEnergy);
+          Q_EMIT selectSlices();
+
+          s_association->fileIOEngine()->open(numTypes, dataTypes);
+        }
+        else
+        {
+          minEnergy = s_association->fileIOEngine()->min_energy();
+          maxEnergy = s_association->fileIOEngine()->max_energy();
+
+          // let user change energy range before reading data
+          Q_EMIT selectEnergies(minEnergy, maxEnergy);
+        }
       }
       else
         s_association->fileIOEngine()->open(numTypes, dataTypes);

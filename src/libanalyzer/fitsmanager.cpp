@@ -1368,8 +1368,6 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
     s_association->errorDetails(m_errDetail);
     return 0;
   }
-  std::cout << slice_min << ", " << slice_max << "\n";
-
   if (slice_min < 0 || slice_max < 0) {
     m_err = fileSliceError;
     m_errDetail = errorText[abs(m_err)] + ": Minimum slice number or maximum slice number less than 0";
@@ -1452,10 +1450,14 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
 
     if(m_observatory == Fermi)
     {
-      std::valarray<double> tempData;
-      m_ptr->pHDU().read(tempData);
-      std::cout << tempData.size() << "\n";
+      std::cout << "AXIS(0): " << m_ptr->pHDU().axis(0) << "M_COLS: " << m_cols << "\n";
+      std::cout << "AXIS(1): " << m_ptr->pHDU().axis(1) << "M_ROWS: " << m_rows << "\n";
 
+      //std::valarray<double> tempData;
+      //m_ptr->pHDU().read(tempData);
+      //std::cout << tempData.size() << "\n";
+
+      m_ptr->pHDU().read(fitsData);
       //CCfits::ExtHDU& binTable = m_ptr->extension(hduName);
       //CCfits::ExtHDU& binTable = m_ptr->extension("GTI");
       //CCfits::ExtHDU& binTable = (CCfits::BinTable*)m_ptr->pHDU();
@@ -1463,19 +1465,22 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
       //binTable.readKey("TFIELDS", m_cols);
       //binTable.readKey("NAXIS2",  m_rows);
       //in_mat = new inputMatrixData(m_cols, m_rows, m_fileDataType);
-      //in_mat->initialize();
+      in_mat->initialize();
 
       //in_mat->dataType(fileType::InputData);
-      //for (int col = 0; col < m_cols; ++col) {
+      for (int col = 0; col < m_cols; ++col)
+      {
       //  m_ptr->column(1).read(fitsData,1,m_rows);
-
-      //  for (int row = 0; row < m_rows; ++row) {
-      //    (*in_mat)[col][row] = fitsData[row];
-        //  currOp++;
+        for (int row = 0; row < m_rows; ++row)
+        {
+          //printf("%s: %4d\t%s: %4d\t%s:%7d\n", "Col", col, "Row", row, "Index", (row*m_cols + col));
+          (*in_mat)[col][row] = fitsData[row * m_cols + col];
+          currOp++;
   //        if(m_showProgress && !(currOp % updateUnit))
   //          informProgress(currOp / updateUnit);
-        //}
-      //}
+        }
+        //printf("\n");
+      }
     }
     else if(m_observatory == Egret)
     {

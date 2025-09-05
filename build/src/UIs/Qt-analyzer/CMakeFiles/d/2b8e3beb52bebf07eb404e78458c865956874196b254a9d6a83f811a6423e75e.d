@@ -29,6 +29,8 @@ Qt-analyzer_autogen/timestamp: \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.ui \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.cpp \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.ui \
+  /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.cpp \
+  /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.ui \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.cpp \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.ui \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/qledlabel.cpp \

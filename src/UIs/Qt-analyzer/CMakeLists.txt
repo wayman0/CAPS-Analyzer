@@ -26,6 +26,7 @@ set(Qt-analyzer_SRCS
     mainwindow.cpp
     controldatadlg.cpp
     energydlg.cpp
+    multipleselectiondlg.cpp
     mapperdlg.cpp
     mapselectdlg.cpp
     graphdlg.cpp
@@ -42,6 +43,7 @@ set(Qt-analyzer_MOC_HDRS
     mainwindow.h
     controldatadlg.h
     energydlg.h
+    multipleselectiondlg.h
     mapperdlg.h
     mapselectdlg.h
     graphdlg.h
@@ -58,6 +60,7 @@ set(Qt-analyzer_UIS
     mainwindow.ui
     controldatadlg.ui
     energydlg.ui
+    multipleselectiondlg.ui
     mapperdlg.ui
     mapselectdlg.ui
     graphdlg.ui

@@ -727,7 +727,7 @@ void csvManager::open(int* numTypes, FILETYPE* dataTypes)
       baseData* dataValue = data();
 
       dataValue->fileName(this->fileName());
-      dataValue->fileFormat(HDF5);
+      dataValue->fileFormat(CSV);
 
 
       s_association->addData(dataValue);

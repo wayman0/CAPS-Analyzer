@@ -77,6 +77,7 @@
 #include "rshtdlg.h"
 #include "spectrumdlg.h"
 #include "qledlabel.h"
+#include "multipleselectiondlg.h"
 
 namespace Ui {
   class MainWindow;
@@ -113,6 +114,7 @@ class mainWindow : public QMainWindow {
     void saveDataSets();
     void readDataSets(FILETYPE* dataSets, int* numTypes);
     void selectEnergies(double,double);
+    void selectSlices();
     void selectMapDisplay(unsigned int);
     void selectGraphDisplay(unsigned int);
     void dataReady(FILETYPE);
@@ -131,6 +133,7 @@ class mainWindow : public QMainWindow {
     controlDataDialog    *ctrlDlg;
     dataSelectDialog     *dataSelectDlg;
     energyDialog         *energyDlg;
+    multipleSelectionDialog *multSelDlg;
     pixelizerDialog      *pixSelectDlg;
     healpixDialog        *healpixDlg;
     transformerDialog    *transSelectDlg;

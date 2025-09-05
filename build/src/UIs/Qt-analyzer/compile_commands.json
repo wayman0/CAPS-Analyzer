@@ -31,6 +31,12 @@
 },
 {
   "directory": "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets -g -fPIC -o CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.cpp",
+  "output": "CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer",
   "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets -g -fPIC -o CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o -c /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.cpp",
   "file": "/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.cpp",
   "output": "CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o"
@@ -112,6 +118,12 @@
   "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets -g -fPIC -o CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o -c /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_energydlg.cpp",
   "file": "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_energydlg.cpp",
   "output": "CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o"
+},
+{
+  "directory": "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets -g -fPIC -o CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o -c /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp",
+  "file": "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp",
+  "output": "CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o"
 },
 {
   "directory": "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer",
