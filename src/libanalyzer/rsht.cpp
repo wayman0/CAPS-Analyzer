@@ -331,7 +331,9 @@ int RshtTransformer::loadAlmMap(association* dataClasses, FILETYPE type) {
   vec = new std::vector<std::vector<std::vector<std::complex<double> > > >(data->roAccess().size());
   *vec = data->roAccess();
   for (col = 0; col < m_maxIndex; col++)
+  {
     for (row = 0; row < m_maxIndex; row++)
+    {
       switch ((unsigned int)m_polarization) {
         case 3:
           ((*curl)(col,row)).real((*vec)[2][col][row].real());
@@ -345,6 +347,8 @@ int RshtTransformer::loadAlmMap(association* dataClasses, FILETYPE type) {
         default:
           break;
       }
+    }
+  }
   
   if (vec)
     delete vec;
@@ -401,11 +405,16 @@ int RshtTransformer::storeAlmMap(association* dataClasses, FILETYPE type) {
       return -1;
   }
 
+  /*
   vec = new std::vector<std::vector<std::vector<std::complex<double> > > >(data->roAccess().size());
   *vec = data->rwAccess();
+
   for (col = 0; col < m_maxIndex; col++)
+  {
     for (row = 0; row < m_maxIndex; row++)
-      switch ((unsigned int)m_polarization) {
+    {
+      switch ((unsigned int)m_polarization)
+      {
         case 3:
           (*vec)[2][col][row].real(((*curl)(col,row)).real());
           (*vec)[2][col][row].imag(((*curl)(col,row)).imag());
@@ -417,6 +426,7 @@ int RshtTransformer::storeAlmMap(association* dataClasses, FILETYPE type) {
           if (row > col)
             (*vec)[1][col][row] = zeroValue;
         case 1:
+          std::cout << (*value)(col, row).real() << ", ";
           (*vec)[0][col][row].real(((*value)(col,row)).real());
           (*vec)[0][col][row].imag(((*value)(col,row)).imag());
           if (row > col)
@@ -424,7 +434,40 @@ int RshtTransformer::storeAlmMap(association* dataClasses, FILETYPE type) {
         default:
           break;
       }
-  
+    }
+    std::cout << "\n";
+  }
+  */
+
+  std::vector<std::vector<std::vector<std::complex<double>>>> dVec = data->rwAccess();
+  std::vector<std::vector<std::vector<std::complex<double>>>>* dataVector = &dVec;
+  for (col = 0; col < m_maxIndex; col++)
+  {
+    for (row = 0; row < m_maxIndex; row++)
+    {
+      switch ((unsigned int)m_polarization)
+      {
+        case 3:
+          (*data)[2][col][row].real(((*curl)(col,row)).real());
+          (*data)[2][col][row].imag(((*curl)(col,row)).imag());
+          if (row > col)
+            (*data)[2][col][row] = zeroValue;
+        case 2:
+          (*data)[1][col][row].real(((*grad)(col,row)).real());
+          (*data)[1][col][row].imag(((*grad)(col,row)).imag());
+          if (row > col)
+            (*data)[1][col][row] = zeroValue;
+        case 1:
+          (*data)[0][col][row].real((*value)(col, row).real());
+          (*data)[0][col][row].imag((*value)(col, row).imag());
+          if (row > col)
+            (*data)[0][col][row] = zeroValue;
+        default:
+          break;
+      }
+    }
+  }
+
   if (vec)
     delete vec;
   

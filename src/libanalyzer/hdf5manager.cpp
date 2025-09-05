@@ -625,7 +625,7 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
   int numInfoDims = 2;
   hsize_t infoDims[numInfoDims];
   infoDims[0] = 2;
-  infoDims[1] = 5;
+  infoDims[1] = 6;
 
   const char* infoData[infoDims[0]][infoDims[1]];
 
@@ -726,7 +726,13 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "PSEUDO-SPECTRAL_DATA";
       break;
+    case fileType::EnsembleData:
+      dataSetName = dataTypeNames[(int)(fileType::EnsembleData)];
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      break;
   }
+
 
   switch (m_fileDataType) {
     case fileType::PixelizedData:
@@ -761,6 +767,10 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
 
       infoData[0][4] = "MAXVALUE";
       infoData[1][4] = maxVal.c_str();
+
+      infoData[0][5] = "NA";
+      infoData[1][5] = "NA";
+
       break;
     }
     case fileType::TransformedData:
@@ -770,24 +780,31 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
     case fileType::TransformedFilter:
     case fileType::TransformedBeam:
     {
-      string scheme = std::to_string(static_cast<int>(v->transformerScheme()));
+      string nsides = std::to_string(v->sides());
+      string layout = std::to_string(static_cast<int>(v->layout()));
+      string scheme = std::to_string(static_cast<int>(v->pixelScheme()));
+
+      string trans = std::to_string(static_cast<int>(v->transformerScheme()));
       string minInd = std::to_string(static_cast<int>(v->minYIndex()));
       string maxInd = std::to_string(static_cast<int>(v->maxYIndex()));
 
-      infoData[0][0] = "TRANSSCHEME";
-      infoData[1][0] = scheme.c_str();
+      infoData[0][0] = "NSIDES";
+      infoData[1][0] = nsides.c_str();
 
-      infoData[0][1] = "MINYINDEX";
-      infoData[1][1] = minInd.c_str();
+      infoData[0][1] = "PIXLAYOUT";
+      infoData[1][1] = layout.c_str();
 
-      infoData[0][2] = "MAXYINDEX";
-      infoData[1][2] = maxInd.c_str();
+      infoData[0][2] = "PIXSCHEME";
+      infoData[1][2] = scheme.c_str();
 
-      infoData[0][3] = "NA";
-      infoData[1][3] = "NA";
+      infoData[0][3] = "TRANSSCHEME";
+      infoData[1][3] = trans.c_str();
 
-      infoData[0][4] = "NA";
-      infoData[1][4] = "NA";
+      infoData[0][4] = "MINYINDEX";
+      infoData[1][4] = minInd.c_str();
+
+      infoData[0][5] = "MAXYINDEX";
+      infoData[1][5] = maxInd.c_str();
 
       break;
     }
@@ -813,6 +830,9 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
 
       infoData[0][4] = "MASKINDEX";
       infoData[1][4] = maskInd.c_str();
+
+      infoData[0][5] = "NA";
+      infoData[1][5] = "NA";
 
       break;
     }
@@ -1066,13 +1086,18 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
   int numInfoDims = 2;
   hsize_t infoDims[2];
   infoDims[0] = 2;
-  infoDims[1] = 2;
+  infoDims[1] = 8;
 
   std::string polarization = std::to_string(c->polarization());
   std::string index        = std::to_string(c->index());
-
-  const char* infoData[2][2] = { {"POLARIZATION",       "INDEX"},
-                                 {polarization.c_str(), index.c_str()}};
+  std::string sides        = std::to_string(c->sides());
+  std::string scheme       = c->pixelScheme() == HealPIX ? "HealPIX":"NotPixelized";
+  std::string layout       = c->layout() == Ring? "Ring":"Nest";
+  std::string trans        = c->transformerScheme() == Rsht ? "Rsht":"NotTransformed";
+  std::string minInd       = std::to_string(c->transMinIndex());
+  std::string maxInd       = std::to_string(c->transMaxIndex());
+  const char* infoData[2][8] = { {"POLARIZATION",       "INDEX",       "NSIDES",     "PIXSCHEME",     "PIXLAYOUT",   "TRANSFORMERSCHEME", "TRANSMININDEX", "TRANSMAXINDEX"},
+                                 {polarization.c_str(), index.c_str(), sides.c_str(), scheme.c_str(), layout.c_str(), trans.c_str(),       minInd.c_str(),  maxInd.c_str()}};
 
   try
   {
@@ -1109,20 +1134,25 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
   dataDims[1] = m_rows;
   dataDims[2] = m_cols;
 
-  complex<double>*** data = new complex<double>**[m_slices];
+  complex<double>* data = new complex<double>[m_slices * m_rows * m_cols];
+  /*
   for(int slice = 0; slice < m_slices; slice += 1)
   {
     data[slice] = new complex<double>*[m_rows];
     for(int row = 0; row < m_rows; row += 1)
       data[slice][row] = new complex<double>[m_cols];
   }
+  */
 
   for(int slice = 0; slice < m_slices; slice += 1)
   {
     for(int row = 0; row < m_rows; row += 1)
     {
       for(int col = 0; col < m_cols; col += 1)
-        data[slice][row][col] = dataAccess[slice][col][row];
+        data[slice * m_rows * m_cols + row * m_cols + col] = complex<double>( (*c)[slice][col][row].real(),
+                                                                              (*c)[slice][col][row].imag());
+        //data[slice][row][col].real(dataAccess[slice][col][row].real());
+
     }
   }
 
@@ -1203,6 +1233,9 @@ FILETYPE* HDF5Manager::getHeaders(int* numTypes)
     }
 
     string telescope(data[dims[1]]);
+
+    if(telescope.find("\t") < telescope.size())
+      telescope = telescope.substr(0, telescope.find("\t"));
 
     OBSERVATORY obsType = Unknown;
     int obsValue = (int)Unknown;
@@ -1595,9 +1628,12 @@ baseData* HDF5Manager::gadgetData()
           origZRem -= *boxSize;
         */
 
-        wrappedData[i+0] = origXRem;
-        wrappedData[i+1] = origYRem;
-        wrappedData[i+2] = origZRem;
+        wrappedData[i+0] = origX;
+                           //origXRem;
+        wrappedData[i+1] = origY;
+                           //origYRem;
+        wrappedData[i+2] = origZ;
+                           //origZRem;
 
         shiftedData[i+0] = wrappedData[i+0] - xCenter;
         shiftedData[i+1] = wrappedData[i+1] - yCenter;
@@ -1687,8 +1723,8 @@ baseData* HDF5Manager::gadgetData()
         dec = (M_PI/2) - dec;
 
         // make dec wrap around
-        if(dec >= (M_PI))
-          dec = dec - M_PI;
+        //if(dec >= (M_PI))
+        //  dec = dec - M_PI;
 
         if(r == 0)
           ra = 0;
@@ -1698,12 +1734,11 @@ baseData* HDF5Manager::gadgetData()
         // shift from -180 to 180 to 0 to 360 style
         ra = ra + M_PI;
 
-        if(ra < 0)
-          ra = ra + 2 * M_PI;
-
+        //if(ra < 0)
+        //  ra = ra + 2 * M_PI;
         // make ra wrap around
-        if(ra >= (2*M_PI))
-          ra = ra - (2*M_PI);
+        //if(ra >= (2*M_PI))
+        //  ra = ra - (2*M_PI);
 
         // convert to degrees
         spherData[i+0] = ra * 180 / M_PI;
@@ -2111,9 +2146,12 @@ vectorData<double> *HDF5Manager::getVectorD()
       case fileType::TransformedNoise:
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
-        trans    = atoi(infoData[infoDims[1] + 0]);
-        minIndex = atoi(infoData[infoDims[1] + 1]);
-        maxIndex = atoi(infoData[infoDims[1] + 2]);
+        sides  = atoi(infoData[infoDims[1] + 0]);
+        layout = atoi(infoData[infoDims[1] + 1]);
+        scheme = atoi(infoData[infoDims[1] + 2]);
+        trans    = atoi(infoData[infoDims[1] + 3]);
+        minIndex = atoi(infoData[infoDims[1] + 4]);
+        maxIndex = atoi(infoData[infoDims[1] + 5]);
         //trans = atoi(infoData[1][0]);
         //minIndex = atoi(infoData[1][1]);
         //maxIndex = atoi(infoData[1][2]);
@@ -2483,9 +2521,19 @@ cubeData<std::complex<double> > *HDF5Manager::getCubeCD()
     s_association->errorDetails(m_errDetail);
     return 0;
   }
+  //  const char* infoData[6][6] = { {"POLARIZATION",       "INDEX",       "NSIDES",     "PIXSCHEME",     "PIXLAYOUT",   "TRANSFORMERSCHEME"},
+
 
   polarization = atoi(infoData[infoDims[1] + 0]);
   index        = atoi(infoData[infoDims[1] + 1]);
+
+  int sides    = atoi(infoData[infoDims[1] + 2]);
+  string scheme = infoData[infoDims[1] + 3];
+  string layout = infoData[infoDims[1] + 4];
+
+  string trans  = infoData[infoDims[1] + 5];
+  int minIndex  = atoi(infoData[infoDims[1] + 6]);
+  int maxIndex  = atoi(infoData[infoDims[1] + 7]);
 
   complex<double>* data;
   hsize_t* dataDims;
@@ -2521,6 +2569,30 @@ cubeData<std::complex<double> > *HDF5Manager::getCubeCD()
   dc_cube->polarization(polarization);
   dc_cube->index(index);
 
+  dc_cube->sides(sides);
+  dc_cube->pixelScheme(scheme == "HealPIX"? HealPIX:NotPixelized);
+  dc_cube->layout(layout == "Ring"?Ring:Nest);
+
+  dc_cube->transformerScheme(trans == "Rsht"?Rsht:NotTransformed);
+  dc_cube->transMinIndex(minIndex);
+  dc_cube->transMaxIndex(maxIndex);
+
+  if(scheme == "HealPIX")
+  {
+    s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
+    s_association->pixelizationEngine()->pixelLayout(dc_cube->layout());
+    s_association->pixelizationEngine()->pixelizerScheme(dc_cube->pixelScheme());
+    s_association->pixelizationEngine()->scale(sides);
+  }
+
+  if (trans == "Rsht")
+  {
+    s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
+    s_association->transformationEngine()->transformerScheme(dc_cube->transformerScheme());
+    s_association->transformationEngine()->minIndex(dc_cube->transMinIndex());
+    s_association->transformationEngine()->maxIndex(dc_cube->transMaxIndex());
+  }
+
   numOps = m_slices;
   updateUnit = numOps / 100;
   if(updateUnit < 1)
@@ -2530,7 +2602,7 @@ cubeData<std::complex<double> > *HDF5Manager::getCubeCD()
   for (int slice = 0; slice < m_slices; ++slice)
     for (int col = 0; col < m_cols; ++col)
       for (int row = 0; row < m_rows; ++row)
-        cubeDataAccess[slice][col][row] = data[slice * m_rows * m_cols + row * m_cols + col];
+        (*dc_cube)[slice][col][row] = data[slice * m_rows * m_cols + row * m_cols + col];
 
   delete[] infoData;
   delete[] data;

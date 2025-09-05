@@ -148,6 +148,8 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
     case fileType::SpectralData:
       vec_dat_ptr = a->spectrumData();
       break;
+    case fileType::EnsembleData:
+      vec_dat_ptr = a->ensembleData();
     default:
       break;
   }
@@ -177,6 +179,7 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
       case fileType::TransformedBeam:
       case fileType::TransformedData:
       case fileType::SpectralData:
+      case fileType::EnsembleData:
          value = (*vec_dat_ptr)[count+min_index];
         break;
       case fileType::TransformedWeights:

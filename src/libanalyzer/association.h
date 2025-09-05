@@ -276,6 +276,8 @@ public:
   bool generateTransformedData(Transformer *transformer, FILETYPE ft);
   bool generatePowerSpectrumData(Spectrum *spect);
 
+  bool generateEnsembleSpectrumData(Spectrum* spect);
+
   bool generateGraph(FILETYPE type);
 
   bool generateInverseData(Transformer *transformer, FILETYPE ft);

@@ -379,8 +379,8 @@ void mainWindow::openFile()
       return;
     }
 
-    for(int i = 0; i < *numTypes; i += 1)
-      configureDisplay(dataTypes[i]);
+    //for(int i = 0; i < *numTypes; i += 1)
+    configureDisplay(dataTypes[0]);
   }
 }
 
@@ -1079,6 +1079,7 @@ void mainWindow::analyze() {
     s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
     s_association->powerSpectraEngine()->indices(specDlg->indicesPerBin());
     s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
+    s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
     s_association->powerSpectraEngine()->configured(true);
   }
   else
@@ -1090,13 +1091,17 @@ void mainWindow::analyze() {
       s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
       s_association->powerSpectraEngine()->indices(specDlg->indicesPerBin());
       s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
+      s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
       s_association->powerSpectraEngine()->configured(true);
     }
 
   // check that all of the transformed data exists
-  if (!s_association->exists(fileType::TransformedData)) {
+  if (!s_association->exists(fileType::TransformedData) &&
+      !s_association->exists(fileType::AlmData))
+  {
     if (!s_association->exists(dataEngines::Transformation))
       selectTransformer();
+
     if (!transform(fileType::PixelizedData,fileType::TransformedData)) {
       title = QString(tr("No transformed data set available"));
       message = QString(tr("No transformed data set is available.\nPlease check your data entries to insure that one has been entered correctly."));
@@ -1104,6 +1109,7 @@ void mainWindow::analyze() {
       return;
     }
   }
+
   if (!s_association->exists(fileType::TransformedWeights)) {
     if (!s_association->exists(dataEngines::Transformation))
       selectTransformer();
@@ -1122,7 +1128,8 @@ void mainWindow::analyze() {
       s_association->transformedNoise()->dataType(fileType::TransformedNoise);
 
       // fill vector with white noise
-      s_association->createWhiteNoise(s_association->transformedNoise());
+      //s_association->createWhiteNoise(s_association->transformedNoise());
+      s_association->createShotNoise(s_association->transformedNoise());
     }
   }
   if (!s_association->exists(fileType::TransformedFilter)) {
@@ -1148,7 +1155,12 @@ void mainWindow::analyze() {
 
   // everything is here and ready to go, so carry out analysis
   s_association->generatePowerSpectrumData(s_association->powerSpectraEngine());
+  s_association->powerSpectraEngine()->calculatePseudoSpectrum(s_association);
   configureDisplay(fileType::SpectralData);
+
+  s_association->generateEnsembleSpectrumData(s_association->powerSpectraEngine());
+  //configureDisplay(fileType::SpectralData);
+
   return;
 }
 
@@ -1418,9 +1430,11 @@ void mainWindow::buildGraphs() {
     if (dataType == fileType::GRAPH_LIMIT)
       break;
 
-    if (s_association->exists(dataType)) {
+    if (s_association->exists(dataType))
+    {
       if (s_association->exists(graphType))
         s_association->reset(allGraphType);
+
       try {
         s_association->generateGraph(dataType);
       }

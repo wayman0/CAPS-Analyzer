@@ -73,6 +73,7 @@ spectrumDialog::spectrumDialog() :
   inverse = false;
   weigh = false;
   binSize = 1;
+  ensIter = 1;
   mask = 0;
   dirty = false;
   isConfigured = false;
@@ -80,6 +81,7 @@ spectrumDialog::spectrumDialog() :
   /* set initially displayed values */
   ui->maskSpinBox->setValue(mask);
   ui->countSpinBox->setValue(binSize);
+  ui->ensembleIter->setValue(ensIter);
 }
 
 spectrumDialog::~spectrumDialog() {
@@ -109,6 +111,7 @@ void spectrumDialog::configure() {
       ui->inverseCheckBox->setChecked(false);
     ui->maskSpinBox->setValue(mask);
     ui->countSpinBox->setValue(binSize);
+    ui->ensembleIter->setValue(ensIter);
   }
 
   exec();
@@ -119,6 +122,7 @@ void spectrumDialog::reset() {
   ui->inverseCheckBox->setChecked(false);
   ui->maskSpinBox->setValue(0);
   ui->countSpinBox->setValue(1);
+  ui->ensembleIter->setValue(1);
   dirty = false;
   isConfigured = false;
   
@@ -153,6 +157,11 @@ void spectrumDialog::validate() {
   int oldMask = mask;
   mask = ui->maskSpinBox->value();
   if (oldMask != mask)
+    dirty = true;
+
+  int oldEnsIter = ensIter;
+  ensIter = ui->ensembleIter->value();
+  if(oldEnsIter != ensIter)
     dirty = true;
 
   return;

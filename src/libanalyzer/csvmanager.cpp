@@ -470,6 +470,8 @@ bool csvManager::saveVectorD(vectorData<double> *v)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "PSEUDO-SPECTRAL_DATA";
       break;
+    case fileType::EnsembleData:
+      dataName = dataTypeNames[(int)(m_fileDataType)];
   }
 
    *m_ptr << "[DATANAME] == " << dataName << "\n";
@@ -1834,7 +1836,7 @@ cubeData<complex<double>> *csvManager::getCubeCD() {
 
       for (int row = 0; row < m_rows; ++row) {
         value = complex<double>(colData[2*row], colData[2*row+1]);
-        data[slice][col][row] = value;
+        (*dc_cube)[slice][col][row] = value;
         currOp++;
 //        if(m_showProgress && !(currOp % updateUnit))
 //          informProgress(currOp / updateUnit);

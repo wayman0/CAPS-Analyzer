@@ -81,6 +81,9 @@ class Spectrum {
     int maskIndex() {return m_maskIndex;}
     void maskIndex(int value) {m_maskIndex = value;}
 
+    int ensembleIterations() {return m_ensIter;}
+    void ensembleIterations(int iter) {m_ensIter = iter;}
+
     /**
      * access invert flag
      */
@@ -152,10 +155,15 @@ class Spectrum {
      */
     void calculateSpectrum(association* asc);
 
+    // calculate the pseudo spectrum
+    void calculatePseudoSpectrum(association* asc);
+
     /**
      * calculate the ensemble average
      */
     void calculateEnsembleAverage(association *asc, int size);
+
+    void ensembleAverageTimesInverse(association* assoc);
 
     /**
      * clear the spectrum object
@@ -178,6 +186,7 @@ class Spectrum {
     bool          m_invert;
     int           m_maskIndex;
     int           m_indices;
+    int           m_ensIter;
     int           m_minIndex;
     int           m_maxIndex;
     int           m_minBin;

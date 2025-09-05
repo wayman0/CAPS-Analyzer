@@ -529,6 +529,9 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "PSEUDO-SPECTRAL_DATA";
       break;
+    case fileType::EnsembleData:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
   }
 
   if (v->layout() == Ring)
@@ -589,11 +592,26 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       case fileType::TransformedNoise:
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
+        // if the data is transformed it should also be pixelized
+        dataImage->addKey("NSIDES",v->sides(),"Number of sides.");
+        dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
+        dataImage->addKey("PIXSCHEME",scheme, "Type of pixel scheme used to pixelize.");
+
         dataImage->addKey("TRANSFORMERSCHEME",trans,"Type of transformer scheme");
         dataImage->addKey("MAXINDEX",v->maxYIndex(), "Maximum index");
         dataImage->addKey("MININDEX",v->minYIndex(), "Minimum index");
         break;
       case fileType::SpectralData:
+      case fileType::EnsembleData:
+        // if the data is spectral then it should also be pixelized and transformed
+        dataImage->addKey("NSIDES",v->sides(),"Number of sides.");
+        dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
+        dataImage->addKey("PIXSCHEME",scheme, "Type of pixel scheme used to pixelize.");
+
+        dataImage->addKey("TRANSFORMERSCHEME",trans,"Type of transformer scheme");
+        dataImage->addKey("MAXINDEX",v->maxYIndex(), "Maximum index");
+        dataImage->addKey("MININDEX",v->minYIndex(), "Minimum index");
+
         dataImage->addKey("MAXINDEX",v->maxYIndex(),"Maximum index");
         dataImage->addKey("MININDEX",v->minYIndex(),"Minimum index");
         dataImage->addKey("MAXVALUE",v->maxValue(),"Maximum value");
@@ -713,28 +731,35 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
   std::valarray<double> fitsDataImag;
 
   unsigned long long int numOps, updateUnit, currOp;
+  string sides, layout, scheme, trans, minIndex, maxIndex;
+  vectorData<double>* transformed;
   std::string hduName = "";
   CCfits::ExtHDU* dataImage = 0;
 
   switch (m_fileDataType) {
     case fileType::AlmData:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedData);
       //hduName = "ALM_DATA";
       break;
     case fileType::AlmWeights:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedWeights);
       //hduName = "ALM_MASK";
       break;
     case fileType::AlmNoise:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedNoise);
       //hduName = "ALM_NOISE";
       break;
     case fileType::AlmFilter:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedFilter);
       //hduName = "ALM_FILTER";
       break;
     case fileType::AlmBeam:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedBeam);
       //hduName = "ALM_BEAM";
       break;
   }
@@ -782,12 +807,30 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
   // then when we read in slices we divide by 2.
   std::vector<long> naxes = {m_cols, m_rows, m_slices*2};
   //std::vector<long> naxes = {m_cols, m_rows, m_slices};
+
+  sides = transformed->sides();
+  layout = c->layout() == Ring ? "Ring":"Nest";
+  scheme = c->pixelScheme() == PIXELSCHEME::HealPIX ? "HealPIX" : "NotPixelized";
+
+  trans = c->transformerScheme() == Rsht? "Rsht":"NotTransformed";
+
+  std::cout << "SAVING STUFF\n";
   try
   {
     dataImage = m_ptr->addImage(hduName, fitsDouble, naxes);
 
     dataImage->addKey("POLARIZATION",c->polarization(),"Polarization of data.");
     dataImage->addKey("INDEX",c->index(),"Index of data stored in file.");
+
+    std::cout << sides << "\n";
+    // save the transformer info so we can use it when we want to go from alm to transformed
+    dataImage->addKey("NSIDES",   c->sides(),  "Number of sides.");
+    dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
+    dataImage->addKey("PIXSCHEME",scheme, "Type of pixel scheme used to pixelize.");
+
+    dataImage->addKey("TRANSFORMERSCHEME",trans,"Type of transformer scheme");
+    dataImage->addKey("TRANSMININDEX", c->transMinIndex(), "Transformer Min Index");
+    dataImage->addKey("TRANSMAXINDEX", c->transMaxIndex(), "Transformer Max Index");
 
     //dataImage->write(1,                       fitsDataReal.size(), fitsDataReal);
     //dataImage->write(1 + fitsDataReal.size(), fitsDataImag.size(), fitsDataImag);
@@ -1924,6 +1967,9 @@ vectorData<double> *fitsManager::getVectorD()
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "PSEUDO-SPECTRAL_DATA";
       break;
+    case fileType::EnsembleData:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
   }
 
   try
@@ -1951,11 +1997,26 @@ vectorData<double> *fitsManager::getVectorD()
       case fileType::TransformedNoise:
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
+        // if it is transformed it should also be pixelized
+        dataImage->readKey("NSIDES",sides);
+        dataImage->readKey("PIXLAYOUT",layout);
+        dataImage->readKey("PIXSCHEME",scheme);
+
         dataImage->readKey("TRANSFORMERSCHEME",trans);
         dataImage->readKey("MAXINDEX",maxIndex);
         dataImage->readKey("MININDEX",minIndex);
         break;
       case fileType::SpectralData:
+      case fileType::EnsembleData:
+        // if it is spectral it should also be pixelized and transformed
+        dataImage->readKey("NSIDES",sides);
+        dataImage->readKey("PIXLAYOUT",layout);
+        dataImage->readKey("PIXSCHEME",scheme);
+
+        dataImage->readKey("TRANSFORMERSCHEME",trans);
+        dataImage->readKey("MAXINDEX",maxIndex);
+        dataImage->readKey("MININDEX",minIndex);
+
         dataImage->readKey("MAXINDEX",maxIndex);
         dataImage->readKey("MININDEX",minIndex);
         dataImage->readKey("MAXVALUE",maxValue);
@@ -2134,6 +2195,8 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
   int slice = 0, col = 0, row = 0;
   int dataCols = 0, dataRows = 0, dataSlices = 0;
 
+  string sides, layout, scheme, trans, minIndex, maxIndex;
+
   switch (m_fileDataType) {
     case fileType::AlmData:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -2165,6 +2228,14 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
     dataImage->readKey("POLARIZATION",polarization);
     dataImage->readKey("INDEX",index);
 
+    dataImage->readKey("NSIDES", sides);
+    dataImage->readKey("PIXSCHEME", scheme);
+    dataImage->readKey("PIXLAYOUT", layout);
+
+    dataImage->readKey("TRANSFORMERSCHEME", trans);
+    dataImage->readKey("TRANSMININDEX", minIndex);
+    dataImage->readKey("TRANSMAXINDEX", maxIndex);
+
     m_cols   = dataImage->axis(0);
     m_rows   = dataImage->axis(1);
     // split slices in half because we double it
@@ -2189,6 +2260,30 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
   dc_cube->polarization(polarization);
   dc_cube->index(index);
 
+  dc_cube->pixelScheme(scheme == "HealPIX" ? HealPIX:NotPixelized);
+  dc_cube->layout(layout == "Ring"? Ring:Nest);
+  dc_cube->sides(stoi(sides));
+
+  dc_cube->transformerScheme(trans == "Rsht" ? Rsht:NotTransformed);
+  dc_cube->transMinIndex(stoi(minIndex));
+  dc_cube->transMaxIndex(stoi(maxIndex));
+
+  if(scheme == "HealPIX")
+  {
+    s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
+    s_association->pixelizationEngine()->pixelLayout(dc_cube->layout());
+    s_association->pixelizationEngine()->pixelizerScheme(dc_cube->pixelScheme());
+    s_association->pixelizationEngine()->scale(stoi(sides));
+  }
+
+  if (trans == "Rsht")
+  {
+    s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
+    s_association->transformationEngine()->transformerScheme(dc_cube->transformerScheme());
+    s_association->transformationEngine()->minIndex(dc_cube->transMinIndex());
+    s_association->transformationEngine()->maxIndex(dc_cube->transMaxIndex());
+  }
+
   data = dc_cube->rwAccess();
 
   numOps = m_slices;
@@ -2209,7 +2304,7 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
         // which column we are in
         index = index + col;
 
-        data[slice][col][row] = complex<double>(fitsData[index], fitsData[index + imagOffset]);
+        (*dc_cube)[slice][col][row] = complex<double>(fitsData[index], fitsData[index + imagOffset]);
       }
     }
   }

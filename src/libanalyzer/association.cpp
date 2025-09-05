@@ -1989,8 +1989,10 @@ void association::createHarmonic(FILETYPE dataType, int l, int m, double level, 
 void association::createWhiteNoise(vectorData<double>* vdd) {
   if (!m_pixelEngine)
     throw noPixelizerError;
+
   if (m_pixelEngine->pixelizerScheme() != HealPIX)
     throw noPixelizerError;
+
   HealPIXPixelizer* hp = (HealPIXPixelizer*)m_pixelEngine;
 
   if (!m_transData)
@@ -2195,18 +2197,6 @@ bool association::generateTransformedData(Transformer *transformer, FILETYPE ft)
     if(!exists(ft))
       return false;
   }
-  // else we are transforming beam, noise, or filter which aren't necessary to input but still needed in general
-  else
-  {
-    std::cout << dataTypeNames[ftID] << "\n";
-    // since we don't have this type we need to create it
-    if(!exists(ft))
-    {
-      std::cout << "DOESN'T EXIST\n";
-      return false;
-    }
-  }
-
 
   int transOffset = (int)fileType::TransformedData - (int)fileType::PixelizedData;
   int almOffset   = (int)fileType::AlmData - (int)fileType::PixelizedData;
@@ -2222,6 +2212,7 @@ bool association::generateTransformedData(Transformer *transformer, FILETYPE ft)
   discardRelation(transType);
   addEmpty(transType,transformer->maxIndex());
   addEmpty(almType,transformer->maxIndex(),transformer->maxIndex());
+
   switch (ft) {
     case fileType::PixelizedData:
 //      discardRelation(fileType::TransformedData);
@@ -2281,7 +2272,21 @@ bool association::generateTransformedData(Transformer *transformer, FILETYPE ft)
   trans->transformerScheme(transformer->scheme());
   trans->minYIndex(transformer->minIndex());
 
+  // we should save the pixelizer method as well
+  // because when we use default noise, we need the pixelizer
+  trans->pixelScheme(pix->pixelScheme());
+  trans->sides(pix->sides());
+  trans->layout(pix->layout());
+
   alm->initialize();
+  // save the pixelizer and transformer info for reading later on
+  alm->pixelScheme(pix->pixelScheme());
+  alm->sides(pix->sides());
+  alm->layout(pix->layout());
+
+  alm->transformerScheme(transformer->scheme());
+  alm->transMinIndex(transformer->minIndex());
+  alm->transMaxIndex(transformer->maxIndex());
 
   transformer->dataSize(pix->size());
   transformer->initialize(this);
@@ -2399,6 +2404,105 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
 
   m_spectData->mask(spect->maskIndex());
 //  }
+
+  m_sequence = powerSpectrum;
+  return true;
+}
+
+bool association::generateEnsembleSpectrumData(Spectrum *spect)
+{
+if (!spect)
+    return false;
+
+  if (!m_spectData)
+    return false;
+
+  addEmpty(fileType::EnsembleData, m_transData->size());
+  spect->maxIndex(m_transData->maxYIndex());
+
+  if(!spect->configured())
+    spect->initialize();
+
+  // set up mode-mode coupling matrix
+  if (!m_couplingMatrix) {
+    addEmpty(fileType::ModeCouplingMatrix,m_transData->size(),m_transData->size());
+    spect->createModeCouplingMatrix(this);
+  }
+
+  if (m_couplingMatrix->format() == Mode)
+    spect->loadCouplingMatrix(this);
+
+  /* Maybe some checks here, but think that most checking applies to
+  existing file loaded matrices: therefore should be in a different
+  "process from file" function... */
+
+  long max_index = spect->maxIndex(), max_bin = spect->maxBin();
+  long indices = spect->indices();
+  long i = 0, j = 0, total = max_index * (max_index + 1);
+  long minL = 0, maxL = 1;
+  long op_total, progress = 0;
+
+  if (spect->binning())
+  {
+    op_total = max_bin * indices;
+
+    /* Calculating bin-index coupling matrix */
+    for (i = 0; i < max_bin; ++i) {
+      minL = i * indices;
+      maxL = minL + indices;
+      if (maxL > max_index)
+        maxL = max_index;
+
+      for (j = minL; j < maxL; ++j) {
+        spect->calculateBinIndexMatrix(i,j);
+        progress = i * max_bin + j;
+      }
+    }
+
+    /* Calculating index-bin coupling matrix */
+    for (i = 0; i < max_bin; ++i) {
+      minL = i * indices;
+      maxL = minL + indices;
+      if (maxL > max_index)
+        maxL = max_index;
+
+      for (j = minL; j < maxL; ++j) {
+        spect->calculateIndexBinMatrix(i,j);
+        progress = i * max_bin + j;
+      }
+    }
+    op_total = max_bin * max_bin;
+
+    if (!m_couplingMatrix)
+      addEmpty(fileType::BinCouplingMatrix,m_transData->size(),m_transData->size());
+
+    m_couplingMatrix->format(Bin);
+    spect->calculateBinCouplingMatrix(this);
+
+    if (m_couplingMatrix && m_couplingMatrix->format() == Bin)
+      spect->loadCouplingMatrix(this);
+
+    m_spectData->binned(true);
+  }
+  else
+    m_spectData->binned(false);
+
+  if (!m_inverseMatrix) {
+    if (spect->binning())
+      addEmpty(fileType::InverseBinMatrix,m_transData->size(),m_transData->size());
+    else
+      addEmpty(fileType::InverseModeMatrix,m_transData->size(),m_transData->size());
+    m_inverseMatrix->initialize();
+    if (spect->invertMatrix(this) < 0)
+      return false;
+  }
+  spect->loadInverseMatrix(this);
+
+  /* Calculating spectral data */
+  spect->calculateEnsembleAverage(this, spect->ensembleIterations());
+  spect->ensembleAverageTimesInverse(this);
+
+  m_ensembleSpectData->mask(spect->maskIndex());
 
   m_sequence = powerSpectrum;
   return true;
@@ -2757,8 +2861,8 @@ bool association::generateGraph(FILETYPE type) {
         m_transGraph = new dataSpectrum(graph);
       break;
     case fileType::TransformedNoise:
-      if (!m_pixelNoise)
-        return false;
+      //if (!m_pixelNoise)
+      //  return false;
       m_graphEngine->makeGraph(graph,type,this);
       if (m_transNoiseGraph)
         *m_transNoiseGraph = *graph;
@@ -2766,8 +2870,8 @@ bool association::generateGraph(FILETYPE type) {
         m_transNoiseGraph = new dataSpectrum(graph);
       break;
     case fileType::TransformedFilter:
-      if (!m_pixelFilter)
-        return false;
+      //if (!m_pixelFilter)
+      //  return false;
       m_graphEngine->makeGraph(graph,type,this);
       if (m_transFilterGraph)
         *m_transFilterGraph = *graph;
@@ -2775,8 +2879,8 @@ bool association::generateGraph(FILETYPE type) {
         m_transFilterGraph = new dataSpectrum(graph);
       break;
     case fileType::TransformedBeam:
-      if (!m_pixelBeam)
-        return false;
+      //if (!m_pixelBeam)
+      //  return false;
       m_graphEngine->makeGraph(graph,type,this);
       if (m_transBeamGraph)
         *m_transBeamGraph = *graph;

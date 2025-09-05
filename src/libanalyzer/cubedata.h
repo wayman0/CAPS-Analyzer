@@ -85,7 +85,7 @@ template <typename _Type> class cubeData : public baseData {
     /**
      * Initialize data set to zeros
      */
-    std::vector<_Type >& operator[](long i) {return m_data[i];}
+    std::vector<std::vector<_Type >>& operator[](long i) {return m_data[i];}
     
     /**
      * access data vector
@@ -113,6 +113,36 @@ template <typename _Type> class cubeData : public baseData {
     int minEng(int i) const {return m_minEngs[i];}
     int maxEng(int i) const {return m_maxEngs[i];}
 
+    /**
+     * access pixelization scheme
+     */
+    void pixelScheme(PIXELSCHEME type) {m_pixelScheme = type;}
+    PIXELSCHEME pixelScheme() const {return m_pixelScheme;}
+
+    /**
+     * access healPIX layout
+     */
+    void layout(LAYOUT type) {m_layout = type;}
+    LAYOUT layout() const {return m_layout;}
+
+    /**
+     * access transformer scheme
+     */
+    void transformerScheme(TRANSFORMERSCHEME type) {m_transformerScheme = type;}
+    TRANSFORMERSCHEME transformerScheme() const {return m_transformerScheme;}
+
+    void transMinIndex(int i) {m_transMinIndex = i;}
+    int  transMinIndex() {return m_transMinIndex;}
+
+    void transMaxIndex(int i) {m_transMaxIndex = i;}
+    int  transMaxIndex() {return m_transMaxIndex;}
+
+    /**
+     * access number of sides for healPIX pixelized data
+     */
+    void sides(int value) {m_sides = value;}
+    int sides() const {return m_sides;}
+
   private:
     /**
      * reset data vector
@@ -128,6 +158,16 @@ template <typename _Type> class cubeData : public baseData {
     int                                               m_polarization;
     double                                            m_minEngs[100];
     double                                            m_maxEngs[100];
+
+    // data from pixelization
+    int                                               m_sides;
+    LAYOUT                                            m_layout;
+    PIXELSCHEME                                       m_pixelScheme;
+
+    // data from tranformation
+    TRANSFORMERSCHEME                                 m_transformerScheme;
+    int                                               m_transMinIndex;
+    int                                               m_transMaxIndex;
 };
 
 template <typename _Type> cubeData<_Type>::cubeData()

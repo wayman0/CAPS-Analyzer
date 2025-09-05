@@ -43,6 +43,9 @@ University-Kingsville by Daniel Suson
 
 #include "spectrum.h"
 
+#include "rsht.h"
+#include <healpix_cxx/alm_healpix_tools.h>
+
 Spectrum::Spectrum() {
   m_configured = false;
   m_active = false;
@@ -52,6 +55,7 @@ Spectrum::Spectrum() {
   m_maxBin    = 1;
   m_indices   = 1;
   m_maskIndex = 0;
+  m_ensIter   = 1;
   m_lowBinL   = 0;
   m_binning = true;
   m_invert  = true;
@@ -69,6 +73,7 @@ Spectrum::Spectrum(Spectrum* from) {
   m_lowBinL   = from->lowBinL();
   m_binning = from->binning();
   m_invert  = from->invert();
+  m_ensIter = from->ensembleIterations();
 }
 
 
@@ -308,6 +313,126 @@ void Spectrum::calculateSpectrum(association* asc) {
   asc->spectrumData()->minValue(min);
 }
 
+void Spectrum::calculatePseudoSpectrum(association* asc)
+{
+  Healpix_Map<double>* dataMap = 0;
+  Healpix_Map<double>* wgtMap = 0;
+  int numPix = 0;
+  int nside = 0;
+
+  if(asc->exists(fileType::PixelizedData))
+  {
+    vectorData<double>* pixData = (vectorData<double>*)asc->getData(fileType::PixelizedData);
+    dataMap = new Healpix_Map<double>(pixData->sides(), RING, SET_NSIDE);
+
+    nside = pixData->sides();
+    numPix = pixData->size();
+    for(int i = 0; i < pixData->size(); i += 1)
+      (*dataMap)[i] = (*pixData)[i];
+  }
+  else
+  {
+    if(asc->exists(fileType::AlmData))
+    {
+      cubeData<complex<double>>* alm = (cubeData<complex<double>>*)asc->getData(fileType::AlmData);
+      Alm<std::complex<double>>* dataAlm = new Alm<std::complex<double>>(alm->cols(), alm->rows());
+
+      nside = alm->sides();
+
+      dataMap = new Healpix_Map<double>(alm->sides(), RING, SET_NSIDE);
+      for (int col = 0; col < m_maxIndex; col++)
+      {
+        for (int row = 0; row < m_maxIndex; row++)
+        {
+          switch ((unsigned int)alm->polarization())
+          {
+            case 3:
+              ((*dataAlm)(col,row)).real((*alm)[2][col][row].real());
+              ((*dataAlm)(col,row)).imag((*alm)[2][col][row].imag());
+            case 2:
+              ((*dataAlm)(col,row)).real((*alm)[1][col][row].real());
+              ((*dataAlm)(col,row)).imag((*alm)[1][col][row].imag());
+            case 1:
+              ((*dataAlm)(col,row)).real((*alm)[0][col][row].real());
+              ((*dataAlm)(col,row)).imag((*alm)[0][col][row].imag());
+            default:
+              break;
+          }
+        }
+      }
+      alm2map(*dataAlm, *dataMap);
+    }
+    else
+      throw dataMismatchError;
+  }
+
+  if(asc->exists(fileType::PixelizedWeights))
+  {
+    vectorData<double>* pixWgt = (vectorData<double>*)asc->getData(fileType::PixelizedWeights);
+    wgtMap = new Healpix_Map<double>(pixWgt->sides(), RING, SET_NSIDE);
+    for(int i = 0; i < pixWgt->size(); i += 1)
+      (*wgtMap)[i] = (*pixWgt)[i];
+  }
+  else
+  {
+    if(asc->exists(fileType::AlmWeights))
+    {
+      cubeData<complex<double>>* alm = (cubeData<complex<double>>*)asc->getData(fileType::AlmWeights);
+      std::vector<std::vector<std::vector<complex<double>>>> vec = alm->rwAccess();
+      Alm<std::complex<double>>* wgtAlm = new Alm<std::complex<double>>(alm->cols(), alm->rows());
+
+      nside = alm->sides();
+
+      wgtMap = new Healpix_Map<double>(alm->sides(), RING, SET_NSIDE);
+
+      for (int col = 0; col < m_maxIndex; col++)
+      {
+        for (int row = 0; row < m_maxIndex; row++)
+        {
+          switch ((unsigned int)alm->polarization())
+          {
+            case 3:
+              ((*wgtAlm)(col,row)).real((vec)[2][col][row].real());
+              ((*wgtAlm)(col,row)).imag((vec)[2][col][row].imag());
+            case 2:
+              ((*wgtAlm)(col,row)).real((vec)[1][col][row].real());
+              ((*wgtAlm)(col,row)).imag((vec)[1][col][row].imag());
+            case 1:
+              ((*wgtAlm)(col,row)).real((vec)[0][col][row].real());
+              ((*wgtAlm)(col,row)).imag((vec)[0][col][row].imag());
+            default:
+              break;
+          }
+        }
+      }
+      alm2map(*wgtAlm, *wgtMap);
+    }
+    else
+      throw dataMismatchError;
+  }
+
+  Healpix_Map<double>* wgtDataMap = new Healpix_Map<double>(nside, RING, SET_NSIDE);
+  for(int i = 0; i < 12 * nside * nside; i += 1)
+  {
+    //std::cout << (*dataMap)[i] << " * " << (*wgtMap)[i] << "\n";
+    (*wgtDataMap)[i] = (*dataMap)[i] * (*wgtMap)[i];
+  }
+
+  Alm<hPoint>* alm = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+  arr<double> wgtRing(2*nside);
+  wgtRing.fill(1);
+
+  map2alm(*wgtDataMap, *alm, wgtRing);
+  PowSpec* pseudoSpec = new PowSpec(1, m_maxIndex);
+
+  extract_powspec(*alm, *pseudoSpec);
+
+  vectorData<double>* spectralData = (vectorData<double>*)asc->getData(fileType::SpectralData);
+  for(int i = 0; i < m_maxIndex; i += 1)
+    (*spectralData)[i] = pseudoSpec->tt()[i];
+
+}
+
 void Spectrum::calculateEnsembleAverage(association* asc, int size) {
 /*
 In the HealPIX c++ code, there is a routine called create_alm (and create_alm_pol for polarized spectra). It uses an inputted power spectra (would this be the C_l defined in equation 13 in the Hivon paper?). I'm thinking of creating a method that takes the PCL created by the program based on equation 13 as well as the number of simulated PCLs that you want to use in the averaging. For each iteration of the loop, the method would pass the original PCL and the random number generator to create_alm, then put the randomized alm into HealPIX's extract_powspec to get out the associated PCL. This would be loaded into an array with max_l rows and n columns, where n is the number of simulated PCLs passed into the routine. Once this is loaded via the loop, a final PCL would be created by summing each element and then dividing by n to get the ensemble average. This would be passed back out of the method. Does this sound like a reasonable way to create the ensemble average?
@@ -336,11 +461,24 @@ In the HealPIX c++ code, there is a routine called create_alm (and create_alm_po
   /* create randomized alm instances of the psuedo power spectrum */
   int row = 0;
   for (i = 0; i < size; ++i) {
+    // this will take the sqrt of the data at each l, which since some of the data can be negative will throw nan.
     create_alm(*original,*randAlm,*generator);
     extract_powspec(*randAlm,*randomized);
     for (row = 0; row < length; ++row)
       ensemblePseudoCl[i][row] = randomized->tt(row);
   }
+
+  /*
+  for(int row = 0; row < size; row += 1)
+  {
+    std::cout << "Ensemble: " << row << "\t";
+    for(int c = 0; c < length; c += 1)
+      std::cout << ensemblePseudoCl[row][c] << ", ";
+    std::cout << "\n";
+  }
+
+  std::cout << "---------------------------------------------------------------------------------------------------------------------------------\n";
+  */
 
   /* average each l value */
   for (row = 0; row < length; ++row) {
@@ -348,10 +486,51 @@ In the HealPIX c++ code, there is a routine called create_alm (and create_alm_po
     double sum = 0.0;
     for (i = 0; i < size; ++i)
       sum += ensemblePseudoCl[i][row];
+    // since some data may be nan which is caused by sqrt negative value at l so replace with 0?
+    // or can we average between the element before and element after?
+   //if(std::isnan(sum))
+   //  (*asc->ensembleData())[row] = 0;
+   //else
     (*asc->ensembleData())[row] = sum / size;
   }
+
+  /*
+  for(int c = 0; c < asc->ensembleData()->size(); c += 1)
+    std::cout << (*asc->ensembleData())[c] << ", ";
+  std::cout << "\n";
+  */
 }
 
+void Spectrum::ensembleAverageTimesInverse(association* assoc)
+{
+  matrixData<double>* inverse = 0;
+  vectorData<double>* ensemble = 0;
+
+  if(assoc->exists(fileType::InverseBinMatrix) ||
+     assoc->exists(fileType::InverseModeMatrix))
+    inverse = assoc->inverseMatrix();
+  else
+    throw incompleteDatasetError;
+
+  if(assoc->exists(fileType::EnsembleData))
+    ensemble = assoc->ensembleData();
+  else
+    throw incompleteDatasetError;
+
+  vectorData<double>* multEns = new vectorData<double>(ensemble->size());
+  multEns->initialize();
+  for(int col = 0; col < inverse->cols(); col += 1)
+  {
+    double ensembleElement = (*ensemble)[col];
+    for(int row = 0; row < inverse->rows(); row += 1)
+    {
+      (*multEns)[col] += ensembleElement * (*inverse)[col][row];
+    }
+  }
+
+  for(int i = 0; i < multEns->size(); i += 1)
+    (*ensemble)[i] = (*multEns)[i];
+}
 
 void Spectrum::clear() {
   if (!m_configured)

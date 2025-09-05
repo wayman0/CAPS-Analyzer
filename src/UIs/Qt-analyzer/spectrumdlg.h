@@ -71,7 +71,7 @@ class spectrumDialog : public QDialog {
     bool weighIndices() const {return weigh;}
     int indicesPerBin() const {return binSize;}
     int maskLowestIndices() const {return mask;}
-
+    int ensembleIterations() const {return ensIter;}
 
   public Q_SLOTS:
     void configure();
@@ -88,7 +88,7 @@ class spectrumDialog : public QDialog {
     
     Ui::spectrumDialog *ui;
     bool bin, inverse, weigh;
-    int binSize, mask;
+    int binSize, mask, ensIter;
     bool dirty, isConfigured;
 //    analyzer_power_spect_hdl currentHandle;
 //    analyzer_hdl dataHandle;

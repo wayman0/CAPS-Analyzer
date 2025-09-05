@@ -238,6 +238,7 @@ double HealPIXPixelizer::calculateAverage(FILETYPE dataType, association* assoc)
     hits = assoc->pixelOccupancy();
   else
     throw incompleteDatasetError;
+
   if (dataType >= fileType::PixelizedData && dataType <= fileType::PixelizedBeam) // this is the error causing line
   {
     if (assoc->exists(fileType::PixelizedWeights))
