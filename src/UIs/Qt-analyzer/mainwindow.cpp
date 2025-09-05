@@ -1096,60 +1096,110 @@ void mainWindow::analyze() {
     }
 
   // check that all of the transformed data exists
-  if (!s_association->exists(fileType::TransformedData) &&
-      !s_association->exists(fileType::AlmData))
+  if (!s_association->exists(fileType::TransformedData))
   {
-    if (!s_association->exists(dataEngines::Transformation))
-      selectTransformer();
+    if(!s_association->exists(fileType::AlmData))
+    {
+      if (!s_association->exists(dataEngines::Transformation))
+        selectTransformer();
 
-    if (!transform(fileType::PixelizedData,fileType::TransformedData)) {
-      title = QString(tr("No transformed data set available"));
-      message = QString(tr("No transformed data set is available.\nPlease check your data entries to insure that one has been entered correctly."));
-      QMessageBox::critical(this,title,message);
-      return;
+      if (!transform(fileType::PixelizedData,fileType::TransformedData)) {
+        title = QString(tr("No transformed data set available"));
+        message = QString(tr("No transformed data set is available.\nPlease check your data entries to insure that one has been entered correctly."));
+        QMessageBox::critical(this,title,message);
+        return;
+      }
+    }
+    else
+    {
+      // generate transformed data from the alm's
+      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmData);
     }
   }
 
-  if (!s_association->exists(fileType::TransformedWeights)) {
-    if (!s_association->exists(dataEngines::Transformation))
-      selectTransformer();
-    if (!transform(fileType::PixelizedWeights,fileType::TransformedWeights)) {
-      title = QString(tr("No transformed data mask available"));
-      message = QString(tr("No transformed data mask is available.\nPlease check your data entries to insure that one has been entered correctly."));
-      QMessageBox::critical(this,title,message);
-      return;
-    }
-  }
-  if (!s_association->exists(fileType::TransformedNoise)) {
-    if (!s_association->exists(dataEngines::Transformation))
-      selectTransformer();
-    if (!transform(fileType::PixelizedNoise,fileType::TransformedNoise)) {
-      s_association->merge(fileType::TransformedNoise,s_association->transformedData(),false);
-      s_association->transformedNoise()->dataType(fileType::TransformedNoise);
+  if (!s_association->exists(fileType::TransformedWeights))
+  {
+    if(!s_association->exists(fileType::AlmWeights))
+    {
+      if (!s_association->exists(dataEngines::Transformation))
+        selectTransformer();
 
-      // fill vector with white noise
-      //s_association->createWhiteNoise(s_association->transformedNoise());
-      s_association->createShotNoise(s_association->transformedNoise());
+      if (!transform(fileType::PixelizedWeights,fileType::TransformedWeights))
+      {
+        title = QString(tr("No transformed data mask available"));
+        message = QString(tr("No transformed data mask is available.\nPlease check your data entries to insure that one has been entered correctly."));
+        QMessageBox::critical(this,title,message);
+        return;
+      }
+    }
+    else
+    {
+      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmWeights);
     }
   }
-  if (!s_association->exists(fileType::TransformedFilter)) {
-    if (!s_association->exists(dataEngines::Transformation))
-      selectTransformer();
-    if (!transform(fileType::PixelizedFilter,fileType::TransformedFilter)) {
-      s_association->merge(fileType::TransformedFilter,s_association->transformedData(),false);
-      s_association->transformedFilter()->dataType(fileType::TransformedFilter);
-      int rows = s_association->transformedFilter()->rows();
-      s_association->transformedFilter()->rwAccess().assign(rows,1.0);
+
+  if (!s_association->exists(fileType::TransformedNoise))
+  {
+    if(!s_association->exists(fileType::AlmNoise))
+    {
+      if (!s_association->exists(dataEngines::Transformation))
+        selectTransformer();
+
+      if (!transform(fileType::PixelizedNoise,fileType::TransformedNoise))
+      {
+        s_association->merge(fileType::TransformedNoise,s_association->transformedData(),false);
+        s_association->transformedNoise()->dataType(fileType::TransformedNoise);
+
+        // fill vector with white noise
+        //s_association->createWhiteNoise(s_association->transformedNoise());
+        s_association->createShotNoise(s_association->transformedNoise());
+      }
+    }
+    else
+    {
+      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmNoise);
     }
   }
-  if (!s_association->exists(fileType::TransformedBeam)) {
-    if (!s_association->exists(dataEngines::Transformation))
-      selectTransformer();
-    if (!transform(fileType::PixelizedBeam,fileType::TransformedBeam)) {
-      s_association->merge(fileType::TransformedBeam,s_association->transformedData(),false);
-      s_association->transformedBeam()->dataType(fileType::TransformedBeam);
-      int rows = s_association->transformedData()->rows();
-      s_association->transformedBeam()->rwAccess().assign(rows,1.0);
+
+  if (!s_association->exists(fileType::TransformedFilter))
+  {
+    if(!s_association->exists(fileType::AlmFilter))
+    {
+      if (!s_association->exists(dataEngines::Transformation))
+        selectTransformer();
+
+      if (!transform(fileType::PixelizedFilter,fileType::TransformedFilter))
+      {
+        s_association->merge(fileType::TransformedFilter,s_association->transformedData(),false);
+        s_association->transformedFilter()->dataType(fileType::TransformedFilter);
+        int rows = s_association->transformedFilter()->rows();
+        s_association->transformedFilter()->rwAccess().assign(rows,1.0);
+      }
+    }
+    else
+    {
+      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmFilter);
+    }
+  }
+
+  if (!s_association->exists(fileType::TransformedBeam))
+  {
+    if(!s_association->exists(fileType::AlmBeam))
+    {
+      if (!s_association->exists(dataEngines::Transformation))
+        selectTransformer();
+
+      if (!transform(fileType::PixelizedBeam,fileType::TransformedBeam))
+      {
+        s_association->merge(fileType::TransformedBeam,s_association->transformedData(),false);
+        s_association->transformedBeam()->dataType(fileType::TransformedBeam);
+        int rows = s_association->transformedData()->rows();
+        s_association->transformedBeam()->rwAccess().assign(rows,1.0);
+      }
+    }
+    else
+    {
+      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmBeam);
     }
   }
 

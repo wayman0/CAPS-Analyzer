@@ -121,6 +121,7 @@ RshtTransformer::~RshtTransformer() {
 
 int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
   vectorData<double>* pix = 0;
+  cubeData<complex<double>>* almCube = 0;
   Healpix_Ordering_Scheme order;
   
 //  if (!m_association)
@@ -191,6 +192,76 @@ int RshtTransformer::initialize(association* dataClasses, FILETYPE type) {
       else
         order = NEST;
       m_beamMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_almBeamValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      if (m_polarization > 1) {
+        m_almBeamGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+        m_almBeamCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      }
+      break;
+    case fileType::AlmData:
+      almCube = dataClasses->almData();
+      m_sides = almCube->sides();
+      if (almCube->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      //m_dataMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_almDataValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      if (m_polarization > 1) {
+        m_almDataGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+        m_almDataCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      }
+      break;
+    case fileType::AlmWeights:
+      almCube = dataClasses->almWeights();
+      m_sides = almCube->sides();
+      if (almCube->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      //m_weightsMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_almWeightsValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      if (m_polarization > 1) {
+        m_almWeightsGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+        m_almWeightsCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      }
+      break;
+    case fileType::AlmNoise:
+      almCube = dataClasses->almNoise();
+      m_sides = almCube->sides();
+      if (almCube->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      //m_noiseMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_almNoiseValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      if (m_polarization > 1) {
+        m_almNoiseGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+        m_almNoiseCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      }
+      break;
+    case fileType::AlmFilter:
+      almCube = dataClasses->almFilter();
+      m_sides = almCube->sides();
+      if (almCube->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      //m_filterMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
+      m_almFilterValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      if (m_polarization > 1) {
+        m_almFilterGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+        m_almFilterCurl = new Alm<hPoint>(m_maxIndex,m_maxIndex);
+      }
+      break;
+    case fileType::AlmBeam:
+      almCube = dataClasses->almBeam();
+      m_sides = almCube->sides();
+      if (almCube->layout() == Ring)
+        order = RING;
+      else
+        order = NEST;
+      //m_beamMap = new Healpix_Map<double>(m_sides,order,SET_NSIDE);
       m_almBeamValue = new Alm<hPoint>(m_maxIndex,m_maxIndex);
       if (m_polarization > 1) {
         m_almBeamGrad = new Alm<hPoint>(m_maxIndex,m_maxIndex);
@@ -543,6 +614,73 @@ void RshtTransformer::transform(association* dataClasses, FILETYPE type) {
     data->transformerScheme(Rsht);
  
     return;
+}
+
+void RshtTransformer::transformFromAlm(association* dataClasses, FILETYPE type)
+{
+  unsigned long i = 0;
+  vectorData<double>* data = 0;
+  Alm<hPoint>* alm = 0;
+  Healpix_Map<double>* map = 0;
+
+  /* Do input variable checks */
+  if (!(type == fileType::AlmData || type == fileType::AlmWeights ||
+        type == fileType::AlmBeam || type == fileType::AlmFilter  || type == fileType::AlmNoise))
+    return;
+
+  if (!dataClasses)
+    return;
+
+  switch (type) {
+    case fileType::AlmData:
+      data = dataClasses->transformedData();
+      //map = m_dataMap;
+      alm = m_almDataValue;
+      break;
+    case fileType::AlmWeights:
+      data = dataClasses->transformedWeights();
+      //map = m_weightsMap;
+      alm = m_almWeightsValue;
+      break;
+    case fileType::AlmFilter:
+      data = dataClasses->transformedFilter();
+      //map = m_filterMap;
+      alm = m_almFilterValue;
+      break;
+    case fileType::AlmBeam:
+      data = dataClasses->transformedBeam();
+      //map = m_beamMap;
+      alm = m_almBeamValue;
+      break;
+    case fileType::AlmNoise:
+      data = dataClasses->transformedNoise();
+      //map = m_noiseMap;
+      alm = m_almNoiseValue;
+      break;
+    default:
+      return;
+  }
+
+  if (!data)
+    return;
+
+  /* RshtTransformer uses HealPix style layouts - make sure that the layout is a ring structure */
+  // we dont need to check because the alm was generated using ring
+  /*
+  if (map->Scheme() == NEST)
+      map->swap_scheme();
+  */
+  /* calculate spectrum */
+  extract_powspec(*alm,*m_spectrum);
+
+  for (i = m_minIndex; i < m_maxIndex; i++)
+    (*data)[i] = m_spectrum->tt(i);
+
+  data->minYIndex(m_minIndex);
+  data->maxYIndex(m_maxIndex);
+  data->transformerScheme(Rsht);
+
+  return;
 }
 
 void RshtTransformer::invert(association* dataClasses, FILETYPE type) {

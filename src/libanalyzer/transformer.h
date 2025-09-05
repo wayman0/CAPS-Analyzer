@@ -57,7 +57,8 @@ class Transformer {
     virtual int storeAlmMap(association* dataClasses, FILETYPE type) = 0;
 
     virtual void transform(association* dataClasses, FILETYPE type) = 0;
-   
+    virtual void transformFromAlm(association* dataClasses, FILETYPE type) = 0;
+
     virtual void invert(association* dataClasses, FILETYPE type) = 0;
 
     /**

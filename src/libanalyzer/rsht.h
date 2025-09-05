@@ -70,6 +70,7 @@ class RshtTransformer : public Transformer {
      * transform data
      */
     void transform(association* dataClasses, FILETYPE type);
+    void transformFromAlm(association* dataClasses, FILETYPE type);
 
     /**
      * perform inverse transformation on data

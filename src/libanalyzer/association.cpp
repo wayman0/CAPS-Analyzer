@@ -2299,6 +2299,84 @@ bool association::generateTransformedData(Transformer *transformer, FILETYPE ft)
   return true;
 }
 
+bool association::generateTransformedDataFromAlm(Transformer* transformer, FILETYPE ft)
+{
+  vectorData<double> *trans = 0;
+  cubeData<std::complex<double> > *alm = 0;
+
+  if (!transformer)
+    return false;
+
+  int ftID = static_cast<int>(ft);
+
+  int transOffSet = (int)fileType::AlmData - (int)fileType::TransformedData;
+  int pixelOffSet = (int)fileType::AlmData - (int)fileType::PixelizedData;
+
+  fileType transType = fileType(ftID - transOffSet);
+  fileType pixelType = fileType(ftID - pixelOffSet);
+
+  // this will delete the alm type needed
+  //discardRelation(transType);
+  // this will call discardRelation
+  //addEmpty(transType,transformer->maxIndex());
+
+  int maxInd = transformer->maxIndex();
+  switch (ft) {
+    case fileType::AlmData:
+      m_transData = new vectorData<double>(maxInd, transType);
+      trans = m_transData;
+      alm = m_almData;
+      break;
+    case fileType::AlmWeights:
+      m_transWeights = new vectorData<double>(maxInd, transType);
+      trans = m_transWeights;
+      alm = m_almWeights;
+      break;
+    case fileType::AlmNoise:
+      m_transNoise = new vectorData<double>(maxInd, transType);
+      trans = m_transNoise;
+      alm = m_almNoise;
+      break;
+    case fileType::AlmFilter:
+      m_transFilter = new vectorData<double>(maxInd, transType);
+      trans = m_transFilter;
+      alm = m_almFilter;
+      break;
+    case fileType::AlmBeam:
+      m_transBeam = new vectorData<double>(maxInd, transType);
+      trans = m_transBeam;
+      alm = m_almBeam;
+      break;
+    default:
+      return false;
+  }
+
+  // this will initialize the powerspec
+  transformer->initialize(this);
+  // this will initialize all the necessary types
+  transformer->initialize(this, ft);
+
+  trans->initialize();
+  trans->transformerScheme(transformer->scheme());
+  trans->minYIndex(transformer->minIndex());
+
+  // we should save the pixelizer method as well
+  // because when we use default noise, we need the pixelizer
+  trans->pixelScheme(alm->pixelScheme());
+  trans->sides(alm->sides());
+  trans->layout(alm->layout());
+
+  int size = alm->sides() * alm->sides() * 12;
+  transformer->dataSize(size);
+  transformer->configured(true);
+  // this will copy our alm to a Alm<hPoint> for HealPix
+  transformer->loadAlmMap(this, ft);
+  transformer->transformFromAlm(this, ft);
+
+  m_sequence = transform;
+  return true;
+}
+
 bool association::generatePowerSpectrumData(Spectrum *spect) {
   if (!spect)
     return false;

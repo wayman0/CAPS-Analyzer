@@ -274,8 +274,8 @@ public:
   void generateMap(FILETYPE type);
 
   bool generateTransformedData(Transformer *transformer, FILETYPE ft);
+  bool generateTransformedDataFromAlm(Transformer *transformer, FILETYPE ft);
   bool generatePowerSpectrumData(Spectrum *spect);
-
   bool generateEnsembleSpectrumData(Spectrum* spect);
 
   bool generateGraph(FILETYPE type);
