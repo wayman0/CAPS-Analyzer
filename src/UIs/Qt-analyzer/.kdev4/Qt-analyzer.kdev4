@@ -1,18 +1,15 @@
-[Buildset]
-BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x16\x00Q\x00t\x00-\x00a\x00n\x00a\x00l\x00y\x00z\x00e\x00r)
-
 [CMake]
 Build Directory Count=1
 Current Build Directory Index-Host System=0
 
 [CMake][CMake Build Directory 0]
-Build Directory Path=/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer
+Build Directory Path=/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer
 Build Type=Debug
 CMake Binary=/usr/bin/cmake
 CMake Executable=/usr/bin/cmake
 Environment Profile=
 Extra Arguments=
-Install Directory=/usr/local
+Install Directory=
 Runtime=Host System
 
 [Launch]
@@ -29,7 +26,7 @@ Arguments=
 Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x02\x00\x00\x00\x16\x00Q\x00t\x00-\x00a\x00n\x00a\x00l\x00y\x00z\x00e\x00r\x00\x00\x00\x16\x00Q\x00t\x00-\x00a\x00n\x00a\x00l\x00y\x00z\x00e\x00r)
 Dependency Action=Build
 EnvironmentGroup=
-Executable=file:///mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer
+Executable=file:///mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer
 External Terminal=konsole --noclose --workdir %workdir -e %exe
 Kill Before Executing Again=4194304
 Project Target=Qt-analyzer,Qt-analyzer
@@ -37,6 +34,5 @@ Use External Terminal=false
 Working Directory=
 isExecutable=false
 
-[NinjaBuilder]
-Additional Options=-v
-Number Of Errors=10
+[Project]
+VersionControlSupport=kdevgit

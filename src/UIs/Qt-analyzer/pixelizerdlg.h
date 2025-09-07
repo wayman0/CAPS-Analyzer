@@ -68,6 +68,7 @@ class pixelizerDialog : public QDialog {
     pixelizerDialog(association* assoc);
     virtual ~pixelizerDialog();
     bool configured() const {return isConfigured;}
+    void configured(bool config) {isConfigured = config;}
     void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   Q_SIGNALS:

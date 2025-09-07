@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/
+cmake_ninja_workdir = /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/
 # =============================================================================
 # Object build statements for EXECUTABLE target Qt-analyzer
 
@@ -49,285 +49,355 @@ cmake_ninja_workdir = /mnt/research/software/CAPS-Analyzer-underWork/build/src/U
 
 build cmake_object_order_depends_target_Qt-analyzer: phony || Qt-analyzer_autogen Qt-analyzer_autogen/mocs_compilation.cpp Qt-analyzer_autogen/timestamp Qt-analyzer_autogen_timestamp_deps moc_associationselectdlg.cpp moc_controldatadlg.cpp moc_dataselectdlg.cpp moc_energydlg.cpp moc_graphdlg.cpp moc_graphselectdlg.cpp moc_healpixdlg.cpp moc_mainwindow.cpp moc_mapperdlg.cpp moc_mapselectdlg.cpp moc_multipleselectiondlg.cpp moc_pixelizerdlg.cpp moc_qledlabel.cpp moc_rshtdlg.cpp moc_spectrumdlg.cpp moc_transformerdlg.cpp qrc_mainwindow.cpp ui_associationselectdlg.h ui_controldatadlg.h ui_dataselectdlg.h ui_energydlg.h ui_graphdlg.h ui_graphselectdlg.h ui_healpixdlg.h ui_mainwindow.h ui_mapperdlg.h ui_mapselectdlg.h ui_multipleselectiondlg.h ui_pixelizerdlg.h ui_rshtdlg.h ui_spectrumdlg.h ui_transformerdlg.h
 
-build CMakeFiles/Qt-analyzer.dir/Qt-analyzer_autogen/mocs_compilation.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/Qt-analyzer_autogen/mocs_compilation.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/Qt-analyzer_autogen/mocs_compilation.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir/Qt-analyzer_autogen
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/main.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/main.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/main.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/main.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/main.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/associationselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/associationselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/associationselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/associationselectdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/controldatadlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/controldatadlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/controldatadlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/controldatadlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/energydlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/energydlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/energydlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/energydlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/multipleselectiondlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapperdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/mapselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/mapselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/mapselectdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/graphselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/graphselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/graphselectdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/dataselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/pixelizerdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/pixelizerdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/pixelizerdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/pixelizerdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/healpixdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/healpixdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/healpixdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/healpixdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/healpixdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/transformerdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/transformerdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/transformerdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/transformerdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/transformerdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/rshtdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/rshtdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/rshtdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/rshtdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/spectrumdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/spectrumdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/spectrumdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/spectrumdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/qledlabel.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/qledlabel.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/qledlabel.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/qledlabel.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/qledlabel.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_associationselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_associationselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_associationselectdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_controldatadlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_controldatadlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_controldatadlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_energydlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_energydlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_mapperdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_mapperdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_mapperdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_mapselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_mapselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_mapselectdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_graphdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_graphdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_graphdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_graphdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_graphdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_graphselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_graphselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_graphselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_graphselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_graphselectdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_dataselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_dataselectdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_dataselectdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_pixelizerdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_pixelizerdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_pixelizerdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_healpixdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_healpixdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_healpixdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_healpixdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_healpixdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_transformerdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_transformerdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_transformerdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_rshtdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_rshtdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_rshtdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_spectrumdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_spectrumdlg.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_spectrumdlg.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/moc_qledlabel.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/moc_qledlabel.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/moc_qledlabel.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
-build CMakeFiles/Qt-analyzer.dir/qrc_mainwindow.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/qrc_mainwindow.cpp || cmake_object_order_depends_target_Qt-analyzer
+build CMakeFiles/Qt-analyzer.dir/qrc_mainwindow.cpp.o: CXX_COMPILER__Qt-analyzer_unscanned_Debug /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/qrc_mainwindow.cpp || cmake_object_order_depends_target_Qt-analyzer
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_KEYWORDS -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Qt-analyzer.dir/qrc_mainwindow.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
+  INCLUDES = -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include -I/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.. -I/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtCore -isystem /usr/lib64/qt5/mkspecs/linux-g++ -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtWidgets
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   OBJECT_FILE_DIR = CMakeFiles/Qt-analyzer.dir
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
+  TARGET_PDB = Qt-analyzer.pdb
 
 
 # =============================================================================
@@ -339,20 +409,21 @@ build CMakeFiles/Qt-analyzer.dir/qrc_mainwindow.cpp.o: CXX_COMPILER__Qt-analyzer
 
 build Qt-analyzer: CXX_EXECUTABLE_LINKER__Qt-analyzer_Debug CMakeFiles/Qt-analyzer.dir/Qt-analyzer_autogen/mocs_compilation.cpp.o CMakeFiles/Qt-analyzer.dir/main.cpp.o CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o CMakeFiles/Qt-analyzer.dir/associationselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/controldatadlg.cpp.o CMakeFiles/Qt-analyzer.dir/energydlg.cpp.o CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o CMakeFiles/Qt-analyzer.dir/mapselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o CMakeFiles/Qt-analyzer.dir/graphselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/pixelizerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/healpixdlg.cpp.o CMakeFiles/Qt-analyzer.dir/transformerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/rshtdlg.cpp.o CMakeFiles/Qt-analyzer.dir/spectrumdlg.cpp.o CMakeFiles/Qt-analyzer.dir/qledlabel.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o CMakeFiles/Qt-analyzer.dir/moc_associationselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_controldatadlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_energydlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_multipleselectiondlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mapperdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_mapselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_graphdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_graphselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_dataselectdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_pixelizerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_healpixdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_transformerdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_rshtdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_spectrumdlg.cpp.o CMakeFiles/Qt-analyzer.dir/moc_qledlabel.cpp.o CMakeFiles/Qt-analyzer.dir/qrc_mainwindow.cpp.o | /usr/lib64/libfreetype.so /usr/lib64/libgomp.so /mnt/research/software/lib64/libhealpix_cxx.so /mnt/research/software/lib64/libsharp.so /mnt/research/software/lib64/libCCfits.so /usr/lib64/libgsl.so /usr/lib64/libgslcblas.so /usr/lib64/libhdf5_hl_cpp.so /usr/lib64/libhdf5_hl.so /usr/lib64/libhdf5_cpp.so /usr/lib64/libhdf5.so /usr/lib64/libQt5Widgets.so.5.15.11 /usr/lib64/libQt5Gui.so.5.15.11 /usr/lib64/libQt5Core.so.5.15.11 || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
   FLAGS = -g
-  LINK_LIBRARIES = -Wl,-rpath,/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/../../libanalyzer:/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/../../libgraphics:/mnt/research/software/lib64  -lgraphics  -lanalyzer  /usr/lib64/libfreetype.so  -lsigc-2.0  /usr/lib64/libgomp.so  /mnt/research/software/lib64/libhealpix_cxx.so  /mnt/research/software/lib64/libsharp.so  -lCCfits  /usr/lib64/libgsl.so  /usr/lib64/libgslcblas.so  /usr/lib64/libhdf5_hl_cpp.so  /usr/lib64/libhdf5_hl.so  /usr/lib64/libhdf5_cpp.so  /usr/lib64/libhdf5.so  /usr/lib64/libQt5Widgets.so.5.15.11  /usr/lib64/libQt5Gui.so.5.15.11  /usr/lib64/libQt5Core.so.5.15.11
-  LINK_PATH = -L/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/../../libanalyzer   -L/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/../../libgraphics   -L/mnt/research/software/lib64
+  LINK_LIBRARIES = -Wl,-rpath,/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libanalyzer:/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libgraphics:/mnt/research/software/lib64  -lgraphics  -lanalyzer  /usr/lib64/libfreetype.so  -lsigc-2.0  /usr/lib64/libgomp.so  /mnt/research/software/lib64/libhealpix_cxx.so  /mnt/research/software/lib64/libsharp.so  -lCCfits  /usr/lib64/libgsl.so  /usr/lib64/libgslcblas.so  /usr/lib64/libhdf5_hl_cpp.so  /usr/lib64/libhdf5_hl.so  /usr/lib64/libhdf5_cpp.so  /usr/lib64/libhdf5.so  /usr/lib64/libQt5Widgets.so.5.15.11  /usr/lib64/libQt5Gui.so.5.15.11  /usr/lib64/libQt5Core.so.5.15.11
+  LINK_PATH = -L/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libanalyzer   -L/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libgraphics   -L/mnt/research/software/lib64
   OBJECT_DIR = CMakeFiles/Qt-analyzer.dir
   POST_BUILD = :
   PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/Qt-analyzer.dir/
   TARGET_FILE = Qt-analyzer
-  TARGET_PDB = Qt-analyzer.dbg
+  TARGET_PDB = Qt-analyzer.pdb
 
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/bin/ccmake -S/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -B/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/bin/ccmake -S/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -B/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer
   DESC = Running CMake cache editor...
   pool = console
   restat = 1
@@ -364,7 +435,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/bin/cmake --regenerate-during-build -S/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -B/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/bin/cmake --regenerate-during-build -S/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -B/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -387,8 +458,8 @@ build Qt-analyzer_autogen: phony CMakeFiles/Qt-analyzer_autogen Qt-analyzer_auto
 #############################################
 # Custom command for moc_mainwindow.cpp
 
-build moc_mainwindow.cpp | ${cmake_ninja_workdir}moc_mainwindow.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp_parameters
+build moc_mainwindow.cpp | ${cmake_ninja_workdir}moc_mainwindow.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp_parameters
   DESC = Generating moc_mainwindow.cpp
   restat = 1
 
@@ -396,8 +467,8 @@ build moc_mainwindow.cpp | ${cmake_ninja_workdir}moc_mainwindow.cpp: CUSTOM_COMM
 #############################################
 # Custom command for moc_associationselectdlg.cpp
 
-build moc_associationselectdlg.cpp | ${cmake_ninja_workdir}moc_associationselectdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/associationselectdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp_parameters
+build moc_associationselectdlg.cpp | ${cmake_ninja_workdir}moc_associationselectdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp_parameters
   DESC = Generating moc_associationselectdlg.cpp
   restat = 1
 
@@ -405,8 +476,8 @@ build moc_associationselectdlg.cpp | ${cmake_ninja_workdir}moc_associationselect
 #############################################
 # Custom command for moc_controldatadlg.cpp
 
-build moc_controldatadlg.cpp | ${cmake_ninja_workdir}moc_controldatadlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/controldatadlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp_parameters
+build moc_controldatadlg.cpp | ${cmake_ninja_workdir}moc_controldatadlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp_parameters
   DESC = Generating moc_controldatadlg.cpp
   restat = 1
 
@@ -414,8 +485,8 @@ build moc_controldatadlg.cpp | ${cmake_ninja_workdir}moc_controldatadlg.cpp: CUS
 #############################################
 # Custom command for moc_energydlg.cpp
 
-build moc_energydlg.cpp | ${cmake_ninja_workdir}moc_energydlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/energydlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_energydlg.cpp_parameters
+build moc_energydlg.cpp | ${cmake_ninja_workdir}moc_energydlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_energydlg.cpp_parameters
   DESC = Generating moc_energydlg.cpp
   restat = 1
 
@@ -423,8 +494,8 @@ build moc_energydlg.cpp | ${cmake_ninja_workdir}moc_energydlg.cpp: CUSTOM_COMMAN
 #############################################
 # Custom command for moc_multipleselectiondlg.cpp
 
-build moc_multipleselectiondlg.cpp | ${cmake_ninja_workdir}moc_multipleselectiondlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/multipleselectiondlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp_parameters
+build moc_multipleselectiondlg.cpp | ${cmake_ninja_workdir}moc_multipleselectiondlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp_parameters
   DESC = Generating moc_multipleselectiondlg.cpp
   restat = 1
 
@@ -432,8 +503,8 @@ build moc_multipleselectiondlg.cpp | ${cmake_ninja_workdir}moc_multipleselection
 #############################################
 # Custom command for moc_mapperdlg.cpp
 
-build moc_mapperdlg.cpp | ${cmake_ninja_workdir}moc_mapperdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapperdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp_parameters
+build moc_mapperdlg.cpp | ${cmake_ninja_workdir}moc_mapperdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp_parameters
   DESC = Generating moc_mapperdlg.cpp
   restat = 1
 
@@ -441,8 +512,8 @@ build moc_mapperdlg.cpp | ${cmake_ninja_workdir}moc_mapperdlg.cpp: CUSTOM_COMMAN
 #############################################
 # Custom command for moc_mapselectdlg.cpp
 
-build moc_mapselectdlg.cpp | ${cmake_ninja_workdir}moc_mapselectdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapselectdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp_parameters
+build moc_mapselectdlg.cpp | ${cmake_ninja_workdir}moc_mapselectdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp_parameters
   DESC = Generating moc_mapselectdlg.cpp
   restat = 1
 
@@ -450,8 +521,8 @@ build moc_mapselectdlg.cpp | ${cmake_ninja_workdir}moc_mapselectdlg.cpp: CUSTOM_
 #############################################
 # Custom command for moc_graphdlg.cpp
 
-build moc_graphdlg.cpp | ${cmake_ninja_workdir}moc_graphdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_graphdlg.cpp_parameters
+build moc_graphdlg.cpp | ${cmake_ninja_workdir}moc_graphdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_graphdlg.cpp_parameters
   DESC = Generating moc_graphdlg.cpp
   restat = 1
 
@@ -459,8 +530,8 @@ build moc_graphdlg.cpp | ${cmake_ninja_workdir}moc_graphdlg.cpp: CUSTOM_COMMAND 
 #############################################
 # Custom command for moc_graphselectdlg.cpp
 
-build moc_graphselectdlg.cpp | ${cmake_ninja_workdir}moc_graphselectdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphselectdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_graphselectdlg.cpp_parameters
+build moc_graphselectdlg.cpp | ${cmake_ninja_workdir}moc_graphselectdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphselectdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_graphselectdlg.cpp_parameters
   DESC = Generating moc_graphselectdlg.cpp
   restat = 1
 
@@ -468,8 +539,8 @@ build moc_graphselectdlg.cpp | ${cmake_ninja_workdir}moc_graphselectdlg.cpp: CUS
 #############################################
 # Custom command for moc_dataselectdlg.cpp
 
-build moc_dataselectdlg.cpp | ${cmake_ninja_workdir}moc_dataselectdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/dataselectdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp_parameters
+build moc_dataselectdlg.cpp | ${cmake_ninja_workdir}moc_dataselectdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp_parameters
   DESC = Generating moc_dataselectdlg.cpp
   restat = 1
 
@@ -477,8 +548,8 @@ build moc_dataselectdlg.cpp | ${cmake_ninja_workdir}moc_dataselectdlg.cpp: CUSTO
 #############################################
 # Custom command for moc_pixelizerdlg.cpp
 
-build moc_pixelizerdlg.cpp | ${cmake_ninja_workdir}moc_pixelizerdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/pixelizerdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp_parameters
+build moc_pixelizerdlg.cpp | ${cmake_ninja_workdir}moc_pixelizerdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp_parameters
   DESC = Generating moc_pixelizerdlg.cpp
   restat = 1
 
@@ -486,8 +557,8 @@ build moc_pixelizerdlg.cpp | ${cmake_ninja_workdir}moc_pixelizerdlg.cpp: CUSTOM_
 #############################################
 # Custom command for moc_healpixdlg.cpp
 
-build moc_healpixdlg.cpp | ${cmake_ninja_workdir}moc_healpixdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/healpixdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_healpixdlg.cpp_parameters
+build moc_healpixdlg.cpp | ${cmake_ninja_workdir}moc_healpixdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/healpixdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_healpixdlg.cpp_parameters
   DESC = Generating moc_healpixdlg.cpp
   restat = 1
 
@@ -495,8 +566,8 @@ build moc_healpixdlg.cpp | ${cmake_ninja_workdir}moc_healpixdlg.cpp: CUSTOM_COMM
 #############################################
 # Custom command for moc_transformerdlg.cpp
 
-build moc_transformerdlg.cpp | ${cmake_ninja_workdir}moc_transformerdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/transformerdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp_parameters
+build moc_transformerdlg.cpp | ${cmake_ninja_workdir}moc_transformerdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/transformerdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp_parameters
   DESC = Generating moc_transformerdlg.cpp
   restat = 1
 
@@ -504,8 +575,8 @@ build moc_transformerdlg.cpp | ${cmake_ninja_workdir}moc_transformerdlg.cpp: CUS
 #############################################
 # Custom command for moc_rshtdlg.cpp
 
-build moc_rshtdlg.cpp | ${cmake_ninja_workdir}moc_rshtdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/rshtdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp_parameters
+build moc_rshtdlg.cpp | ${cmake_ninja_workdir}moc_rshtdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp_parameters
   DESC = Generating moc_rshtdlg.cpp
   restat = 1
 
@@ -513,8 +584,8 @@ build moc_rshtdlg.cpp | ${cmake_ninja_workdir}moc_rshtdlg.cpp: CUSTOM_COMMAND /m
 #############################################
 # Custom command for moc_spectrumdlg.cpp
 
-build moc_spectrumdlg.cpp | ${cmake_ninja_workdir}moc_spectrumdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/spectrumdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp_parameters
+build moc_spectrumdlg.cpp | ${cmake_ninja_workdir}moc_spectrumdlg.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp_parameters
   DESC = Generating moc_spectrumdlg.cpp
   restat = 1
 
@@ -522,8 +593,8 @@ build moc_spectrumdlg.cpp | ${cmake_ninja_workdir}moc_spectrumdlg.cpp: CUSTOM_CO
 #############################################
 # Custom command for moc_qledlabel.cpp
 
-build moc_qledlabel.cpp | ${cmake_ninja_workdir}moc_qledlabel.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/qledlabel.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp_parameters
+build moc_qledlabel.cpp | ${cmake_ninja_workdir}moc_qledlabel.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/qledlabel.h || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/moc @/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp_parameters
   DESC = Generating moc_qledlabel.cpp
   restat = 1
 
@@ -531,8 +602,8 @@ build moc_qledlabel.cpp | ${cmake_ninja_workdir}moc_qledlabel.cpp: CUSTOM_COMMAN
 #############################################
 # Custom command for ui_mainwindow.h
 
-build ui_mainwindow.h | ${cmake_ninja_workdir}ui_mainwindow.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_mainwindow.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.ui
+build ui_mainwindow.h | ${cmake_ninja_workdir}ui_mainwindow.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mainwindow.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.ui
   DESC = Generating ui_mainwindow.h
   restat = 1
 
@@ -540,8 +611,8 @@ build ui_mainwindow.h | ${cmake_ninja_workdir}ui_mainwindow.h: CUSTOM_COMMAND /m
 #############################################
 # Custom command for ui_associationselectdlg.h
 
-build ui_associationselectdlg.h | ${cmake_ninja_workdir}ui_associationselectdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/associationselectdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_associationselectdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/associationselectdlg.ui
+build ui_associationselectdlg.h | ${cmake_ninja_workdir}ui_associationselectdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_associationselectdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.ui
   DESC = Generating ui_associationselectdlg.h
   restat = 1
 
@@ -549,8 +620,8 @@ build ui_associationselectdlg.h | ${cmake_ninja_workdir}ui_associationselectdlg.
 #############################################
 # Custom command for ui_controldatadlg.h
 
-build ui_controldatadlg.h | ${cmake_ninja_workdir}ui_controldatadlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/controldatadlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_controldatadlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/controldatadlg.ui
+build ui_controldatadlg.h | ${cmake_ninja_workdir}ui_controldatadlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_controldatadlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.ui
   DESC = Generating ui_controldatadlg.h
   restat = 1
 
@@ -558,8 +629,8 @@ build ui_controldatadlg.h | ${cmake_ninja_workdir}ui_controldatadlg.h: CUSTOM_CO
 #############################################
 # Custom command for ui_energydlg.h
 
-build ui_energydlg.h | ${cmake_ninja_workdir}ui_energydlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/energydlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_energydlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/energydlg.ui
+build ui_energydlg.h | ${cmake_ninja_workdir}ui_energydlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_energydlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.ui
   DESC = Generating ui_energydlg.h
   restat = 1
 
@@ -567,8 +638,8 @@ build ui_energydlg.h | ${cmake_ninja_workdir}ui_energydlg.h: CUSTOM_COMMAND /mnt
 #############################################
 # Custom command for ui_multipleselectiondlg.h
 
-build ui_multipleselectiondlg.h | ${cmake_ninja_workdir}ui_multipleselectiondlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/multipleselectiondlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_multipleselectiondlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/multipleselectiondlg.ui
+build ui_multipleselectiondlg.h | ${cmake_ninja_workdir}ui_multipleselectiondlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_multipleselectiondlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.ui
   DESC = Generating ui_multipleselectiondlg.h
   restat = 1
 
@@ -576,8 +647,8 @@ build ui_multipleselectiondlg.h | ${cmake_ninja_workdir}ui_multipleselectiondlg.
 #############################################
 # Custom command for ui_mapperdlg.h
 
-build ui_mapperdlg.h | ${cmake_ninja_workdir}ui_mapperdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapperdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_mapperdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapperdlg.ui
+build ui_mapperdlg.h | ${cmake_ninja_workdir}ui_mapperdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mapperdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.ui
   DESC = Generating ui_mapperdlg.h
   restat = 1
 
@@ -585,8 +656,8 @@ build ui_mapperdlg.h | ${cmake_ninja_workdir}ui_mapperdlg.h: CUSTOM_COMMAND /mnt
 #############################################
 # Custom command for ui_mapselectdlg.h
 
-build ui_mapselectdlg.h | ${cmake_ninja_workdir}ui_mapselectdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapselectdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_mapselectdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapselectdlg.ui
+build ui_mapselectdlg.h | ${cmake_ninja_workdir}ui_mapselectdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mapselectdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.ui
   DESC = Generating ui_mapselectdlg.h
   restat = 1
 
@@ -594,8 +665,8 @@ build ui_mapselectdlg.h | ${cmake_ninja_workdir}ui_mapselectdlg.h: CUSTOM_COMMAN
 #############################################
 # Custom command for ui_graphdlg.h
 
-build ui_graphdlg.h | ${cmake_ninja_workdir}ui_graphdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_graphdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphdlg.ui
+build ui_graphdlg.h | ${cmake_ninja_workdir}ui_graphdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_graphdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphdlg.ui
   DESC = Generating ui_graphdlg.h
   restat = 1
 
@@ -603,8 +674,8 @@ build ui_graphdlg.h | ${cmake_ninja_workdir}ui_graphdlg.h: CUSTOM_COMMAND /mnt/r
 #############################################
 # Custom command for ui_graphselectdlg.h
 
-build ui_graphselectdlg.h | ${cmake_ninja_workdir}ui_graphselectdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphselectdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_graphselectdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphselectdlg.ui
+build ui_graphselectdlg.h | ${cmake_ninja_workdir}ui_graphselectdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphselectdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_graphselectdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphselectdlg.ui
   DESC = Generating ui_graphselectdlg.h
   restat = 1
 
@@ -612,8 +683,8 @@ build ui_graphselectdlg.h | ${cmake_ninja_workdir}ui_graphselectdlg.h: CUSTOM_CO
 #############################################
 # Custom command for ui_dataselectdlg.h
 
-build ui_dataselectdlg.h | ${cmake_ninja_workdir}ui_dataselectdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/dataselectdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_dataselectdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/dataselectdlg.ui
+build ui_dataselectdlg.h | ${cmake_ninja_workdir}ui_dataselectdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_dataselectdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.ui
   DESC = Generating ui_dataselectdlg.h
   restat = 1
 
@@ -621,8 +692,8 @@ build ui_dataselectdlg.h | ${cmake_ninja_workdir}ui_dataselectdlg.h: CUSTOM_COMM
 #############################################
 # Custom command for ui_pixelizerdlg.h
 
-build ui_pixelizerdlg.h | ${cmake_ninja_workdir}ui_pixelizerdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/pixelizerdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_pixelizerdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/pixelizerdlg.ui
+build ui_pixelizerdlg.h | ${cmake_ninja_workdir}ui_pixelizerdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_pixelizerdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.ui
   DESC = Generating ui_pixelizerdlg.h
   restat = 1
 
@@ -630,8 +701,8 @@ build ui_pixelizerdlg.h | ${cmake_ninja_workdir}ui_pixelizerdlg.h: CUSTOM_COMMAN
 #############################################
 # Custom command for ui_healpixdlg.h
 
-build ui_healpixdlg.h | ${cmake_ninja_workdir}ui_healpixdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/healpixdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_healpixdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/healpixdlg.ui
+build ui_healpixdlg.h | ${cmake_ninja_workdir}ui_healpixdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/healpixdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_healpixdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/healpixdlg.ui
   DESC = Generating ui_healpixdlg.h
   restat = 1
 
@@ -639,8 +710,8 @@ build ui_healpixdlg.h | ${cmake_ninja_workdir}ui_healpixdlg.h: CUSTOM_COMMAND /m
 #############################################
 # Custom command for ui_transformerdlg.h
 
-build ui_transformerdlg.h | ${cmake_ninja_workdir}ui_transformerdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/transformerdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_transformerdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/transformerdlg.ui
+build ui_transformerdlg.h | ${cmake_ninja_workdir}ui_transformerdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/transformerdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_transformerdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/transformerdlg.ui
   DESC = Generating ui_transformerdlg.h
   restat = 1
 
@@ -648,8 +719,8 @@ build ui_transformerdlg.h | ${cmake_ninja_workdir}ui_transformerdlg.h: CUSTOM_CO
 #############################################
 # Custom command for ui_rshtdlg.h
 
-build ui_rshtdlg.h | ${cmake_ninja_workdir}ui_rshtdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/rshtdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_rshtdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/rshtdlg.ui
+build ui_rshtdlg.h | ${cmake_ninja_workdir}ui_rshtdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_rshtdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.ui
   DESC = Generating ui_rshtdlg.h
   restat = 1
 
@@ -657,8 +728,8 @@ build ui_rshtdlg.h | ${cmake_ninja_workdir}ui_rshtdlg.h: CUSTOM_COMMAND /mnt/res
 #############################################
 # Custom command for ui_spectrumdlg.h
 
-build ui_spectrumdlg.h | ${cmake_ninja_workdir}ui_spectrumdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/spectrumdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_spectrumdlg.h /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/spectrumdlg.ui
+build ui_spectrumdlg.h | ${cmake_ninja_workdir}ui_spectrumdlg.h: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.ui || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/uic -o /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_spectrumdlg.h /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.ui
   DESC = Generating ui_spectrumdlg.h
   restat = 1
 
@@ -666,8 +737,8 @@ build ui_spectrumdlg.h | ${cmake_ninja_workdir}ui_spectrumdlg.h: CUSTOM_COMMAND 
 #############################################
 # Custom command for qrc_mainwindow.cpp
 
-build qrc_mainwindow.cpp | ${cmake_ninja_workdir}qrc_mainwindow.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.qrc /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/analyzer.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/editcopy.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/editcut.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/editpaste.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/eraser.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/filenew.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/fileopen.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/filesave.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/healpix.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/mollweide.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/print.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/redo.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/rsht.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/searchfind.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/spectrum.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/undo.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/zoom-.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/zoom1.png /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/icons/zoom+.png mainwindow.qrc.depends || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/rcc --name mainwindow --output /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/qrc_mainwindow.cpp /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.qrc
+build qrc_mainwindow.cpp | ${cmake_ninja_workdir}qrc_mainwindow.cpp: CUSTOM_COMMAND /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.qrc /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/analyzer.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/editcopy.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/editcut.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/editpaste.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/eraser.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/filenew.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/fileopen.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/filesave.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/healpix.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/mollweide.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/print.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/redo.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/rsht.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/searchfind.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/spectrum.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/undo.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/zoom-.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/zoom1.png /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/icons/zoom+.png mainwindow.qrc.depends || Qt-analyzer_autogen Qt-analyzer_autogen_timestamp_deps
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/lib64/qt5/bin/rcc --name mainwindow --output /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/qrc_mainwindow.cpp /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.qrc
   DESC = Generating qrc_mainwindow.cpp
   restat = 1
 
@@ -676,16 +747,16 @@ build qrc_mainwindow.cpp | ${cmake_ninja_workdir}qrc_mainwindow.cpp: CUSTOM_COMM
 # Custom command for Qt-analyzer_autogen/timestamp
 
 build Qt-analyzer_autogen/timestamp Qt-analyzer_autogen/mocs_compilation.cpp | ${cmake_ninja_workdir}Qt-analyzer_autogen/timestamp ${cmake_ninja_workdir}Qt-analyzer_autogen/mocs_compilation.cpp: CUSTOM_COMMAND /usr/lib64/qt5/bin/moc /usr/lib64/qt5/bin/uic || Qt-analyzer_autogen_timestamp_deps
-  COMMAND = cd /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer && /usr/bin/cmake -E cmake_autogen /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/Qt-analyzer_autogen.dir/AutogenInfo.json Debug && /usr/bin/cmake -E touch /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/timestamp && /usr/bin/cmake -E cmake_transform_depfile Ninja gccdepfile /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/deps /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/d/db938f457931a349ede19c7731ed4ee2998f5fa48458acb9e132b0fcdc6b6c1d.d
+  COMMAND = cd /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer && /usr/bin/cmake -E cmake_autogen /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/Qt-analyzer_autogen.dir/AutogenInfo.json Debug && /usr/bin/cmake -E touch /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/timestamp && /usr/bin/cmake -E cmake_transform_depfile Ninja gccdepfile /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/deps /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/d/2b8e3beb52bebf07eb404e78458c865956874196b254a9d6a83f811a6423e75e.d
   DESC = Automatic MOC and UIC for target Qt-analyzer
-  depfile = /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/d/db938f457931a349ede19c7731ed4ee2998f5fa48458acb9e132b0fcdc6b6c1d.d
+  depfile = /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/d/2b8e3beb52bebf07eb404e78458c865956874196b254a9d6a83f811a6423e75e.d
   restat = 1
 
 
 #############################################
 # Phony custom command for CMakeFiles/Qt-analyzer_autogen_timestamp_deps
 
-build CMakeFiles/Qt-analyzer_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/Qt-analyzer_autogen_timestamp_deps: phony /usr/lib64/qt5/bin/uic /usr/lib64/qt5/bin/moc
+build CMakeFiles/Qt-analyzer_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/Qt-analyzer_autogen_timestamp_deps: phony /usr/lib64/qt5/bin/moc /usr/lib64/qt5/bin/uic
 
 
 #############################################
@@ -702,7 +773,7 @@ build CMakeFiles/Qt-analyzer_autogen | ${cmake_ninja_workdir}CMakeFiles/Qt-analy
 # =============================================================================
 
 #############################################
-# Folder: /mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer
+# Folder: /mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer
 
 build all: phony Qt-analyzer
 
@@ -713,14 +784,14 @@ build all: phony Qt-analyzer
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindCCfits.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindGOMP.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindHDF5.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindHealPIX.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindPackageHandleCompat.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/Findlunar.cmake /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/CMakeLists.txt /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.qrc /usr/lib64/cmake/Qt5/Qt5Config.cmake /usr/lib64/cmake/Qt5/Qt5ConfigVersion.cmake /usr/lib64/cmake/Qt5/Qt5ModuleLocation.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfig.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtras.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigVersion.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreMacros.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfig.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QComposePlatformInputContextPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSEmulatorIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsEglDeviceIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsGbmIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSX11IntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevKeyboardPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevMousePlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTabletPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTouchScreenPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QGtk3ThemePlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QIbusPlatformInputContextPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QJp2Plugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QLibInputPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QLinuxFbIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalEglIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMngPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QPdfPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QVncIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandEglPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeEglPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeGlxPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbEglIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbGlxIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake /usr/share/cmake-3.28/Modules/CMakeCInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.28/Modules/CMakeParseArguments.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU.cmake /usr/share/cmake-3.28/Modules/FindFreetype.cmake /usr/share/cmake-3.28/Modules/FindGSL.cmake /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.28/Modules/FindPackageMessage.cmake /usr/share/cmake-3.28/Modules/FindPkgConfig.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.28/Modules/Platform/Linux.cmake /usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.28/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindCCfits.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindGOMP.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindHDF5.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindHealPIX.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindPackageHandleCompat.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/Findlunar.cmake /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/CMakeLists.txt /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.qrc /usr/lib64/cmake/Qt5/Qt5Config.cmake /usr/lib64/cmake/Qt5/Qt5ConfigVersion.cmake /usr/lib64/cmake/Qt5/Qt5ModuleLocation.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfig.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtras.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigVersion.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreMacros.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfig.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QComposePlatformInputContextPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSEmulatorIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsEglDeviceIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsGbmIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSX11IntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevKeyboardPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevMousePlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTabletPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTouchScreenPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QGtk3ThemePlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QIbusPlatformInputContextPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QJp2Plugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QLibInputPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QLinuxFbIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalEglIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMngPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QPdfPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QVncIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandEglPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeEglPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeGlxPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbEglIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbGlxIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake /usr/share/cmake-3.28/Modules/CMakeCCompiler.cmake.in /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c /usr/share/cmake-3.28/Modules/CMakeCInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCXXCompiler.cmake.in /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp /usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.28/Modules/CMakeCompilerIdDetection.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCXXCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCompileFeatures.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake /usr/share/cmake-3.28/Modules/CMakeFindBinUtils.cmake /usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.28/Modules/CMakeNinjaFindMake.cmake /usr/share/cmake-3.28/Modules/CMakeParseArguments.cmake /usr/share/cmake-3.28/Modules/CMakeParseImplicitIncludeInfo.cmake /usr/share/cmake-3.28/Modules/CMakeParseImplicitLinkInfo.cmake /usr/share/cmake-3.28/Modules/CMakeParseLibraryArchitecture.cmake /usr/share/cmake-3.28/Modules/CMakeSystem.cmake.in /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeTestCompilerCommon.cmake /usr/share/cmake-3.28/Modules/Compiler/ADSP-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/ARMCC-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/ARMClang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/AppleClang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Borland-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Bruce-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /usr/share/cmake-3.28/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Compaq-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Cray-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/CrayClang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/GHS-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-FindBinUtils.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU.cmake /usr/share/cmake-3.28/Modules/Compiler/HP-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/IAR-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake /usr/share/cmake-3.28/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /usr/share/cmake-3.28/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Intel-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/LCC-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/MSVC-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/NVHPC-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/OrangeC-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/PGI-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/PathScale-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/SCO-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/SDCC-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/SunPro-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/TI-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Tasking-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Watcom-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/XL-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/XLClang-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/zOS-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/FindFreetype.cmake /usr/share/cmake-3.28/Modules/FindGSL.cmake /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.28/Modules/FindPackageMessage.cmake /usr/share/cmake-3.28/Modules/FindPkgConfig.cmake /usr/share/cmake-3.28/Modules/Internal/FeatureTesting.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Determine-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.28/Modules/Platform/Linux.cmake /usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.28/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindCCfits.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindGOMP.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindHDF5.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindHealPIX.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindPackageHandleCompat.cmake /mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/Findlunar.cmake /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/CMakeLists.txt /mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.qrc /usr/lib64/cmake/Qt5/Qt5Config.cmake /usr/lib64/cmake/Qt5/Qt5ConfigVersion.cmake /usr/lib64/cmake/Qt5/Qt5ModuleLocation.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfig.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtras.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigVersion.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreMacros.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfig.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QComposePlatformInputContextPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSEmulatorIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsEglDeviceIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsGbmIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSX11IntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevKeyboardPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevMousePlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTabletPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTouchScreenPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QGtk3ThemePlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QIbusPlatformInputContextPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QJp2Plugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QLibInputPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QLinuxFbIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalEglIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMngPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QPdfPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QVncIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandEglPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeEglPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeGlxPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbEglIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbGlxIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake /usr/share/cmake-3.28/Modules/CMakeCInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.28/Modules/CMakeParseArguments.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU.cmake /usr/share/cmake-3.28/Modules/FindFreetype.cmake /usr/share/cmake-3.28/Modules/FindGSL.cmake /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.28/Modules/FindPackageMessage.cmake /usr/share/cmake-3.28/Modules/FindPkgConfig.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.28/Modules/Platform/Linux.cmake /usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.28/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake: phony
+build /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindCCfits.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindGOMP.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindHDF5.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindHealPIX.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/FindPackageHandleCompat.cmake /mnt/research/software/CAPS-Analyzer/cmake/Modules/Findlunar.cmake /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/CMakeLists.txt /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.qrc /usr/lib64/cmake/Qt5/Qt5Config.cmake /usr/lib64/cmake/Qt5/Qt5ConfigVersion.cmake /usr/lib64/cmake/Qt5/Qt5ModuleLocation.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfig.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtras.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreConfigVersion.cmake /usr/lib64/cmake/Qt5Core/Qt5CoreMacros.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfig.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake /usr/lib64/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QComposePlatformInputContextPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSEmulatorIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsEglDeviceIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSKmsGbmIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEglFSX11IntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevKeyboardPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevMousePlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTabletPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QEvdevTouchScreenPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QGtk3ThemePlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QIbusPlatformInputContextPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QJp2Plugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QLibInputPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QLinuxFbIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalEglIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QMngPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QPdfPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QVncIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandEglPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeEglPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWaylandXCompositeGlxPlatformIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbEglIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbGlxIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXcbIntegrationPlugin.cmake /usr/lib64/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake /usr/lib64/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake /usr/share/cmake-3.28/Modules/CMakeCCompiler.cmake.in /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c /usr/share/cmake-3.28/Modules/CMakeCInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCXXCompiler.cmake.in /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp /usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.28/Modules/CMakeCompilerIdDetection.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCXXCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCompileFeatures.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake /usr/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake /usr/share/cmake-3.28/Modules/CMakeFindBinUtils.cmake /usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.28/Modules/CMakeNinjaFindMake.cmake /usr/share/cmake-3.28/Modules/CMakeParseArguments.cmake /usr/share/cmake-3.28/Modules/CMakeParseImplicitIncludeInfo.cmake /usr/share/cmake-3.28/Modules/CMakeParseImplicitLinkInfo.cmake /usr/share/cmake-3.28/Modules/CMakeParseLibraryArchitecture.cmake /usr/share/cmake-3.28/Modules/CMakeSystem.cmake.in /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake /usr/share/cmake-3.28/Modules/CMakeTestCompilerCommon.cmake /usr/share/cmake-3.28/Modules/Compiler/ADSP-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/ARMCC-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/ARMClang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/AppleClang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Borland-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Bruce-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /usr/share/cmake-3.28/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Compaq-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Cray-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/CrayClang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/GHS-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-FindBinUtils.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU.cmake /usr/share/cmake-3.28/Modules/Compiler/HP-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/IAR-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake /usr/share/cmake-3.28/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /usr/share/cmake-3.28/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Intel-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/LCC-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/MSVC-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/NVHPC-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/OrangeC-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/PGI-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/PathScale-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/SCO-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/SDCC-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/SunPro-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/TI-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Tasking-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/Watcom-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/XL-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/XLClang-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/zOS-C-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /usr/share/cmake-3.28/Modules/FindFreetype.cmake /usr/share/cmake-3.28/Modules/FindGSL.cmake /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.28/Modules/FindPackageMessage.cmake /usr/share/cmake-3.28/Modules/FindPkgConfig.cmake /usr/share/cmake-3.28/Modules/Internal/FeatureTesting.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Determine-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.28/Modules/Platform/Linux.cmake /usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.28/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake: phony
 
 
 #############################################

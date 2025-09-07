@@ -157,19 +157,19 @@
 			[
 				{
 					"backtrace" : 0,
-					"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include"
+					"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/include"
 				},
 				{
 					"backtrace" : 16,
-					"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer"
+					"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer"
 				},
 				{
 					"backtrace" : 16,
-					"path" : "/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/.."
+					"path" : "/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/.."
 				},
 				{
 					"backtrace" : 16,
-					"path" : "/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer"
+					"path" : "/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer"
 				},
 				{
 					"backtrace" : 16,
@@ -271,12 +271,12 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-L/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/../../libanalyzer",
+				"fragment" : "-L/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libanalyzer",
 				"role" : "libraryPath"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-L/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/../../libgraphics",
+				"fragment" : "-L/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libgraphics",
 				"role" : "libraryPath"
 			},
 			{
@@ -284,7 +284,7 @@
 				"role" : "libraryPath"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/../../libanalyzer:/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/../../libgraphics:/mnt/research/software/lib64",
+				"fragment" : "-Wl,-rpath,/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libanalyzer:/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/../../libgraphics:/mnt/research/software/lib64",
 				"role" : "libraries"
 			},
 			{
@@ -498,7 +498,7 @@
 			"backtrace" : 0,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/mocs_compilation.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/mocs_compilation.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -607,311 +607,311 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_energydlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_energydlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_graphdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_graphdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_graphselectdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_graphselectdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_healpixdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_healpixdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_mainwindow.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mainwindow.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_associationselectdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_associationselectdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_controldatadlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_controldatadlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_energydlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_energydlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_multipleselectiondlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_multipleselectiondlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_mapperdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mapperdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_mapselectdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_mapselectdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_graphdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_graphdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_graphselectdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_graphselectdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_dataselectdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_dataselectdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_pixelizerdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_pixelizerdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_healpixdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_healpixdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_transformerdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_transformerdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_rshtdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_rshtdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/ui_spectrumdlg.h",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_spectrumdlg.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/qrc_mainwindow.cpp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/qrc_mainwindow.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/timestamp",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/timestamp",
 			"sourceGroupIndex" : 2
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mainwindow.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_energydlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_energydlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_multipleselectiondlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapperdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_mapselectdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_graphdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_graphdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_graphselectdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_graphselectdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_pixelizerdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_healpixdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_healpixdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_rshtdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_qledlabel.cpp.rule",
 			"sourceGroupIndex" : 3
 		},
 		{
@@ -997,7 +997,7 @@
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/timestamp.rule",
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/timestamp.rule",
 			"sourceGroupIndex" : 3
 		}
 	],

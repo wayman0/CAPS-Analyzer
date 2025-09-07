@@ -1,7 +1,7 @@
 # ninja log v5
-1	796	1754530781857901983	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
+1	800	1757008460072863323	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
 1	856	1753941688106837338	CMakeFiles/graphics.dir/dataspectrum.cpp.o	cab28a0a033453f0
-796	842	1754530781902901980	libgraphics.so	fa6b896ebf6cec8a
+800	847	1757008460119863320	libgraphics.so	fa6b896ebf6cec8a
 1	1204	1753408262807751536	CMakeFiles/graphics.dir/coordtransformer.cpp.o	614b4a72bd9809b2
 1	920	1753941688170837334	CMakeFiles/graphics.dir/grapher.cpp.o	9b31b0e85931f3eb
 1	949	1753941688199837332	CMakeFiles/graphics.dir/mollweide.cpp.o	12bd7efe004144c0
@@ -10,7 +10,18 @@
 1	628	1746050802416966444	CMakeFiles/graphics.dir/progress.cpp.o	496731abf3488c9d
 5	350	1746050802138966462	CMakeFiles/graphics.dir/raster.cpp.o	e6e35d7052f51b34
 1	59	1746050801847966481	CMakeFiles/graphics.dir/font_roman.cpp.o	ed9e71e06c5ca565
-1	886	1757007856930902897	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
-886	986	1757007857029902891	libgraphics.so	fa6b896ebf6cec8a
-1	800	1757008460072863323	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
-800	847	1757008460119863320	libgraphics.so	fa6b896ebf6cec8a
+3	65	1757264719411961195	CMakeFiles/graphics.dir/font_roman.cpp.o	ed9e71e06c5ca565
+3	78	1757264719424961194	CMakeFiles/graphics.dir/font_mroman.cpp.o	5fa669b369a7cabd
+7	327	1757264719673961178	CMakeFiles/graphics.dir/raster.cpp.o	e6e35d7052f51b34
+3	542	1757264719888961164	CMakeFiles/graphics.dir/progress.cpp.o	496731abf3488c9d
+7	1198	1757264720544961121	CMakeFiles/graphics.dir/coordtransformer.cpp.o	614b4a72bd9809b2
+3	1311	1757264720657961114	CMakeFiles/graphics.dir/mapper.cpp.o	13477df1613890da
+2	1403	1757264720749961108	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
+2	1439	1757264720785961105	CMakeFiles/graphics.dir/dataspectrum.cpp.o	cab28a0a033453f0
+3	1488	1757264720834961102	CMakeFiles/graphics.dir/mollweide.cpp.o	12bd7efe004144c0
+3	1497	1757264720843961101	CMakeFiles/graphics.dir/grapher.cpp.o	9b31b0e85931f3eb
+1497	1545	1757264720890961098	libgraphics.so	fa6b896ebf6cec8a
+2	784	1757264943350946502	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
+784	832	1757264943398946499	libgraphics.so	fa6b896ebf6cec8a
+1	784	1757265762619892748	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
+784	831	1757265762665892744	libgraphics.so	fa6b896ebf6cec8a

@@ -16,7 +16,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeSystem.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeSystem.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -290,7 +290,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCCompiler.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -544,7 +544,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -668,7 +668,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCCompiler.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -762,7 +762,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -1057,25 +1057,11 @@
 		},
 		{
 			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindCCfits.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindCCfits.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindPackageHandleCompat.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/usr/share/cmake-3.28/Modules/FindPackageMessage.cmake"
-		},
-		{
-			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindGOMP.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindPackageHandleCompat.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -1089,11 +1075,25 @@
 		},
 		{
 			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindHealPIX.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindGOMP.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake-3.28/Modules/FindPackageMessage.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindPackageHandleCompat.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindHealPIX.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindPackageHandleCompat.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -1127,11 +1127,11 @@
 		},
 		{
 			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/Findlunar.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/Findlunar.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindPackageHandleCompat.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindPackageHandleCompat.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -1145,11 +1145,11 @@
 		},
 		{
 			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindHDF5.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindHDF5.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindPackageHandleCompat.cmake"
+			"path" : "/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindPackageHandleCompat.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -1168,8 +1168,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer",
-		"source" : "/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer"
+		"build" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer",
+		"source" : "/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer"
 	},
 	"version" : 
 	{

@@ -69,6 +69,7 @@ class healpixDialog : public QDialog {
     healpixDialog(association* assoc);
     virtual ~healpixDialog();
     bool configured() const {return isConfigured;}
+    void configured(bool config) {isConfigured = config;}
     int scale() const {return nSides;}
 
     bool usePixelAvg() const {return usePixAvg;}

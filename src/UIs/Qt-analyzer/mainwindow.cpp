@@ -650,9 +650,8 @@ void mainWindow::addAssociation()
 {
   association* newAssoc = new association();
   associationVector->push_back(newAssoc);
-  s_association = newAssoc;
   assocDlg->setCurrAssoc(newAssoc);
-  setAssociation(s_association);
+  setAssociation(newAssoc);
 
   QMessageBox addSuccessful;
   addSuccessful.setText("Addition Successful. Now using the new addition.");
@@ -665,17 +664,39 @@ void mainWindow::setAssociation(association* newAssoc)
   s_association = newAssoc;
 
   ctrlDlg->setAssociation(s_association);
+  ctrlDlg->configured(false);
+
   if(dataSelectDlg)
+  {
     dataSelectDlg->setAssociation(s_association);
+  }
+
   energyDlg->setAssociation(s_association);
+  energyDlg->configured(false);
+
   multSelDlg->setAssociation(s_association);
+  multSelDlg->configured(false);
+
   pixSelectDlg->setAssociation(s_association);
+  pixSelectDlg->configured(false);
+
   healpixDlg->setAssociation(s_association);
+  healpixDlg->configured(false);
+
   transSelectDlg->setAssociation(s_association);
+  transSelectDlg->configured(false);
+
   rshtDlg->setAssociation(s_association);
+  rshtDlg->configured(false);
+
   mapperDlg->setAssociation(s_association);
+  mapperDlg->configured(false);
+
   mapSelectDlg->setAssociation(s_association);
+
   graphDlg->setAssociation(s_association);
+  graphDlg->configured(false);
+
   graphSelectDlg->setAssociation(s_association);
 
   clearMaps();

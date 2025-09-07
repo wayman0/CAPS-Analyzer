@@ -68,6 +68,7 @@ class rshtDialog : public QDialog {
     rshtDialog(association *assoc);
     virtual ~rshtDialog();
     bool configured() const {return isConfigured;}
+    void configured(bool config) {isConfigured = config;}
     int minimumIndex() const {return minIndex;}
     int maximumIndex() const {return maxIndex;}
     int iterations() const {return noIterations;}

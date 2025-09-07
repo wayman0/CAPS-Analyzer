@@ -1,32 +1,32 @@
 Qt-analyzer_autogen/timestamp: \
-	/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCCompiler.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCXXCompiler.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeSystem.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindCCfits.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindGOMP.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindHDF5.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindHealPIX.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/FindPackageHandleCompat.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/cmake/Modules/Findlunar.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/CMakeLists.txt \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/associationselectdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/controldatadlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/dataselectdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/energydlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphselectdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/healpixdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/main.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.qrc \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapperdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapselectdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/multipleselectiondlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/pixelizerdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/qledlabel.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/rshtdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/spectrumdlg.cpp \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/transformerdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCCompiler.cmake \
+	/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeCXXCompiler.cmake \
+	/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/3.28.1/CMakeSystem.cmake \
+	/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindCCfits.cmake \
+	/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindGOMP.cmake \
+	/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindHDF5.cmake \
+	/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindHealPIX.cmake \
+	/mnt/research/software/CAPS-Analyzer/cmake/Modules/FindPackageHandleCompat.cmake \
+	/mnt/research/software/CAPS-Analyzer/cmake/Modules/Findlunar.cmake \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/CMakeLists.txt \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphselectdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/healpixdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/main.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.qrc \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/qledlabel.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.cpp \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/transformerdlg.cpp \
 	/usr/lib64/cmake/Qt5/Qt5Config.cmake \
 	/usr/lib64/cmake/Qt5/Qt5ConfigVersion.cmake \
 	/usr/lib64/cmake/Qt5/Qt5ModuleLocation.cmake \
@@ -84,24 +84,101 @@ Qt-analyzer_autogen/timestamp: \
 	/usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake \
 	/usr/lib64/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake \
 	/usr/lib64/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeCCompiler.cmake.in \
+	/usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c \
 	/usr/share/cmake-3.28/Modules/CMakeCInformation.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeCXXCompiler.cmake.in \
+	/usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp \
 	/usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake \
 	/usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeCompilerIdDetection.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeDetermineCXXCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeDetermineCompileFeatures.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeDetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeFindBinUtils.cmake \
 	/usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake \
 	/usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake \
 	/usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeNinjaFindMake.cmake \
 	/usr/share/cmake-3.28/Modules/CMakeParseArguments.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeParseImplicitIncludeInfo.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeParseImplicitLinkInfo.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeParseLibraryArchitecture.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeSystem.cmake.in \
 	/usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake \
 	/usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/CMakeTestCompilerCommon.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/ADSP-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/ARMCC-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/ARMClang-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/AppleClang-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Borland-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Bruce-C-DetermineCompiler.cmake \
 	/usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Clang-DetermineCompilerInternal.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Compaq-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Cray-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/CrayClang-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Embarcadero-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Fujitsu-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/GHS-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/GNU-C-DetermineCompiler.cmake \
 	/usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake \
 	/usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/GNU-FindBinUtils.cmake \
 	/usr/share/cmake-3.28/Modules/Compiler/GNU.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/HP-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/HP-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/IAR-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Intel-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/LCC-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/MSVC-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/NVHPC-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/NVIDIA-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/OrangeC-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/PGI-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/PathScale-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/SCO-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/SDCC-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/SunPro-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/TI-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Tasking-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/Watcom-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/XL-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/XL-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/XLClang-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/zOS-C-DetermineCompiler.cmake \
+	/usr/share/cmake-3.28/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake \
 	/usr/share/cmake-3.28/Modules/FindFreetype.cmake \
 	/usr/share/cmake-3.28/Modules/FindGSL.cmake \
 	/usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake \
 	/usr/share/cmake-3.28/Modules/FindPackageMessage.cmake \
 	/usr/share/cmake-3.28/Modules/FindPkgConfig.cmake \
+	/usr/share/cmake-3.28/Modules/Internal/FeatureTesting.cmake \
+	/usr/share/cmake-3.28/Modules/Platform/Linux-Determine-CXX.cmake \
 	/usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake \
 	/usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake \
 	/usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake \
@@ -109,19 +186,19 @@ Qt-analyzer_autogen/timestamp: \
 	/usr/share/cmake-3.28/Modules/Platform/Linux.cmake \
 	/usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake \
 	/usr/share/cmake-3.28/Modules/SelectLibraryConfigurations.cmake \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/associationselectdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/controldatadlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/dataselectdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/energydlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/graphselectdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/healpixdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mainwindow.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapperdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/mapselectdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/multipleselectiondlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/pixelizerdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/rshtdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/spectrumdlg.ui \
-	/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/transformerdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/energydlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/graphselectdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/healpixdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mainwindow.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapperdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/mapselectdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/multipleselectiondlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/pixelizerdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/rshtdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/spectrumdlg.ui \
+	/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/transformerdlg.ui \
 	/usr/bin/cmake

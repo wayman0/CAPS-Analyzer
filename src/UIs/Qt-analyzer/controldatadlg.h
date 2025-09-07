@@ -67,6 +67,7 @@ class controlDataDialog : public QDialog {
     controlDataDialog(association* assoc);
     virtual ~controlDataDialog();
     bool configured() {return isConfigured;}
+    void configured(bool config) {isConfigured = config;}
     
     void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
     CONTROLTYPE dataPattern() const {return dataSet;}

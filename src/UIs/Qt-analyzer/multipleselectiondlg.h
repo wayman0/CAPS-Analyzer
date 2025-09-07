@@ -68,6 +68,7 @@ class multipleSelectionDialog : public QDialog {
     multipleSelectionDialog(association* s_assoc);
     virtual ~multipleSelectionDialog();
     bool configured() {return isConfigured;}
+    void configured(bool config) {isConfigured = config;}
     void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:

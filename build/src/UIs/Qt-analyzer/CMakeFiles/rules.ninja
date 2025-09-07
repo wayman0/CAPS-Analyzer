@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer -B/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer
+  command = /usr/bin/cmake --regenerate-during-build -S/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer -B/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer
   description = Re-running CMake...
   generator = 1
 

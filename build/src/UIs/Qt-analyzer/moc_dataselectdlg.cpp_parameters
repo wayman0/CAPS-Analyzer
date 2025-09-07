@@ -1,4 +1,4 @@
 -DQT_NO_KEYWORDS
 -o
-/mnt/research/software/CAPS-Analyzer-underWork/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp
-/mnt/research/software/CAPS-Analyzer-underWork/src/UIs/Qt-analyzer/dataselectdlg.h
+/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp
+/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.h
