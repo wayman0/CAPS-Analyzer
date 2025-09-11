@@ -279,7 +279,12 @@ template <typename _Type> matrixData<_Type>::matrixData(matrixData<_Type> *from)
 
 template <typename _Type> void matrixData<_Type>::print()
 {
-
+  for(int r = 0; r < this->m_rows; r += 1)
+  {
+    for(int c = 0; c < this->m_cols; c += 1)
+      printf("%06.3f, ", (*this)[c][r]);
+    printf("\n");
+  }
 }
 
 //template <typename _Type> matrixData< _Type >& matrixData<_Type>::operator=(const matrixData<_Type >& other) {
