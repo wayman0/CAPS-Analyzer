@@ -664,6 +664,7 @@ void mainWindow::setAssociation(association* newAssoc)
   s_association = newAssoc;
 
   ctrlDlg->setAssociation(s_association);
+  ctrlDlg->reset();
   ctrlDlg->configured(false);
 
   if(dataSelectDlg)
