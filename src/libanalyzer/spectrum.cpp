@@ -275,22 +275,6 @@ void Spectrum::calculateInstrumentEffectsMatrix(association* asc)
 
   Kll->dataType(fileType::InstrumentEffectsMatrix);
   asc->addData(Kll);
-
-  printf("Mode Mode Matrix (Mll): \n");
-  Mll->print();
-
-  printf("Filter Vector: \n");
-  f->print();
-
-  printf("Beam Vector: \n");
-  b->print();
-
-  printf("Beam Vector Squared: \n");
-  b2->print();
-
-  printf("Filter Beam Squared: \n");
-  fb2->print();
-
 }
 
 void Spectrum::calculateBinningMatrix(association *asc)
@@ -392,7 +376,7 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
   int gslErrorNumber    = 0;
   gsl_permutation *p    = 0;
   gsl_matrix* gslOrig   = 0;
-  gsl_matrix* gslOrigLU = 0;
+  gsl_matrix* gslLU     = 0;
   gsl_matrix* gslInvert = 0;
 
   switch(ft)
@@ -415,26 +399,26 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
       break;
     case fileType::BinnedInstrumentEffectsMatrix:
       gslOrig = m_BinnedInstrumentEffectsMatrix;
-      gslOrigLU = m_BinnedInstrumentEffectsMatrix;
+      gslLU = gsl_matrix_alloc(m_BinnedInstrumentEffectsMatrix->size1, m_BinnedInstrumentEffectsMatrix->size2);
+      gsl_matrix_memcpy(gslLU, gslOrig);
       gslInvert = m_InverseBinnedInstrumentMatrix;
       break;
     default:
       return;
   }
 
-  int gslOrigDet = gsl_linalg_LU_det(gslOrig, gslErrorNumber);
+  p = gsl_permutation_alloc(gslLU->size1);
+  gsl_linalg_LU_decomp(gslLU, p, &gslErrorNumber);
+  double gslLUDet = gsl_linalg_LU_det(gslLU, gslErrorNumber);
 
-  if (gslOrigDet == 0)
+  if (gslLUDet == 0)
   {
     std::cout << "MATRIX ISN'T INVERTABLE\n";
     throw undefinedError;
   }
   else
   {
-    p = gsl_permutation_alloc(gslOrigLU->size1);
-    gsl_linalg_LU_decomp(gslOrigLU, p, &gslErrorNumber);
-
-    gsl_linalg_LU_invert((const gsl_matrix*)gslOrigLU, (const gsl_permutation*)p, gslInvert);
+    gsl_linalg_LU_invert((const gsl_matrix*)gslLU, (const gsl_permutation*)p, gslInvert);
     gsl_permutation_free(p);
   }
 }

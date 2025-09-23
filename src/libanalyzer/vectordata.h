@@ -294,7 +294,8 @@ template <typename _Type> vectorData<_Type>* vectorData<_Type>::elementSub(vecto
 template <typename _Type> void vectorData<_Type>::print()
 {
   for(int i = 0; i < this->rows(); i += 1)
-    printf("index: %d value: %010.7f, ", (*this)[i]);
+    printf("%010.7f, ", (*this)[i]);
+    //printf("index: %d value: %010.7f, ", (*this)[i]);
   printf("\n");
 
 }

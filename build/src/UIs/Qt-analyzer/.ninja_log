@@ -288,3 +288,13 @@
 5	7357	1757612476106931033	CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o	c9c4185aff6a09d0
 5	7703	1757612476451931011	CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o	1e22656b60ce4331
 7703	8265	1757612477010930974	Qt-analyzer	5922cdbb3c8b51bf
+16	6511	1758168379880991346	CMakeFiles/Qt-analyzer.dir/moc_healpixdlg.cpp.o	9c4e5fe5f8f13234
+13	6814	1758168380182991327	CMakeFiles/Qt-analyzer.dir/healpixdlg.cpp.o	13b3eea342bb183c
+12	6832	1758168380201991325	CMakeFiles/Qt-analyzer.dir/main.cpp.o	7cc472dce9547a56
+13	6942	1758168380310991318	CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o	7034f5f7a9b48973
+12	7004	1758168380373991314	CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o	9d8aa537e6148fbb
+12	7161	1758168380530991304	CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o	4edf0856f0a4a2b
+12	7291	1758168380661991295	CMakeFiles/Qt-analyzer.dir/mapperdlg.cpp.o	7ab76419cd686fb2
+12	7591	1758168380960991276	CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o	c9c4185aff6a09d0
+12	8126	1758168381493991241	CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o	1e22656b60ce4331
+8126	8706	1758168382071991203	Qt-analyzer	5922cdbb3c8b51bf
