@@ -958,9 +958,9 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
       break;
   }
 
-  if(s_association->exists(fileType::InputData) &&
-     s_association->exists(fileType::InputWeights) &&
-    !s_association->exists(fileType::WeightedData))
+  if(   s_association->exists(fileType::InputData)
+     && s_association->exists(fileType::InputWeights) )
+     //&& !s_association->exists(fileType::WeightedData))// this line causes any updates to input data to not be reflected in the weighted data
   {
     /*matrixData<double>* inData = s_association->inputData();
     matrixData<double>* wgData = s_association->inputWeights();
