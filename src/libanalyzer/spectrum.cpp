@@ -90,15 +90,12 @@ void Spectrum::initialize()
   m_ModeModeMatrix                 = gsl_matrix_calloc(m_maxIndex,    m_maxIndex); // mll
   m_InverseModeModeMatrix          = gsl_matrix_calloc(m_maxIndex,    m_maxIndex); // mll-1
   m_InstrumentEffectsMatrix        = gsl_matrix_calloc(m_maxIndex,    m_maxIndex); // kll = mll fl bl2
-  m_InstrumentEffectsMatrix2       = gsl_matrix_calloc(m_maxIndex -2, m_maxIndex-2); // kll with two less l's
   m_InverseInstrumentEffectsMatrix = gsl_matrix_calloc(m_maxIndex,    m_maxIndex); // kll-1
   m_BinningMatrix                  = gsl_matrix_calloc(m_numBins,     m_maxIndex); // Pbl
-  m_BinningMatrix2                 = gsl_matrix_calloc(m_numBins,     m_maxIndex-2); // Pbl with the first two l's taken out
   m_InverseBinningMatrix           = gsl_matrix_calloc(m_numBins,     m_maxIndex); // Pbl-1
   m_UnbinningMatrix                = gsl_matrix_calloc(m_maxIndex,    m_numBins);  // Qlb
-  m_UnbinningMatrix2               = gsl_matrix_calloc(m_maxIndex-2,  m_numBins);  // Qlb with the first two l's taken out
   m_InverseUnbinningMatrix         = gsl_matrix_calloc(m_maxIndex,    m_numBins);  // Qlb-1
-  m_BinnedInstrumentEffectsMatrix  = gsl_matrix_calloc(m_numBins,     m_numBins); // kbb = Pbl Kll Qlb  the two less l's p k and q
+  m_BinnedInstrumentEffectsMatrix  = gsl_matrix_calloc(m_numBins,     m_numBins); // kbb = Pbl Kll Qlb
   m_InverseBinnedInstrumentMatrix  = gsl_matrix_calloc(m_numBins,     m_numBins); // kbb -1
 
   m_configured = true;
@@ -143,39 +140,6 @@ void Spectrum::loadIntoGslMatrix(association *asc, FILETYPE ft)
   for (int r = 0; r < gslData->size1; r++)
     for (int c = 0; c < gslData->size2; c++)
       gsl_matrix_set(gslData, r, c, (*matData)[c][r]);
-
-  // used for the matrix copying
-  int startRow, startCol, numRows, numCols;
-  gsl_matrix* endMat = 0;
-  switch(ft)
-  {
-    case fileType::InstrumentEffectsMatrix:
-      startRow = 2;
-      startCol = 2;
-      numRows = matData->rows() -2;
-      numCols = matData->cols() -2;
-      endMat = m_InstrumentEffectsMatrix2;
-      break;
-    case fileType::BinningMatrix:
-      startRow = 0;
-      startCol = 2;
-      numRows = matData->rows();
-      numCols = matData->cols() -2;
-      endMat = m_BinningMatrix2;
-      break;
-    case fileType::UnbinningMatrix:
-      startRow = 2;
-      startCol = 0;
-      numRows = matData->rows() -2;
-      numCols = matData->cols();
-      endMat = m_UnbinningMatrix2;
-      break;
-    default:
-      return;
-  }
-
-  gsl_matrix_view tempSubMat = gsl_matrix_submatrix(gslData, startRow, startCol, numRows, numCols);
-  gsl_matrix_memcpy(endMat, &tempSubMat.matrix);
 }
 
 // copy a gsl_matrix to our matrixData
@@ -356,13 +320,11 @@ void Spectrum::calculateBinnedInstrumentEffectsMatrix(association* asc)
   PlbKllQlb->dataType(fileType::BinnedInstrumentEffectsMatrix);
   asc->addData(PlbKllQlb);
   */
+  gsl_matrix* Pbl = m_BinningMatrix;
+  gsl_matrix* Kll = m_InstrumentEffectsMatrix;
+  gsl_matrix* Qlb = m_UnbinningMatrix;
 
-  // these need to be the 2 less matrixes
-  gsl_matrix* Pbl = m_BinningMatrix2;
-  gsl_matrix* Kll = m_InstrumentEffectsMatrix2;
-  gsl_matrix* Qlb = m_UnbinningMatrix2;
-
-  gsl_matrix* KllQlb    = gsl_matrix_calloc(m_maxIndex-2, m_numBins);
+  gsl_matrix* KllQlb    = gsl_matrix_calloc(m_maxIndex, m_numBins);
   gsl_matrix* PblKllQlb = m_BinnedInstrumentEffectsMatrix;
 
   gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, Kll, Qlb,    0.0, KllQlb);
@@ -373,6 +335,7 @@ void Spectrum::calculateBinnedInstrumentEffectsMatrix(association* asc)
 
 void Spectrum::invertMatrix(association* asc, FILETYPE ft)
 {
+  FILETYPE invertType = fileType::Null;
   int gslErrorNumber    = 0;
   gsl_permutation *p    = 0;
   gsl_matrix* gslOrig   = 0;
@@ -402,6 +365,7 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
       gslLU = gsl_matrix_alloc(m_BinnedInstrumentEffectsMatrix->size1, m_BinnedInstrumentEffectsMatrix->size2);
       gsl_matrix_memcpy(gslLU, gslOrig);
       gslInvert = m_InverseBinnedInstrumentMatrix;
+      invertType = fileType::InverseBinnedInstrumentMatrix;
       break;
     default:
       return;
@@ -420,6 +384,8 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
   {
     gsl_linalg_LU_invert((const gsl_matrix*)gslLU, (const gsl_permutation*)p, gslInvert);
     gsl_permutation_free(p);
+
+    loadIntoMatrixData(asc, invertType);
   }
 }
 

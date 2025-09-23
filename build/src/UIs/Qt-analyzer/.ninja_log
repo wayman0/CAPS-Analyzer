@@ -298,3 +298,7 @@
 12	7591	1758168380960991276	CMakeFiles/Qt-analyzer.dir/dataselectdlg.cpp.o	c9c4185aff6a09d0
 12	8126	1758168381493991241	CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o	1e22656b60ce4331
 8126	8706	1758168382071991203	Qt-analyzer	5922cdbb3c8b51bf
+5	3302	1758592074838857237	CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o	7034f5f7a9b48973
+5	3306	1758592074843857236	CMakeFiles/Qt-analyzer.dir/main.cpp.o	7cc472dce9547a56
+5	4218	1758592075754857177	CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o	1e22656b60ce4331
+4218	4740	1758592076273857142	Qt-analyzer	5922cdbb3c8b51bf

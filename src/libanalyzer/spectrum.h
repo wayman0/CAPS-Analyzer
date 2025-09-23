@@ -197,12 +197,9 @@ class Spectrum {
     */
     gsl_matrix   *m_ModeModeMatrix;
     gsl_matrix   *m_InstrumentEffectsMatrix;
-    gsl_matrix   *m_InstrumentEffectsMatrix2; // this is the two l's taken out
     gsl_matrix   *m_BinningMatrix;
-    gsl_matrix   *m_BinningMatrix2; // this is the two l's taken out
     gsl_matrix   *m_UnbinningMatrix;
-    gsl_matrix   *m_UnbinningMatrix2; // this is the two l's taken out
-    gsl_matrix   *m_BinnedInstrumentEffectsMatrix; // this is automatically two l's taken out
+    gsl_matrix   *m_BinnedInstrumentEffectsMatrix;
 
     gsl_matrix   *m_InverseModeModeMatrix;
     gsl_matrix   *m_InverseInstrumentEffectsMatrix;
