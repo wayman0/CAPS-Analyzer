@@ -153,12 +153,19 @@ class Spectrum {
     void invertMatrix(association* asc, FILETYPE ft);
 
     void createModeModeMatrix(association *asc);
-    void calculateBinningMatrix(association* asc);
-    void calculateUnbinningMatrix(association* asc);
-    void calculateInstrumentEffectsMatrix(association* asc);
-    void calculateBinnedInstrumentEffectsMatrix(association* asc);
+
+    void calculateExtrapolatedSpectrum(association *asc);                  // Mll-1 <Cl>
+    void calculateExtrapolatedInstrumentSpectrum(association *asc);        // Kll-1(<Cl> - <Nl>)
+
+    void calculateBinningMatrix(association* asc);                         // Pbl
+    void calculateUnbinningMatrix(association* asc);                       // Qlb
+    void calculateInstrumentEffectsMatrix(association* asc);               // Kll = MllFlBl2
+    void calculateBinnedInstrumentEffectsMatrix(association* asc);         // Kbb = Plb Kll Qlb
+    void calculateBinnedSpectrum(association* asc);                        // Pbl<Cl>
+    void calculateBinnedExtrapolatedSpectrum(association *asc);            // Pbl Mll-1 <Cl>
+    void calculateBinnedExtrapolatedInstrumentSpectrum(association *asc);  // Kbb-1 Pbl (<Cl> - <Nl>)
+
     void calculateEnsembleAverage(association *asc, FILETYPE ft);
-    void calculateBinnedSpectrum(association* asc);
 
     void clear();
 

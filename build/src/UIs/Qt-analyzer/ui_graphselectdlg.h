@@ -27,16 +27,19 @@ public:
     QGroupBox *selectionBox;
     QGridLayout *gridLayout;
     QRadioButton *dataButton;
-    QRadioButton *noiseButton;
-    QRadioButton *EnsAvgNoiseSpectrumButton;
-    QRadioButton *weightButton;
-    QRadioButton *weightedNoiseButton;
-    QRadioButton *EnsAvgSpectrumButton;
     QRadioButton *combinedDataButton;
-    QRadioButton *filterButton;
+    QRadioButton *extrapolatedSpectrumButton;
+    QRadioButton *weightButton;
+    QRadioButton *EnsAvgSpectrumButton;
+    QRadioButton *extrapolatedInstrumentSpectrumButton;
+    QRadioButton *noiseButton;
+    QRadioButton *weightedNoiseButton;
     QRadioButton *binnedSpectrumButton;
+    QRadioButton *filterButton;
+    QRadioButton *EnsAvgNoiseSpectrumButton;
+    QRadioButton *binnedExtrapolatedSpectrumButton;
     QRadioButton *beamButton;
-    QRadioButton *EnsAvgBinnedSpectrumButton;
+    QRadioButton *binnedExtrapolatedInstrumentSpectrumButton;
     QLabel *title;
 
     void setupUi(QDialog *graphSelectDialog)
@@ -44,14 +47,14 @@ public:
         if (graphSelectDialog->objectName().isEmpty())
             graphSelectDialog->setObjectName(QString::fromUtf8("graphSelectDialog"));
         graphSelectDialog->setEnabled(true);
-        graphSelectDialog->resize(619, 234);
+        graphSelectDialog->resize(737, 250);
         buttonBox = new QDialogButtonBox(graphSelectDialog);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setGeometry(QRect(10, 190, 481, 36));
+        buttonBox->setGeometry(QRect(100, 210, 481, 36));
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok);
         selectionBox = new QGroupBox(graphSelectDialog);
         selectionBox->setObjectName(QString::fromUtf8("selectionBox"));
-        selectionBox->setGeometry(QRect(0, 30, 610, 160));
+        selectionBox->setGeometry(QRect(0, 30, 725, 176));
         selectionBox->setMinimumSize(QSize(380, 110));
         gridLayout = new QGridLayout(selectionBox);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
@@ -61,55 +64,70 @@ public:
 
         gridLayout->addWidget(dataButton, 0, 0, 1, 1);
 
-        noiseButton = new QRadioButton(selectionBox);
-        noiseButton->setObjectName(QString::fromUtf8("noiseButton"));
+        combinedDataButton = new QRadioButton(selectionBox);
+        combinedDataButton->setObjectName(QString::fromUtf8("combinedDataButton"));
 
-        gridLayout->addWidget(noiseButton, 0, 1, 1, 1);
+        gridLayout->addWidget(combinedDataButton, 0, 1, 1, 1);
 
-        EnsAvgNoiseSpectrumButton = new QRadioButton(selectionBox);
-        EnsAvgNoiseSpectrumButton->setObjectName(QString::fromUtf8("EnsAvgNoiseSpectrumButton"));
+        extrapolatedSpectrumButton = new QRadioButton(selectionBox);
+        extrapolatedSpectrumButton->setObjectName(QString::fromUtf8("extrapolatedSpectrumButton"));
 
-        gridLayout->addWidget(EnsAvgNoiseSpectrumButton, 0, 2, 2, 1);
+        gridLayout->addWidget(extrapolatedSpectrumButton, 0, 2, 1, 1);
 
         weightButton = new QRadioButton(selectionBox);
         weightButton->setObjectName(QString::fromUtf8("weightButton"));
 
-        gridLayout->addWidget(weightButton, 1, 0, 2, 1);
+        gridLayout->addWidget(weightButton, 1, 0, 1, 1);
+
+        EnsAvgSpectrumButton = new QRadioButton(selectionBox);
+        EnsAvgSpectrumButton->setObjectName(QString::fromUtf8("EnsAvgSpectrumButton"));
+
+        gridLayout->addWidget(EnsAvgSpectrumButton, 1, 1, 1, 1);
+
+        extrapolatedInstrumentSpectrumButton = new QRadioButton(selectionBox);
+        extrapolatedInstrumentSpectrumButton->setObjectName(QString::fromUtf8("extrapolatedInstrumentSpectrumButton"));
+
+        gridLayout->addWidget(extrapolatedInstrumentSpectrumButton, 1, 2, 1, 1);
+
+        noiseButton = new QRadioButton(selectionBox);
+        noiseButton->setObjectName(QString::fromUtf8("noiseButton"));
+
+        gridLayout->addWidget(noiseButton, 2, 0, 1, 1);
 
         weightedNoiseButton = new QRadioButton(selectionBox);
         weightedNoiseButton->setObjectName(QString::fromUtf8("weightedNoiseButton"));
 
         gridLayout->addWidget(weightedNoiseButton, 2, 1, 1, 1);
 
-        EnsAvgSpectrumButton = new QRadioButton(selectionBox);
-        EnsAvgSpectrumButton->setObjectName(QString::fromUtf8("EnsAvgSpectrumButton"));
+        binnedSpectrumButton = new QRadioButton(selectionBox);
+        binnedSpectrumButton->setObjectName(QString::fromUtf8("binnedSpectrumButton"));
 
-        gridLayout->addWidget(EnsAvgSpectrumButton, 2, 2, 2, 1);
-
-        combinedDataButton = new QRadioButton(selectionBox);
-        combinedDataButton->setObjectName(QString::fromUtf8("combinedDataButton"));
-
-        gridLayout->addWidget(combinedDataButton, 3, 0, 2, 1);
+        gridLayout->addWidget(binnedSpectrumButton, 2, 2, 1, 1);
 
         filterButton = new QRadioButton(selectionBox);
         filterButton->setObjectName(QString::fromUtf8("filterButton"));
 
-        gridLayout->addWidget(filterButton, 4, 1, 1, 1);
+        gridLayout->addWidget(filterButton, 3, 0, 1, 1);
 
-        binnedSpectrumButton = new QRadioButton(selectionBox);
-        binnedSpectrumButton->setObjectName(QString::fromUtf8("binnedSpectrumButton"));
+        EnsAvgNoiseSpectrumButton = new QRadioButton(selectionBox);
+        EnsAvgNoiseSpectrumButton->setObjectName(QString::fromUtf8("EnsAvgNoiseSpectrumButton"));
 
-        gridLayout->addWidget(binnedSpectrumButton, 4, 2, 1, 1);
+        gridLayout->addWidget(EnsAvgNoiseSpectrumButton, 3, 1, 1, 1);
+
+        binnedExtrapolatedSpectrumButton = new QRadioButton(selectionBox);
+        binnedExtrapolatedSpectrumButton->setObjectName(QString::fromUtf8("binnedExtrapolatedSpectrumButton"));
+
+        gridLayout->addWidget(binnedExtrapolatedSpectrumButton, 3, 2, 1, 1);
 
         beamButton = new QRadioButton(selectionBox);
         beamButton->setObjectName(QString::fromUtf8("beamButton"));
 
-        gridLayout->addWidget(beamButton, 5, 1, 1, 1);
+        gridLayout->addWidget(beamButton, 4, 0, 1, 1);
 
-        EnsAvgBinnedSpectrumButton = new QRadioButton(selectionBox);
-        EnsAvgBinnedSpectrumButton->setObjectName(QString::fromUtf8("EnsAvgBinnedSpectrumButton"));
+        binnedExtrapolatedInstrumentSpectrumButton = new QRadioButton(selectionBox);
+        binnedExtrapolatedInstrumentSpectrumButton->setObjectName(QString::fromUtf8("binnedExtrapolatedInstrumentSpectrumButton"));
 
-        gridLayout->addWidget(EnsAvgBinnedSpectrumButton, 5, 2, 1, 1);
+        gridLayout->addWidget(binnedExtrapolatedInstrumentSpectrumButton, 4, 2, 1, 1);
 
         title = new QLabel(graphSelectDialog);
         title->setObjectName(QString::fromUtf8("title"));
@@ -127,16 +145,19 @@ public:
         graphSelectDialog->setWindowTitle(QCoreApplication::translate("graphSelectDialog", "Spectrum Selection", nullptr));
         selectionBox->setTitle(QCoreApplication::translate("graphSelectDialog", "Select Spectral Type", nullptr));
         dataButton->setText(QCoreApplication::translate("graphSelectDialog", "Transformed &Data", nullptr));
-        noiseButton->setText(QCoreApplication::translate("graphSelectDialog", "&Noise Data", nullptr));
-        EnsAvgNoiseSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Ensemble Averaged Noise Spectrum", nullptr));
-        weightButton->setText(QCoreApplication::translate("graphSelectDialog", "Transformed &Weights", nullptr));
-        weightedNoiseButton->setText(QCoreApplication::translate("graphSelectDialog", "Weighted Noise Data", nullptr));
-        EnsAvgSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Ensemble Averaged Spectrum", nullptr));
         combinedDataButton->setText(QCoreApplication::translate("graphSelectDialog", "Weighted &Transfomation", nullptr));
-        filterButton->setText(QCoreApplication::translate("graphSelectDialog", "&Filter Data", nullptr));
+        extrapolatedSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Extrapolated Spectrum", nullptr));
+        weightButton->setText(QCoreApplication::translate("graphSelectDialog", "Transformed &Weights", nullptr));
+        EnsAvgSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Ensemble Averaged Spectrum", nullptr));
+        extrapolatedInstrumentSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Extrapolated Instrumented Spectrum", nullptr));
+        noiseButton->setText(QCoreApplication::translate("graphSelectDialog", "&Noise Data", nullptr));
+        weightedNoiseButton->setText(QCoreApplication::translate("graphSelectDialog", "Weighted Noise Data", nullptr));
         binnedSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Binned Spectrum", nullptr));
+        filterButton->setText(QCoreApplication::translate("graphSelectDialog", "&Filter Data", nullptr));
+        EnsAvgNoiseSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Ensemble Averaged Noise Spectrum", nullptr));
+        binnedExtrapolatedSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Binned Extrapolated Spectrum", nullptr));
         beamButton->setText(QCoreApplication::translate("graphSelectDialog", "&Beam Data", nullptr));
-        EnsAvgBinnedSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Ensemble Averaged Binned Spectrum", nullptr));
+        binnedExtrapolatedInstrumentSpectrumButton->setText(QCoreApplication::translate("graphSelectDialog", "Binned Extrapolated Instrumented Spectrum", nullptr));
         title->setText(QCoreApplication::translate("graphSelectDialog", "Please select the spectrum to be displayed", nullptr));
     } // retranslateUi
 

@@ -118,9 +118,12 @@ int MollweideMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* data
     case fileType::EnsembleIterationNoise:
     case fileType::EnsembleAveragedSpectrum:
     case fileType::EnsembleIterationSpectrum:
+    case fileType::ExtrapolatedSpectrum:
+    case fileType::ExtrapolatedInstrumentSpectrum:
     case fileType::BinnedSpectrum:
-    case fileType::EnsembleAveragedBinnedSpectrum:
-    case fileType::EnsembleIterationBinnedSpectrum:
+    case fileType::BinnedExtrapolatedSpectrum:
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+    //case fileType::EnsembleAveragedBinnedSpectrum:
     case fileType::ModeModeMatrix:
     case fileType::BinningMatrix:
     case fileType::UnbinningMatrix:

@@ -344,9 +344,11 @@ void fitsManager::save(int* numTypes, FILETYPE* dataTypes)
 
         case fileType::EnsembleIterationNoise:
         case fileType::EnsembleIterationSpectrum:
-        case fileType::EnsembleIterationBinnedSpectrum:
+        //case fileType::EnsembleIterationBinnedSpectrum:
         case fileType::ModeModeMatrix:
+        case fileType::InverseModeModeMatrix:
         case fileType::InstrumentEffectsMatrix:
+        case fileType::InverseInstrumentEffectsMatrix:
         case fileType::BinningMatrix:
         case fileType::UnbinningMatrix:
         case fileType::BinnedInstrumentEffectsMatrix:
@@ -567,15 +569,32 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::ExtrapolatedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
     case fileType::BinnedSpectrum:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
-
+    */
     /*
     case fileType::SpectralData:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -662,8 +681,12 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
       //case fileType::EnsembleData:
       case fileType::EnsembleAveragedNoise:
       case fileType::EnsembleAveragedSpectrum:
+      case fileType::ExtrapolatedSpectrum:
+      case fileType::ExtrapolatedInstrumentSpectrum:
       case fileType::BinnedSpectrum:
-      case fileType::EnsembleAveragedBinnedSpectrum:
+      case fileType::BinnedExtrapolatedSpectrum:
+      case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      //case fileType::EnsembleAveragedBinnedSpectrum:
         // if the data is spectral then it should also be pixelized and transformed
         dataImage->addKey("NSIDES",v->sides(),"Number of sides.");
         dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
@@ -762,17 +785,27 @@ bool fitsManager::saveMatrixD(matrixData<double> *m)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    /*
     case fileType::EnsembleIterationBinnedSpectrum:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    */
     case fileType::ModeModeMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    case fileType::InverseModeModeMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
     case fileType::InstrumentEffectsMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::BinningMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -1481,9 +1514,11 @@ baseData *fitsManager::data() {
       case fileType::InputBeam:
       case fileType::EnsembleIterationNoise:
       case fileType::EnsembleIterationSpectrum:
-      case fileType::EnsembleIterationBinnedSpectrum:
+      //case fileType::EnsembleIterationBinnedSpectrum:
       case fileType::ModeModeMatrix:
+      case fileType::InverseModeModeMatrix:
       case fileType::InstrumentEffectsMatrix:
+      case fileType::InverseInstrumentEffectsMatrix:
       case fileType::BinningMatrix:
       case fileType::UnbinningMatrix:
       case fileType::BinnedInstrumentEffectsMatrix:
@@ -1604,17 +1639,27 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    /*
     case fileType::EnsembleIterationBinnedSpectrum:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    */
     case fileType::ModeModeMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    case fileType::InverseModeModeMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
     case fileType::InstrumentEffectsMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::BinningMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -2147,15 +2192,32 @@ vectorData<double> *fitsManager::getVectorD()
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::ExtrapolatedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
     case fileType::BinnedSpectrum:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
-
+    */
     /*
     case fileType::SpectralData:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -2209,8 +2271,12 @@ vectorData<double> *fitsManager::getVectorD()
       //case fileType::EnsembleData:
       case fileType::EnsembleAveragedNoise:
       case fileType::EnsembleAveragedSpectrum:
+      case fileType::ExtrapolatedSpectrum:
+      case fileType::ExtrapolatedInstrumentSpectrum:
       case fileType::BinnedSpectrum:
-      case fileType::EnsembleAveragedBinnedSpectrum:
+      case fileType::BinnedExtrapolatedSpectrum:
+      // case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      //case fileType::EnsembleAveragedBinnedSpectrum:
 
         // if it is spectral it should also be pixelized and transformed
         dataImage->readKey("NSIDES",sides);
@@ -2364,17 +2430,27 @@ matrixData<double> *fitsManager::getMatrixD() {
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    /*
     case fileType::EnsembleIterationBinnedSpectrum:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    */
     case fileType::ModeModeMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
       break;
+    case fileType::InverseModeModeMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
+      break;
     case fileType::InstrumentEffectsMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "RAW_FILTER";
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::BinningMatrix:
       hduName = dataTypeNames[static_cast<int>(m_fileDataType)];

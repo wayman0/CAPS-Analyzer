@@ -302,9 +302,11 @@ void csvManager::save(int* numTypes, FILETYPE* dataTypes)
       case fileType::InputBeam:
       case fileType::EnsembleIterationNoise:
       case fileType::EnsembleIterationSpectrum:
-      case fileType::EnsembleIterationBinnedSpectrum:
+      //case fileType::EnsembleIterationBinnedSpectrum:
       case fileType::ModeModeMatrix:
+      case fileType::InverseModeModeMatrix:
       case fileType::InstrumentEffectsMatrix:
+      case fileType::InverseInstrumentEffectsMatrix:
       case fileType::BinningMatrix:
       case fileType::UnbinningMatrix:
       case fileType::BinnedInstrumentEffectsMatrix:
@@ -516,14 +518,28 @@ bool csvManager::saveVectorD(vectorData<double> *v)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::ExtrapolatedSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
     case fileType::BinnedSpectrum:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
+    /*
     case fileType::EnsembleIterationBinnedSpectrum:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //hduName = "TRANSFORMED_BEAM";
       break;
+    */
   }
 
    *m_ptr << "[DATANAME] == " << dataName << "\n";
@@ -588,8 +604,12 @@ bool csvManager::saveVectorD(vectorData<double> *v)
     //case fileType::SpectralData:
     case fileType::EnsembleAveragedNoise:
     case fileType::EnsembleAveragedSpectrum:
+    case fileType::ExtrapolatedSpectrum:
+    case fileType::ExtrapolatedInstrumentSpectrum:
     case fileType::BinnedSpectrum:
-    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::BinnedExtrapolatedSpectrum:
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+    //case fileType::EnsembleAveragedBinnedSpectrum:
       *m_ptr << "[MAXINDEX] == " << v->maxYIndex() << '\n';
       *m_ptr << "[MININDEX] == " << v->minYIndex() << '\n';
       *m_ptr << "[MAXVALUE] == " << v->maxValue() << '\n';
@@ -678,17 +698,25 @@ bool csvManager::saveMatrixD(matrixData<double> *m)
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "RAW_FILTER";
       break;
+    /*
     case fileType::EnsembleIterationBinnedSpectrum:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "RAW_FILTER";
       break;
+    */
     case fileType::ModeModeMatrix:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "RAW_FILTER";
       break;
+    case fileType::InverseModeModeMatrix:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
+      break;
     case fileType::InstrumentEffectsMatrix:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       //dataName = "RAW_FILTER";
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
       break;
     case fileType::BinningMatrix:
       dataName = dataTypeNames[static_cast<int>(m_fileDataType)];
@@ -1160,9 +1188,11 @@ baseData *csvManager::data() {
     */
     case fileType::EnsembleIterationNoise:
     case fileType::EnsembleIterationSpectrum:
-    case fileType::EnsembleIterationBinnedSpectrum:
+    //case fileType::EnsembleIterationBinnedSpectrum:
     case fileType::ModeModeMatrix:
+    case fileType::InverseModeModeMatrix:
     case fileType::InstrumentEffectsMatrix:
+    case fileType::InverseInstrumentEffectsMatrix:
     case fileType::BinningMatrix:
     case fileType::UnbinningMatrix:
     case fileType::BinnedInstrumentEffectsMatrix:
@@ -1663,8 +1693,12 @@ vectorData<double> *csvManager::getVectorD()
     //case fileType::SpectralData:
     case fileType::EnsembleAveragedNoise:
     case fileType::EnsembleAveragedSpectrum:
+    case fileType::ExtrapolatedSpectrum:
+    case fileType::ExtrapolatedInstrumentSpectrum:
     case fileType::BinnedSpectrum:
-    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::BinnedExtrapolatedSpectrum:
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+    //case fileType::EnsembleAveragedBinnedSpectrum:
       /*
       if (m_headerData.find("MAXINDEX") == m_headerData.end())
         m_err = fileNoKeyError;

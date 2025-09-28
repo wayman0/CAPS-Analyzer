@@ -74,10 +74,14 @@ enum class allTypes {
 
   TransformedData, TransformedWeights, WeightedTransform, // the pseudo spectrum
   TransformedNoise, TransformedWeightedNoise, TransformedFilter, TransformedBeam,
-  BinnedSpectrum,             //Cb
   EnsembleAveragedSpectrum,   //<Cl> tilde
   EnsembleAveragedNoise,      //<Nl> tilde
-  EnsembleAveragedBinnedSpectrum, //<Cb> tilde
+  ExtrapolatedSpectrum,       // Mll-1 <Cl>
+  ExtrapolatedInstrumentSpectrum, // Kll-1 (<Cl> - <Nl>)
+  BinnedSpectrum,             // Pbl <Cl>
+  BinnedExtrapolatedSpectrum, // Pbl Mll-1 <Cl>
+  BinnedExtrapolatedInstrumentedSpectrum, // Kbb-1 Pbl (<Cl> - <Nl>)
+  //EnsembleAveragedBinnedSpectrum, //<Cb> tilde
   //SpectralData, EnsembleData,
   GRAPH_LIMIT,
 
@@ -88,13 +92,20 @@ enum class allTypes {
 
   EnsembleIterationSpectrum, // the matrix storing all the ensembled pseudo spectrums
   EnsembleIterationNoise,    // the matrix storing all the ensembled pseudo noise spectrum
-  EnsembleIterationBinnedSpectrum, // the matrix storing all the ensembled binned spectrum
+  //EnsembleIterationBinnedSpectrum, // the matrix storing all the ensembled binned spectrum
+
   ModeModeMatrix,                  // Mll
-  InstrumentEffectsMatrix,           // Kll = MllFlB2L
+  InverseModeModeMatrix,           // Mll-1
+
+  InstrumentEffectsMatrix,         // Kll = MllFlB2L
+  InverseInstrumentEffectsMatrix,  // Kll-1
+
   BinningMatrix,                   // Pbl
   UnbinningMatrix,                 // Qlb
-  BinnedInstrumentEffectsMatrix,          // Kbb = PblKllQlb
+
+  BinnedInstrumentEffectsMatrix,   // Kbb = PblKllQlb
   InverseBinnedInstrumentMatrix,   // Kbb ^-1
+
   //BinCouplingMatrix, ModeCouplingMatrix,
   //InverseBinMatrix, InverseModeMatrix,
   FILETYPE_LIMIT,
@@ -108,8 +119,12 @@ enum class allTypes {
   ASSOCIATEMAP_LIMIT,
   TransformedDataSpectrum, TransformedWeightsSpectrum, WeightedTransformSpectrum, // also the pseudo spectrum
   TransformedNoiseSpectrum, TransformedWeightedNoiseSpectrum, TransformedFilterSpectrum, TransformedBeamSpectrum,
+  EnsembleAveragedSpectrumSpectrum, EnsembleAveragedNoiseSpectrum,
+  ExtrapolatedSpectrumSpectrum, ExtrapolatedInstrumentSpectrumSpectrum,
+  //EnsembleAveragedBinnedSpectrumSpectrum,
   BinnedSpectrumSpectrum,
-  EnsembleAveragedSpectrumSpectrum, EnsembleAveragedNoiseSpectrum, EnsembleAveragedBinnedSpectrumSpectrum,
+  BinnedExtrapolatedSpectrumSpectrum,
+  BinnedExtrapolatedInstrumentedSpectrumSpectrum,
   //SpectralDataSpectrum, EnsembleDataSpectrum,
   ASSOCIATEDSPECTRUM_LIMIT,
   fileIO, Mapping, Graphing, Pixelization, Transformation, PseudoSpectrum,
@@ -153,10 +168,16 @@ static std::string dataTypeNames[] = {
   "Transformed Weighted Noise Data",
   "Transformed Filter Data",
   "Transformed Beam Data",
-  "Binned Spectrum",
   "Ensemble Averaged Spectrum",
   "Ensemble Averaged Noise",
-  "Ensemble Averaged Binned Spectrum",
+
+  "Extrapolated Spectrum (Mll-1 <Cl>)",       // Mll-1 <Cl>
+  "Extrapolated Instrument Spectrum (Kll-1 (<Cl> - <Nl>)",  // Kll-1 (<Cl> - <Nl>)
+  "Binned Spectrum (Pbl <Cl>)",             // Pbl <Cl>
+  "Binned Extrapolated Spectrum (Pbl Mll-1 <Cl>)", // Pbl Mll-1 <Cl>
+  "Binned Extrapolated Instrumented Spectrum (Kbb-1 Pbl (<Cl> - <Nl>))", // Kbb-1 Pbl (<Cl> - <Nl>)
+
+  //"Ensemble Averaged Binned Spectrum",
 
   //"Power Spectrum",
   //"Ensemble Power Spectrum",
@@ -174,9 +195,11 @@ static std::string dataTypeNames[] = {
 
   "Ensemble Iteration Spectrum",
   "Ensemble Iteration Noise",
-  "Ensemble Iteration Binned Spectrum",
+//  "Ensemble Iteration Binned Spectrum",
   "Mode Mode Matrix (Mll)",
+  "Inverse Mode Mode Matrix (Mll-1)",
   "Instrumentation Effects Matrix (Kll = MllFlB2L)",
+  "Inverse Instrument Effects Matrix (Kll-1)",
   "Binning Matrix (Pbl)",
   "Unbinning Matrix (Qlb)",
   "Binned Instrument Effects Matrix (Kbb = PblKllQlb)",
@@ -195,31 +218,49 @@ enum class fileType {
   Null = 0,
   InputData, InputWeights, WeightedData,
   InputNoise, InputWeightedNoise, InputFilter, InputBeam,
+
   PixelizedData, PixelizedWeights, WeightedPixel, PixelOccupancy,
   PixelizedNoise, PixelizedWeightedNoise, PixelizedFilter, PixelizedBeam,
+
   InverseData, InverseWeights, WeightedInverse,
   InverseNoise, InverseWeightedNoise, InverseFilter, InverseBeam,
+
   MAP_LIMIT,
-  TransformedData, TransformedWeights, WeightedTransform,
+
+  TransformedData, TransformedWeights, WeightedTransform, // the pseudo spectrum
   TransformedNoise, TransformedWeightedNoise, TransformedFilter, TransformedBeam,
-  BinnedSpectrum,             //Cb
   EnsembleAveragedSpectrum,   //<Cl> tilde
   EnsembleAveragedNoise,      //<Nl> tilde
-  EnsembleAveragedBinnedSpectrum, //<Cb> tilde
+  ExtrapolatedSpectrum,       // Mll-1 <Cl>
+  ExtrapolatedInstrumentSpectrum, // Kll-1 (<Cl> - <Nl>)
+  BinnedSpectrum,             // Pbl <Cl>
+  BinnedExtrapolatedSpectrum, // Pbl Mll-1 <Cl>
+  BinnedExtrapolatedInstrumentedSpectrum, // Kbb-1 Pbl (<Cl> - <Nl>)
+  //EnsembleAveragedBinnedSpectrum, //<Cb> tilde
   //SpectralData, EnsembleData,
   GRAPH_LIMIT,
+
   AlmData, AlmWeights, WeightedAlm,
   AlmNoise, AlmWeightedNoise, AlmFilter, AlmBeam,
+
   TRANSFORM_LIMIT,
+
   EnsembleIterationSpectrum, // the matrix storing all the ensembled pseudo spectrums
   EnsembleIterationNoise,    // the matrix storing all the ensembled pseudo noise spectrum
-  EnsembleIterationBinnedSpectrum, // the matrix storing all the ensembled binned spectrum
+  //EnsembleIterationBinnedSpectrum, // the matrix storing all the ensembled binned spectrum
+
   ModeModeMatrix,                  // Mll
-  InstrumentEffectsMatrix,           // Kll = MllFlB2L
+  InverseModeModeMatrix,           // Mll-1
+
+  InstrumentEffectsMatrix,         // Kll = MllFlB2L
+  InverseInstrumentEffectsMatrix,  // Kll-1
+
   BinningMatrix,                   // Pbl
   UnbinningMatrix,                 // Qlb
-  BinnedInstrumentEffectsMatrix,          // Kbb = PblKllQlb
+
+  BinnedInstrumentEffectsMatrix,   // Kbb = PblKllQlb
   InverseBinnedInstrumentMatrix,   // Kbb ^-1
+
   //BinCouplingMatrix, ModeCouplingMatrix,
   //InverseBinMatrix, InverseModeMatrix,
   FILETYPE_LIMIT
@@ -272,8 +313,11 @@ enum class associatedSpectrum {
   Null = (int)fileType::MAP_LIMIT, //20,
   TransformedDataSpectrum, TransformedWeightsSpectrum, WeightedTransformSpectrum,
   TransformedNoiseSpectrum, TransformedWeightedNoiseSpectrum, TransformedFilterSpectrum, TransformedBeamSpectrum,
+  //BinnedSpectrumSpectrum,
+  EnsembleAveragedSpectrumSpectrum, EnsembleAveragedNoiseSpectrum, //EnsembleAveragedBinnedSpectrumSpectrum,
+  ExtrapolatedSpectrumSpectrum, ExtrapolatedInstrumentSpectrumSpectrum,
   BinnedSpectrumSpectrum,
-  EnsembleAveragedSpectrumSpectrum, EnsembleAveragedNoiseSpectrum, EnsembleAveragedBinnedSpectrumSpectrum,
+  BinnedExtrapolatedSpectrumSpectrum, BinnedExtrapolatedInstrumentedSpectrumSpectrum,
   //SpectralDataSpectrum, EnsembleDataSpectrum,
   ASSOCIATEDSPECTRUM_LIMIT
 };

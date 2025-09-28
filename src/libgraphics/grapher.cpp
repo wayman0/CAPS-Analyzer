@@ -162,12 +162,26 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
     case fileType::EnsembleAveragedSpectrum:
       vec_dat_ptr = a->EnsembleAveragedSpectrum();
       break;
+    case fileType::ExtrapolatedSpectrum:
+      vec_dat_ptr = a->ExtrapolatedSpectrum();
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      vec_dat_ptr = a->ExtrapolatedInstrumentSpectrum();
+      break;
     case fileType::BinnedSpectrum:
       vec_dat_ptr = a->BinnedSpectrum();
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      vec_dat_ptr = a->BinnedExtrapolatedSpectrum();
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      vec_dat_ptr = a->BinnedExtrapolatedInstrumentSpectrum();
+      break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       vec_dat_ptr = a->EnsembleAveragedBinnedSpectrum();
       break;
+    */
     default:
       break;
   }
@@ -197,20 +211,27 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
       case fileType::TransformedData:
+      case fileType::WeightedTransform:
       //case fileType::SpectralData:
       //case fileType::EnsembleData:
       case fileType::EnsembleAveragedNoise:
       case fileType::EnsembleAveragedSpectrum:
+      case fileType::ExtrapolatedSpectrum:
+      case fileType::ExtrapolatedInstrumentSpectrum:
       case fileType::BinnedSpectrum:
-      case fileType::EnsembleAveragedBinnedSpectrum:
+      case fileType::BinnedExtrapolatedSpectrum:
+      case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      //case fileType::EnsembleAveragedBinnedSpectrum:
         value = (*vec_dat_ptr)[count+min_index];
         break;
       case fileType::TransformedWeights:
         value = (*vec_wht_ptr)[count+min_index];
         break;
+      /*
       case fileType::WeightedTransform:
         value = (*vec_dat_ptr)[count+min_index];// * (*vec_wht_ptr)[count+min_index];
         break;
+      */
       default:
         break;
     }

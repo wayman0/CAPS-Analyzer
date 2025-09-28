@@ -111,11 +111,24 @@ dataSpectrum::dataSpectrum(FILETYPE type) {
     case fileType::EnsembleAveragedSpectrum:
       m_title = "Ensembled Pseudo Spectrum";
       break;
+    case fileType::ExtrapolatedSpectrum:
+      m_title = "Extrapolated Spectrum";
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      m_title = "Extrapolated Instrumented Spectrum";
+      break;
     case fileType::BinnedSpectrum:
       m_title = "Binned Spectrum";
       break;
-    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::BinnedExtrapolatedSpectrum:
+      m_title = "Binned Extrapolated Spectrum";
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      m_title = "Binned Extrapolated Instrumented Spectrum";
+      break;
+    /*case fileType::EnsembleAveragedBinnedSpectrum:
       m_title = "Ensembled Binned Spectrum";
+    */
       break;
     default:
       break;

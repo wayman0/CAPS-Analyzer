@@ -116,17 +116,25 @@ dataSelectDialog::dataSelectDialog(association *assoc, RWMode m) :
 
     ui->EnsAvgNoiseCB->setEnabled(false);
     ui->EnsAvgSpectrumCB->setEnabled(false);
-    ui->EnsAvgBinnedSpectrumCB->setEnabled(false);
+    //ui->EnsAvgBinnedSpectrumCB->setEnabled(false);
 
     ui->EnsIterNoiseCB->setEnabled(false);
     ui->EnsIterSpectrumCB->setEnabled(false);
-    ui->EnsIterBinnedSpectrumCB->setEnabled(false);
+    //ui->EnsIterBinnedSpectrumCB->setEnabled(false);
+
+    ui->extrapolatedSpectrumCB->setEnabled(false);
+    ui->extrapolatedInstrumentSpectrumCB->setEnabled(false);
+    ui->binnedSpectrumCB->setEnabled(false);
+    ui->binnedExtrapolatedSpectrumCB->setEnabled(false);
+    ui->binnedExtrapolatedInstrumentSpectrumCB->setEnabled(false);
 
     ui->modeMatrixCB->setEnabled(false);
+    ui->inverseModeMatrixCB->setEnabled(false);
     ui->binningMatrixCB->setEnabled(false);
     ui->unbinningMatrixCB->setEnabled(false);
 
     ui->instrumentEffectsMatrixCB->setEnabled(false);
+    ui->inverseInstrumentEffectsMatrixCB->setEnabled(false);
     ui->binnedInstrumentEffectsMatrixCB->setEnabled(false);
     ui->inverseBinnedInstrumentMatrixCB->setEnabled(false);
   //}
@@ -632,6 +640,7 @@ void dataSelectDialog::validate() {
     }
   }
 
+  /*
   if(ui->EnsAvgBinnedSpectrumCB->isEnabled())
   {
     if(ui->EnsAvgBinnedSpectrumCB->isChecked())
@@ -643,6 +652,21 @@ void dataSelectDialog::validate() {
         dataSets->erase(ftIterator);
     }
   }
+  */
+
+  /*
+  if(ui->EnsIterBinnedSpectrumCB->isEnabled())
+  {
+    if(ui->EnsIterBinnedSpectrumCB->isChecked())
+      dataSets->push_back(fileType::EnsembleIterationBinnedSpectrum);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::EnsembleIterationBinnedSpectrum;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+  */
 
   if(ui->EnsIterNoiseCB->isEnabled())
   {
@@ -668,13 +692,61 @@ void dataSelectDialog::validate() {
     }
   }
 
-  if(ui->EnsIterBinnedSpectrumCB->isEnabled())
+  if(ui->extrapolatedSpectrumCB->isEnabled())
   {
-    if(ui->EnsIterBinnedSpectrumCB->isChecked())
-      dataSets->push_back(fileType::EnsembleIterationBinnedSpectrum);
+    if(ui->extrapolatedSpectrumCB->isChecked())
+      dataSets->push_back(fileType::ExtrapolatedSpectrum);
     else
     {
-      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::EnsembleIterationBinnedSpectrum;});
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::ExtrapolatedSpectrum;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->extrapolatedInstrumentSpectrumCB->isEnabled())
+  {
+    if(ui->extrapolatedInstrumentSpectrumCB->isChecked())
+      dataSets->push_back(fileType::ExtrapolatedInstrumentSpectrum);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::ExtrapolatedInstrumentSpectrum;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->binnedSpectrumCB->isEnabled())
+  {
+      if(ui->binnedSpectrumCB->isChecked())
+        dataSets->push_back(fileType::BinnedSpectrum);
+      else
+      {
+        auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::BinnedSpectrum;});
+        if (ftIterator != dataSets->end())
+          dataSets->erase(ftIterator);
+      }
+  }
+
+  if(ui->binnedExtrapolatedSpectrumCB->isEnabled())
+  {
+    if(ui->binnedExtrapolatedSpectrumCB->isChecked())
+      dataSets->push_back(fileType::BinnedExtrapolatedSpectrum);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::BinnedExtrapolatedSpectrum;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->binnedExtrapolatedInstrumentSpectrumCB->isEnabled())
+  {
+    if(ui->binnedExtrapolatedInstrumentSpectrumCB->isChecked())
+      dataSets->push_back(fileType::BinnedExtrapolatedInstrumentedSpectrum);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::BinnedExtrapolatedInstrumentedSpectrum;});
       if (ftIterator != dataSets->end())
         dataSets->erase(ftIterator);
     }
@@ -687,6 +759,42 @@ void dataSelectDialog::validate() {
     else
     {
       auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::ModeModeMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->inverseModeMatrixCB->isEnabled())
+  {
+    if(ui->inverseModeMatrixCB->isChecked())
+      dataSets->push_back(fileType::InverseModeModeMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InverseModeModeMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->instrumentEffectsMatrixCB->isEnabled())
+  {
+    if(ui->instrumentEffectsMatrixCB->isChecked())
+      dataSets->push_back(fileType::InstrumentEffectsMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InstrumentEffectsMatrix;});
+      if (ftIterator != dataSets->end())
+        dataSets->erase(ftIterator);
+    }
+  }
+
+  if(ui->inverseInstrumentEffectsMatrixCB->isEnabled())
+  {
+    if(ui->inverseInstrumentEffectsMatrixCB->isChecked())
+      dataSets->push_back(fileType::InverseInstrumentEffectsMatrix);
+    else
+    {
+      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InverseInstrumentEffectsMatrix;});
       if (ftIterator != dataSets->end())
         dataSets->erase(ftIterator);
     }
@@ -711,18 +819,6 @@ void dataSelectDialog::validate() {
     else
     {
       auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::UnbinningMatrix;});
-      if (ftIterator != dataSets->end())
-        dataSets->erase(ftIterator);
-    }
-  }
-
-  if(ui->instrumentEffectsMatrixCB->isEnabled())
-  {
-    if(ui->instrumentEffectsMatrixCB->isChecked())
-      dataSets->push_back(fileType::InstrumentEffectsMatrix);
-    else
-    {
-      auto ftIterator = std::find_if(dataSets->begin(), dataSets->end(), [](fileType ft){return ft == fileType::InstrumentEffectsMatrix;});
       if (ftIterator != dataSets->end())
         dataSets->erase(ftIterator);
     }
@@ -904,23 +1000,46 @@ void dataSelectDialog::configure(RWMode uiMode) {
         case fileType::EnsembleIterationSpectrum:
           ui->EnsIterSpectrumCB->setEnabled(true);
           break;
+        case fileType::ExtrapolatedSpectrum:
+          ui->extrapolatedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::ExtrapolatedInstrumentSpectrum:
+          ui->extrapolatedInstrumentSpectrumCB->setEnabled(true);
+          break;
+        case fileType::BinnedSpectrum:
+          ui->binnedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::BinnedExtrapolatedSpectrum:
+          ui->binnedExtrapolatedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+          ui->binnedExtrapolatedInstrumentSpectrumCB->setEnabled(true);
+          break;
+        /*
         case fileType::EnsembleAveragedBinnedSpectrum:
           ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
           break;
         case fileType::EnsembleIterationBinnedSpectrum:
           ui->EnsIterBinnedSpectrumCB->setEnabled(true);
           break;
+        */
         case fileType::ModeModeMatrix:
           ui->modeMatrixCB->setEnabled(true);
+          break;
+        case fileType::InverseModeModeMatrix:
+          ui->inverseModeMatrixCB->setEnabled(true);
+          break;
+        case fileType::InstrumentEffectsMatrix:
+          ui->instrumentEffectsMatrixCB->setEnabled(true);
+          break;
+        case fileType::InverseInstrumentEffectsMatrix:
+          ui->inverseInstrumentEffectsMatrixCB->setEnabled(true);
           break;
         case fileType::BinningMatrix:
           ui->binningMatrixCB->setEnabled(true);
           break;
         case fileType::UnbinningMatrix:
           ui->unbinningMatrixCB->setEnabled(true);
-          break;
-        case fileType::InstrumentEffectsMatrix:
-          ui->instrumentEffectsMatrixCB->setEnabled(true);
           break;
         case fileType::BinnedInstrumentEffectsMatrix:
           ui->binnedInstrumentEffectsMatrixCB->setEnabled(true);
@@ -1156,6 +1275,7 @@ void dataSelectDialog::configure(RWMode uiMode) {
     else
       ui->invWeightedNoiseCB->setEnabled(true);
 
+
     if(dataMgr->EnsembleAveragedNoise() == 0)
       ui->EnsAvgNoiseCB->setEnabled(false);
     else
@@ -1176,6 +1296,32 @@ void dataSelectDialog::configure(RWMode uiMode) {
     else
       ui->EnsIterSpectrumCB->setEnabled(true);
 
+    if(dataMgr->ExtrapolatedSpectrum() == 0)
+      ui->extrapolatedSpectrumCB->setEnabled(false);
+    else
+      ui->extrapolatedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->ExtrapolatedInstrumentSpectrum() == 0)
+      ui->extrapolatedInstrumentSpectrumCB->setEnabled(false);
+    else
+      ui->extrapolatedInstrumentSpectrumCB->setEnabled(true);
+
+    if(dataMgr->BinnedSpectrum() == 0)
+      ui->binnedSpectrumCB->setEnabled(false);
+    else
+      ui->binnedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->BinnedExtrapolatedSpectrum() == 0)
+      ui->binnedExtrapolatedSpectrumCB->setEnabled(false);
+    else
+      ui->binnedExtrapolatedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->BinnedExtrapolatedInstrumentSpectrum() == 0)
+      ui->binnedExtrapolatedInstrumentSpectrumCB->setEnabled(false);
+    else
+      ui->binnedExtrapolatedInstrumentSpectrumCB->setEnabled(true);
+
+    /*
     if(dataMgr->EnsembleAveragedBinnedSpectrum() == 0)
       ui->EnsAvgBinnedSpectrumCB->setEnabled(false);
     else
@@ -1185,11 +1331,27 @@ void dataSelectDialog::configure(RWMode uiMode) {
       ui->EnsIterBinnedSpectrumCB->setEnabled(false);
     else
       ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+    */
 
     if(dataMgr->ModeModeMatrix() == 0)
       ui->modeMatrixCB->setEnabled(false);
     else
       ui->modeMatrixCB->setEnabled(true);
+
+    if(dataMgr->InverseModeModeMatrix() == 0)
+      ui->inverseModeMatrixCB->setEnabled(false);
+    else
+      ui->inverseModeMatrixCB->setEnabled(true);
+
+    if(dataMgr->InstrumentEffectsMatrix() == 0)
+      ui->instrumentEffectsMatrixCB->setEnabled(false);
+    else
+      ui->instrumentEffectsMatrixCB->setEnabled(true);
+
+    if(dataMgr->InverseInstrumentEffectsMatrix() == 0)
+      ui->inverseInstrumentEffectsMatrixCB->setEnabled(false);
+    else
+      ui->inverseInstrumentEffectsMatrixCB->setEnabled(true);
 
     if(dataMgr->BinningMatrix() == 0)
       ui->binningMatrixCB->setEnabled(false);
@@ -1200,11 +1362,6 @@ void dataSelectDialog::configure(RWMode uiMode) {
       ui->unbinningMatrixCB->setEnabled(false);
     else
       ui->unbinningMatrixCB->setEnabled(true);
-
-    if(dataMgr->InstrumentEffectsMatrix() == 0)
-      ui->instrumentEffectsMatrixCB->setEnabled(false);
-    else
-      ui->instrumentEffectsMatrixCB->setEnabled(true);
 
     if(dataMgr->BinnedInstrumentEffectsMatrix() == 0)
       ui->binnedInstrumentEffectsMatrixCB->setEnabled(false);
@@ -1367,23 +1524,46 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
         case fileType::EnsembleIterationSpectrum:
           ui->EnsIterSpectrumCB->setEnabled(true);
           break;
+        case fileType::ExtrapolatedSpectrum:
+          ui->extrapolatedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::ExtrapolatedInstrumentSpectrum:
+          ui->extrapolatedInstrumentSpectrumCB->setEnabled(true);
+          break;
+        case fileType::BinnedSpectrum:
+          ui->binnedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::BinnedExtrapolatedSpectrum:
+          ui->binnedExtrapolatedSpectrumCB->setEnabled(true);
+          break;
+        case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+          ui->binnedExtrapolatedInstrumentSpectrumCB->setEnabled(true);
+          break;
+        /*
         case fileType::EnsembleAveragedBinnedSpectrum:
           ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
           break;
         case fileType::EnsembleIterationBinnedSpectrum:
           ui->EnsIterBinnedSpectrumCB->setEnabled(true);
           break;
+        */
         case fileType::ModeModeMatrix:
           ui->modeMatrixCB->setEnabled(true);
+          break;
+        case fileType::InverseModeModeMatrix:
+          ui->inverseModeMatrixCB->setEnabled(true);
+          break;
+        case fileType::InstrumentEffectsMatrix:
+          ui->instrumentEffectsMatrixCB->setEnabled(true);
+          break;
+        case fileType::InverseInstrumentEffectsMatrix:
+          ui->inverseInstrumentEffectsMatrixCB->setEnabled(true);
           break;
         case fileType::BinningMatrix:
           ui->binningMatrixCB->setEnabled(true);
           break;
         case fileType::UnbinningMatrix:
           ui->unbinningMatrixCB->setEnabled(true);
-          break;
-        case fileType::InstrumentEffectsMatrix:
-          ui->instrumentEffectsMatrixCB->setEnabled(true);
           break;
         case fileType::BinnedInstrumentEffectsMatrix:
           ui->binnedInstrumentEffectsMatrixCB->setEnabled(true);
@@ -1593,6 +1773,7 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
     else
       ui->ensembleCB->setEnabled(true);
     */
+
     if(dataMgr->weightedInputNoise() == 0)
       ui->inputWeightedNoiseCB->setEnabled(false);
     else
@@ -1639,6 +1820,32 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
     else
       ui->EnsIterSpectrumCB->setEnabled(true);
 
+    if(dataMgr->ExtrapolatedSpectrum() == 0)
+      ui->extrapolatedSpectrumCB->setEnabled(false);
+    else
+      ui->extrapolatedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->ExtrapolatedInstrumentSpectrum() == 0)
+      ui->extrapolatedInstrumentSpectrumCB->setEnabled(false);
+    else
+      ui->extrapolatedInstrumentSpectrumCB->setEnabled(true);
+
+    if(dataMgr->BinnedSpectrum() == 0)
+      ui->binnedSpectrumCB->setEnabled(false);
+    else
+      ui->binnedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->BinnedExtrapolatedSpectrum() == 0)
+      ui->binnedExtrapolatedSpectrumCB->setEnabled(false);
+    else
+      ui->binnedExtrapolatedSpectrumCB->setEnabled(true);
+
+    if(dataMgr->BinnedExtrapolatedInstrumentSpectrum() == 0)
+      ui->binnedExtrapolatedInstrumentSpectrumCB->setEnabled(false);
+    else
+      ui->binnedExtrapolatedInstrumentSpectrumCB->setEnabled(true);
+
+    /*
     if(dataMgr->EnsembleAveragedBinnedSpectrum() == 0)
       ui->EnsAvgBinnedSpectrumCB->setEnabled(false);
     else
@@ -1648,11 +1855,27 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
       ui->EnsIterBinnedSpectrumCB->setEnabled(false);
     else
       ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+    */
 
     if(dataMgr->ModeModeMatrix() == 0)
       ui->modeMatrixCB->setEnabled(false);
     else
       ui->modeMatrixCB->setEnabled(true);
+
+    if(dataMgr->InverseModeModeMatrix() == 0)
+      ui->inverseModeMatrixCB->setEnabled(false);
+    else
+      ui->inverseModeMatrixCB->setEnabled(true);
+
+    if(dataMgr->InstrumentEffectsMatrix() == 0)
+      ui->instrumentEffectsMatrixCB->setEnabled(false);
+    else
+      ui->instrumentEffectsMatrixCB->setEnabled(true);
+
+    if(dataMgr->InverseInstrumentEffectsMatrix() == 0)
+      ui->inverseInstrumentEffectsMatrixCB->setEnabled(false);
+    else
+      ui->inverseInstrumentEffectsMatrixCB->setEnabled(true);
 
     if(dataMgr->BinningMatrix() == 0)
       ui->binningMatrixCB->setEnabled(false);
@@ -1664,11 +1887,6 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
     else
       ui->unbinningMatrixCB->setEnabled(true);
 
-    if(dataMgr->InstrumentEffectsMatrix() == 0)
-      ui->instrumentEffectsMatrixCB->setEnabled(false);
-    else
-      ui->instrumentEffectsMatrixCB->setEnabled(true);
-
     if(dataMgr->BinnedInstrumentEffectsMatrix() == 0)
       ui->binnedInstrumentEffectsMatrixCB->setEnabled(false);
     else
@@ -1678,6 +1896,7 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
       ui->inverseBinnedInstrumentMatrixCB->setEnabled(false);
     else
       ui->inverseBinnedInstrumentMatrixCB->setEnabled(true);
+
   }
 
   exec();
@@ -1787,7 +2006,6 @@ void dataSelectDialog::setData(FILETYPE* dataTypes, int numTypes)
   }
 }
 
-
 void dataSelectDialog::reset() {
   dataSets->clear();
   ui->title->setText("Please select the data sets to load");
@@ -1837,17 +2055,27 @@ void dataSelectDialog::reset() {
 
   ui->EnsAvgNoiseCB->setEnabled(true);
   ui->EnsAvgSpectrumCB->setEnabled(true);
-  ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
+  //ui->EnsAvgBinnedSpectrumCB->setEnabled(true);
 
   ui->EnsIterNoiseCB->setEnabled(true);
   ui->EnsIterSpectrumCB->setEnabled(true);
-  ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+  //ui->EnsIterBinnedSpectrumCB->setEnabled(true);
+
+  ui->extrapolatedSpectrumCB->setEnabled(true);
+  ui->extrapolatedInstrumentSpectrumCB->setEnabled(true);
+  ui->binnedSpectrumCB->setEnabled(true);
+  ui->binnedExtrapolatedSpectrumCB->setEnabled(true);
+  ui->binnedExtrapolatedInstrumentSpectrumCB->setEnabled(true);
 
   ui->modeMatrixCB->setEnabled(true);
+  ui->inverseModeMatrixCB->setEnabled(true);
+
+  ui->instrumentEffectsMatrixCB->setEnabled(true);
+  ui->inverseInstrumentEffectsMatrixCB->setEnabled(true);
+
   ui->binningMatrixCB->setEnabled(true);
   ui->unbinningMatrixCB->setEnabled(true);
 
-  ui->instrumentEffectsMatrixCB->setEnabled(true);
   ui->binnedInstrumentEffectsMatrixCB->setEnabled(true);
   ui->inverseBinnedInstrumentMatrixCB->setEnabled(true);
 

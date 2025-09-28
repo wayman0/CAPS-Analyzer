@@ -113,6 +113,10 @@ void Spectrum::loadIntoGslMatrix(association *asc, FILETYPE ft)
       matData = asc->ModeModeMatrix();
       gslData = m_ModeModeMatrix;
       break;
+    case fileType::InverseModeModeMatrix:
+      matData = asc->InverseModeModeMatrix();
+      gslData = m_InverseModeModeMatrix;
+      break;
     case fileType::BinningMatrix:
       matData = asc->BinningMatrix();
       gslData = m_BinningMatrix;
@@ -124,6 +128,10 @@ void Spectrum::loadIntoGslMatrix(association *asc, FILETYPE ft)
     case fileType::InstrumentEffectsMatrix:
       matData = asc->InstrumentEffectsMatrix();
       gslData = m_InstrumentEffectsMatrix;
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      matData = asc->InverseInstrumentEffectsMatrix();
+      gslData = m_InverseInstrumentEffectsMatrix;
       break;
     case fileType::BinnedInstrumentEffectsMatrix:
       matData = asc->BinnedInstrumentEffectsMatrix();
@@ -154,6 +162,10 @@ void Spectrum::loadIntoMatrixData(association* asc, FILETYPE ft)
       matData = asc->ModeModeMatrix();
       gslData = m_ModeModeMatrix;
       break;
+    case fileType::InverseModeModeMatrix:
+      matData = asc->InverseModeModeMatrix();
+      gslData = m_InverseModeModeMatrix;
+      break;
     case fileType::BinningMatrix:
       matData = asc->BinningMatrix();
       gslData = m_BinningMatrix;
@@ -165,6 +177,10 @@ void Spectrum::loadIntoMatrixData(association* asc, FILETYPE ft)
     case fileType::InstrumentEffectsMatrix:
       matData = asc->InstrumentEffectsMatrix();
       gslData = m_InstrumentEffectsMatrix;
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      matData = asc->InverseInstrumentEffectsMatrix();
+      gslData = m_InverseInstrumentEffectsMatrix;
       break;
     case fileType::BinnedInstrumentEffectsMatrix:
       matData = asc->BinnedInstrumentEffectsMatrix();
@@ -294,20 +310,6 @@ void Spectrum::calculateUnbinningMatrix(association* asc)
   }
 }
 
-void Spectrum::calculateBinnedSpectrum(association* asc)
-{
-  matrixData<double>* inverseBinInstrEffMat  = asc->InverseBinnedInstrumentMatrix();
-  matrixData<double>* binMatrix              = asc->BinningMatrix();
-  vectorData<double>* ensSpectrum            = asc->EnsembleAveragedSpectrum();
-  vectorData<double>* ensNoise               = asc->EnsembleAveragedNoise();
-  vectorData<double>* CN                     = ensSpectrum->elementSub(ensNoise);
-  vectorData<double>* PCN                    = binMatrix->matrixMult(CN);
-  vectorData<double>* KPCN                   = inverseBinInstrEffMat->matrixMult(PCN);
-
-  KPCN->dataType(fileType::BinnedSpectrum);
-  asc->addData(KPCN);
-}
-
 void Spectrum::calculateBinnedInstrumentEffectsMatrix(association* asc)
 {
   /*
@@ -329,8 +331,6 @@ void Spectrum::calculateBinnedInstrumentEffectsMatrix(association* asc)
 
   gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, Kll, Qlb,    0.0, KllQlb);
   gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, Pbl, KllQlb, 0.0, PblKllQlb);
-
-  loadIntoMatrixData(asc, fileType::BinnedInstrumentEffectsMatrix);
 }
 
 void Spectrum::invertMatrix(association* asc, FILETYPE ft)
@@ -339,7 +339,6 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
   int gslErrorNumber    = 0;
   gsl_permutation *p    = 0;
   gsl_matrix* gslOrig   = 0;
-  gsl_matrix* gslLU     = 0;
   gsl_matrix* gslInvert = 0;
 
   switch(ft)
@@ -347,6 +346,7 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
     case fileType::ModeModeMatrix:
       gslOrig = m_ModeModeMatrix;
       gslInvert = m_InverseModeModeMatrix;
+      invertType = fileType::InverseModeModeMatrix;
       break;
     case fileType::BinningMatrix:
       gslOrig = m_BinningMatrix;
@@ -359,11 +359,10 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
     case fileType::InstrumentEffectsMatrix:
       gslOrig = m_InstrumentEffectsMatrix;
       gslInvert = m_InverseInstrumentEffectsMatrix;
+      invertType = fileType::InverseInstrumentEffectsMatrix;
       break;
     case fileType::BinnedInstrumentEffectsMatrix:
       gslOrig = m_BinnedInstrumentEffectsMatrix;
-      gslLU = gsl_matrix_alloc(m_BinnedInstrumentEffectsMatrix->size1, m_BinnedInstrumentEffectsMatrix->size2);
-      gsl_matrix_memcpy(gslLU, gslOrig);
       gslInvert = m_InverseBinnedInstrumentMatrix;
       invertType = fileType::InverseBinnedInstrumentMatrix;
       break;
@@ -371,22 +370,77 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
       return;
   }
 
-  p = gsl_permutation_alloc(gslLU->size1);
-  gsl_linalg_LU_decomp(gslLU, p, &gslErrorNumber);
-  double gslLUDet = gsl_linalg_LU_det(gslLU, gslErrorNumber);
+  p = gsl_permutation_alloc(gslOrig->size1);
+  gsl_linalg_LU_decomp(gslOrig, p, &gslErrorNumber);
+  double gslDet = gsl_linalg_LU_det(gslOrig, gslErrorNumber);
 
-  if (gslLUDet == 0)
+  //if (gslLUDet == 0)
+  if(gslDet == 0)
   {
     std::cout << "MATRIX ISN'T INVERTABLE\n";
     throw undefinedError;
   }
   else
   {
-    gsl_linalg_LU_invert((const gsl_matrix*)gslLU, (const gsl_permutation*)p, gslInvert);
+    gsl_linalg_LU_invert((const gsl_matrix*)gslOrig, (const gsl_permutation*)p, gslInvert);
     gsl_permutation_free(p);
-
-    loadIntoMatrixData(asc, invertType);
   }
+}
+
+void Spectrum::calculateExtrapolatedSpectrum(association *asc) // Mll-1 <Cl>
+{
+  matrixData<double>* modeInverse = asc->InverseModeModeMatrix();
+  vectorData<double>* ensSpectrum = asc->EnsembleAveragedSpectrum();
+  vectorData<double>* extrapolated = modeInverse->matrixMult(ensSpectrum);
+
+  extrapolated->dataType(fileType::ExtrapolatedSpectrum);
+  asc->addData(modeInverse);
+}
+
+void Spectrum::calculateExtrapolatedInstrumentSpectrum(association *asc) // Kll-1 (<Cl> - <Nl>)
+{
+  matrixData<double>* invInstrEffMat   = asc->InverseInstrumentEffectsMatrix();
+  vectorData<double>* ensSpectrum      = asc->EnsembleAveragedSpectrum();
+  vectorData<double>* ensNoise         = asc->EnsembleAveragedNoise();
+  vectorData<double>* CN               = ensSpectrum->elementSub(ensNoise);
+  vectorData<double>* extrInstSpectrum = invInstrEffMat->matrixMult(CN);
+
+  extrInstSpectrum->dataType(fileType::ExtrapolatedInstrumentSpectrum);
+  asc->addData(extrInstSpectrum);
+}
+
+void Spectrum::calculateBinnedSpectrum(association* asc) // Pbl <Cl>
+{
+  matrixData<double>* binningMat  = asc->BinningMatrix();
+  vectorData<double>* ensSpectrum = asc->EnsembleAveragedSpectrum();
+  vectorData<double>* binSpectrum = binningMat->matrixMult(ensSpectrum);
+
+  binSpectrum->dataType(fileType::BinnedSpectrum);
+  asc->addData(binSpectrum);
+}
+
+void Spectrum::calculateBinnedExtrapolatedSpectrum(association* asc) // Pbl Mll-1 <Cl>
+{
+  matrixData<double>* binningMat     = asc->BinningMatrix();
+  vectorData<double>* extSpectrum    = asc->ExtrapolatedSpectrum();
+  vectorData<double>* binExtSpectrum = binningMat->matrixMult(extSpectrum);
+
+  binExtSpectrum->dataType(fileType::BinnedExtrapolatedSpectrum);
+  asc->addData(binExtSpectrum);
+}
+
+void Spectrum::calculateBinnedExtrapolatedInstrumentSpectrum(association* asc) // Kbb-1 Pbl (<Cl> - <Nl>)
+{
+  matrixData<double>* binInstrEffMat     = asc->BinnedInstrumentEffectsMatrix();
+  matrixData<double>* binningMat         = asc->BinningMatrix();
+  vectorData<double>* ensSpectrum        = asc->EnsembleAveragedSpectrum();
+  vectorData<double>* ensNoise           = asc->EnsembleAveragedNoise();
+  vectorData<double>* CN                 = ensSpectrum->elementSub(ensNoise);
+  vectorData<double>* PCN                = binningMat->matrixMult(CN);
+  vectorData<double>* KPCN               = binInstrEffMat->matrixMult(PCN);
+
+  KPCN->dataType(fileType::BinnedExtrapolatedInstrumentedSpectrum);
+  asc->addData(KPCN);
 }
 
 void Spectrum::calculateEnsembleAverage(association *asc, FILETYPE ft)
@@ -411,12 +465,14 @@ void Spectrum::calculateEnsembleAverage(association *asc, FILETYPE ft)
       avgData = asc->EnsembleAveragedSpectrum();
       iterData = asc->EnsembleIterationSpectrum();
       break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       length = m_numBins;
       base = asc->BinnedSpectrum();
       avgData = asc->EnsembleAveragedBinnedSpectrum();
       iterData = asc->EnsembleIterationBinnedSpectrum();
       break;
+    */
     default:
       return;
   }
@@ -462,33 +518,32 @@ void Spectrum::clear() {
   if (m_ModeModeMatrix)
     gsl_matrix_free(m_ModeModeMatrix);
 
+  if(m_InverseModeModeMatrix)
+    gsl_matrix_free(m_InverseModeModeMatrix);
+
   if (m_InstrumentEffectsMatrix)
     gsl_matrix_free(m_InstrumentEffectsMatrix);
+
+  if(m_InverseInstrumentEffectsMatrix)
+    gsl_matrix_free(m_InverseInstrumentEffectsMatrix);
 
   if (m_BinningMatrix)
     gsl_matrix_free(m_BinningMatrix);
 
-  if (m_UnbinningMatrix)
-    gsl_matrix_free(m_UnbinningMatrix);
-
-  if (m_BinnedInstrumentEffectsMatrix)
-    gsl_matrix_free(m_BinnedInstrumentEffectsMatrix);
-
-  if (m_InverseModeModeMatrix)
-    gsl_matrix_free(m_InverseModeModeMatrix);
-
-  if (m_InverseInstrumentEffectsMatrix)
-    gsl_matrix_free(m_InverseInstrumentEffectsMatrix);
-
   if (m_InverseBinningMatrix)
     gsl_matrix_free(m_InverseBinningMatrix);
+
+  if (m_UnbinningMatrix)
+    gsl_matrix_free(m_UnbinningMatrix);
 
   if (m_InverseUnbinningMatrix)
     gsl_matrix_free(m_InverseUnbinningMatrix);
 
+  if (m_BinnedInstrumentEffectsMatrix)
+    gsl_matrix_free(m_BinnedInstrumentEffectsMatrix);
+
   if (m_InverseBinnedInstrumentMatrix)
     gsl_matrix_free(m_InverseBinnedInstrumentMatrix);
-
 
   m_active = false;
   m_configured = false;

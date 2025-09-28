@@ -490,9 +490,11 @@ void HDF5Manager::save(int* numTypes, FILETYPE* dataTypes)
         */
         case fileType::EnsembleIterationNoise:
         case fileType::EnsembleIterationSpectrum:
-        case fileType::EnsembleIterationBinnedSpectrum:
+        //case fileType::EnsembleIterationBinnedSpectrum:
         case fileType::ModeModeMatrix:
+        case fileType::InverseModeModeMatrix:
         case fileType::InstrumentEffectsMatrix:
+        case fileType::InverseInstrumentEffectsMatrix:
         case fileType::BinningMatrix:
         case fileType::UnbinningMatrix:
         case fileType::BinnedInstrumentEffectsMatrix:
@@ -651,12 +653,7 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
 
   switch (m_fileDataType) {
     case fileType::PixelizedData:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedData)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
-      //hduName = "PIXEL_DATA";
-      break;
-    case fileType::PixelizedWeights:
+      case fileType::PixelizedWeights:
       dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedWeights)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTS"));
       currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTS"));
@@ -785,18 +782,44 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::ExtrapolatedSpectrum:
+      dataSetName = dataTypeNames[static_cast<int>(fileType::ExtrapolatedSpectrum)];
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      dataSetName = dataTypeNames[static_cast<int>(fileType::ExtrapolatedInstrumentSpectrum)];
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      //hduName = "TRANSFORMED_BEAM";
+      break;
     case fileType::BinnedSpectrum:
       dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedSpectrum)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedSpectrum)];
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedInstrumentedSpectrum)];
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleAveragedBinnedSpectrum)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
+    */
     /*
     case fileType::SpectralData:
       dataSetName = dataTypeNames[static_cast<int>(fileType::SpectralData)];
@@ -895,8 +918,12 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
     //case fileType::EnsembleData:
     case fileType::EnsembleAveragedNoise:
     case fileType::EnsembleAveragedSpectrum:
+    case fileType::ExtrapolatedSpectrum:
+    case fileType::ExtrapolatedInstrumentSpectrum:
     case fileType::BinnedSpectrum:
-    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::BinnedExtrapolatedSpectrum:
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+    //case fileType::EnsembleAveragedBinnedSpectrum:
     {
       string minInd  = std::to_string(v->minYIndex());
       string maxInd  = std::to_string(v->maxYIndex());
@@ -1052,22 +1079,36 @@ bool HDF5Manager::saveMatrixD(matrixData<double> *m)
       dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleIterationSpectrum)];
       //dataSetName = "RAW_BEAM";
       break;
+    /*
     case fileType::EnsembleIterationBinnedSpectrum:
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleIterationBinnedSpectrum)];
       //dataSetName = "RAW_BEAM";
       break;
+    */
     case fileType::ModeModeMatrix:
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       dataSetName = dataTypeNames[static_cast<int>(fileType::ModeModeMatrix)];
       //dataSetName = "RAW_BEAM";
       break;
+    case fileType::InverseModeModeMatrix:
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseModeModeMatrix)];
+      //dataSetName = "RAW_BEAM";
+      break;
     case fileType::InstrumentEffectsMatrix:
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       dataSetName = dataTypeNames[static_cast<int>(fileType::InstrumentEffectsMatrix)];
+      //dataSetName = "RAW_BEAM";
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseInstrumentEffectsMatrix)];
       //dataSetName = "RAW_BEAM";
       break;
     case fileType::BinningMatrix:
@@ -1460,9 +1501,6 @@ void HDF5Manager::open(int* numTypes, FILETYPE* dataTypes)
   {
       m_fileDataType = dataTypes[i];
       m_fileFormat = HDF5;
-
-      int hitStepInto = 0;
-
       baseData* dataValue = data();
 
       dataValue->fileName(this->fileName());
@@ -1547,9 +1585,11 @@ baseData *HDF5Manager::data()
       */
       case fileType::EnsembleIterationNoise:
       case fileType::EnsembleIterationSpectrum:
-      case fileType::EnsembleIterationBinnedSpectrum:
+      //case fileType::EnsembleIterationBinnedSpectrum:
       case fileType::ModeModeMatrix:
+      case fileType::InverseModeModeMatrix:
       case fileType::InstrumentEffectsMatrix:
+      case fileType::InverseInstrumentEffectsMatrix:
       case fileType::BinningMatrix:
       case fileType::UnbinningMatrix:
       case fileType::BinnedInstrumentEffectsMatrix:
@@ -2357,6 +2397,26 @@ vectorData<double> *HDF5Manager::getVectorD()
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::ExtrapolatedSpectrum:
+      dataSetName = dataTypeNames[static_cast<int>(fileType::ExtrapolatedSpectrum)];
+
+      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+
+      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      dataSetName = dataTypeNames[static_cast<int>(fileType::ExtrapolatedInstrumentSpectrum)];
+
+      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+
+      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      //hduName = "TRANSFORMED_BEAM";
+      break;
     case fileType::BinnedSpectrum:
       dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedSpectrum)];
 
@@ -2367,6 +2427,27 @@ vectorData<double> *HDF5Manager::getVectorD()
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedSpectrum)];
+
+      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+
+      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedInstrumentedSpectrum)];
+
+      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+
+      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+      //hduName = "TRANSFORMED_BEAM";
+      break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleAveragedBinnedSpectrum)];
 
@@ -2377,7 +2458,7 @@ vectorData<double> *HDF5Manager::getVectorD()
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
-
+    */
   }
 
   char** infoData;
@@ -2446,8 +2527,12 @@ vectorData<double> *HDF5Manager::getVectorD()
       //case fileType::SpectralData:
       case fileType::EnsembleAveragedNoise:
       case fileType::EnsembleAveragedSpectrum:
+      case fileType::ExtrapolatedSpectrum:
+      case fileType::ExtrapolatedInstrumentSpectrum:
       case fileType::BinnedSpectrum:
-      case fileType::EnsembleAveragedBinnedSpectrum:
+      case fileType::BinnedExtrapolatedSpectrum:
+      case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      //case fileType::EnsembleAveragedBinnedSpectrum:
         minIndex = atoi(infoData[infoDims[1] + 0]);
         maxIndex = atoi(infoData[infoDims[1] + 1]);
         minValue = atof(infoData[infoDims[1] + 2]);
@@ -2653,6 +2738,7 @@ matrixData<double> *HDF5Manager::getMatrixD()
       dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleIterationSpectrum)];
       //dataSetName = "RAW_BEAM";
       break;
+    /*
     case fileType::EnsembleIterationBinnedSpectrum:
       infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
@@ -2663,6 +2749,7 @@ matrixData<double> *HDF5Manager::getMatrixD()
       dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleIterationBinnedSpectrum)];
       //dataSetName = "RAW_BEAM";
       break;
+    */
     case fileType::ModeModeMatrix:
       infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
@@ -2671,6 +2758,16 @@ matrixData<double> *HDF5Manager::getMatrixD()
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
 
       dataSetName = dataTypeNames[static_cast<int>(fileType::ModeModeMatrix)];
+      //dataSetName = "RAW_BEAM";
+      break;
+    case fileType::InverseModeModeMatrix:
+      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+
+      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+
+      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseModeModeMatrix)];
       //dataSetName = "RAW_BEAM";
       break;
     case fileType::InstrumentEffectsMatrix:
@@ -2683,6 +2780,17 @@ matrixData<double> *HDF5Manager::getMatrixD()
       dataSetName = dataTypeNames[static_cast<int>(fileType::InstrumentEffectsMatrix)];
       //dataSetName = "RAW_BEAM";
       break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+
+      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
+      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+
+      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseInstrumentEffectsMatrix)];
+      //dataSetName = "RAW_BEAM";
+      break;
+
     case fileType::BinningMatrix:
       infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));

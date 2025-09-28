@@ -65,3 +65,10 @@
 4	1426	1758168373260991781	CMakeFiles/graphics.dir/grapher.cpp.o	9b31b0e85931f3eb
 4	1451	1758168373285991779	CMakeFiles/graphics.dir/mollweide.cpp.o	12bd7efe004144c0
 1451	1508	1758168373341991775	libgraphics.so	fa6b896ebf6cec8a
+4	1191	1759079241309874921	CMakeFiles/graphics.dir/coordtransformer.cpp.o	614b4a72bd9809b2
+4	1227	1759079241345874919	CMakeFiles/graphics.dir/datamap.cpp.o	2e3809013b70470c
+4	1309	1759079241427874913	CMakeFiles/graphics.dir/mapper.cpp.o	13477df1613890da
+1	863	1759080765765774897	CMakeFiles/graphics.dir/dataspectrum.cpp.o	cab28a0a033453f0
+1	938	1759080765840774892	CMakeFiles/graphics.dir/grapher.cpp.o	9b31b0e85931f3eb
+1	857	1759080964280761872	CMakeFiles/graphics.dir/mollweide.cpp.o	12bd7efe004144c0
+857	916	1759080964338761868	libgraphics.so	fa6b896ebf6cec8a

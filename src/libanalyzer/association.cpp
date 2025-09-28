@@ -121,9 +121,13 @@ association::association() {
   m_ensembleIterationNoise = 0;
   m_ensembleAveragedSpectrum = 0;
   m_ensembleIterationSpectrum = 0;
+  m_extrapolatedSpectrum = 0;
+  m_extrapolatedInstrumentSpectrum = 0;
   m_binnedSpectrum = 0;
-  m_ensembleAveragedBinnedSpectrum = 0;
-  m_ensembleIterationBinnedSpectrum = 0;
+  m_binnedExtrapolatedSpectrum = 0;
+  m_binnedExtrapolatedInstrumentedSpectrum = 0;
+  //m_ensembleAveragedBinnedSpectrum = 0;
+  //m_ensembleIterationBinnedSpectrum = 0;
 
   //m_spectData = 0;
   //m_ensembleSpectData = 0;
@@ -139,7 +143,9 @@ association::association() {
   //m_couplingMatrix = 0;
   //m_inverseMatrix = 0;
   m_ModeModeMatrix = 0;
+  m_InverseModeModeMatrix = 0;
   m_InstrumentEffectsMatrix = 0;
+  m_InverseInstrumentEffectsMatrix = 0;
   m_BinningMatrix = 0;
   m_UnbinningMatrix = 0;
   m_BinnedInstrumentEffectsMatrix = 0;
@@ -185,8 +191,12 @@ association::association() {
   m_transWeightedNoiseGraph = 0;
   m_ensembleAveragedNoiseGraph = 0;
   m_ensembleAveragedSpectrumGraph = 0;
+  m_extrapolatedSpectrumGraph = 0;
+  m_extrapolatedInstrumentSpectrumGraph = 0;
   m_binnedSpectrumGraph = 0;
-  m_ensembleAveragedBinnedSpectrumGraph = 0;
+  m_binnedExtrapolatedSpectrumGraph = 0;
+  m_binnedExtrapolatedInstrumentedSpectrumGraph = 0;
+  //m_ensembleAveragedBinnedSpectrumGraph = 0;
 
   m_fileIOEngine = 0;
   m_mapEngine = 0;
@@ -236,15 +246,21 @@ association::association(association* from) {
   m_transBeam         = new vectorData<double>(from->transformedBeam());
   m_transWeightedNoise= new vectorData<double>(from->weightedTransformedNoise());
 
-  m_ensembleAveragedNoise           = new vectorData<double>(from->EnsembleAveragedNoise());
-  m_ensembleIterationNoise          = new matrixData<double>(from->EnsembleIterationNoise());
-  m_ensembleAveragedSpectrum        = new vectorData<double>(from->EnsembleAveragedSpectrum());
-  m_ensembleIterationSpectrum       = new matrixData<double>(from->EnsembleIterationSpectrum());
-  m_binnedSpectrum                  = new vectorData<double>(from->BinnedSpectrum());
-  m_ensembleAveragedBinnedSpectrum  = new vectorData<double>(from->EnsembleAveragedBinnedSpectrum());
-  m_ensembleIterationBinnedSpectrum = new matrixData<double>(from->EnsembleIterationBinnedSpectrum());
+  m_ensembleAveragedNoise                  = new vectorData<double>(from->EnsembleAveragedNoise());
+  m_ensembleIterationNoise                 = new matrixData<double>(from->EnsembleIterationNoise());
+  m_ensembleAveragedSpectrum               = new vectorData<double>(from->EnsembleAveragedSpectrum());
+  m_ensembleIterationSpectrum              = new matrixData<double>(from->EnsembleIterationSpectrum());
+  m_extrapolatedSpectrum                   = new vectorData<double>(from->ExtrapolatedSpectrum());
+  m_extrapolatedInstrumentSpectrum         = new vectorData<double>(from->ExtrapolatedInstrumentSpectrum());
+  m_binnedSpectrum                         = new vectorData<double>(from->BinnedSpectrum());
+  m_binnedExtrapolatedSpectrum             = new vectorData<double>(from->BinnedExtrapolatedSpectrum());
+  m_binnedExtrapolatedInstrumentedSpectrum = new vectorData<double>(from->BinnedExtrapolatedInstrumentSpectrum());
+  //m_ensembleAveragedBinnedSpectrum  = new vectorData<double>(from->EnsembleAveragedBinnedSpectrum());
+  //m_ensembleIterationBinnedSpectrum = new matrixData<double>(from->EnsembleIterationBinnedSpectrum());
   m_ModeModeMatrix                  = new matrixData<double>(from->ModeModeMatrix());
+  m_InverseModeModeMatrix           = new matrixData<double>(from->InverseModeModeMatrix());
   m_InstrumentEffectsMatrix         = new matrixData<double>(from->InstrumentEffectsMatrix());
+  m_InverseInstrumentEffectsMatrix  = new matrixData<double>(from->InverseInstrumentEffectsMatrix());
   m_BinningMatrix                   = new matrixData<double>(from->BinningMatrix());
   m_UnbinningMatrix                 = new matrixData<double>(from->UnbinningMatrix());
   m_BinnedInstrumentEffectsMatrix   = new matrixData<double>(from->BinnedInstrumentEffectsMatrix());
@@ -302,10 +318,14 @@ association::association(association* from) {
   m_transBeamGraph         = new dataSpectrum(from->transBeamGraph());
   m_transWeightedNoiseGraph= new dataSpectrum(from->transWeightedNoiseGraph());
 
-  m_ensembleAveragedNoiseGraph          = new dataSpectrum(from->EnsembleAveragedNoiseGraph());
-  m_ensembleAveragedSpectrumGraph       = new dataSpectrum(from->EnsembleAveragedSpectrumGraph());
-  m_binnedSpectrumGraph                 = new dataSpectrum(from->BinnedSpectrumGraph());
-  m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum(from->EnsembleAveragedBinnedSpectrumGraph());
+  m_ensembleAveragedNoiseGraph                  = new dataSpectrum(from->EnsembleAveragedNoiseGraph());
+  m_ensembleAveragedSpectrumGraph               = new dataSpectrum(from->EnsembleAveragedSpectrumGraph());
+  m_extrapolatedSpectrumGraph                   = new dataSpectrum(from->ExtrapolatedSpectrumGraph());
+  m_extrapolatedInstrumentSpectrumGraph         = new dataSpectrum(from->ExtrapolatedInstrumentSpectrumGraph());
+  m_binnedSpectrumGraph                         = new dataSpectrum(from->BinnedSpectrumGraph());
+  m_binnedExtrapolatedSpectrumGraph             = new dataSpectrum(from->BinnedExtrapolatedSpectrumGraph());
+  m_binnedExtrapolatedInstrumentedSpectrumGraph = new dataSpectrum(from->BinnedExtrapolatedInstrumentSpectrumGraph());
+  //m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum(from->EnsembleAveragedBinnedSpectrumGraph());
 
   m_selectedIOEngine        = from->fileIOEngineType();
   m_selectedMapEngine       = from->mappingEngineType();
@@ -381,11 +401,17 @@ association& association::operator=(association& other) {
   *m_ensembleIterationNoise          = *other.EnsembleIterationNoise();
   *m_ensembleAveragedSpectrum        = *other.EnsembleAveragedSpectrum();
   *m_ensembleIterationSpectrum       = *other.EnsembleIterationSpectrum();
+  *m_extrapolatedSpectrum            = *other.ExtrapolatedSpectrum();
+  *m_extrapolatedInstrumentSpectrum  = *other.ExtrapolatedInstrumentSpectrum();
   *m_binnedSpectrum                  = *other.BinnedSpectrum();
-  *m_ensembleAveragedBinnedSpectrum  = *other.EnsembleAveragedBinnedSpectrum();
-  *m_ensembleIterationBinnedSpectrum = *other.EnsembleIterationBinnedSpectrum();
+  *m_binnedExtrapolatedSpectrum      = *other.BinnedExtrapolatedSpectrum();
+  *m_binnedExtrapolatedInstrumentedSpectrum = *other.BinnedExtrapolatedInstrumentSpectrum();
+  //*m_ensembleAveragedBinnedSpectrum  = *other.EnsembleAveragedBinnedSpectrum();
+  //*m_ensembleIterationBinnedSpectrum = *other.EnsembleIterationBinnedSpectrum();
   *m_ModeModeMatrix                  = *other.ModeModeMatrix();
+  *m_InverseModeModeMatrix           = *other.InverseModeModeMatrix();
   *m_InstrumentEffectsMatrix         = *other.InstrumentEffectsMatrix();
+  *m_InverseInstrumentEffectsMatrix  = *other.InverseInstrumentEffectsMatrix();
   *m_BinningMatrix                   = *other.BinningMatrix();
   *m_UnbinningMatrix                 = *other.UnbinningMatrix();
   *m_BinnedInstrumentEffectsMatrix   = *other.BinnedInstrumentEffectsMatrix();
@@ -444,8 +470,12 @@ association& association::operator=(association& other) {
 
   *m_ensembleAveragedNoiseGraph          = *other.EnsembleAveragedNoiseGraph();
   *m_ensembleAveragedSpectrumGraph       = *other.EnsembleAveragedSpectrumGraph();
-  *m_binnedSpectrumGraph                 = *other.BinnedSpectrumGraph();
-  *m_ensembleAveragedBinnedSpectrumGraph = *other.EnsembleAveragedBinnedSpectrumGraph();
+  *m_extrapolatedSpectrumGraph                   = *other.ExtrapolatedSpectrumGraph();
+  *m_extrapolatedInstrumentSpectrumGraph         = *other.ExtrapolatedInstrumentSpectrumGraph();
+  *m_binnedSpectrumGraph                         = *other.BinnedSpectrumGraph();
+  *m_binnedExtrapolatedSpectrumGraph             = *other.BinnedExtrapolatedSpectrumGraph();
+  *m_binnedExtrapolatedInstrumentedSpectrumGraph = *other.BinnedExtrapolatedInstrumentSpectrumGraph();
+  //*m_ensembleAveragedBinnedSpectrumGraph = *other.EnsembleAveragedBinnedSpectrumGraph();
 
   *m_fileIOEngine      = *other.fileIOEngine();
   *m_mapEngine         = *other.mappingEngine();
@@ -588,20 +618,40 @@ association& association::merge(association& other, bool replace) {
     if(!exists(fileType::EnsembleIterationSpectrum) && other.exists(fileType::EnsembleIterationSpectrum))
       m_ensembleIterationSpectrum = new matrixData<double>(other.EnsembleIterationSpectrum());
 
+    if(!exists(fileType::ExtrapolatedSpectrum) && other.exists(fileType::ExtrapolatedSpectrum))
+      m_extrapolatedSpectrum = new vectorData<double>(other.ExtrapolatedSpectrum());
+
+    if(!exists(fileType::ExtrapolatedInstrumentSpectrum) && other.exists(fileType::ExtrapolatedInstrumentSpectrum))
+      m_extrapolatedInstrumentSpectrum = new vectorData<double>(other.ExtrapolatedInstrumentSpectrum());
+
     if(!exists(fileType::BinnedSpectrum) && other.exists(fileType::BinnedSpectrum))
       m_binnedSpectrum = new vectorData<double>(other.BinnedSpectrum());
 
+    if(!exists(fileType::BinnedExtrapolatedSpectrum) && other.exists(fileType::BinnedExtrapolatedSpectrum))
+      m_binnedExtrapolatedSpectrum = new vectorData<double>(other.BinnedExtrapolatedSpectrum());
+
+    if(!exists(fileType::BinnedExtrapolatedInstrumentedSpectrum) && other.exists(fileType::BinnedExtrapolatedInstrumentedSpectrum))
+      m_binnedExtrapolatedInstrumentedSpectrum = new vectorData<double>(other.BinnedExtrapolatedInstrumentSpectrum());
+
+    /*
     if(!exists(fileType::EnsembleAveragedBinnedSpectrum) && other.exists(fileType::EnsembleAveragedBinnedSpectrum))
       m_ensembleAveragedBinnedSpectrum = new vectorData<double>(other.EnsembleAveragedBinnedSpectrum());
 
     if(!exists(fileType::EnsembleIterationBinnedSpectrum) && other.exists(fileType::EnsembleIterationBinnedSpectrum))
       m_ensembleIterationBinnedSpectrum = new matrixData<double>(other.EnsembleIterationBinnedSpectrum());
+    */
 
     if(!exists(fileType::ModeModeMatrix) && other.exists(fileType::ModeModeMatrix))
       m_ModeModeMatrix = new matrixData<double>(other.ModeModeMatrix());
 
+    if(!exists(fileType::InverseModeModeMatrix) && other.exists(fileType::InverseModeModeMatrix))
+      m_InverseModeModeMatrix = new matrixData<double>(other.InverseModeModeMatrix());
+
     if(!exists(fileType::InstrumentEffectsMatrix) && other.exists(fileType::InstrumentEffectsMatrix))
       m_InstrumentEffectsMatrix = new matrixData<double>(other.InstrumentEffectsMatrix());
+
+    if(!exists(fileType::InverseInstrumentEffectsMatrix) && other.exists(fileType::InverseInstrumentEffectsMatrix))
+      m_InverseInstrumentEffectsMatrix = new matrixData<double>(other.InverseInstrumentEffectsMatrix());
 
     if(!exists(fileType::BinningMatrix) && other.exists(fileType::BinningMatrix))
       m_BinningMatrix = new matrixData<double>(other.BinningMatrix());
@@ -740,11 +790,25 @@ association& association::merge(association& other, bool replace) {
     if(!exists(associatedSpectrum::EnsembleAveragedSpectrumSpectrum) && other.exists(associatedSpectrum::EnsembleAveragedSpectrumSpectrum))
       m_ensembleAveragedSpectrumGraph = new dataSpectrum(other.EnsembleAveragedSpectrumGraph());
 
+    if(!exists(associatedSpectrum::ExtrapolatedSpectrumSpectrum) && other.exists(associatedSpectrum::ExtrapolatedSpectrumSpectrum))
+      m_extrapolatedSpectrumGraph = new dataSpectrum(other.ExtrapolatedSpectrumGraph());
+
+    if(!exists(associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum) && other.exists(associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum))
+      m_extrapolatedInstrumentSpectrumGraph = new dataSpectrum(other.ExtrapolatedInstrumentSpectrumGraph());
+
     if(!exists(associatedSpectrum::BinnedSpectrumSpectrum) && other.exists(associatedSpectrum::BinnedSpectrumSpectrum))
       m_binnedSpectrumGraph = new dataSpectrum(other.BinnedSpectrumGraph());
 
+    if(!exists(associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum) && other.exists(associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum))
+      m_binnedExtrapolatedSpectrumGraph = new dataSpectrum(other.BinnedExtrapolatedSpectrumGraph());
+
+    if(!exists(associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum) && other.exists(associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum))
+      m_binnedExtrapolatedInstrumentedSpectrumGraph = new dataSpectrum(other.BinnedExtrapolatedInstrumentSpectrumGraph());
+
+    /*
     if(!exists(associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum) && other.exists(associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum))
       m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum(other.EnsembleAveragedBinnedSpectrumGraph());
+    */
 
     if (!exists(dataEngines::fileIO) && other.exists(dataEngines::fileIO))
     {
@@ -1082,6 +1146,26 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_ensembleIterationSpectrum;
       break;
+    case fileType::ExtrapolatedSpectrum:
+      if(m_extrapolatedSpectrum == 0)
+        m_extrapolatedSpectrum = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_extrapolatedSpectrum && replace)
+          m_extrapolatedSpectrum = (vectorData<double>*)other;
+      }
+      bdPtr = m_extrapolatedSpectrum;
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      if(m_extrapolatedInstrumentSpectrum == 0)
+        m_extrapolatedInstrumentSpectrum = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_extrapolatedInstrumentSpectrum && replace)
+          m_extrapolatedInstrumentSpectrum = (vectorData<double>*)other;
+      }
+      bdPtr = m_extrapolatedInstrumentSpectrum;
+      break;
     case fileType::BinnedSpectrum:
       if(m_binnedSpectrum == 0)
         m_binnedSpectrum = new vectorData<double>((vectorData<double>*)other);
@@ -1092,6 +1176,28 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_binnedSpectrum;
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      if(m_binnedExtrapolatedSpectrum == 0)
+        m_binnedExtrapolatedSpectrum = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_binnedExtrapolatedSpectrum && replace)
+          m_binnedExtrapolatedSpectrum = (vectorData<double>*)other;
+      }
+      bdPtr = m_binnedExtrapolatedSpectrum;
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      if(m_binnedExtrapolatedInstrumentedSpectrum == 0)
+        m_binnedExtrapolatedInstrumentedSpectrum = new vectorData<double>((vectorData<double>*)other);
+      else
+      {
+        if(m_binnedExtrapolatedInstrumentedSpectrum && replace)
+          m_binnedExtrapolatedInstrumentedSpectrum = (vectorData<double>*)other;
+      }
+      bdPtr = m_binnedExtrapolatedInstrumentedSpectrum;
+      break;
+
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       if(m_ensembleAveragedBinnedSpectrum == 0)
         m_ensembleAveragedBinnedSpectrum = new vectorData<double>((vectorData<double>*)other);
@@ -1112,6 +1218,7 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_ensembleIterationBinnedSpectrum;
       break;
+    */
     case fileType::ModeModeMatrix:
       if(m_ModeModeMatrix == 0)
         m_ModeModeMatrix = new matrixData<double>((matrixData<double>*)other);
@@ -1122,6 +1229,15 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
       }
       bdPtr = m_ModeModeMatrix;
       break;
+    case fileType::InverseModeModeMatrix:
+      if(m_InverseModeModeMatrix == 0)
+        m_InverseModeModeMatrix = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_InverseModeModeMatrix && replace)
+          m_InverseModeModeMatrix = (matrixData<double>*)other;
+      }
+      bdPtr = m_InverseModeModeMatrix;
     case fileType::InstrumentEffectsMatrix:
       if(m_InstrumentEffectsMatrix == 0)
         m_InstrumentEffectsMatrix = new matrixData<double>((matrixData<double>*)other);
@@ -1131,6 +1247,16 @@ baseData& association::merge (FILETYPE dataType, baseData* other, bool replace) 
           m_InstrumentEffectsMatrix = (matrixData<double>*)other;
       }
       bdPtr = m_InstrumentEffectsMatrix;
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      if(m_InverseInstrumentEffectsMatrix == 0)
+        m_InverseInstrumentEffectsMatrix = new matrixData<double>((matrixData<double>*)other);
+      else
+      {
+        if(m_InverseInstrumentEffectsMatrix && replace)
+          m_InverseInstrumentEffectsMatrix = (matrixData<double>*)other;
+      }
+      bdPtr = m_InverseInstrumentEffectsMatrix;
       break;
     case fileType::BinningMatrix:
       if(m_BinningMatrix == 0)
@@ -1628,6 +1754,26 @@ dataSpectrum& association::merge(ASSOCIATEDSPECTRUM graphType, dataSpectrum* oth
       }
       dsPtr = m_ensembleAveragedSpectrumGraph;
       break;
+    case associatedSpectrum::ExtrapolatedSpectrumSpectrum:
+      if(m_extrapolatedSpectrumGraph == 0)
+        m_extrapolatedSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_extrapolatedSpectrumGraph && replace)
+          m_extrapolatedSpectrumGraph = other;
+      }
+      dsPtr = m_extrapolatedSpectrumGraph;
+      break;
+    case associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum:
+      if(m_extrapolatedInstrumentSpectrumGraph == 0)
+        m_extrapolatedInstrumentSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_extrapolatedInstrumentSpectrumGraph && replace)
+          m_extrapolatedInstrumentSpectrumGraph = other;
+      }
+      dsPtr = m_extrapolatedInstrumentSpectrumGraph;
+      break;
     case associatedSpectrum::BinnedSpectrumSpectrum:
       if(m_binnedSpectrumGraph == 0)
         m_binnedSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
@@ -1638,6 +1784,28 @@ dataSpectrum& association::merge(ASSOCIATEDSPECTRUM graphType, dataSpectrum* oth
       }
       dsPtr = m_binnedSpectrumGraph;
       break;
+    case associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum:
+      if(m_binnedExtrapolatedSpectrumGraph == 0)
+        m_binnedExtrapolatedSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_binnedExtrapolatedSpectrumGraph && replace)
+          m_binnedExtrapolatedSpectrumGraph = other;
+      }
+      dsPtr = m_binnedExtrapolatedSpectrumGraph;
+      break;
+    case associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum:
+      if(m_binnedExtrapolatedInstrumentedSpectrumGraph == 0)
+        m_binnedExtrapolatedInstrumentedSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
+      else
+      {
+        if(m_binnedExtrapolatedInstrumentedSpectrumGraph && replace)
+          m_binnedExtrapolatedInstrumentedSpectrumGraph = other;
+      }
+      dsPtr = m_binnedExtrapolatedInstrumentedSpectrumGraph;
+      break;
+
+    /*
     case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
       if(m_ensembleAveragedBinnedSpectrumGraph == 0)
         m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum((dataSpectrum*)other);
@@ -1648,6 +1816,7 @@ dataSpectrum& association::merge(ASSOCIATEDSPECTRUM graphType, dataSpectrum* oth
       }
       dsPtr = m_ensembleAveragedBinnedSpectrumGraph;
       break;
+    */
   }
 
   return *dsPtr;
@@ -1841,16 +2010,30 @@ bool association::exists(FILETYPE ft) {
       return (bool) m_ensembleAveragedSpectrum;
     case fileType::EnsembleIterationSpectrum:
       return (bool) m_ensembleIterationSpectrum;
+    case fileType::ExtrapolatedSpectrum:
+      return (bool) m_extrapolatedSpectrum;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      return (bool) m_extrapolatedInstrumentSpectrum;
     case fileType::BinnedSpectrum:
       return (bool) m_binnedSpectrum;
+    case fileType::BinnedExtrapolatedSpectrum:
+      return (bool) m_binnedExtrapolatedSpectrum;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      return (bool) m_binnedExtrapolatedInstrumentedSpectrum;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       return (bool) m_ensembleAveragedBinnedSpectrum;
     case fileType::EnsembleIterationBinnedSpectrum:
       return (bool) m_ensembleIterationBinnedSpectrum;
+    */
     case fileType::ModeModeMatrix:
       return (bool) m_ModeModeMatrix;
+    case fileType::InverseModeModeMatrix:
+      return (bool) m_InverseModeModeMatrix;
     case fileType::InstrumentEffectsMatrix:
       return (bool) m_InstrumentEffectsMatrix;
+    case fileType::InverseInstrumentEffectsMatrix:
+      return (bool) m_InverseInstrumentEffectsMatrix;
     case fileType::BinningMatrix:
       return (bool) m_BinningMatrix;
     case fileType::UnbinningMatrix:
@@ -1969,11 +2152,20 @@ bool association::exists(ASSOCIATEDSPECTRUM st) {
       return (bool) m_ensembleAveragedNoiseGraph;
     case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
       return (bool) m_ensembleAveragedSpectrumGraph;
+    case associatedSpectrum::ExtrapolatedSpectrumSpectrum:
+      return (bool) m_extrapolatedSpectrumGraph;
+    case associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum:
+      return (bool) m_extrapolatedInstrumentSpectrumGraph;
     case associatedSpectrum::BinnedSpectrumSpectrum:
       return (bool) m_binnedSpectrumGraph;
+    case associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum:
+      return (bool) m_binnedExtrapolatedSpectrumGraph;
+    case associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum:
+      return (bool) m_binnedExtrapolatedInstrumentedSpectrumGraph;
+    /*
     case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
       return (bool) m_ensembleAveragedBinnedSpectrumGraph;
-
+    */
     case associatedSpectrum::Null:
     default:
       break;
@@ -2101,16 +2293,30 @@ baseData* association::getData(FILETYPE ft) {
       return m_ensembleAveragedSpectrum;
     case fileType::EnsembleIterationSpectrum:
       return m_ensembleIterationSpectrum;
+    case fileType::ExtrapolatedSpectrum:
+      return m_extrapolatedSpectrum;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      return m_extrapolatedInstrumentSpectrum;
     case fileType::BinnedSpectrum:
       return m_binnedSpectrum;
+    case fileType::BinnedExtrapolatedSpectrum:
+      return m_binnedExtrapolatedSpectrum;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      return m_binnedExtrapolatedInstrumentedSpectrum;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       return m_ensembleAveragedBinnedSpectrum;
     case fileType::EnsembleIterationBinnedSpectrum:
       return m_ensembleIterationBinnedSpectrum;
+    */
     case fileType::ModeModeMatrix:
       return m_ModeModeMatrix;
+    case fileType::InverseModeModeMatrix:
+      return m_InverseModeModeMatrix;
     case fileType::InstrumentEffectsMatrix:
       return m_InstrumentEffectsMatrix;
+    case fileType::InverseInstrumentEffectsMatrix:
+      return m_InverseInstrumentEffectsMatrix;
     case fileType::BinningMatrix:
       return m_BinningMatrix;
     case fileType::UnbinningMatrix:
@@ -2207,11 +2413,20 @@ dataSpectrum* association::getGraph(ASSOCIATEDSPECTRUM st) {
       return m_ensembleAveragedNoiseGraph;
     case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
       return m_ensembleAveragedSpectrumGraph;
+    case associatedSpectrum::ExtrapolatedSpectrumSpectrum:
+      return m_extrapolatedSpectrumGraph;
+    case associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum:
+      return m_extrapolatedInstrumentSpectrumGraph;
     case associatedSpectrum::BinnedSpectrumSpectrum:
       return m_binnedSpectrumGraph;
+    case associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum:
+      return m_binnedExtrapolatedSpectrumGraph;
+    case associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum:
+      return m_binnedExtrapolatedInstrumentedSpectrumGraph;
+    /*
     case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
       return m_ensembleAveragedBinnedSpectrumGraph;
-
+    */
     case associatedSpectrum::Null:
     default:
       break;
@@ -2244,7 +2459,7 @@ void association::addEngine(DATAENGINES de, ...) {
   ERRORCODES recursiveError = noErrors;
 
   if (exists(de)) {
-    int offset = (int)de + (int)allTypes::EnsembleAveragedBinnedSpectrum;//SpectralDataSpectrum;
+    int offset = (int)de + (int)allTypes::BinnedExtrapolatedInstrumentedSpectrum;//EnsembleAveragedBinnedSpectrum;//SpectralDataSpectrum;
     reset((ALLTYPES)offset);
   }
 
@@ -2688,20 +2903,40 @@ void association::addEmpty(FILETYPE type, int x, int y, int z) {
     case fileType::EnsembleIterationSpectrum:
       m_ensembleIterationSpectrum = new matrixData<double>(x, y, type);
       break;
+    case fileType::ExtrapolatedSpectrum:
+      m_extrapolatedSpectrum = new vectorData<double>(x, type);
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      m_extrapolatedInstrumentSpectrum = new vectorData<double>(x, type);
+      break;
     case fileType::BinnedSpectrum:
       m_binnedSpectrum  = new vectorData<double>(x, type);
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      m_binnedExtrapolatedSpectrum = new vectorData<double>(x, type);
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      m_binnedExtrapolatedInstrumentedSpectrum = new vectorData<double>(x, type);
+      break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       m_ensembleAveragedBinnedSpectrum  = new vectorData<double>(x, type);
       break;
     case fileType::EnsembleIterationBinnedSpectrum:
       m_ensembleIterationBinnedSpectrum = new matrixData<double>(x, y, type);
       break;
+    */
     case fileType::ModeModeMatrix:
       m_ModeModeMatrix = new matrixData<double>(x, y, type);
       break;
+    case fileType::InverseModeModeMatrix:
+      m_InverseModeModeMatrix = new matrixData<double>(x, y, type);
+      break;
     case fileType::InstrumentEffectsMatrix:
       m_InstrumentEffectsMatrix = new matrixData<double>(x, y, type);
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      m_InverseBinnedInstrumentMatrix = new matrixData<double>(x, y, type);
       break;
     case fileType::BinningMatrix:
       m_BinningMatrix = new matrixData<double>(x, y, type);
@@ -3507,6 +3742,26 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->loadIntoGslMatrix(this, fileType::ModeModeMatrix);
   }
 
+  if(exists(fileType::InverseModeModeMatrix))
+    spect->loadIntoGslMatrix(this, fileType::InverseModeModeMatrix);
+  else
+  {
+    //addEmpty(fileType::ModeModeMatrix, spect->maxIndex(), spect->maxIndex());
+    m_InverseModeModeMatrix = new matrixData<double>(spect->maxIndex(), spect->maxIndex(), fileType::InverseModeModeMatrix);
+    m_InverseModeModeMatrix->initialize();
+
+    spect->invertMatrix(this, fileType::ModeModeMatrix);
+    spect->loadIntoMatrixData(this, fileType::InverseModeModeMatrix);
+  }
+
+  if(!exists(fileType::ExtrapolatedSpectrum))
+  {
+    m_extrapolatedSpectrum = new vectorData<double>(spect->maxIndex(), fileType::ExtrapolatedSpectrum);
+    m_extrapolatedSpectrum->initialize();
+
+    spect->calculateExtrapolatedSpectrum(this);
+  }
+
   if(exists(fileType::InstrumentEffectsMatrix))
     spect->loadIntoGslMatrix(this, fileType::InstrumentEffectsMatrix);
   else
@@ -3518,6 +3773,27 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->calculateInstrumentEffectsMatrix(this);
     spect->loadIntoGslMatrix(this, fileType::InstrumentEffectsMatrix);
   }
+
+  if(exists(fileType::InverseInstrumentEffectsMatrix))
+    spect->loadIntoGslMatrix(this, fileType::InverseInstrumentEffectsMatrix);
+  else
+  {
+    //addEmpty(fileType::InstrumentEffectsMatrix, spect->maxIndex(), spect->maxIndex());
+    m_InverseInstrumentEffectsMatrix = new matrixData<double>(spect->maxIndex(), spect->maxIndex(), fileType::InverseInstrumentEffectsMatrix);
+    m_InverseInstrumentEffectsMatrix->initialize();
+
+    spect->invertMatrix(this, fileType::InstrumentEffectsMatrix);
+    spect->loadIntoMatrixData(this, fileType::InverseInstrumentEffectsMatrix);
+  }
+
+  if(!exists(fileType::ExtrapolatedInstrumentSpectrum))
+  {
+    m_extrapolatedInstrumentSpectrum = new vectorData<double>(spect->maxIndex(), fileType::ExtrapolatedInstrumentSpectrum);
+    m_extrapolatedInstrumentSpectrum->initialize();
+
+    spect->calculateExtrapolatedInstrumentSpectrum(this);
+  }
+
 
   if(exists(fileType::BinningMatrix))
     spect->loadIntoGslMatrix(this, fileType::BinningMatrix);
@@ -3552,7 +3828,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     m_BinnedInstrumentEffectsMatrix->initialize();
 
     spect->calculateBinnedInstrumentEffectsMatrix(this);
-    spect->loadIntoGslMatrix(this, fileType::BinnedInstrumentEffectsMatrix);
+    spect->loadIntoMatrixData(this, fileType::BinnedInstrumentEffectsMatrix);
   }
 
   if(exists(fileType::InverseBinnedInstrumentMatrix))
@@ -3565,19 +3841,35 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
 
     // matrix isn't invertible because the first row and column is 0 due to the binning and unbinning matrixes being 0 for the first 2 l's
     spect->invertMatrix(this, fileType::BinnedInstrumentEffectsMatrix);
-    spect->loadIntoGslMatrix(this, fileType::InverseBinnedInstrumentMatrix);
+    spect->loadIntoMatrixData(this, fileType::InverseBinnedInstrumentMatrix);
   }
 
   if(!exists(fileType::BinnedSpectrum))
   {
-    //addEmpty(fileType::BinnedSpectrum, spect->numBins());
     m_binnedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedSpectrum);
     m_binnedSpectrum->initialize();
 
     spect->calculateBinnedSpectrum(this);
   }
 
+  if(!exists(fileType::BinnedExtrapolatedSpectrum))
+  {
+    m_binnedExtrapolatedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedExtrapolatedSpectrum);
+    m_binnedExtrapolatedSpectrum->initialize();
 
+    spect->calculateBinnedExtrapolatedSpectrum(this);
+  }
+
+  if(!exists(fileType::BinnedExtrapolatedInstrumentedSpectrum))
+  {
+    m_binnedExtrapolatedInstrumentedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedExtrapolatedInstrumentedSpectrum);
+    m_binnedExtrapolatedInstrumentedSpectrum->initialize();
+
+    spect->calculateBinnedExtrapolatedInstrumentSpectrum(this);
+  }
+
+
+  /*
   if(!exists(fileType::EnsembleAveragedBinnedSpectrum))
   {
     //addEmpty(fileType::EnsembleAveragedBinnedSpectrum, spect->numBins());
@@ -3590,6 +3882,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
 
     spect->calculateEnsembleAverage(this, fileType::EnsembleAveragedBinnedSpectrum);
   }
+  */
 
   /*
   addEmpty(fileType::SpectralData,m_transData->size());
@@ -4304,6 +4597,18 @@ bool association::generateGraph(FILETYPE type) {
       else
         m_ensembleAveragedSpectrumGraph = new dataSpectrum(graph);
       break;
+    case fileType::ExtrapolatedSpectrum:
+      if (!m_extrapolatedSpectrum)
+        return false;
+      else
+        m_extrapolatedSpectrumGraph = new dataSpectrum(graph);
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      if (!m_extrapolatedInstrumentSpectrum)
+        return false;
+      else
+        m_extrapolatedInstrumentSpectrumGraph = new dataSpectrum(graph);
+      break;
     case fileType::BinnedSpectrum:
       if (!m_binnedSpectrum)
         return false;
@@ -4313,6 +4618,19 @@ bool association::generateGraph(FILETYPE type) {
       else
         m_binnedSpectrumGraph = new dataSpectrum(graph);
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      if (!m_binnedExtrapolatedSpectrum)
+        return false;
+      else
+        m_binnedExtrapolatedSpectrumGraph = new dataSpectrum(graph);
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      if (!m_binnedExtrapolatedInstrumentedSpectrum)
+        return false;
+      else
+        m_binnedExtrapolatedInstrumentedSpectrumGraph = new dataSpectrum(graph);
+      break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       if (!m_ensembleAveragedBinnedSpectrum)
         return false;
@@ -4322,6 +4640,7 @@ bool association::generateGraph(FILETYPE type) {
       else
         m_ensembleAveragedBinnedSpectrumGraph = new dataSpectrum(graph);
       break;
+    */
     default:
       return false;
   }
@@ -4341,8 +4660,12 @@ bool association::generateGraph(FILETYPE type) {
     //case fileType::EnsembleData:
     case fileType::EnsembleAveragedNoise:
     case fileType::EnsembleAveragedSpectrum:
+    case fileType::ExtrapolatedSpectrum:
+    case fileType::ExtrapolatedInstrumentSpectrum:
     case fileType::BinnedSpectrum:
-    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::BinnedExtrapolatedSpectrum:
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+    //case fileType::EnsembleAveragedBinnedSpectrum:
       m_sequence = graphPowerSpectrum;
       break;
   }
@@ -4489,20 +4812,40 @@ void association::addData(baseData *item) {
     case fileType::EnsembleIterationSpectrum:
       m_ensembleIterationSpectrum = (matrixData<double>*)item;
       break;
+    case fileType::ExtrapolatedSpectrum:
+      m_extrapolatedSpectrum = (vectorData<double>*)item;
+      break;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      m_extrapolatedInstrumentSpectrum = (vectorData<double>*)item;
+      break;
     case fileType::BinnedSpectrum:
       m_binnedSpectrum = (vectorData<double>*)item;
       break;
+    case fileType::BinnedExtrapolatedSpectrum:
+      m_binnedExtrapolatedSpectrum = (vectorData<double>*)item;
+      break;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      m_binnedExtrapolatedInstrumentedSpectrum = (vectorData<double>*)item;
+      break;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       m_ensembleAveragedBinnedSpectrum = (vectorData<double>*)item;
       break;
     case fileType::EnsembleIterationBinnedSpectrum:
       m_ensembleIterationBinnedSpectrum = (matrixData<double>*)item;
       break;
+    */
     case fileType::ModeModeMatrix:
       m_ModeModeMatrix = (matrixData<double>*)item;
       break;
+    case fileType::InverseModeModeMatrix:
+      m_InverseModeModeMatrix = (matrixData<double>*)item;
+      break;
     case fileType::InstrumentEffectsMatrix:
       m_InstrumentEffectsMatrix = (matrixData<double>*)item;
+      break;
+    case fileType::InverseInstrumentEffectsMatrix:
+      m_InverseInstrumentEffectsMatrix = (matrixData<double>*)item;
       break;
     case fileType::BinningMatrix:
       m_BinningMatrix = (matrixData<double>*)item;
@@ -4536,7 +4879,8 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
       if(m_weightedTransform)
         seq = powerSpectrum;
       //if (m_ensembleSpectData)
-      if(m_ensembleAveragedBinnedSpectrum)
+      //if(m_ensembleAveragedBinnedSpectrum)
+      if(m_binnedExtrapolatedInstrumentedSpectrum)
         seq = DONE;
       break;
     case Weights:
@@ -4550,7 +4894,8 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
       if(m_weightedTransform)
         seq = powerSpectrum;
       //if (m_ensembleSpectData)
-      if(m_ensembleAveragedBinnedSpectrum)
+      //if(m_ensembleAveragedBinnedSpectrum)
+      if(m_binnedExtrapolatedInstrumentedSpectrum)
         seq = DONE;
       break;
     case Noise:
@@ -4564,7 +4909,8 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
       if(m_weightedTransform)
         seq = powerSpectrum;
       //if (m_ensembleSpectData)
-      if(m_ensembleAveragedBinnedSpectrum)
+      //if(m_ensembleAveragedBinnedSpectrum)
+      if(m_binnedExtrapolatedInstrumentedSpectrum)
         seq = DONE;
       break;
     case Filter:
@@ -4578,7 +4924,8 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
       if(m_weightedTransform)
         seq = powerSpectrum;
       //if (m_ensembleSpectData)
-      if(m_ensembleAveragedBinnedSpectrum)
+      //if(m_ensembleAveragedBinnedSpectrum)
+      if(m_binnedExtrapolatedInstrumentedSpectrum)
         seq = DONE;
       break;
     case Beam:
@@ -4592,7 +4939,8 @@ SEQUENCE association::maxDataSet(GENERICTYPE type) {
       if(m_weightedTransform)
         seq = powerSpectrum;
       //if (m_ensembleSpectData)
-      if(m_ensembleAveragedBinnedSpectrum)
+      //if(m_ensembleAveragedBinnedSpectrum)
+      if(m_binnedExtrapolatedInstrumentedSpectrum)
         seq = DONE;
       break;
     case NoGeneric:
@@ -4622,7 +4970,7 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
         break;
       seq = powerSpectrum;
       //if (!m_ensembleSpectData)
-      if(!m_ensembleAveragedBinnedSpectrum)
+      if(!m_binnedExtrapolatedInstrumentedSpectrum)
         break;
       seq = DONE;
       break;
@@ -4641,7 +4989,7 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
         break;
       seq = powerSpectrum;
       //if (!m_ensembleSpectData)
-      if(!m_ensembleAveragedBinnedSpectrum)
+      if(!m_binnedExtrapolatedInstrumentedSpectrum)
         break;
       seq = DONE;
       break;
@@ -4660,7 +5008,7 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
         break;
       seq = powerSpectrum;
       //if (!m_ensembleSpectData)
-      if(!m_ensembleAveragedBinnedSpectrum)
+      if(!m_binnedExtrapolatedInstrumentedSpectrum)
         break;
       seq = DONE;
       break;
@@ -4679,7 +5027,7 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
         break;
       seq = powerSpectrum;
       //if (!m_ensembleSpectData)
-      if(!m_ensembleAveragedBinnedSpectrum)
+      if(!m_binnedExtrapolatedInstrumentedSpectrum)
         break;
       seq = DONE;
       break;
@@ -4698,7 +5046,7 @@ SEQUENCE association::maxDataChain(GENERICTYPE type) {
         break;
       seq = powerSpectrum;
       //if (!m_ensembleSpectData)
-      if(!m_ensembleAveragedBinnedSpectrum)
+      if(!m_binnedExtrapolatedInstrumentedSpectrum)
         break;
       seq = DONE;
       break;
@@ -4894,10 +5242,27 @@ void association::discardRelation(FILETYPE type) {
       if(m_ensembleIterationSpectrum)
         delete m_ensembleIterationSpectrum;
       m_ensembleIterationSpectrum = 0;
+    case fileType::ExtrapolatedSpectrum:
+      if(m_extrapolatedSpectrum)
+          delete m_extrapolatedSpectrum;
+      m_extrapolatedSpectrum = 0;
+    case fileType::ExtrapolatedInstrumentSpectrum:
+      if(m_extrapolatedInstrumentSpectrum)
+        delete m_extrapolatedInstrumentSpectrum;
+      m_extrapolatedInstrumentSpectrum = 0;
     case fileType::BinnedSpectrum:
       if(m_binnedSpectrum)
         delete m_binnedSpectrum;
       m_binnedSpectrum = 0;
+    case fileType::BinnedExtrapolatedSpectrum:
+      if(m_binnedExtrapolatedSpectrum)
+        delete m_binnedExtrapolatedSpectrum;
+      m_binnedExtrapolatedSpectrum = 0;
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      if(m_binnedExtrapolatedInstrumentedSpectrum)
+        delete m_binnedExtrapolatedInstrumentedSpectrum;
+      m_binnedExtrapolatedInstrumentedSpectrum = 0;
+    /*
     case fileType::EnsembleAveragedBinnedSpectrum:
       if(m_ensembleAveragedBinnedSpectrum)
         delete m_ensembleAveragedBinnedSpectrum;
@@ -4906,14 +5271,23 @@ void association::discardRelation(FILETYPE type) {
       if(m_ensembleIterationBinnedSpectrum)
         delete m_ensembleIterationBinnedSpectrum;
       m_ensembleIterationBinnedSpectrum = 0;
+    */
     case fileType::ModeModeMatrix:
       if(m_ModeModeMatrix)
         delete m_ModeModeMatrix;
       m_ModeModeMatrix = 0;
+    case fileType::InverseModeModeMatrix:
+      if(m_InverseModeModeMatrix)
+        delete m_InverseModeModeMatrix;
+      m_InverseModeModeMatrix = 0;
     case fileType::InstrumentEffectsMatrix:
       if(m_InstrumentEffectsMatrix)
         delete m_InstrumentEffectsMatrix;
       m_InstrumentEffectsMatrix = 0;
+    case fileType::InverseInstrumentEffectsMatrix:
+      if(m_InverseInstrumentEffectsMatrix)
+        delete m_InverseInstrumentEffectsMatrix;
+      m_InverseInstrumentEffectsMatrix = 0;
     case fileType::BinningMatrix:
       if(m_BinningMatrix)
         delete m_BinningMatrix;
@@ -5189,11 +5563,33 @@ void association::reset(ALLTYPES id) {
         delete m_ensembleIterationSpectrum;
       m_ensembleIterationSpectrum = 0;
       break;
+    case allTypes::ExtrapolatedSpectrum:
+      if(m_extrapolatedSpectrum)
+        delete m_extrapolatedSpectrum;
+      m_extrapolatedSpectrum = 0;
+      break;
+    case allTypes::ExtrapolatedInstrumentSpectrum:
+      if(m_extrapolatedInstrumentSpectrum)
+        delete m_extrapolatedInstrumentSpectrum;
+      m_extrapolatedInstrumentSpectrum = 0;
+      break;
     case allTypes::BinnedSpectrum:
       if(m_binnedSpectrum)
         delete m_binnedSpectrum;
       m_binnedSpectrum = 0;
       break;
+    case allTypes::BinnedExtrapolatedSpectrum:
+      if(m_binnedExtrapolatedSpectrum)
+        delete m_binnedExtrapolatedSpectrum;
+      m_binnedExtrapolatedSpectrum = 0;
+      break;
+    case allTypes::BinnedExtrapolatedInstrumentedSpectrum:
+      if(m_binnedExtrapolatedInstrumentedSpectrum)
+        delete m_binnedExtrapolatedInstrumentedSpectrum;
+      m_binnedExtrapolatedInstrumentedSpectrum = 0;
+      break;
+
+    /*
     case allTypes::EnsembleAveragedBinnedSpectrum:
       if(m_ensembleAveragedBinnedSpectrum)
         delete m_ensembleAveragedBinnedSpectrum;
@@ -5204,15 +5600,26 @@ void association::reset(ALLTYPES id) {
         delete m_ensembleIterationBinnedSpectrum;
       m_ensembleIterationBinnedSpectrum = 0;
       break;
+    */
     case allTypes::ModeModeMatrix:
       if(m_ModeModeMatrix)
         delete m_ModeModeMatrix;
       m_ModeModeMatrix = 0;
       break;
+    case allTypes::InverseModeModeMatrix:
+      if(m_InverseModeModeMatrix)
+        delete m_InverseModeModeMatrix;
+      m_InverseModeModeMatrix = 0;
+      break;
     case allTypes::InstrumentEffectsMatrix:
       if(m_InstrumentEffectsMatrix)
         delete m_InstrumentEffectsMatrix;
       m_InstrumentEffectsMatrix = 0;
+      break;
+    case allTypes::InverseInstrumentEffectsMatrix:
+      if(m_InverseInstrumentEffectsMatrix)
+        delete m_InverseInstrumentEffectsMatrix;
+      m_InverseInstrumentEffectsMatrix = 0;
       break;
     case allTypes::BinningMatrix:
       if(m_BinningMatrix)
@@ -5399,16 +5806,38 @@ void association::reset(ALLTYPES id) {
         delete m_ensembleAveragedSpectrumGraph;
       m_ensembleAveragedSpectrumGraph = 0;
       break;
+    case allTypes::ExtrapolatedSpectrumSpectrum:
+      if(m_extrapolatedSpectrumGraph)
+        delete m_extrapolatedSpectrumGraph;
+      m_extrapolatedSpectrumGraph = 0;
+      break;
+    case allTypes::ExtrapolatedInstrumentSpectrumSpectrum:
+      if(m_extrapolatedInstrumentSpectrumGraph)
+        delete m_extrapolatedInstrumentSpectrumGraph;
+      m_extrapolatedInstrumentSpectrumGraph = 0;
+      break;
     case allTypes::BinnedSpectrumSpectrum:
       if(m_binnedSpectrumGraph)
         delete m_binnedSpectrumGraph;
       m_binnedSpectrumGraph = 0;
       break;
+    case allTypes::BinnedExtrapolatedSpectrumSpectrum:
+      if(m_binnedExtrapolatedSpectrumGraph)
+        delete m_binnedExtrapolatedSpectrumGraph;
+      m_binnedExtrapolatedSpectrumGraph = 0;
+      break;
+    case allTypes::BinnedExtrapolatedInstrumentedSpectrumSpectrum:
+      if(m_binnedExtrapolatedInstrumentedSpectrumGraph)
+        delete m_binnedExtrapolatedInstrumentedSpectrumGraph;
+      m_binnedExtrapolatedInstrumentedSpectrumGraph = 0;
+      break;
+    /*
     case allTypes::EnsembleAveragedBinnedSpectrumSpectrum:
       if(m_ensembleAveragedBinnedSpectrumGraph)
         delete m_ensembleAveragedBinnedSpectrumGraph;
       m_ensembleAveragedBinnedSpectrumGraph = 0;
       break;
+    */
 
     case allTypes::fileIO:
       if (m_fileIOEngine)
@@ -5625,10 +6054,27 @@ void association::resetData() {
     delete m_ensembleIterationSpectrum;
   m_ensembleIterationSpectrum = 0;
 
+  if(m_extrapolatedSpectrum)
+    delete m_extrapolatedSpectrum;
+  m_extrapolatedSpectrum = 0;
+
+  if(m_extrapolatedInstrumentSpectrum)
+    delete m_extrapolatedInstrumentSpectrum;
+  m_extrapolatedInstrumentSpectrum = 0;
+
   if(m_binnedSpectrum)
     delete m_binnedSpectrum;
   m_binnedSpectrum = 0;
 
+  if(m_binnedExtrapolatedSpectrum)
+    delete m_binnedExtrapolatedSpectrum;
+  m_binnedExtrapolatedSpectrum = 0;
+
+  if(m_binnedExtrapolatedInstrumentedSpectrum)
+    delete m_binnedExtrapolatedInstrumentedSpectrum;
+  m_binnedExtrapolatedInstrumentedSpectrum = 0;
+
+  /*
   if(m_ensembleAveragedBinnedSpectrum)
     delete m_ensembleAveragedBinnedSpectrum;
   m_ensembleAveragedBinnedSpectrum = 0;
@@ -5636,14 +6082,23 @@ void association::resetData() {
   if(m_ensembleIterationBinnedSpectrum)
     delete m_ensembleIterationBinnedSpectrum;
   m_ensembleIterationBinnedSpectrum = 0;
+  */
 
   if(m_ModeModeMatrix)
     delete m_ModeModeMatrix;
   m_ModeModeMatrix = 0;
 
+  if(m_InverseModeModeMatrix)
+    delete m_InverseModeModeMatrix;
+  m_InverseModeModeMatrix = 0;
+
   if(m_InstrumentEffectsMatrix)
     delete m_InstrumentEffectsMatrix;
   m_InstrumentEffectsMatrix = 0;
+
+  if(m_InverseInstrumentEffectsMatrix)
+    delete m_InverseInstrumentEffectsMatrix;
+  m_InverseInstrumentEffectsMatrix = 0;
 
   if(m_BinningMatrix)
     delete m_BinningMatrix;
@@ -5782,13 +6237,31 @@ void association::resetGraphs() {
     delete m_ensembleAveragedSpectrumGraph;
   m_ensembleAveragedSpectrumGraph = 0;
 
+  if(m_extrapolatedSpectrumGraph)
+    delete m_extrapolatedSpectrumGraph;
+  m_extrapolatedSpectrumGraph = 0;
+
+  if(m_extrapolatedInstrumentSpectrumGraph)
+    delete m_extrapolatedInstrumentSpectrumGraph;
+  m_extrapolatedInstrumentSpectrumGraph = 0;
+
   if(m_binnedSpectrumGraph)
     delete m_binnedSpectrumGraph;
   m_binnedSpectrumGraph = 0;
 
+  if(m_binnedExtrapolatedSpectrumGraph)
+    delete m_binnedExtrapolatedSpectrumGraph;
+  m_binnedExtrapolatedSpectrumGraph = 0;
+
+  if(m_binnedExtrapolatedInstrumentedSpectrumGraph)
+    delete m_binnedExtrapolatedInstrumentedSpectrumGraph;
+  m_binnedExtrapolatedInstrumentedSpectrumGraph = 0;
+
+  /*
   if(m_ensembleAveragedBinnedSpectrumGraph)
     delete m_ensembleAveragedBinnedSpectrumGraph;
   m_ensembleAveragedBinnedSpectrumGraph = 0;
+  */
 }
 
 void association::resetEngines() {

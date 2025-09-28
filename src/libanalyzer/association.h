@@ -175,9 +175,15 @@ public:
   matrixData<double>*  EnsembleIterationNoise()          const {return m_ensembleIterationNoise;}
   vectorData<double>*  EnsembleAveragedSpectrum()        const {return m_ensembleAveragedSpectrum;}
   matrixData<double>*  EnsembleIterationSpectrum()       const {return m_ensembleIterationSpectrum;}
+
+  vectorData<double>*  ExtrapolatedSpectrum()            const {return m_extrapolatedSpectrum;}
+  vectorData<double>*  ExtrapolatedInstrumentSpectrum()  const {return m_extrapolatedInstrumentSpectrum;}
   vectorData<double>*  BinnedSpectrum()                  const {return m_binnedSpectrum;}
-  vectorData<double>*  EnsembleAveragedBinnedSpectrum()  const {return m_ensembleAveragedBinnedSpectrum;}
-  matrixData<double>*  EnsembleIterationBinnedSpectrum() const {return m_ensembleIterationBinnedSpectrum; }
+  vectorData<double>*  BinnedExtrapolatedSpectrum()      const {return m_binnedExtrapolatedSpectrum; }
+  vectorData<double>*  BinnedExtrapolatedInstrumentSpectrum() const {return m_binnedExtrapolatedInstrumentedSpectrum; }
+
+  //vectorData<double>*  EnsembleAveragedBinnedSpectrum()  const {return m_ensembleAveragedBinnedSpectrum;}
+  //matrixData<double>*  EnsembleIterationBinnedSpectrum() const {return m_ensembleIterationBinnedSpectrum; }
 
   //vectorData<double>* spectrumData() const {return m_spectData;}
   //vectorData<double>* ensembleData() const {return m_ensembleSpectData;}
@@ -193,12 +199,14 @@ public:
    */
   //matrixData<double>* couplingMatrix() const {return m_couplingMatrix;}
   //matrixData<double>* inverseMatrix() const {return m_inverseMatrix;}
-  matrixData<double>*  ModeModeMatrix()                const {return m_ModeModeMatrix;}
-  matrixData<double>*  InstrumentEffectsMatrix()       const {return m_InstrumentEffectsMatrix;}
-  matrixData<double>*  BinningMatrix()                 const {return m_BinningMatrix;}
-  matrixData<double>*  UnbinningMatrix()               const {return m_UnbinningMatrix;}
-  matrixData<double>*  BinnedInstrumentEffectsMatrix() const {return m_BinnedInstrumentEffectsMatrix;}
-  matrixData<double>*  InverseBinnedInstrumentMatrix() const {return m_InverseBinnedInstrumentMatrix;}
+  matrixData<double>*  ModeModeMatrix()                 const {return m_ModeModeMatrix;}
+  matrixData<double>*  InverseModeModeMatrix()          const {return m_InverseModeModeMatrix; }
+  matrixData<double>*  InstrumentEffectsMatrix()        const {return m_InstrumentEffectsMatrix;}
+  matrixData<double>*  InverseInstrumentEffectsMatrix() const {return m_InverseInstrumentEffectsMatrix;}
+  matrixData<double>*  BinningMatrix()                  const {return m_BinningMatrix;}
+  matrixData<double>*  UnbinningMatrix()                const {return m_UnbinningMatrix;}
+  matrixData<double>*  BinnedInstrumentEffectsMatrix()  const {return m_BinnedInstrumentEffectsMatrix;}
+  matrixData<double>*  InverseBinnedInstrumentMatrix()  const {return m_InverseBinnedInstrumentMatrix;}
 
 
   /**
@@ -253,10 +261,14 @@ public:
   dataSpectrum* transWeightedNoiseGraph() const {return m_transWeightedNoiseGraph;}
   //dataSpectrum* spectrumGraph() const {return m_spectDataGraph;}
   //dataSpectrum* ensembleGraph() const {return m_ensembleDataGraph;}
-  dataSpectrum* EnsembleAveragedNoiseGraph()            const {return m_ensembleAveragedNoiseGraph;}
-  dataSpectrum* EnsembleAveragedSpectrumGraph()         const {return m_ensembleAveragedSpectrumGraph;}
-  dataSpectrum* BinnedSpectrumGraph()                   const {return m_binnedSpectrumGraph;}
-  dataSpectrum* EnsembleAveragedBinnedSpectrumGraph()   const {return m_ensembleAveragedBinnedSpectrumGraph;}
+  dataSpectrum* EnsembleAveragedNoiseGraph()                const {return m_ensembleAveragedNoiseGraph;}
+  dataSpectrum* EnsembleAveragedSpectrumGraph()             const {return m_ensembleAveragedSpectrumGraph;}
+  dataSpectrum* ExtrapolatedSpectrumGraph()                 const {return m_extrapolatedInstrumentSpectrumGraph;}
+  dataSpectrum* ExtrapolatedInstrumentSpectrumGraph()       const {return m_extrapolatedInstrumentSpectrumGraph;}
+  dataSpectrum* BinnedSpectrumGraph()                       const {return m_binnedSpectrumGraph;}
+  dataSpectrum* BinnedExtrapolatedSpectrumGraph()           const {return m_binnedExtrapolatedSpectrumGraph;}
+  dataSpectrum* BinnedExtrapolatedInstrumentSpectrumGraph() const {return m_binnedExtrapolatedInstrumentedSpectrumGraph;}
+  //dataSpectrum* EnsembleAveragedBinnedSpectrumGraph()   const {return m_ensembleAveragedBinnedSpectrumGraph;}
 
   /**
    * access data engines
@@ -442,11 +454,17 @@ private:
   vectorData<double>               *m_spectrum;                      // Cl in the paper with a tilde
   vectorData<double>               *m_ensembleAveragedSpectrum;       // <Cl> in the paper with a tilde
   matrixData<double>               *m_ensembleIterationSpectrum;
+  vectorData<double>               *m_extrapolatedSpectrum;
+  vectorData<double>               *m_extrapolatedInstrumentSpectrum;
   vectorData<double>               *m_binnedSpectrum;                // Cb in the paper with a tilde
-  vectorData<double>               *m_ensembleAveragedBinnedSpectrum; // <Cb> in the paper with a tilde
-  matrixData<double>               *m_ensembleIterationBinnedSpectrum;
+  vectorData<double>               *m_binnedExtrapolatedSpectrum;
+  vectorData<double>               *m_binnedExtrapolatedInstrumentedSpectrum;
+  //vectorData<double>               *m_ensembleAveragedBinnedSpectrum; // <Cb> in the paper with a tilde
+  //matrixData<double>               *m_ensembleIterationBinnedSpectrum;
   matrixData<double>               *m_ModeModeMatrix; // Mll in the paper
+  matrixData<double>               *m_InverseModeModeMatrix;
   matrixData<double>               *m_InstrumentEffectsMatrix; // Kll
+  matrixData<double>               *m_InverseInstrumentEffectsMatrix;
   matrixData<double>               *m_BinningMatrix; // Pbl in the paper
   matrixData<double>               *m_UnbinningMatrix; // Qlb in the paper
   matrixData<double>               *m_BinnedInstrumentEffectsMatrix; // Kbb  in the paper
@@ -493,8 +511,12 @@ private:
 
   dataSpectrum                     *m_ensembleAveragedNoiseGraph;
   dataSpectrum                     *m_ensembleAveragedSpectrumGraph;
+  dataSpectrum                     *m_extrapolatedSpectrumGraph;
+  dataSpectrum                     *m_extrapolatedInstrumentSpectrumGraph;
   dataSpectrum                     *m_binnedSpectrumGraph;
-  dataSpectrum                     *m_ensembleAveragedBinnedSpectrumGraph;
+  dataSpectrum                     *m_binnedExtrapolatedSpectrumGraph;
+  dataSpectrum                     *m_binnedExtrapolatedInstrumentedSpectrumGraph;
+  //dataSpectrum                   *m_ensembleAveragedBinnedSpectrumGraph;
   dataSpectrum                     *m_weightedTransformGraph;
 
 

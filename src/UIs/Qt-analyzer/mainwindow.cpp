@@ -212,6 +212,11 @@ mainWindow::mainWindow() :
 
   // create progress interface
 //  progressInterface = analyzer_set_progress_callback(this,progressBarWrapper);
+
+
+  //for(int typeID = 0; typeID < static_cast<int>(fileType::FILETYPE_LIMIT); typeID += 1)
+  //  std::cout << "ID: " << typeID << " name: " << dataTypeNames[typeID] << "\n";
+
 }
 
 mainWindow::~mainWindow() {
@@ -435,8 +440,12 @@ void mainWindow::openFile()
         case fileType::TransformedBeam:
         case fileType::EnsembleAveragedNoise:
         case fileType::EnsembleAveragedSpectrum:
+        case fileType::ExtrapolatedSpectrum:
+        case fileType::ExtrapolatedInstrumentSpectrum:
         case fileType::BinnedSpectrum:
-        case fileType::EnsembleAveragedBinnedSpectrum:
+        case fileType::BinnedExtrapolatedSpectrum:
+        case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+        //case fileType::EnsembleAveragedBinnedSpectrum:
           types[1] = dataTypes[i];
           break;
       }
@@ -1571,7 +1580,7 @@ void mainWindow::analyze() {
   // everything is here and ready to go, so carry out analysis
   // generatePowerSpectrumData will just do everything including ensembling
   s_association->generatePowerSpectrumData(s_association->powerSpectraEngine());
-  configureDisplay(fileType::EnsembleAveragedBinnedSpectrum);
+  configureDisplay(fileType::BinnedExtrapolatedInstrumentedSpectrum);
 
   return;
 }
@@ -1617,8 +1626,12 @@ void mainWindow::configureDisplay(FILETYPE dataType) {
     //case fileType::EnsembleData:
     case fileType::EnsembleAveragedNoise:
     case fileType::EnsembleAveragedSpectrum:
+    case fileType::ExtrapolatedSpectrum:
+    case fileType::ExtrapolatedInstrumentSpectrum:
     case fileType::BinnedSpectrum:
-    case fileType::EnsembleAveragedBinnedSpectrum:
+    case fileType::BinnedExtrapolatedSpectrum:
+    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+    //case fileType::EnsembleAveragedBinnedSpectrum:
       configureGraphs();
       break;
     default:
@@ -1935,12 +1948,26 @@ void mainWindow::displayGraph(ASSOCIATEDSPECTRUM graph) {
     case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
       activeGraph = s_association->EnsembleAveragedSpectrumGraph()->transferRGBData();
       break;
+    case associatedSpectrum::ExtrapolatedSpectrumSpectrum:
+      activeGraph = s_association->ExtrapolatedSpectrumGraph()->transferRGBData();
+      break;
+    case associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum:
+      activeGraph = s_association->ExtrapolatedInstrumentSpectrumGraph()->transferRGBData();
+      break;
     case associatedSpectrum::BinnedSpectrumSpectrum:
       activeGraph = s_association->BinnedSpectrumGraph()->transferRGBData();
       break;
+    case associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum:
+      activeGraph = s_association->BinnedExtrapolatedSpectrumGraph()->transferRGBData();
+      break;
+    case associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum:
+      activeGraph = s_association->BinnedExtrapolatedInstrumentSpectrumGraph()->transferRGBData();
+      break;
+    /*
     case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
       activeGraph = s_association->EnsembleAveragedBinnedSpectrumGraph()->transferRGBData();
       break;
+    */
     default:
       activeGraph = 0;
       break;
