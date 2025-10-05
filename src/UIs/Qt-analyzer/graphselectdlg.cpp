@@ -161,7 +161,7 @@ void graphSelectDialog::configure(unsigned int availableGraphs) {
   dirty = false;
   activeGraphs = availableGraphs;
   
-    ui->dataButton->setEnabled(false);
+  ui->dataButton->setEnabled(false);
   ui->weightButton->setEnabled(false);
   ui->noiseButton->setEnabled(false);
   ui->filterButton->setEnabled(false);

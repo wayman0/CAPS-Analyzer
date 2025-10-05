@@ -212,11 +212,6 @@ mainWindow::mainWindow() :
 
   // create progress interface
 //  progressInterface = analyzer_set_progress_callback(this,progressBarWrapper);
-
-
-  //for(int typeID = 0; typeID < static_cast<int>(fileType::FILETYPE_LIMIT); typeID += 1)
-  //  std::cout << "ID: " << typeID << " name: " << dataTypeNames[typeID] << "\n";
-
 }
 
 mainWindow::~mainWindow() {
@@ -679,35 +674,47 @@ void mainWindow::setAssociation(association* newAssoc)
   if(dataSelectDlg)
   {
     dataSelectDlg->setAssociation(s_association);
+    dataSelectDlg->reset();
   }
 
   energyDlg->setAssociation(s_association);
+  energyDlg->reset();
   energyDlg->configured(false);
 
+
   multSelDlg->setAssociation(s_association);
+  multSelDlg->reset();
   multSelDlg->configured(false);
 
   pixSelectDlg->setAssociation(s_association);
+  pixSelectDlg->reset();
   pixSelectDlg->configured(false);
 
   healpixDlg->setAssociation(s_association);
+  healpixDlg->reset();
   healpixDlg->configured(false);
 
   transSelectDlg->setAssociation(s_association);
+  transSelectDlg->reset();
   transSelectDlg->configured(false);
 
   rshtDlg->setAssociation(s_association);
+  rshtDlg->reset();
   rshtDlg->configured(false);
 
   mapperDlg->setAssociation(s_association);
+  mapperDlg->reset();
   mapperDlg->configured(false);
 
   mapSelectDlg->setAssociation(s_association);
+  mapSelectDlg->reset();
 
   graphDlg->setAssociation(s_association);
+  graphDlg->reset();
   graphDlg->configured(false);
 
   graphSelectDlg->setAssociation(s_association);
+  graphSelectDlg->reset();
 
   clearMaps();
   clearGraphs();
@@ -1536,7 +1543,8 @@ void mainWindow::analyze() {
         s_association->merge(fileType::TransformedFilter,s_association->transformedData(),false);
         s_association->transformedFilter()->dataType(fileType::TransformedFilter);
         int rows = s_association->transformedFilter()->rows();
-        s_association->transformedFilter()->rwAccess().assign(rows,1.0);
+        //s_association->transformedFilter()->rwAccess().assign(rows,1.0);
+        s_association->transformedFilter()->rwAccess().assign(rows, 2.0);
       }
     }
     else
@@ -1561,7 +1569,7 @@ void mainWindow::analyze() {
         s_association->merge(fileType::TransformedBeam,s_association->transformedData(),false);
         s_association->transformedBeam()->dataType(fileType::TransformedBeam);
         int rows = s_association->transformedData()->rows();
-        s_association->transformedBeam()->rwAccess().assign(rows,1.0);
+        s_association->transformedBeam()->rwAccess().assign(rows, 5.0);
       }
     }
     else

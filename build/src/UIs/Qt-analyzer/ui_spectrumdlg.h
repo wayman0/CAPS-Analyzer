@@ -119,8 +119,8 @@ public:
         countSpinBox = new QSpinBox(spectrumDialog);
         countSpinBox->setObjectName(QString::fromUtf8("countSpinBox"));
         countSpinBox->setGeometry(QRect(170, 90, 51, 32));
-        countSpinBox->setMinimum(1);
-        countSpinBox->setValue(1);
+        countSpinBox->setMinimum(3);
+        countSpinBox->setValue(3);
         countLabel = new QLabel(spectrumDialog);
         countLabel->setObjectName(QString::fromUtf8("countLabel"));
         countLabel->setGeometry(QRect(7, 90, 157, 32));

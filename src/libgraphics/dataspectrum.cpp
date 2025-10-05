@@ -311,7 +311,7 @@ unsigned char* dataSpectrum::transferRGBData() {
 
   rl->identity();
   label_offset = rl->bitmapFontLength(m_ytitle.c_str())/2;
-  rl->translate(m_Xpage * .02, m_Ypage * AREA_OFFSET/2 + m_Ygraph/2 + label_offset);
+  rl->translate(m_Xpage * .005, m_Ypage * AREA_OFFSET/2 + m_Ygraph/2 + label_offset);
   rl->rotate(-90);
   rl->bitmapFontString(m_ytitle.c_str());
 
@@ -330,8 +330,11 @@ unsigned char* dataSpectrum::transferRGBData() {
   max_index = m_maxIndex - m_minIndex;
 
   /* Adds a buffer area to top of graph... */
-  max_value = m_maxValue * 1.1;
+  max_value = m_maxValue * 1.1; // 1.5;
   value_div = max_value/5;
+
+  /* adds a buffer area to the bottom of graph */
+  //min_value = m_minValue - value_div;
 
   /* Y axis labels... */
   rl->bitmapFontFace(FONT_NAME,10);

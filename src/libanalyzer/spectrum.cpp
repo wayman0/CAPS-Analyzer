@@ -82,8 +82,8 @@ Spectrum::~Spectrum() {
 
 void Spectrum::initialize()
 {
-  if(m_maxIndex % m_lPerBin != 0)
-    throw dataMismatchError;
+  //if(m_maxIndex % m_lPerBin != 0)
+  //  throw dataMismatchError;
 
   m_numBins = m_maxIndex / m_lPerBin;
 
@@ -339,6 +339,7 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
   int gslErrorNumber    = 0;
   gsl_permutation *p    = 0;
   gsl_matrix* gslOrig   = 0;
+  gsl_matrix* gslLU     = 0;
   gsl_matrix* gslInvert = 0;
 
   switch(ft)
@@ -370,9 +371,15 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
       return;
   }
 
-  p = gsl_permutation_alloc(gslOrig->size1);
-  gsl_linalg_LU_decomp(gslOrig, p, &gslErrorNumber);
+  gslLU   = gsl_matrix_alloc(gslOrig->size1, gslOrig->size2);
+  gsl_matrix_memcpy(gslLU, gslOrig);
+
+  p = gsl_permutation_alloc(gslLU->size1);
+  gsl_linalg_LU_decomp(gslLU, p, &gslErrorNumber);
   double gslDet = gsl_linalg_LU_det(gslOrig, gslErrorNumber);
+  double gslLUDet = gsl_linalg_LU_det(gslLU, gslErrorNumber);
+
+  printf("matrix: %s, determinant: %f, LU determinant: %f\n", dataTypeNames[(int)ft].c_str(), gslDet, gslLUDet);
 
   //if (gslLUDet == 0)
   if(gslDet == 0)
@@ -385,6 +392,8 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
     gsl_linalg_LU_invert((const gsl_matrix*)gslOrig, (const gsl_permutation*)p, gslInvert);
     gsl_permutation_free(p);
   }
+
+
 }
 
 void Spectrum::calculateExtrapolatedSpectrum(association *asc) // Mll-1 <Cl>
@@ -394,7 +403,7 @@ void Spectrum::calculateExtrapolatedSpectrum(association *asc) // Mll-1 <Cl>
   vectorData<double>* extrapolated = modeInverse->matrixMult(ensSpectrum);
 
   extrapolated->dataType(fileType::ExtrapolatedSpectrum);
-  asc->addData(modeInverse);
+  asc->addData(extrapolated);
 }
 
 void Spectrum::calculateExtrapolatedInstrumentSpectrum(association *asc) // Kll-1 (<Cl> - <Nl>)

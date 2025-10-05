@@ -3742,6 +3742,9 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->loadIntoGslMatrix(this, fileType::ModeModeMatrix);
   }
 
+  printf("Mode Mode Matrix: \n");
+  m_ModeModeMatrix->print();
+
   if(exists(fileType::InverseModeModeMatrix))
     spect->loadIntoGslMatrix(this, fileType::InverseModeModeMatrix);
   else
@@ -3754,10 +3757,13 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->loadIntoMatrixData(this, fileType::InverseModeModeMatrix);
   }
 
+  printf("Inverse Mode Mode Matrix: \n");
+  m_InverseModeModeMatrix->print();
+
   if(!exists(fileType::ExtrapolatedSpectrum))
   {
-    m_extrapolatedSpectrum = new vectorData<double>(spect->maxIndex(), fileType::ExtrapolatedSpectrum);
-    m_extrapolatedSpectrum->initialize();
+    //m_extrapolatedSpectrum = new vectorData<double>(spect->maxIndex(), fileType::ExtrapolatedSpectrum);
+    //m_extrapolatedSpectrum->initialize();
 
     spect->calculateExtrapolatedSpectrum(this);
   }
@@ -3774,6 +3780,9 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->loadIntoGslMatrix(this, fileType::InstrumentEffectsMatrix);
   }
 
+  printf("Instrument Matrix: \n");
+  m_InstrumentEffectsMatrix->print();
+
   if(exists(fileType::InverseInstrumentEffectsMatrix))
     spect->loadIntoGslMatrix(this, fileType::InverseInstrumentEffectsMatrix);
   else
@@ -3786,14 +3795,16 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->loadIntoMatrixData(this, fileType::InverseInstrumentEffectsMatrix);
   }
 
+  printf("Inverse Instrument Matrix: \n");
+  m_InverseInstrumentEffectsMatrix->print();
+
   if(!exists(fileType::ExtrapolatedInstrumentSpectrum))
   {
-    m_extrapolatedInstrumentSpectrum = new vectorData<double>(spect->maxIndex(), fileType::ExtrapolatedInstrumentSpectrum);
-    m_extrapolatedInstrumentSpectrum->initialize();
+    //m_extrapolatedInstrumentSpectrum = new vectorData<double>(spect->maxIndex(), fileType::ExtrapolatedInstrumentSpectrum);
+    //m_extrapolatedInstrumentSpectrum->initialize();
 
     spect->calculateExtrapolatedInstrumentSpectrum(this);
   }
-
 
   if(exists(fileType::BinningMatrix))
     spect->loadIntoGslMatrix(this, fileType::BinningMatrix);
@@ -3807,6 +3818,9 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->loadIntoGslMatrix(this, fileType::BinningMatrix);
   }
 
+  printf("Binning Matrix: \n");
+  m_BinningMatrix->print();
+
   if(exists(fileType::UnbinningMatrix))
     spect->loadIntoGslMatrix(this, fileType::UnbinningMatrix);
   else
@@ -3819,6 +3833,9 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->loadIntoGslMatrix(this, fileType::UnbinningMatrix);
   }
 
+  printf("Unbinning Matrix: \n");
+  m_UnbinningMatrix->print();
+
   if(exists(fileType::BinnedInstrumentEffectsMatrix))
     spect->loadIntoGslMatrix(this, fileType::BinnedInstrumentEffectsMatrix);
   else
@@ -3830,6 +3847,9 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->calculateBinnedInstrumentEffectsMatrix(this);
     spect->loadIntoMatrixData(this, fileType::BinnedInstrumentEffectsMatrix);
   }
+
+  printf("Binned Instrument Matrix: \n");
+  m_BinnedInstrumentEffectsMatrix->print();
 
   if(exists(fileType::InverseBinnedInstrumentMatrix))
     spect->loadIntoGslMatrix(this, fileType::InverseBinnedInstrumentMatrix);
@@ -3844,30 +3864,32 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
     spect->loadIntoMatrixData(this, fileType::InverseBinnedInstrumentMatrix);
   }
 
+  printf("Inverse Binned Instrument Matrix: \n");
+  m_InverseBinnedInstrumentMatrix->print();
+
   if(!exists(fileType::BinnedSpectrum))
   {
-    m_binnedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedSpectrum);
-    m_binnedSpectrum->initialize();
+    //m_binnedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedSpectrum);
+    //m_binnedSpectrum->initialize();
 
     spect->calculateBinnedSpectrum(this);
   }
 
   if(!exists(fileType::BinnedExtrapolatedSpectrum))
   {
-    m_binnedExtrapolatedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedExtrapolatedSpectrum);
-    m_binnedExtrapolatedSpectrum->initialize();
+    //m_binnedExtrapolatedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedExtrapolatedSpectrum);
+    //m_binnedExtrapolatedSpectrum->initialize();
 
     spect->calculateBinnedExtrapolatedSpectrum(this);
   }
 
   if(!exists(fileType::BinnedExtrapolatedInstrumentedSpectrum))
   {
-    m_binnedExtrapolatedInstrumentedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedExtrapolatedInstrumentedSpectrum);
-    m_binnedExtrapolatedInstrumentedSpectrum->initialize();
+    //m_binnedExtrapolatedInstrumentedSpectrum = new vectorData<double>(spect->numBins(), fileType::BinnedExtrapolatedInstrumentedSpectrum);
+    //m_binnedExtrapolatedInstrumentedSpectrum->initialize();
 
     spect->calculateBinnedExtrapolatedInstrumentSpectrum(this);
   }
-
 
   /*
   if(!exists(fileType::EnsembleAveragedBinnedSpectrum))
@@ -4489,7 +4511,10 @@ bool association::generateGraph(FILETYPE type) {
 
   name = dataTypeNames[(int)type];
 
+
   graph->title(name);
+//  printf("type: %d, name: %s, graph name: %s\n", (int)type, name.c_str(), graph->title().c_str());
+
   graph->aspect(m_graphEngine->aspectRatio());
   graph->initialize(m_graphEngine->width(),m_graphEngine->height());
 
@@ -4600,12 +4625,18 @@ bool association::generateGraph(FILETYPE type) {
     case fileType::ExtrapolatedSpectrum:
       if (!m_extrapolatedSpectrum)
         return false;
+      m_graphEngine->makeGraph(graph, type, this);
+      if(m_extrapolatedSpectrumGraph)
+        *m_extrapolatedSpectrumGraph = *graph;
       else
         m_extrapolatedSpectrumGraph = new dataSpectrum(graph);
       break;
     case fileType::ExtrapolatedInstrumentSpectrum:
       if (!m_extrapolatedInstrumentSpectrum)
         return false;
+      m_graphEngine->makeGraph(graph, type, this);
+      if(m_extrapolatedInstrumentSpectrumGraph)
+        *m_extrapolatedInstrumentSpectrumGraph = *graph;
       else
         m_extrapolatedInstrumentSpectrumGraph = new dataSpectrum(graph);
       break;
@@ -4621,12 +4652,18 @@ bool association::generateGraph(FILETYPE type) {
     case fileType::BinnedExtrapolatedSpectrum:
       if (!m_binnedExtrapolatedSpectrum)
         return false;
+      m_graphEngine->makeGraph(graph, type, this);
+      if(m_binnedExtrapolatedSpectrumGraph)
+        *m_binnedExtrapolatedSpectrumGraph = *graph;
       else
         m_binnedExtrapolatedSpectrumGraph = new dataSpectrum(graph);
       break;
     case fileType::BinnedExtrapolatedInstrumentedSpectrum:
       if (!m_binnedExtrapolatedInstrumentedSpectrum)
         return false;
+      m_graphEngine->makeGraph(graph, type, this);
+      if(m_binnedExtrapolatedInstrumentedSpectrumGraph)
+        *m_binnedExtrapolatedInstrumentedSpectrumGraph = *graph;
       else
         m_binnedExtrapolatedInstrumentedSpectrumGraph = new dataSpectrum(graph);
       break;
