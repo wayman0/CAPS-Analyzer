@@ -654,8 +654,12 @@ void mainWindow::addAssociation()
 {
   association* newAssoc = new association();
   associationVector->push_back(newAssoc);
-  assocDlg->setCurrAssoc(newAssoc);
   setAssociation(newAssoc);
+
+  mapperDlg->configured(false);
+   graphDlg->configured(false);
+
+   ctrlDlg->reset();
 
   QMessageBox addSuccessful;
   addSuccessful.setText("Addition Successful. Now using the new addition.");
@@ -666,55 +670,48 @@ void mainWindow::addAssociation()
 void mainWindow::setAssociation(association* newAssoc)
 {
   s_association = newAssoc;
-
-  ctrlDlg->setAssociation(s_association);
-  ctrlDlg->reset();
-  ctrlDlg->configured(false);
+  assocDlg->setCurrAssoc(s_association);
 
   if(dataSelectDlg)
-  {
     dataSelectDlg->setAssociation(s_association);
-    dataSelectDlg->reset();
-  }
 
-  energyDlg->setAssociation(s_association);
-  energyDlg->reset();
-  energyDlg->configured(false);
-
-
-  multSelDlg->setAssociation(s_association);
-  multSelDlg->reset();
-  multSelDlg->configured(false);
-
-  pixSelectDlg->setAssociation(s_association);
-  pixSelectDlg->reset();
-  pixSelectDlg->configured(false);
-
-  healpixDlg->setAssociation(s_association);
-  healpixDlg->reset();
-  healpixDlg->configured(false);
-
+         ctrlDlg->setAssociation(s_association);
+       energyDlg->setAssociation(s_association);
+      multSelDlg->setAssociation(s_association);
+    pixSelectDlg->setAssociation(s_association);
+      healpixDlg->setAssociation(s_association);
   transSelectDlg->setAssociation(s_association);
-  transSelectDlg->reset();
-  transSelectDlg->configured(false);
-
-  rshtDlg->setAssociation(s_association);
-  rshtDlg->reset();
-  rshtDlg->configured(false);
-
-  mapperDlg->setAssociation(s_association);
-  mapperDlg->reset();
-  mapperDlg->configured(false);
-
-  mapSelectDlg->setAssociation(s_association);
-  mapSelectDlg->reset();
-
-  graphDlg->setAssociation(s_association);
-  graphDlg->reset();
-  graphDlg->configured(false);
-
+         rshtDlg->setAssociation(s_association);
+       mapperDlg->setAssociation(s_association);
+    mapSelectDlg->setAssociation(s_association);
+        graphDlg->setAssociation(s_association);
   graphSelectDlg->setAssociation(s_association);
+
+         ctrlDlg->configured(false);
+       energyDlg->configured(false);
+      multSelDlg->configured(false);
+    pixSelectDlg->configured(false);
+      healpixDlg->configured(false);
+  transSelectDlg->configured(false);
+         rshtDlg->configured(false);
+         specDlg->configured(false);
+
+  /*
+  if(dataSelectDlg)
+    dataSelectDlg->reset();
+
+  ctrlDlg->reset();
+  energyDlg->reset();
+  multSelDlg->reset();
+  pixSelectDlg->reset();
+  healpixDlg->reset();
+  transSelectDlg->reset();
+  rshtDlg->reset();
+  mapperDlg->reset();
+  graphDlg->reset();
+  mapSelectDlg->reset();
   graphSelectDlg->reset();
+  */
 
   clearMaps();
   clearGraphs();
@@ -1544,7 +1541,7 @@ void mainWindow::analyze() {
         s_association->transformedFilter()->dataType(fileType::TransformedFilter);
         int rows = s_association->transformedFilter()->rows();
         //s_association->transformedFilter()->rwAccess().assign(rows,1.0);
-        s_association->transformedFilter()->rwAccess().assign(rows, 2.0);
+        s_association->transformedFilter()->rwAccess().assign(rows, 1.0);
       }
     }
     else
@@ -1569,7 +1566,7 @@ void mainWindow::analyze() {
         s_association->merge(fileType::TransformedBeam,s_association->transformedData(),false);
         s_association->transformedBeam()->dataType(fileType::TransformedBeam);
         int rows = s_association->transformedData()->rows();
-        s_association->transformedBeam()->rwAccess().assign(rows, 5.0);
+        s_association->transformedBeam()->rwAccess().assign(rows, 1.0);
       }
     }
     else

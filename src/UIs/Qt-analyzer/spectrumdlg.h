@@ -66,6 +66,7 @@ class spectrumDialog : public QDialog {
     spectrumDialog();
     virtual ~spectrumDialog();
     bool configured() const {return isConfigured;}
+    void configured(bool isConfig) {isConfigured = isConfig;}
     bool binSpectrum() const {return bin;}
     bool invertTransforms() const {return inverse;}
     bool weighIndices() const {return weigh;}
