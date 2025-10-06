@@ -263,7 +263,7 @@ public:
   //dataSpectrum* ensembleGraph() const {return m_ensembleDataGraph;}
   dataSpectrum* EnsembleAveragedNoiseGraph()                const {return m_ensembleAveragedNoiseGraph;}
   dataSpectrum* EnsembleAveragedSpectrumGraph()             const {return m_ensembleAveragedSpectrumGraph;}
-  dataSpectrum* ExtrapolatedSpectrumGraph()                 const {return m_extrapolatedInstrumentSpectrumGraph;}
+  dataSpectrum* ExtrapolatedSpectrumGraph()                 const {return m_extrapolatedSpectrumGraph;}
   dataSpectrum* ExtrapolatedInstrumentSpectrumGraph()       const {return m_extrapolatedInstrumentSpectrumGraph;}
   dataSpectrum* BinnedSpectrumGraph()                       const {return m_binnedSpectrumGraph;}
   dataSpectrum* BinnedExtrapolatedSpectrumGraph()           const {return m_binnedExtrapolatedSpectrumGraph;}

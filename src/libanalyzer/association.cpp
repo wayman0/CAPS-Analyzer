@@ -3743,7 +3743,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   }
 
   printf("Mode Mode Matrix: \n");
-  m_ModeModeMatrix->print();
+  //m_ModeModeMatrix->print();
 
   if(exists(fileType::InverseModeModeMatrix))
     spect->loadIntoGslMatrix(this, fileType::InverseModeModeMatrix);
@@ -3758,7 +3758,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   }
 
   printf("Inverse Mode Mode Matrix: \n");
-  m_InverseModeModeMatrix->print();
+  //m_InverseModeModeMatrix->print();
 
   if(!exists(fileType::ExtrapolatedSpectrum))
   {
@@ -3781,7 +3781,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   }
 
   printf("Instrument Matrix: \n");
-  m_InstrumentEffectsMatrix->print();
+  //m_InstrumentEffectsMatrix->print();
 
   if(exists(fileType::InverseInstrumentEffectsMatrix))
     spect->loadIntoGslMatrix(this, fileType::InverseInstrumentEffectsMatrix);
@@ -3796,7 +3796,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   }
 
   printf("Inverse Instrument Matrix: \n");
-  m_InverseInstrumentEffectsMatrix->print();
+  //m_InverseInstrumentEffectsMatrix->print();
 
   if(!exists(fileType::ExtrapolatedInstrumentSpectrum))
   {
@@ -3819,7 +3819,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   }
 
   printf("Binning Matrix: \n");
-  m_BinningMatrix->print();
+  //m_BinningMatrix->print();
 
   if(exists(fileType::UnbinningMatrix))
     spect->loadIntoGslMatrix(this, fileType::UnbinningMatrix);
@@ -3834,7 +3834,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   }
 
   printf("Unbinning Matrix: \n");
-  m_UnbinningMatrix->print();
+  //m_UnbinningMatrix->print();
 
   if(exists(fileType::BinnedInstrumentEffectsMatrix))
     spect->loadIntoGslMatrix(this, fileType::BinnedInstrumentEffectsMatrix);
@@ -3849,7 +3849,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   }
 
   printf("Binned Instrument Matrix: \n");
-  m_BinnedInstrumentEffectsMatrix->print();
+  //m_BinnedInstrumentEffectsMatrix->print();
 
   if(exists(fileType::InverseBinnedInstrumentMatrix))
     spect->loadIntoGslMatrix(this, fileType::InverseBinnedInstrumentMatrix);
@@ -3865,7 +3865,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
   }
 
   printf("Inverse Binned Instrument Matrix: \n");
-  m_InverseBinnedInstrumentMatrix->print();
+  //m_InverseBinnedInstrumentMatrix->print();
 
   if(!exists(fileType::BinnedSpectrum))
   {
@@ -4006,7 +4006,7 @@ bool association::generatePowerSpectrumData(Spectrum *spect) {
 
   m_spectData->mask(spect->maskIndex());
 //  }
-*/
+  */
 
   m_sequence = powerSpectrum;
   return true;
