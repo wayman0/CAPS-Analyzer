@@ -1214,6 +1214,16 @@ void mainWindow::pixelize() {
     }
   }
 
+  if(s_association->exists(fileType::PixelizedData) &&
+     s_association->exists(fileType::PixelizedWeights) )
+     //!s_association->exists(fileType::InputWeightedNoise))
+    s_association->generateWeightedData(fileType::WeightedPixel);
+
+  if(s_association->exists(fileType::PixelizedNoise) &&
+     s_association->exists(fileType::PixelizedWeights) )
+     //!s_association->exists(fileType::InputWeightedNoise))
+    s_association->generateWeightedData(fileType::PixelizedWeightedNoise);
+
   if (count)
     configureDisplay(fileType::PixelizedData);
 

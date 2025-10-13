@@ -1271,7 +1271,7 @@ FILETYPE* fitsManager::getHeaders(int* numTypes)
     else
     {
       dataTypes = new FILETYPE[1];
-      dataTypes[0] = fileType::PixelizedData;
+      dataTypes[0] = fileType::PixelizedWeights;
       *numTypes = 1;
     }
   }
@@ -1701,9 +1701,6 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
 
     if(m_observatory == Fermi)
     {
-      std::cout << "AXIS(0): " << m_ptr->pHDU().axis(0) << "M_COLS: " << m_cols << "\n";
-      std::cout << "AXIS(1): " << m_ptr->pHDU().axis(1) << "M_ROWS: " << m_rows << "\n";
-
       //std::valarray<double> tempData;
       //m_ptr->pHDU().read(tempData);
       //std::cout << tempData.size() << "\n";
@@ -1985,9 +1982,6 @@ baseData *fitsManager::delveData()
 
         table->column(1).readArrays(fitsData, 1, m_rows);
         //table->column(1).readArrays(*fitsData2, 1, m_rows);
-
-        std::cout << "Number of vectors: " << fitsData.size() << "\n";
-        std::cout << "Number of values in valarray: " << fitsData[0].size() << "\n";
 
         int index = 0;
         // throws random sigsegv even though nothing is improperly indexed
