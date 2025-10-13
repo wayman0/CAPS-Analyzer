@@ -1,0 +1,52 @@
+The instrument matrix Kll = Mll*Fl*Bl^2, won't be invertible if F or B has a zero
+	possible solution use GSL SVD(singular value decomposition) solvers 
+
+The extrapolated spectrum has negative values due to Mll inverse having negative values
+The instrumented spectrum has negative values due to Kll inverse having negative valuse 
+	possible solution taking the absolute values of the inverses, because Mll is the 
+	mode mode matrix, so it shows the coupling between the l values, and the positive
+	or negative sign represents whether it is a positive or negative correlation, however
+	I don't think we care about whether there is a positive or negative correlation so 
+	taking the absolute values still keeps the coupling.  I don't know though if when 
+	we invert the matrix if that changes what the matrix represents. 
+
+	We could try ensemble averaging however when we ensemble average, we use the function 
+	alm_powspec_tools.cc files create_alm function which takes the sqrt of each l value, 
+	but if there are negative l values then the sqrt function doesn't work. 
+
+If we want to bin with 1 or 2 l's per bin the binning matrix Pbl has a column of zero, causing 
+the binning instrumentation matrix Kbb = PblKllQlb, to no longer be invertible. 
+	possible solution is to use the GSL SVD solvers 
+
+Is the binned extrapolated spectrum calculated using PblMll-1Cl or something else, because the 
+binned instrument matrix is calculated using PKQ, so do we need to use PMQ for the binned 
+extrapolated spectrum? If we follow the math from equations 22, 23, and 24 we have the following steps: 
+1) <C~> = Kll <C> + <N~>
+2) <C~> - <N~> = Kll <C>
+3) Kll<C> = <C~> - <N~> 
+4) P K <C> = P(<C~> - <N~>)		substituting <C> with QP<C> = Q<Cb> then 
+5) P K Q P <C> = P(<C~> - <N~>) 
+6) P K Q <Cb>  = P(<C~> - <N~>)
+7) Kbb <Cb> = P(<C~> - <N~>) 
+8) <Cb> = Kbb-1 P (<C~> - <N~>) 
+
+From step 4 to 5 we introduce Q P on the left but not on the right, we also introduce it in the middle instead of on the outside
+however we know that AI = IA and AIB = (AI)B = A(IB) = AB so if QP = I then this should be okay, however QP != I, so how do we 
+justify throwing a non identity matrix product in the middle, and not on both sides? So is Kbb = PKQ mathematically correct, and 
+should Mbb, the binned extrapolated matrix, then be Mbb = PMQ? 
+If we look at equation 14 and the paragraph under equation 20 we get: 
+<C~> = Mll<C> 
+Mll<C> = <C~>
+<C> = Mll-1 <C~> 
+and 
+Cb = P C       substituting C for Mll-1 <C~> then 
+Cb = P Mll-1 <C~> 
+Looking at equation 22 and applying the same paragraph we get: 
+<C~> = Kll <C> + <N~>
+<C~> - <N~> = Kll <C>
+Kll<C> = <C~> - <N~> 
+<C> = Kll-1 (<C~> - <N~>) 
+and 
+Cb = P C       substituting C for Kll-1 (<C~> - <N~>) then 
+Cb = P Kll-1 (<C~> - <N~>)
+So what is the correct way to calculate a binned extrapolated spectrum and a binned instrumented spectrum? 
