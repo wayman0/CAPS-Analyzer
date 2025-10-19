@@ -1262,18 +1262,33 @@ FILETYPE* fitsManager::getHeaders(int* numTypes)
 
     getDimensions();
 
+    dataTypes = new FILETYPE[1];
+    *numTypes = 1;
+    /*
     if(m_cols > 1)
-    {
-      dataTypes = new FILETYPE[1];
       dataTypes[0] = fileType::InputData;
-      *numTypes = 1;
-    }
     else
-    {
-      dataTypes = new FILETYPE[1];
       dataTypes[0] = fileType::PixelizedWeights;
-      *numTypes = 1;
+    */
+
+    string type1 = "";
+
+    try
+    {
+      currHeader->readKey("TTYPE1", type1);
+
+      if(type1 == "count")
+        dataTypes[0] = fileType::PixelizedData;
+      else
+        dataTypes[0] = fileType::PixelizedWeights;
     }
+    catch (CCfits::FitsException& err)
+    {
+      snprintf(fits_err,FITS_ERR_LEN,"%s",err.message().c_str());
+      std::cout << err.message().c_str() << "\n";
+      return nullptr;
+    }
+
   }
 
 
@@ -1936,15 +1951,23 @@ baseData *fitsManager::delveData()
         CCfits::BinTable* table((CCfits::BinTable*)currHeader);
 
         std::vector<std::valarray<double>> fitsData(m_rows);
+
         //std::vector<std::valarray<double>>* fitsData2 = new std::vector<std::valarray<double>>(m_rows);
         //std::vector<std::valarray<double>*>* fitsData3 = new std::vector<std::valarray<double>*>(m_rows);
 
-        string layout, scheme, nsides, minIndex, maxIndex;
+        string layout, scheme, nsides, minIndex, maxIndex, tform;
         currHeader->readKey("PIXTYPE", scheme);
         currHeader->readKey("ORDERING", layout);
         currHeader->readKey("NSIDE", nsides);
         currHeader->readKey("FIRSTPIX", minIndex);
         currHeader->readKey("LASTPIX", maxIndex);
+
+        currHeader->readKey("TFORM1",  tform);
+        string rowSize = tform.substr(0, tform.size()-1);
+        int rows = stoi(rowSize);
+
+        for(int i = 0; i < m_rows; i += 1)
+          fitsData[i] = std::valarray<double>(rows);
 
         //vector = new vectorData<double>(m_rows, m_fileDataType);
         vector = new vectorData<double>(stoi(maxIndex), m_fileDataType);
@@ -1981,6 +2004,7 @@ baseData *fitsManager::delveData()
         vector->transformerScheme(NotTransformed);
 
         table->column(1).readArrays(fitsData, 1, m_rows);
+
         //table->column(1).readArrays(*fitsData2, 1, m_rows);
 
         int index = 0;
@@ -2007,6 +2031,8 @@ baseData *fitsManager::delveData()
         m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
         s_association->errorValue(m_err);
         s_association->errorDetails(m_errDetail);
+
+        std::cout << fits_err << "\n";
         return 0;
       }
 

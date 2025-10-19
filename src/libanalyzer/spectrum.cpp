@@ -376,8 +376,11 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
 
   p = gsl_permutation_alloc(gslLU->size1);
   gsl_linalg_LU_decomp(gslLU, p, &gslErrorNumber);
-  double gslDet = gsl_linalg_LU_det(gslOrig, gslErrorNumber);
-  double gslLUDet = gsl_linalg_LU_det(gslLU, gslErrorNumber);
+  double gslDet = //gsl_linalg_LU_det(gslOrig, gslErrorNumber);  // this can cause overflow if the matrix is large due to the product of the diagonal
+                    gsl_linalg_LU_sgndet(gslOrig, gslErrorNumber); // this uses the sum of the log of the diagonal instead of the product to prevent overflow
+
+  double gslLUDet = //gsl_linalg_LU_det(gslLU, gslErrorNumber);
+                      gsl_linalg_LU_sgndet(gslLU, gslErrorNumber);
 
   printf("matrix: %s, determinant: %f, LU determinant: %f\n", dataTypeNames[(int)ft].c_str(), gslDet, gslLUDet);
 

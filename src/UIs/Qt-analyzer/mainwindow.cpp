@@ -1259,6 +1259,8 @@ bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
 
           if(!s_association->exists(fileType::WeightedPixel))
             s_association->generatePixelData(s_association->pixelizationEngine(), fileType::WeightedPixel);
+
+          configureDisplay(fileType::WeightedPixel);
         }
       }
       break;
@@ -1272,6 +1274,8 @@ bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
 
           if(!s_association->exists(fileType::PixelizedWeightedNoise))
             s_association->generatePixelData(s_association->pixelizationEngine(), fileType::PixelizedWeightedNoise);
+
+          configureDisplay(fileType::PixelizedWeightedNoise);
         }
       }
       break;
