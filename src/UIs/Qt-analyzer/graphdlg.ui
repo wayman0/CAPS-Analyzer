@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>410</width>
-    <height>195</height>
+    <height>340</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -50,7 +50,7 @@
      <x>0</x>
      <y>50</y>
      <width>400</width>
-     <height>90</height>
+     <height>284</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -62,93 +62,106 @@
    <property name="title">
     <string>Page Size</string>
    </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>30</y>
-      <width>391</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="smallSizeButton">
-       <property name="text">
-        <string>&amp;800 x 600</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="largeSizeButton">
-       <property name="text">
-        <string>1&amp;280 x 960</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QRadioButton" name="mediumSizeButton">
-       <property name="text">
-        <string>&amp;1024 x 768</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QRadioButton" name="customSizeButton">
-       <property name="text">
-        <string>&amp;Custom</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <layout class="QHBoxLayout" name="customSizeLayout">
-       <item>
-        <widget class="QLabel" name="widthLabel">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="sizeGroupBox">
+      <property name="title">
+       <string>Size</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QRadioButton" name="smallSizeButton">
          <property name="text">
-          <string>Width</string>
+          <string>&amp;800 x 600</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLineEdit" name="widthValue">
+       <item row="0" column="1">
+        <widget class="QRadioButton" name="largeSizeButton">
          <property name="text">
-          <string>800</string>
+          <string>1&amp;280 x 960</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLabel" name="heightLabel">
+       <item row="1" column="0">
+        <widget class="QRadioButton" name="mediumSizeButton">
          <property name="text">
-          <string>Height</string>
+          <string>&amp;1024 x 768</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLineEdit" name="heightValue">
+       <item row="1" column="1">
+        <widget class="QRadioButton" name="customSizeButton">
          <property name="text">
-          <string>600</string>
+          <string>&amp;Custom</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <layout class="QHBoxLayout" name="customSizeLayout">
+         <item>
+          <widget class="QLabel" name="widthLabel">
+           <property name="text">
+            <string>Width</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="widthValue">
+           <property name="text">
+            <string>800</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="heightLabel">
+           <property name="text">
+            <string>Height</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="heightValue">
+           <property name="text">
+            <string>600</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QGroupBox" name="scaleGroupBox">
+      <property name="title">
+       <string>Scale</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QRadioButton" name="linearButton">
+         <property name="text">
+          <string>linear</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QRadioButton" name="logButton">
+         <property name="text">
+          <string>log</string>
          </property>
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QWidget" name="">
-   <property name="geometry">
-    <rect>
-     <x>3</x>
-     <y>142</y>
-     <width>391</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="ButtonLayout">
-    <item>
+     </widget>
+    </item>
+    <item row="2" column="0">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="minimumSize">
        <size>
@@ -163,19 +176,6 @@
        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
       </property>
      </widget>
-    </item>
-    <item>
-     <spacer name="horizontalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>68</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
     </item>
    </layout>
   </widget>

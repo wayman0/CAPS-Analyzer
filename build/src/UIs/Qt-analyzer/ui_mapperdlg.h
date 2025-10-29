@@ -20,24 +20,22 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QSpinBox>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_mapperDialog
 {
 public:
-    QVBoxLayout *verticalLayout;
+    QGridLayout *gridLayout_4;
     QLabel *title;
     QGroupBox *pageBox;
-    QWidget *layoutWidget;
-    QGridLayout *gridLayout;
+    QGridLayout *gridLayout_3;
     QRadioButton *smallSizeButton;
     QRadioButton *largeSizeButton;
     QRadioButton *mediumSizeButton;
     QRadioButton *customSizeButton;
-    QHBoxLayout *customSizeLayout;
+    QGridLayout *gridLayout;
     QLabel *widthLabel;
     QLineEdit *widthValue;
     QLabel *heightLabel;
@@ -54,6 +52,12 @@ public:
     QGroupBox *longBox;
     QRadioButton *astroButton;
     QRadioButton *terrestrialButton;
+    QGroupBox *Offsets;
+    QGridLayout *gridLayout_2;
+    QLabel *raOffset;
+    QSpinBox *raOffsetInput;
+    QLabel *decOffset;
+    QSpinBox *decOffsetInput;
     QHBoxLayout *buttonLayout;
     QDialogButtonBox *buttonBox;
     QSpacerItem *horizontalSpacer_2;
@@ -62,74 +66,70 @@ public:
     {
         if (mapperDialog->objectName().isEmpty())
             mapperDialog->setObjectName(QString::fromUtf8("mapperDialog"));
-        mapperDialog->resize(405, 362);
-        verticalLayout = new QVBoxLayout(mapperDialog);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        mapperDialog->resize(595, 445);
+        gridLayout_4 = new QGridLayout(mapperDialog);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
         title = new QLabel(mapperDialog);
         title->setObjectName(QString::fromUtf8("title"));
         title->setMinimumSize(QSize(400, 40));
         title->setAlignment(Qt::AlignCenter);
         title->setWordWrap(true);
 
-        verticalLayout->addWidget(title);
+        gridLayout_4->addWidget(title, 0, 0, 1, 1);
 
         pageBox = new QGroupBox(mapperDialog);
         pageBox->setObjectName(QString::fromUtf8("pageBox"));
         pageBox->setMinimumSize(QSize(400, 90));
-        layoutWidget = new QWidget(pageBox);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(0, 30, 391, 51));
-        gridLayout = new QGridLayout(layoutWidget);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        smallSizeButton = new QRadioButton(layoutWidget);
+        gridLayout_3 = new QGridLayout(pageBox);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        smallSizeButton = new QRadioButton(pageBox);
         smallSizeButton->setObjectName(QString::fromUtf8("smallSizeButton"));
         smallSizeButton->setChecked(true);
 
-        gridLayout->addWidget(smallSizeButton, 0, 0, 1, 1);
+        gridLayout_3->addWidget(smallSizeButton, 0, 0, 1, 1);
 
-        largeSizeButton = new QRadioButton(layoutWidget);
+        largeSizeButton = new QRadioButton(pageBox);
         largeSizeButton->setObjectName(QString::fromUtf8("largeSizeButton"));
 
-        gridLayout->addWidget(largeSizeButton, 0, 1, 1, 1);
+        gridLayout_3->addWidget(largeSizeButton, 0, 1, 1, 1);
 
-        mediumSizeButton = new QRadioButton(layoutWidget);
+        mediumSizeButton = new QRadioButton(pageBox);
         mediumSizeButton->setObjectName(QString::fromUtf8("mediumSizeButton"));
 
-        gridLayout->addWidget(mediumSizeButton, 1, 0, 1, 1);
+        gridLayout_3->addWidget(mediumSizeButton, 1, 0, 1, 1);
 
-        customSizeButton = new QRadioButton(layoutWidget);
+        customSizeButton = new QRadioButton(pageBox);
         customSizeButton->setObjectName(QString::fromUtf8("customSizeButton"));
 
-        gridLayout->addWidget(customSizeButton, 1, 1, 1, 1);
+        gridLayout_3->addWidget(customSizeButton, 1, 1, 1, 1);
 
-        customSizeLayout = new QHBoxLayout();
-        customSizeLayout->setObjectName(QString::fromUtf8("customSizeLayout"));
-        widthLabel = new QLabel(layoutWidget);
+        gridLayout = new QGridLayout();
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        widthLabel = new QLabel(pageBox);
         widthLabel->setObjectName(QString::fromUtf8("widthLabel"));
 
-        customSizeLayout->addWidget(widthLabel);
+        gridLayout->addWidget(widthLabel, 0, 0, 1, 1);
 
-        widthValue = new QLineEdit(layoutWidget);
+        widthValue = new QLineEdit(pageBox);
         widthValue->setObjectName(QString::fromUtf8("widthValue"));
 
-        customSizeLayout->addWidget(widthValue);
+        gridLayout->addWidget(widthValue, 0, 1, 1, 1);
 
-        heightLabel = new QLabel(layoutWidget);
+        heightLabel = new QLabel(pageBox);
         heightLabel->setObjectName(QString::fromUtf8("heightLabel"));
 
-        customSizeLayout->addWidget(heightLabel);
+        gridLayout->addWidget(heightLabel, 0, 2, 1, 1);
 
-        heightValue = new QLineEdit(layoutWidget);
+        heightValue = new QLineEdit(pageBox);
         heightValue->setObjectName(QString::fromUtf8("heightValue"));
 
-        customSizeLayout->addWidget(heightValue);
+        gridLayout->addWidget(heightValue, 0, 3, 1, 1);
 
 
-        gridLayout->addLayout(customSizeLayout, 1, 2, 1, 1);
+        gridLayout_3->addLayout(gridLayout, 1, 2, 1, 1);
 
 
-        verticalLayout->addWidget(pageBox);
+        gridLayout_4->addWidget(pageBox, 1, 0, 1, 1);
 
         detailsLayout = new QHBoxLayout();
         detailsLayout->setObjectName(QString::fromUtf8("detailsLayout"));
@@ -179,7 +179,36 @@ public:
         detailsLayout->addWidget(longBox);
 
 
-        verticalLayout->addLayout(detailsLayout);
+        gridLayout_4->addLayout(detailsLayout, 2, 0, 1, 1);
+
+        Offsets = new QGroupBox(mapperDialog);
+        Offsets->setObjectName(QString::fromUtf8("Offsets"));
+        gridLayout_2 = new QGridLayout(Offsets);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        raOffset = new QLabel(Offsets);
+        raOffset->setObjectName(QString::fromUtf8("raOffset"));
+
+        gridLayout_2->addWidget(raOffset, 0, 0, 1, 1);
+
+        raOffsetInput = new QSpinBox(Offsets);
+        raOffsetInput->setObjectName(QString::fromUtf8("raOffsetInput"));
+        raOffsetInput->setMaximum(360);
+
+        gridLayout_2->addWidget(raOffsetInput, 0, 1, 1, 1);
+
+        decOffset = new QLabel(Offsets);
+        decOffset->setObjectName(QString::fromUtf8("decOffset"));
+
+        gridLayout_2->addWidget(decOffset, 1, 0, 1, 1);
+
+        decOffsetInput = new QSpinBox(Offsets);
+        decOffsetInput->setObjectName(QString::fromUtf8("decOffsetInput"));
+        decOffsetInput->setMaximum(180);
+
+        gridLayout_2->addWidget(decOffsetInput, 1, 1, 1, 1);
+
+
+        gridLayout_4->addWidget(Offsets, 3, 0, 1, 1);
 
         buttonLayout = new QHBoxLayout();
         buttonLayout->setObjectName(QString::fromUtf8("buttonLayout"));
@@ -196,7 +225,7 @@ public:
         buttonLayout->addItem(horizontalSpacer_2);
 
 
-        verticalLayout->addLayout(buttonLayout);
+        gridLayout_4->addLayout(buttonLayout, 4, 0, 1, 1);
 
 
         retranslateUi(mapperDialog);
@@ -230,6 +259,9 @@ public:
         longBox->setTitle(QCoreApplication::translate("mapperDialog", "Longitude Convention", nullptr));
         astroButton->setText(QCoreApplication::translate("mapperDialog", "&Astronomical", nullptr));
         terrestrialButton->setText(QCoreApplication::translate("mapperDialog", "&Terrestrial", nullptr));
+        Offsets->setTitle(QCoreApplication::translate("mapperDialog", "Offset", nullptr));
+        raOffset->setText(QCoreApplication::translate("mapperDialog", "RA/Longitude Offset", nullptr));
+        decOffset->setText(QCoreApplication::translate("mapperDialog", "Dec/Latitude Offset", nullptr));
     } // retranslateUi
 
 };

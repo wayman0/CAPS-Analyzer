@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>405</width>
-    <height>362</height>
+    <width>595</width>
+    <height>445</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
     <widget class="QLabel" name="title">
      <property name="minimumSize">
       <size>
@@ -33,7 +33,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QGroupBox" name="pageBox">
      <property name="minimumSize">
       <size>
@@ -44,84 +44,74 @@
      <property name="title">
       <string>Page Size</string>
      </property>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>30</y>
-        <width>391</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QRadioButton" name="smallSizeButton">
-         <property name="text">
-          <string>&amp;800 x 600</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QRadioButton" name="largeSizeButton">
-         <property name="text">
-          <string>1&amp;280 x 960</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QRadioButton" name="mediumSizeButton">
-         <property name="text">
-          <string>&amp;1024 x 768</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QRadioButton" name="customSizeButton">
-         <property name="text">
-          <string>&amp;Custom</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <layout class="QHBoxLayout" name="customSizeLayout">
-         <item>
-          <widget class="QLabel" name="widthLabel">
-           <property name="text">
-            <string>Width</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="widthValue">
-           <property name="text">
-            <string>800</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="heightLabel">
-           <property name="text">
-            <string>Height</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="heightValue">
-           <property name="text">
-            <string>600</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="smallSizeButton">
+        <property name="text">
+         <string>&amp;800 x 600</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="largeSizeButton">
+        <property name="text">
+         <string>1&amp;280 x 960</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="mediumSizeButton">
+        <property name="text">
+         <string>&amp;1024 x 768</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QRadioButton" name="customSizeButton">
+        <property name="text">
+         <string>&amp;Custom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="widthLabel">
+          <property name="text">
+           <string>Width</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="widthValue">
+          <property name="text">
+           <string>800</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="heightLabel">
+          <property name="text">
+           <string>Height</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLineEdit" name="heightValue">
+          <property name="text">
+           <string>600</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="detailsLayout">
      <item>
       <widget class="QGroupBox" name="mapLayoutBox">
@@ -277,7 +267,44 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="Offsets">
+     <property name="title">
+      <string>Offset</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="raOffset">
+        <property name="text">
+         <string>RA/Longitude Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="raOffsetInput">
+        <property name="maximum">
+         <number>360</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="decOffset">
+        <property name="text">
+         <string>Dec/Latitude Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="decOffsetInput">
+        <property name="maximum">
+         <number>180</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <layout class="QHBoxLayout" name="buttonLayout">
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">

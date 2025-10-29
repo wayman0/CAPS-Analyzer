@@ -63,6 +63,7 @@ mapperDialog::mapperDialog(association *assoc) :
   /* initialize internal variables*/
 //  currentHandle = -1;
   xSize = ySize = 0;
+  raOffset = decOffset = 0;
   projection = Blank;
   longConvention = NoOrientation;
   hue = Dark;
@@ -86,7 +87,8 @@ mapperDialog::~mapperDialog() {
 
 void mapperDialog::configure() {
   dirty = false;
-  if (isConfigured) {
+  if (isConfigured)
+  {
     switch (xSize) {
       case 800:
         ui->smallSizeButton->setChecked(true);
@@ -150,6 +152,7 @@ void mapperDialog::configure(bool triggered) {
 
 void mapperDialog::reset() {
   xSize = ySize = 0;
+  raOffset = decOffset = 0;
   projection = Blank;
   longConvention = NoOrientation;
   hue = Dark;
@@ -229,6 +232,18 @@ void mapperDialog::validate() {
     if (projection != oldProjection)
       dirty = true;
   }
+
+  int oldRA = raOffset;
+  int oldDec = decOffset;
+
+  raOffset = ui->raOffsetInput->value();
+  decOffset = ui->decOffsetInput->value();
+
+  if(oldRA != raOffset)
+    dirty = true;
+
+  if(oldDec != decOffset)
+    dirty = true;
   
   isConfigured = true;
   return;
@@ -279,6 +294,9 @@ void mapperDialog::finalize() {
   dataAssoc->mappingEngine()->height(ySize);
   dataAssoc->mappingEngine()->orientation(longConvention);
   dataAssoc->mappingEngine()->colorScheme(hue);
+
+  dataAssoc->mappingEngine()->raOffset(raOffset);
+  dataAssoc->mappingEngine()->decOffset(decOffset);
 
   Q_EMIT mapperReady();
   accept();

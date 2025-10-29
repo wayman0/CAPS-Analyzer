@@ -68,6 +68,8 @@ Mapper::Mapper() {
   m_edge        = 0.0;
   m_mapX        = 0;
   m_mapY        = 0;
+  m_raOffset    = 0;
+  m_decOffset   = 0;
 }
 
 Mapper::Mapper(Mapper* from) {
@@ -80,6 +82,9 @@ Mapper::Mapper(Mapper* from) {
   m_edge        = from->edge();
   m_mapX        = from->width();
   m_mapY        = from->height();
+
+  m_raOffset    = from->raOffset();
+  m_decOffset   = from->decOffset();
 }
 
 Mapper::~Mapper() {

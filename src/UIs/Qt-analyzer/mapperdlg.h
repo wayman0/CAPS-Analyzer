@@ -69,6 +69,8 @@ class mapperDialog : public QDialog {
     virtual ~mapperDialog();
     bool configured() {return isConfigured;}
     void configured(bool config) {isConfigured = config;}
+    int RAOffset() {return raOffset;}
+    int DECOffset() {return decOffset;}
     void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
@@ -88,6 +90,8 @@ class mapperDialog : public QDialog {
     association *dataAssoc;
     long xSize;
     long ySize;
+    int  raOffset;
+    int  decOffset;
     ORIENTATION longConvention;
     MAPTYPE projection;
     COLORSCHEME hue;

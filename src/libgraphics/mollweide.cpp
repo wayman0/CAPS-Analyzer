@@ -258,11 +258,13 @@ int MollweideMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, associatio
 
     if (point <= 1.0) {
       double angle = asin(M_2_PI * (asin(v) + v * sqrt((1.0 - v) * (1.0 + v))));
-      double lat   = M_PI_2 + angle;
+      double lat   = (M_PI_2 + angle + (decOffset() * M_PI/180));
+      //lat = fmod(lat, M_PI_2);
       double test  = sqrt((1.0 - v) * (1.0 + v));
       double denom = (test < 1.0e-6) ? 1.0e-6 : test;
 //      double lon   = (direction * M_PI_2 * u / denom) + M_PI;
-      double lon   = (direction * M_PI_2 * u / denom); // this was the original line
+      double lon   = (direction * M_PI_2 * u / denom) + (raOffset() * M_PI/180); // this was the original line
+      //lon = fmod(lon, M_PI);
       double value = 0;
       long xPos, yPos;
 
@@ -284,6 +286,13 @@ int MollweideMapper::makeMapHealpix(dataMap *map, FILETYPE dataTypes, associatio
 
       if (pri_vec_ptr || vec_int_ptr) {
 //        lon  = M_PI - lon; // this was the error causing line not the others
+
+        std::cout << "lat: " << lat << " lon: " << lon << "\t";
+
+        lat = fmod(lat, 180);
+        lon = fmod(lon, 360);
+
+        std::cout << "lat: " << lat << " lon: " << lon << "\n";
         xPos = (long)(healpix->ang2pix(pointing(lat,lon)));
         if (pri_vec_ptr)
           value = (*pri_vec_ptr)[xPos];

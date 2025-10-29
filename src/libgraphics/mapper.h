@@ -127,8 +127,16 @@ class Mapper {
      */
     int width()                         { return m_mapX; }
     void width(int value)               { m_mapX = value; }
+
     int height()                        { return m_mapY; }
     void height(int value)              { m_mapY = value; }
+
+    int raOffset()                      { return m_raOffset; }
+    void raOffset(int offset)           { m_raOffset = offset;}
+
+    int decOffset()                      { return m_decOffset; }
+    void decOffset(int offset)           { m_decOffset = offset;}
+
 
   protected:
     bool                                m_configured;
@@ -141,6 +149,8 @@ class Mapper {
     ORIENTATION                         m_orientation;
     int                                 m_mapX;
     int                                 m_mapY;
+    int                                 m_raOffset;
+    int                                 m_decOffset;
 };
 
 #endif

@@ -19,8 +19,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QRadioButton>
-#include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
@@ -29,7 +27,8 @@ class Ui_graphDialog
 public:
     QLabel *title;
     QGroupBox *pageBox;
-    QWidget *layoutWidget;
+    QGridLayout *gridLayout_3;
+    QGroupBox *sizeGroupBox;
     QGridLayout *gridLayout;
     QRadioButton *smallSizeButton;
     QRadioButton *largeSizeButton;
@@ -40,16 +39,17 @@ public:
     QLineEdit *widthValue;
     QLabel *heightLabel;
     QLineEdit *heightValue;
-    QWidget *widget;
-    QHBoxLayout *ButtonLayout;
+    QGroupBox *scaleGroupBox;
+    QGridLayout *gridLayout_2;
+    QRadioButton *linearButton;
+    QRadioButton *logButton;
     QDialogButtonBox *buttonBox;
-    QSpacerItem *horizontalSpacer_2;
 
     void setupUi(QDialog *graphDialog)
     {
         if (graphDialog->objectName().isEmpty())
             graphDialog->setObjectName(QString::fromUtf8("graphDialog"));
-        graphDialog->resize(410, 195);
+        graphDialog->resize(410, 340);
         graphDialog->setMinimumSize(QSize(410, 195));
         title = new QLabel(graphDialog);
         title->setObjectName(QString::fromUtf8("title"));
@@ -59,77 +59,88 @@ public:
         title->setWordWrap(true);
         pageBox = new QGroupBox(graphDialog);
         pageBox->setObjectName(QString::fromUtf8("pageBox"));
-        pageBox->setGeometry(QRect(0, 50, 400, 90));
+        pageBox->setGeometry(QRect(0, 50, 400, 284));
         pageBox->setMinimumSize(QSize(400, 90));
-        layoutWidget = new QWidget(pageBox);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(0, 30, 391, 51));
-        gridLayout = new QGridLayout(layoutWidget);
+        gridLayout_3 = new QGridLayout(pageBox);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        sizeGroupBox = new QGroupBox(pageBox);
+        sizeGroupBox->setObjectName(QString::fromUtf8("sizeGroupBox"));
+        gridLayout = new QGridLayout(sizeGroupBox);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        smallSizeButton = new QRadioButton(layoutWidget);
+        smallSizeButton = new QRadioButton(sizeGroupBox);
         smallSizeButton->setObjectName(QString::fromUtf8("smallSizeButton"));
         smallSizeButton->setChecked(true);
 
         gridLayout->addWidget(smallSizeButton, 0, 0, 1, 1);
 
-        largeSizeButton = new QRadioButton(layoutWidget);
+        largeSizeButton = new QRadioButton(sizeGroupBox);
         largeSizeButton->setObjectName(QString::fromUtf8("largeSizeButton"));
 
         gridLayout->addWidget(largeSizeButton, 0, 1, 1, 1);
 
-        mediumSizeButton = new QRadioButton(layoutWidget);
+        mediumSizeButton = new QRadioButton(sizeGroupBox);
         mediumSizeButton->setObjectName(QString::fromUtf8("mediumSizeButton"));
 
         gridLayout->addWidget(mediumSizeButton, 1, 0, 1, 1);
 
-        customSizeButton = new QRadioButton(layoutWidget);
+        customSizeButton = new QRadioButton(sizeGroupBox);
         customSizeButton->setObjectName(QString::fromUtf8("customSizeButton"));
 
         gridLayout->addWidget(customSizeButton, 1, 1, 1, 1);
 
         customSizeLayout = new QHBoxLayout();
         customSizeLayout->setObjectName(QString::fromUtf8("customSizeLayout"));
-        widthLabel = new QLabel(layoutWidget);
+        widthLabel = new QLabel(sizeGroupBox);
         widthLabel->setObjectName(QString::fromUtf8("widthLabel"));
 
         customSizeLayout->addWidget(widthLabel);
 
-        widthValue = new QLineEdit(layoutWidget);
+        widthValue = new QLineEdit(sizeGroupBox);
         widthValue->setObjectName(QString::fromUtf8("widthValue"));
 
         customSizeLayout->addWidget(widthValue);
 
-        heightLabel = new QLabel(layoutWidget);
+        heightLabel = new QLabel(sizeGroupBox);
         heightLabel->setObjectName(QString::fromUtf8("heightLabel"));
 
         customSizeLayout->addWidget(heightLabel);
 
-        heightValue = new QLineEdit(layoutWidget);
+        heightValue = new QLineEdit(sizeGroupBox);
         heightValue->setObjectName(QString::fromUtf8("heightValue"));
 
         customSizeLayout->addWidget(heightValue);
 
 
-        gridLayout->addLayout(customSizeLayout, 1, 2, 1, 1);
+        gridLayout->addLayout(customSizeLayout, 2, 0, 1, 2);
 
-        widget = new QWidget(graphDialog);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(3, 142, 391, 32));
-        ButtonLayout = new QHBoxLayout(widget);
-        ButtonLayout->setObjectName(QString::fromUtf8("ButtonLayout"));
-        ButtonLayout->setContentsMargins(0, 0, 0, 0);
-        buttonBox = new QDialogButtonBox(widget);
+
+        gridLayout_3->addWidget(sizeGroupBox, 0, 0, 1, 1);
+
+        scaleGroupBox = new QGroupBox(pageBox);
+        scaleGroupBox->setObjectName(QString::fromUtf8("scaleGroupBox"));
+        gridLayout_2 = new QGridLayout(scaleGroupBox);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        linearButton = new QRadioButton(scaleGroupBox);
+        linearButton->setObjectName(QString::fromUtf8("linearButton"));
+        linearButton->setChecked(true);
+
+        gridLayout_2->addWidget(linearButton, 0, 0, 1, 1);
+
+        logButton = new QRadioButton(scaleGroupBox);
+        logButton->setObjectName(QString::fromUtf8("logButton"));
+
+        gridLayout_2->addWidget(logButton, 0, 1, 1, 1);
+
+
+        gridLayout_3->addWidget(scaleGroupBox, 1, 0, 1, 1);
+
+        buttonBox = new QDialogButtonBox(pageBox);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setMinimumSize(QSize(240, 30));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok);
 
-        ButtonLayout->addWidget(buttonBox);
-
-        horizontalSpacer_2 = new QSpacerItem(68, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        ButtonLayout->addItem(horizontalSpacer_2);
+        gridLayout_3->addWidget(buttonBox, 2, 0, 1, 1);
 
 
         retranslateUi(graphDialog);
@@ -144,6 +155,7 @@ public:
         graphDialog->setWindowTitle(QCoreApplication::translate("graphDialog", "Dialog", nullptr));
         title->setText(QCoreApplication::translate("graphDialog", "<html><head/><body><p>The grapher requires additional configuration. Please make the appropriate changes below.</p></body></html>", nullptr));
         pageBox->setTitle(QCoreApplication::translate("graphDialog", "Page Size", nullptr));
+        sizeGroupBox->setTitle(QCoreApplication::translate("graphDialog", "Size", nullptr));
         smallSizeButton->setText(QCoreApplication::translate("graphDialog", "&800 x 600", nullptr));
         largeSizeButton->setText(QCoreApplication::translate("graphDialog", "1&280 x 960", nullptr));
         mediumSizeButton->setText(QCoreApplication::translate("graphDialog", "&1024 x 768", nullptr));
@@ -152,6 +164,9 @@ public:
         widthValue->setText(QCoreApplication::translate("graphDialog", "800", nullptr));
         heightLabel->setText(QCoreApplication::translate("graphDialog", "Height", nullptr));
         heightValue->setText(QCoreApplication::translate("graphDialog", "600", nullptr));
+        scaleGroupBox->setTitle(QCoreApplication::translate("graphDialog", "Scale", nullptr));
+        linearButton->setText(QCoreApplication::translate("graphDialog", "linear", nullptr));
+        logButton->setText(QCoreApplication::translate("graphDialog", "log", nullptr));
     } // retranslateUi
 
 };
