@@ -104,6 +104,9 @@ class dataSpectrum {
     double aspect() const {return m_aspect;}
     void aspect(double value) {m_aspect = value;}
     
+    bool loglogScale() {return m_loglogScale;}
+    void loglogScale(bool scale) { m_loglogScale = scale;}
+
     /**
      * access size of graph in X direction
      */
@@ -149,8 +152,8 @@ class dataSpectrum {
     /**
      * create graph array and initialize to zero
      */
-    long initialize() {return initialize(m_Xpage,m_Ypage);} // use default values
-    long initialize(long x,long y);
+    long initialize() {return initialize(m_Xpage,m_Ypage, m_loglogScale);} // use default values
+    long initialize(long x,long y, bool loglogScale);
 
     /**
      * reset the graph array
@@ -161,6 +164,8 @@ class dataSpectrum {
      * Generate and transfer ownership of an RGB bitmap
      */
     unsigned char *transferRGBData();
+    void buildLogLogGraph(void* rl);
+    void buildLinearGraph(void* rl);
 
   private:
     FILETYPE            m_dataType;
@@ -174,6 +179,7 @@ class dataSpectrum {
     long                m_Ygraph;
     double              m_pageAspect;
     double              m_aspect;
+    bool                m_loglogScale;
     std::string         m_title;
     std::string         m_xtitle;
     std::string         m_ytitle;

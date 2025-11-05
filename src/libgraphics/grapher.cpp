@@ -64,6 +64,7 @@ Grapher::Grapher() {
   m_graphY      = 0;
   m_aspect      = 2.0;
   m_edge        = 1.02;
+  m_loglogScale = false;
 }
 
 Grapher::Grapher(Grapher* from) {
@@ -74,6 +75,7 @@ Grapher::Grapher(Grapher* from) {
   m_graphY     = from->height();
   m_aspect     = from->aspectRatio();
   m_edge       = from->edge();
+  m_loglogScale = from->loglogScale();
 }
 
 Grapher::~Grapher() {

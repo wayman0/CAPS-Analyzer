@@ -73,6 +73,7 @@ dataSpectrum::dataSpectrum() {
   m_pageAspect = 4.0 / 3.0;
   m_Xpage      = 800;
   m_Ypage      = (long)(m_Xpage / m_pageAspect);
+  m_loglogScale = false;
 }
 
 dataSpectrum::dataSpectrum(FILETYPE type) {
@@ -151,6 +152,7 @@ dataSpectrum::dataSpectrum(dataSpectrum* from) {
   m_xtitle     = from->xtitle();
   m_ytitle     = from->ytitle();
   m_graph      = from->graph();
+  m_loglogScale = from->loglogScale();
 }
 
 dataSpectrum& dataSpectrum::operator=(dataSpectrum& other) {
@@ -169,7 +171,8 @@ dataSpectrum& dataSpectrum::operator=(dataSpectrum& other) {
   m_xtitle     = other.xtitle();
   m_ytitle     = other.ytitle();
   m_graph      = other.graph();
-  
+  m_loglogScale = other.loglogScale();
+
   return *this;
 }
 
@@ -179,7 +182,8 @@ void dataSpectrum::reset() {
   m_minValue = m_maxValue = 0.0;
 }
 
-long int dataSpectrum::initialize(long int x, long int y) {
+long int dataSpectrum::initialize(long int x, long int y, bool scale)
+{
   m_Xpage = x;
   m_Ypage = y;
   m_pageAspect = (double)m_Xpage / (double)m_Ypage;
@@ -190,6 +194,7 @@ long int dataSpectrum::initialize(long int x, long int y) {
   if ((long)(m_Ygraph * m_aspect) != m_Xgraph)
     m_Ygraph++;
 
+  m_loglogScale = scale;
   reset();
 
   m_graph = arr<double>(m_Xgraph);
@@ -327,6 +332,107 @@ unsigned char* dataSpectrum::transferRGBData() {
   rl->translate(m_Xpage * .5 - label_offset, 25);
   rl->bitmapFontString(m_title.c_str());
 
+  if(m_loglogScale)
+    buildLogLogGraph(rl);
+  else
+    buildLinearGraph(rl);
+
+  delete rl;
+  return bitmap;
+}
+
+void dataSpectrum::buildLogLogGraph(void* r)
+{
+  Raster* rl = (Raster*)r;
+  double label_offset, max_value, min_value, value_div;
+  int n, max_index;
+  char label[40];
+
+  max_index = log10(m_maxIndex) - m_minIndex > 0 ? log10(m_minIndex):1; // should the min be 1 or 0
+
+  /* Adds a buffer area to top of graph... */
+  max_value = log10(m_maxValue) * 1.1; // 1.5;
+  value_div = max_value/5;
+
+  /* adds a buffer area to the bottom of graph */
+  //min_value = m_minValue - value_div;
+
+  /* Y axis labels... */
+  rl->bitmapFontFace(FONT_NAME,10);
+  rl->identity();
+  rl->translate(m_Xpage * AREA_OFFSET, m_Ypage * AREA_OFFSET/2);
+  rl->translate(-m_Xpage * SCALE_OFFSET * 1.25, 5);
+
+  n = 0;
+  while (n < 5) {
+    sprintf(label,"%.3e",max_value - n * value_div);
+    label_offset = rl->bitmapFontLength(label);
+    rl->translate(-label_offset, m_Ygraph * n/5.0);
+    rl->bitmapFontString(label);
+    rl->undoLast();
+    n++;
+  }
+
+  label_offset = rl->bitmapFontLength("0");
+  rl->translate(-label_offset, m_Ygraph);
+  rl->translate(0, 1);
+  rl->bitmapFontString("0");
+
+   /* X axis labels... */
+  rl->identity();
+  rl->translate(m_Xpage * AREA_OFFSET, m_Ypage * AREA_OFFSET/2);
+  rl->translate(0, m_Ygraph + m_Xpage * SCALE_OFFSET + 15);
+
+  label_offset = rl->bitmapFontLength("0")/2;
+  rl->translate(-label_offset,0);
+  rl->bitmapFontString("0");
+  rl->undoLast();
+
+  n = 0;
+  int logSize = log10(max_index);
+
+  while (n < 5)
+  {
+    int scaleValue = pow(10, n*logSize/4);
+    sprintf(label,"%d",scaleValue);
+    label_offset = rl->bitmapFontLength(label)/2;
+    rl->translate(-label_offset + m_Xgraph * n/4.0, 0);
+    rl->bitmapFontString(label);
+    rl->undoLast();
+    n++;
+  }
+
+  /* graph actual data */
+  rl->identity();
+  rl->translate(m_Xpage * AREA_OFFSET, m_Ypage * AREA_OFFSET/2);
+  rl->translate(0, m_Ygraph);
+  rl->scale(m_Xgraph/max_index, m_Ygraph/max_value);
+
+  rl->color(1,0,0);
+  n = 0;
+
+  rl->begin(RASTER_LINE_STRIP);
+  while (n < m_graph.size())
+  {
+    if(m_graph[n] == 0)
+      rl->vertex(n,-m_graph[n]);
+    else
+      rl->vertex(n, -log10(m_graph[n]));
+    n++;
+
+    std::cout << "log of " << m_graph[n] << " = " << log10(m_graph[n]) << ", ";
+  }
+  std::cout << "\n";
+  rl->end();
+}
+
+void dataSpectrum::buildLinearGraph(void* r)
+{
+  Raster* rl = (Raster*)r;
+  double label_offset, max_value, min_value, value_div;
+  int n, max_index;
+  char label[40];
+
   max_index = m_maxIndex - m_minIndex;
 
   /* Adds a buffer area to top of graph... */
@@ -392,7 +498,4 @@ unsigned char* dataSpectrum::transferRGBData() {
     n++;
   }
   rl->end();
-
-  delete rl;
-  return bitmap;
 }

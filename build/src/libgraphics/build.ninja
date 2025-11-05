@@ -53,7 +53,7 @@ build CMakeFiles/graphics.dir/datamap.cpp.o: CXX_COMPILER__graphics_unscanned_De
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/datamap.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -61,7 +61,7 @@ build CMakeFiles/graphics.dir/dataspectrum.cpp.o: CXX_COMPILER__graphics_unscann
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/dataspectrum.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -69,7 +69,7 @@ build CMakeFiles/graphics.dir/font_mroman.cpp.o: CXX_COMPILER__graphics_unscanne
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/font_mroman.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -77,7 +77,7 @@ build CMakeFiles/graphics.dir/font_roman.cpp.o: CXX_COMPILER__graphics_unscanned
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/font_roman.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -85,7 +85,7 @@ build CMakeFiles/graphics.dir/grapher.cpp.o: CXX_COMPILER__graphics_unscanned_De
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/grapher.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -93,7 +93,7 @@ build CMakeFiles/graphics.dir/mapper.cpp.o: CXX_COMPILER__graphics_unscanned_Deb
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/mapper.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -101,7 +101,7 @@ build CMakeFiles/graphics.dir/mollweide.cpp.o: CXX_COMPILER__graphics_unscanned_
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/mollweide.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -109,7 +109,7 @@ build CMakeFiles/graphics.dir/progress.cpp.o: CXX_COMPILER__graphics_unscanned_D
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/progress.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -117,7 +117,7 @@ build CMakeFiles/graphics.dir/raster.cpp.o: CXX_COMPILER__graphics_unscanned_Deb
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/raster.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 
@@ -125,7 +125,7 @@ build CMakeFiles/graphics.dir/coordtransformer.cpp.o: CXX_COMPILER__graphics_uns
   DEFINES = -Dgraphics_EXPORTS
   DEP_FILE = CMakeFiles/graphics.dir/coordtransformer.cpp.o.d
   FLAGS = -g -fPIC
-  INCLUDES = -I/usr/include/freetype -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
+  INCLUDES = -I/usr/include/freetype -I/usr/include/freetype2 -I/usr/include/sigc++-2.0 -I/usr/lib64/sigc++-2.0/include
   OBJECT_DIR = CMakeFiles/graphics.dir
   OBJECT_FILE_DIR = CMakeFiles/graphics.dir
 

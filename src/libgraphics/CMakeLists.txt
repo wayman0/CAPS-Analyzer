@@ -20,7 +20,7 @@ set(graphics_SOURCES
     coordtransformer.cpp
    )
 
-include_directories(/mnt/research/software/include /usr/include/freetype ${DEPS_INCLUDE_DIRS})
+include_directories(/mnt/research/software/include /usr/include/freetype /usr/include/freetype2 ${DEPS_INCLUDE_DIRS})
 
 add_library(graphics SHARED ${graphics_SOURCES})
 

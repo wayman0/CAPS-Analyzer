@@ -4516,7 +4516,7 @@ bool association::generateGraph(FILETYPE type) {
 //  printf("type: %d, name: %s, graph name: %s\n", (int)type, name.c_str(), graph->title().c_str());
 
   graph->aspect(m_graphEngine->aspectRatio());
-  graph->initialize(m_graphEngine->width(),m_graphEngine->height());
+  graph->initialize(m_graphEngine->width(),m_graphEngine->height(), m_graphEngine->loglogScale());
 
   switch (type) {
     case fileType::TransformedData:

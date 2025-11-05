@@ -103,6 +103,8 @@ class Grapher {
     int height()                        { return m_graphY; }
     void height(int value)              { m_graphY = value; }
 
+    bool loglogScale()                  { return m_loglogScale; }
+    void loglogScale(bool scale)        { m_loglogScale = scale;}
     /**
      * Create rgb image of x,y size
      */
@@ -121,6 +123,7 @@ class Grapher {
   protected:
     bool     m_configured;
     bool     m_active;
+    bool     m_loglogScale;
     FILETYPE m_dataType;
     int      m_graphX;
     int      m_graphY;

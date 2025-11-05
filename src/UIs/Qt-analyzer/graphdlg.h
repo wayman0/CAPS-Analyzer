@@ -69,6 +69,8 @@ class graphDialog : public QDialog {
     virtual ~graphDialog();
     bool configured() {return isConfigured;}
     void configured(bool config) {isConfigured = config;}
+    void logLogScale(bool scale) {isloglogScale = scale;}
+    bool logLogScale() { return isloglogScale;}
     void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
@@ -88,7 +90,7 @@ class graphDialog : public QDialog {
     association *dataAssoc;
     long xSize;
     long ySize;
-    bool dirty, isConfigured;
+    bool dirty, isConfigured, isloglogScale;
 //    analyzer_graph_hdl currentHandle;
 
   private Q_SLOTS:

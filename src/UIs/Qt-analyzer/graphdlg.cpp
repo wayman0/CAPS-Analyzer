@@ -65,6 +65,7 @@ graphDialog::graphDialog(association *assoc) :
   xSize = ySize = 0;
   dirty = false;
   isConfigured = false;
+  isloglogScale = false;
   
   /* set up signals and slots */
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &graphDialog::finalize);
@@ -115,6 +116,11 @@ void graphDialog::configure() {
     }
   }
 
+  if(isloglogScale)
+    ui->logButton->setChecked(true);
+  else
+    ui->logButton->setChecked(false);
+
   exec();
 }
 
@@ -133,7 +139,7 @@ void graphDialog::reset() {
   
   dirty = false;
   isConfigured = false;
-  
+  isloglogScale = false;
 //  while (currentHandle >= 0) {
 //    analyzer_grapher_release(currentHandle);
 //    currentHandle--;
@@ -168,6 +174,12 @@ void graphDialog::validate() {
       dirty = true;
   }
   
+  bool isLog = isloglogScale;
+  isloglogScale = ui->logButton->isChecked();
+
+  if(isLog != isloglogScale)
+    dirty = true;
+
   isConfigured = true;
   return;
 }
@@ -209,6 +221,8 @@ void graphDialog::finalize() {
   }
   dataAssoc->graphingEngine()->width(xSize);
   dataAssoc->graphingEngine()->height(ySize);
+  dataAssoc->graphingEngine()->loglogScale(isloglogScale);
+
   Q_EMIT grapherReady();
   accept();
 }
