@@ -145,7 +145,7 @@ class mainWindow : public QMainWindow {
     spectrumDialog          *specDlg;
     mapperDialog            *mapperDlg;
     mapSelectDialog         *mapSelectDlg;
-    graphDialog             *graphDlg;
+    graphDialog             *grapherDlg;
     graphSelectDialog       *graphSelectDlg;
     
     progress                *s_progressInterface;

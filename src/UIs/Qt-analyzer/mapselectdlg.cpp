@@ -192,8 +192,10 @@ void mapSelectDialog::configure(unsigned int availableMaps) {
   ASSOCIATEDMAP mapType = associatedMap::ASSOCIATEDMAP_LIMIT;
   int type = static_cast<int>(mapType);
   
-  while (mapType >  associatedMap::Null) { // run over graphable data types
-    if (mapType == associatedMap::ASSOCIATEDMAP_LIMIT) {
+  while (mapType >  associatedMap::Null) // run over graphable data types
+  {
+    if (mapType == associatedMap::ASSOCIATEDMAP_LIMIT)
+    {
       mapType = static_cast<ASSOCIATEDMAP>(--type);
       continue;
     }

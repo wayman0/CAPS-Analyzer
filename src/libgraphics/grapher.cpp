@@ -251,7 +251,7 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
     if (spect->maxValue() < value)
       spect->maxValue(value);
 
-    std::cout << "Value: " << pow(10, value)/100 << " graph data: " << spect->graph()[count] << "\n";
+    std::cout << "Value: " << ((m_loglogScale)?(pow(10, value)/100):(value/100)) << " graph data: " << spect->graph()[count] << "\n";
   }
   
   m_active = true;

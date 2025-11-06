@@ -55,3 +55,5 @@
 799	848	1762390919046780653	libgraphics.so	fa6b896ebf6cec8a
 1	784	1762391074314770465	CMakeFiles/graphics.dir/dataspectrum.cpp.o	d7278121e27bae8b
 784	831	1762391074360770462	libgraphics.so	fa6b896ebf6cec8a
+1	831	1762395852942456926	CMakeFiles/graphics.dir/grapher.cpp.o	65526ad0b59f3fb7
+831	899	1762395853009456922	libgraphics.so	fa6b896ebf6cec8a

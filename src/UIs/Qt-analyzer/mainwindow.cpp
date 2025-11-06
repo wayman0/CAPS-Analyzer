@@ -113,7 +113,7 @@ mainWindow::mainWindow() :
   specDlg = new spectrumDialog();
   mapperDlg = new mapperDialog(s_association);
   mapSelectDlg = new mapSelectDialog(s_association);
-  graphDlg = new graphDialog(s_association);
+  grapherDlg = new graphDialog(s_association);
   graphSelectDlg = new graphSelectDialog(s_association);
 
   /* initialize progress bar */
@@ -193,7 +193,7 @@ mainWindow::mainWindow() :
   connect(mapperDlg, &mapperDialog::mapperReady, [=](){buildMaps();});
   connect(this, &mainWindow::selectMapDisplay, [=](unsigned int selection){mapSelectDlg->configure(selection);});
   connect(mapSelectDlg, &mapSelectDialog::mapSelected, [=](ASSOCIATEDMAP map){displayMap(map);});
-  connect(graphDlg, &graphDialog::grapherReady, [=](){buildGraphs();});
+  connect(grapherDlg, &graphDialog::grapherReady, [=](){buildGraphs();});
   connect(this, &mainWindow::selectGraphDisplay, [=](unsigned int selection){graphSelectDlg->configure(selection);});
   connect(graphSelectDlg, &graphSelectDialog::graphSelected, [=](associatedSpectrum graph){displayGraph(graph);});
   connect(pixSelectDlg, &pixelizerDialog::pixelizerSelected, [=](PIXELSCHEME scheme){configurePixelizer(scheme);});
@@ -228,7 +228,7 @@ mainWindow::~mainWindow() {
   delete specDlg;
   delete mapperDlg;
   delete mapSelectDlg;
-  delete graphDlg;
+  delete grapherDlg;
   delete graphSelectDlg;
 
   // delete association
@@ -656,8 +656,8 @@ void mainWindow::addAssociation()
   associationVector->push_back(newAssoc);
   setAssociation(newAssoc);
 
-  mapperDlg->configured(false);
-   graphDlg->configured(false);
+   mapperDlg->configured(false);
+  grapherDlg->configured(false);
 
    ctrlDlg->reset();
 
@@ -684,7 +684,7 @@ void mainWindow::setAssociation(association* newAssoc)
          rshtDlg->setAssociation(s_association);
        mapperDlg->setAssociation(s_association);
     mapSelectDlg->setAssociation(s_association);
-        graphDlg->setAssociation(s_association);
+      grapherDlg->setAssociation(s_association);
   graphSelectDlg->setAssociation(s_association);
 
          ctrlDlg->configured(false);
@@ -708,7 +708,7 @@ void mainWindow::setAssociation(association* newAssoc)
   transSelectDlg->reset();
   rshtDlg->reset();
   mapperDlg->reset();
-  graphDlg->reset();
+  grapherDlg->reset();
   mapSelectDlg->reset();
   graphSelectDlg->reset();
   */
@@ -1861,8 +1861,8 @@ void mainWindow::clearMaps()
 }
 
 void mainWindow::configureGraphs() {
-  if (!graphDlg->configured())
-    graphDlg->configure();
+  if (!grapherDlg->configured())
+    grapherDlg->configure();
   buildGraphs();
 }
 
