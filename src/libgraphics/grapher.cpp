@@ -238,11 +238,20 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
         break;
     }
     
+    if(m_loglogScale)
+      value = log10(value * 100);
+    else
+      value = value * 100;
+
     spect->graph()[count] += value;
+
     if (spect->minValue() > value)
       spect->minValue(value);
+
     if (spect->maxValue() < value)
       spect->maxValue(value);
+
+    std::cout << "Value: " << pow(10, value)/100 << " graph data: " << spect->graph()[count] << "\n";
   }
   
   m_active = true;

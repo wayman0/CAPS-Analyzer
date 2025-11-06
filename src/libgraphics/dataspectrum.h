@@ -164,8 +164,6 @@ class dataSpectrum {
      * Generate and transfer ownership of an RGB bitmap
      */
     unsigned char *transferRGBData();
-    void buildLogLogGraph(void* rl);
-    void buildLinearGraph(void* rl);
 
   private:
     FILETYPE            m_dataType;

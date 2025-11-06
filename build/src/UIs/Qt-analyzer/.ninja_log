@@ -247,3 +247,9 @@
 4	4455	1762319794223809445	CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o	9d8aa537e6148fbb
 4	5379	1762319795145809385	CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o	1e22656b60ce4331
 5379	5721	1762319795484809363	Qt-analyzer	5922cdbb3c8b51bf
+4	3308	1762390486122809058	CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o	7034f5f7a9b48973
+4	3323	1762390486137809057	CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o	4edf0856f0a4a2b
+4	3326	1762390486141809057	CMakeFiles/Qt-analyzer.dir/graphdlg.cpp.o	9d8aa537e6148fbb
+4	4488	1762390487303808981	CMakeFiles/Qt-analyzer.dir/main.cpp.o	7cc472dce9547a56
+4	5414	1762390488228808920	CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o	1e22656b60ce4331
+5414	5922	1762390488734808887	Qt-analyzer	5922cdbb3c8b51bf
