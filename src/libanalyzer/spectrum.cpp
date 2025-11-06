@@ -396,6 +396,9 @@ void Spectrum::invertMatrix(association* asc, FILETYPE ft)
     gsl_permutation_free(p);
   }
 
+  for(int r = 0; r < gslInvert->size1; r += 1)
+    for(int c = 0; c < gslInvert->size2; c += 1)
+      gsl_matrix_set(gslInvert, r, c, abs(gsl_matrix_get(gslInvert, r, c)));
 
 }
 
