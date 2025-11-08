@@ -188,14 +188,21 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
       break;
   }
   
+  double min = INFINITY;
   int max_index = 0, min_index = 0;
   if (vec_wht_ptr) {
     max_index = vec_wht_ptr->size();
     min_index = vec_wht_ptr->maskIndex();
+    for(int i = min_index; i < max_index; i += 1)
+      if((*vec_wht_ptr)[i] < min)
+        min = (*vec_wht_ptr)[i];
   }
   else {
     max_index = vec_dat_ptr->size();
     min_index = vec_dat_ptr->maskIndex();
+    for(int i = min_index; i < max_index; i += 1)
+      if((*vec_dat_ptr)[i] < min)
+        min = (*vec_dat_ptr)[i];
   }
   int arr_size = max_index - min_index;
   
@@ -204,6 +211,12 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
   double value = 0.0;
   spect->maxIndex(max_index);
   spect->minIndex(min_index);
+
+  int logSize;
+  if(min < 1)
+    logSize = log10(1/min) + 1;
+  else
+    logSize = log10(min) + 1;
 
   spect->graph().resize(arr_size);
   for (count = 0; count < arr_size; count++) {
@@ -239,9 +252,7 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
     }
     
     if(m_loglogScale)
-      value = log10(value * 100);
-    else
-      value = value * 100;
+      value = log10(value * pow(10, logSize));
 
     spect->graph()[count] += value;
 
@@ -250,8 +261,6 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
 
     if (spect->maxValue() < value)
       spect->maxValue(value);
-
-    std::cout << "Value: " << ((m_loglogScale)?(pow(10, value)/100):(value/100)) << " graph data: " << spect->graph()[count] << "\n";
   }
   
   m_active = true;

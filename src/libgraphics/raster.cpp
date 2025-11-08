@@ -67,6 +67,9 @@ Raster::Raster(int width, int height, int bytes_per_pixel, unsigned char *raster
   m_raster         = raster;
   m_point_size     = 1;
 
+  m_logAxis        = RASTER_LOG_NONE;
+  m_logSize_x      = 0;
+  m_logSize_y      = 0;
   m_mode           = RASTER_NONE;
   m_pixel_mode     = RASTER_LINEAR;
   m_trans_lst      = 0;
@@ -328,7 +331,8 @@ void Raster::add_op(raster_enum_t op, double deg, double x, double y) {
 #define round(x) ((((int)(2 * (x))) > 2 * ((int)(x))) ? (int)(x + 1) : (int)x)
 
 void Raster::write_point() {
-  static int x, y ,n;
+  static double x, y;
+  static int n;
   static unsigned char *at, *pixel, *color;
 
   if (m_at_x < 0 || m_at_y < 0)
@@ -341,7 +345,14 @@ void Raster::write_point() {
   x     = (m_pixel_mode == RASTER_NEAREST) ? round(m_at_x) : m_at_x;
   y     = (m_pixel_mode == RASTER_NEAREST) ? round(m_at_y) : m_at_y;
   color = (unsigned char*)&m_color;
-  at    = m_raster + ((y * m_raster_width) + x) * m_raster_Bpp;
+
+  // where we are at in the pixel map = the pixel map plus an offset of   which row we are calculating * the size of a row  + how many columns into the row * the size of a pixel
+  //at =                                  m_raster +                        ((y * m_raster_width)                              + x)                           * m_raster_Bpp;
+
+
+  at    = m_raster + (((int)y * m_raster_width) + (int)x) * m_raster_Bpp;
+
+  //printf("(%f,%f) = index %d width = %d height = %d xLogSize = %d\n", x, y, *at, m_raster_width, m_raster_height, m_logSize_x);
 
   y = 0;
   while (y < m_point_size) {
@@ -446,8 +457,10 @@ void Raster::rasterize() {
           dy    = vtx->y - m_at_y;
           abs_x = abs(dx);
           abs_y = abs(dy);
-          if (abs_x || abs_y) {
-            if (abs_x >= abs_y) {
+          if (abs_x || abs_y)
+          {
+            if (abs_x >= abs_y)
+            {
               slope = fabs(dy/dx);
               if (dy < 0)
                 slope = -slope;
@@ -457,7 +470,8 @@ void Raster::rasterize() {
               sav_dep = m_at_y;
               limit   = abs_x + 1;
             }
-            else {
+            else
+            {
               slope = fabs(dx/dy);
               if (dx < 0)
                 slope = -slope;
@@ -506,6 +520,7 @@ void Raster::rasterize() {
       vtx = m_verts_lst;
     }
   }
+  //printf("\n");
 }
 
 /* Functions adpated from GLUT */

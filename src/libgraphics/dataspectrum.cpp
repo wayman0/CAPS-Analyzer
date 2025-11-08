@@ -348,6 +348,7 @@ unsigned char* dataSpectrum::transferRGBData() {
   rl->translate(-m_Xpage * SCALE_OFFSET * 1.25, 5);
 
   n = 0;
+  int logSizeY = log10(m_maxValue);
   while (n < 5) {
     sprintf(label,"%.3e",max_value - n * value_div);
     label_offset = rl->bitmapFontLength(label);
@@ -373,12 +374,11 @@ unsigned char* dataSpectrum::transferRGBData() {
   rl->undoLast();
 
   n =1;
-  int logSize = log10(max_index);
-
+  int logSizeX = log10(max_index);
   while (n < 5)
   {
     if(m_loglogScale)
-      sprintf(label,"%d", (int)pow(10, n*logSize/4.0));
+      sprintf(label,"10^%d/%d", n*logSizeX, 4);
     else
       sprintf(label,"%d", (int)(n * max_index/4.0));
 
@@ -393,16 +393,37 @@ unsigned char* dataSpectrum::transferRGBData() {
   rl->identity();
   rl->translate(m_Xpage * AREA_OFFSET, m_Ypage * AREA_OFFSET/2);
   rl->translate(0, m_Ygraph);
-  rl->scale(m_Xgraph/max_index, m_Ygraph/max_value);
 
   rl->color(1,0,0);
   n = 0;
+  if(m_loglogScale)
+  {
+    rl->scale(m_Xgraph/logSizeX, m_Ygraph/max_value);
+
+    rl->setLogAxis(RASTER_LOG_X);
+    rl->setLogSizeX(logSizeX);
+  }
+  else
+  {
+      rl->scale(m_Xgraph/max_index, m_Ygraph/max_value);
+  }
 
   rl->begin(RASTER_LINE_STRIP);
-  while (n < m_graph.size()) {
-    rl->vertex(n,-m_graph[n]);
+  while (n < m_graph.size())
+  {
+
+    if(m_loglogScale)
+      rl->vertex(log10(n),-m_graph[n]);
+    else
+      rl->vertex(n, -m_graph[n]);
+
+    //printf("(%f, %f)\n", log10(n), -m_graph[n]);
+
+    //rl->vertex(n, -m_graph[n]);
     n++;
   }
+  //printf("_______________________________________________________________________________\n");
+
   rl->end();
 
   delete rl;

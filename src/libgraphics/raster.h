@@ -73,6 +73,14 @@ typedef enum {
 }
 raster_enum_t;
 
+typedef enum
+{
+   RASTER_LOG_NONE = 0,
+   RASTER_LOG_Y,
+   RASTER_LOG_X
+}
+raster_log_axis;
+
 typedef struct { unsigned char r,g,b,a; } raster_color_t;
 
 typedef struct raster_point_t raster_point_t;
@@ -89,11 +97,15 @@ struct raster_trans_t {
    double deg, x, y;
 };
 
+
 class Raster {
   public:
     Raster(int width, int height, int bytes_per_pixel, unsigned char *raster);
     ~Raster();
 
+    void setLogAxis(raster_log_axis logAxis) {m_logAxis = logAxis; }
+    void setLogSizeX(int logSize)             {m_logSize_x = logSize;}
+    void setLogSizeY(int logSize)             {m_logSize_y = logSize;}
     void begin(raster_enum_t op);
     void vertex(double x, double y);
     void end(void);
@@ -134,7 +146,12 @@ class Raster {
     int                           m_raster_height;
     int                           m_raster_Bpp;
     int                           m_point_size;
+
+    int                           m_logSize_x;
+    int                           m_logSize_y;
+
     raster_enum_t                 m_mode;
+    raster_log_axis               m_logAxis;
     raster_enum_t                 m_pixel_mode;
     raster_color_t                m_color;
 
