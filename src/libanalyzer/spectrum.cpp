@@ -446,13 +446,13 @@ void Spectrum::calculateBinnedExtrapolatedSpectrum(association* asc) // Pbl Mll-
 
 void Spectrum::calculateBinnedExtrapolatedInstrumentSpectrum(association* asc) // Kbb-1 Pbl (<Cl> - <Nl>)
 {
-  matrixData<double>* binInstrEffMat     = asc->BinnedInstrumentEffectsMatrix();
+  matrixData<double>* invBinInstrEffMat  = asc->InverseBinnedInstrumentMatrix();
   matrixData<double>* binningMat         = asc->BinningMatrix();
   vectorData<double>* ensSpectrum        = asc->EnsembleAveragedSpectrum();
   vectorData<double>* ensNoise           = asc->EnsembleAveragedNoise();
   vectorData<double>* CN                 = ensSpectrum->elementSub(ensNoise);
   vectorData<double>* PCN                = binningMat->matrixMult(CN);
-  vectorData<double>* KPCN               = binInstrEffMat->matrixMult(PCN);
+  vectorData<double>* KPCN               = invBinInstrEffMat->matrixMult(PCN);
 
   KPCN->dataType(fileType::BinnedExtrapolatedInstrumentedSpectrum);
   asc->addData(KPCN);

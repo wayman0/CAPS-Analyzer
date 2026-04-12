@@ -34,6 +34,7 @@ University-Kingsville by Daniel Suson
 #include <fstream>
 #include <healpix_cxx/healpix_base.h>
 #include <healpix_cxx/alm_healpix_tools.h>
+
 // extern "C" {
 // #include <chealpix.h>
 // }
@@ -41,6 +42,7 @@ University-Kingsville by Daniel Suson
 #include "basedata.h"
 #include "inputmatrixdata.h"
 #include "healpix.h"
+
 HealPIXPixelizer::HealPIXPixelizer()
                 : Pixelizer() {
   m_name = "HealPIX";
@@ -152,6 +154,11 @@ int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int ran
 
     (*pixout)[pixelNumber] += (*input)[i][j];
 
+    //if((count / range * 100) % 5 == 0)
+    //{
+    //  MainWindow::progressBarWrapper(dataClasses->m_uiObject, count / range * 100);
+    //}
+
     //if (type == fileType::InputData)
     if(pixOccupancy)
     {
@@ -171,7 +178,8 @@ int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int ran
       minValue = (*pixout)[pixelNumber];
 
     ++j;
-    if (j == input->rows()) {
+    if (j == input->rows())
+    {
       ++i;
       j = 0;
     }
