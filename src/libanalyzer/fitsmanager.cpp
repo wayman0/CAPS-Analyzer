@@ -61,7 +61,7 @@
 #define LOAD  m_ptr->pHDU().readKey
 
 fitsManager::fitsManager(association* dataMgr, const char *filename, FILETYPE dataType, CCfits::RWmode mode)
-           : fileManager() {
+           : fileManager(dataMgr) {
   *fits_err = 0;
   s_association = dataMgr;
 
@@ -100,7 +100,7 @@ fitsManager::fitsManager(association* dataMgr, const char *filename, FILETYPE da
 }
 
 fitsManager::fitsManager(association* dataMgr, const char *filename, baseData *data)
-           : fileManager() {
+           : fileManager(dataMgr) {
   *fits_err = 0;
   s_association = dataMgr;
 
@@ -221,7 +221,7 @@ fitsManager::fitsManager(association* dataMgr, const char *filename, baseData *d
 }
 
 fitsManager::fitsManager(fitsManager* from)
-           // : fileManager(from)
+            : fileManager(from)
 {
   m_ptr =      from->filePtr();
   m_fitsType = from->fitsType();
@@ -305,96 +305,14 @@ bool fitsManager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
   }
 
   return true;
+
 }
 
 void fitsManager::save(int* numTypes, FILETYPE* dataTypes)
 {
-  baseData *data = 0;
-  *fits_err = 0;
-  m_err = noErrors;
   m_fileFormat = Fits;
-  m_observatory = Analyzer;
-  m_fitsType = fitsDouble;
 
-  for(int i = 0; i < *numTypes; i += 1)
-  {
-    if (s_association->exists(dataTypes[i]))
-    {
-      data = s_association->getData(dataTypes[i]);
-
-      m_cols         = data->cols();
-      m_rows         = data->rows();
-      m_slices       = data->slices();
-
-      m_fileDataType = dataTypes[i];
-
-      switch (m_fileDataType)
-      {
-        case fileType::Null:
-          m_err = fileInvalidError;
-          s_association->errorValue(m_err);
-          throw m_err;
-        case fileType::InputData:
-        case fileType::InputWeights:
-        case fileType::WeightedData:
-        case fileType::InputNoise:
-        case fileType::InputWeightedNoise:
-        case fileType::InputFilter:
-        case fileType::InputBeam:
-
-        case fileType::EnsembleIterationNoise:
-        case fileType::EnsembleIterationSpectrum:
-        //case fileType::EnsembleIterationBinnedSpectrum:
-        case fileType::ModeModeMatrix:
-        case fileType::InverseModeModeMatrix:
-        case fileType::InstrumentEffectsMatrix:
-        case fileType::InverseInstrumentEffectsMatrix:
-        case fileType::BinningMatrix:
-        case fileType::UnbinningMatrix:
-        case fileType::BinnedInstrumentEffectsMatrix:
-        case fileType::InverseBinnedInstrumentMatrix:
-        //case fileType::BinCouplingMatrix:
-        //case fileType::ModeCouplingMatrix:
-        //case fileType::InverseBinMatrix:
-        //case fileType::InverseModeMatrix:
-          m_dimensions = 2;
-          m_parts = 1;
-          m_fitsType = fitsDouble;
-          if (!saveMatrixD((matrixData<double>*)data))
-            throw m_err;
-          break;
-        case fileType::AlmData:
-        case fileType::AlmWeights:
-        case fileType::WeightedAlm:
-        case fileType::AlmNoise:
-        case fileType::AlmWeightedNoise:
-        case fileType::AlmFilter:
-        case fileType::AlmBeam:
-          m_dimensions = 4;
-          m_parts = 2;
-          m_fitsType = fitsDouble;
-          if (!saveCubeCD((cubeData<complex<double> >*)data))
-            throw m_err;
-          break;
-        case fileType::PixelOccupancy:
-          m_dimensions = 1;
-          m_parts = 1;
-          m_fitsType = fitsInt32;
-          if (!saveVectorI((vectorData<int>*)data))
-            throw m_err;
-          break;
-        default:
-          m_dimensions = 1;
-          m_parts = 1;
-          m_fitsType = fitsDouble;
-          if (!saveVectorD((vectorData<double>*)data))
-            throw m_err;
-          break;
-      }
-    }
-  }
-
-  return;
+  fileManager::save(numTypes, dataTypes);
 }
 
 void fitsManager::save(ASSOCIATEDMAP map)
@@ -1053,6 +971,7 @@ void fitsManager::open()
     data();
 }
 
+/*
 void fitsManager::open(int* numTypes, FILETYPE* dataTypes)
 {
   *fits_err = 0;
@@ -1070,87 +989,9 @@ void fitsManager::open(int* numTypes, FILETYPE* dataTypes)
       s_association->addData(dataValue);
   }
 
-  /*
-  if(m_observatory == Analyzer)
-  {
-    for(int i = 0; i < *numTypes; i += 1)
-    {
-      m_fileDataType = dataTypes[i];
-
-      baseData* dataValue = data();
-
-      dataValue->fileName(this->fileName());
-      dataValue->fileFormat(Fits);
-      dataValue->dataType(dataTypes[i]);
-
-      s_association->addData(dataValue);
-    }
-  }
-  else
-  {
-    switch(m_observatory)
-    {
-      case Gadget:
-      case Sloan:
-      case Delve:
-        m_ptr->extension(1).makeThisCurrent();
-        currHeader = &m_ptr->extension(1);
-        m_fileDataType = //fileType::PixelizedData;
-                         dataTypes[0];
-        break;
-      case Egret:
-      case Fermi:
-        break;
-      case Auger:
-        break;
-      case Kascade:
-        break;
-      case Telescope_Array:
-        break;
-    }
-
-    if (!getDataType())
-    {
-      m_err = fileFitsError;
-      m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-      delete m_ptr;
-      m_ptr = 0;
-      throw m_err;
-    }
-
-
-    //m_fileDataType = fileType::PixelizedWeights;
-    //m_fileDataType = dataTypes[0];
-
-
-    //if (!getDimensions())
-    //{
-    //  m_err = fileFitsError;
-    //  m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-    //  delete m_ptr;
-    //  m_ptr = 0;
-    //  throw m_err;
-    //}
-    //
-    //if (!getEnergy())
-    //{
-    //  m_err = fileFitsError;
-    //  m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-    //  delete m_ptr;
-    //  m_ptr = 0;
-    //  throw m_err;
-    //}
-
-    baseData* dataValue = data();
-
-    dataValue->dataType(m_fileDataType);
-    //dataValue->dataType(dataTypes[0]);
-    s_association->addData(dataValue);
-  }
-  */
-
   m_fileFormat = Fits;
 }
+*/
 
 bool fitsManager::getHeaders(int hdrNum)
 {

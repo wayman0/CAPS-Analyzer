@@ -84,7 +84,7 @@
 class fileManager {
 
   public:
-    fileManager();
+    fileManager(association* dataMgr);
     fileManager(fileManager* from);
     virtual ~fileManager() {}
 
@@ -135,7 +135,8 @@ class fileManager {
     std::string  errorDescription(ERRORCODES value);
 
     virtual void             open()              = 0; // for outside data sources that don't store everything in one file
-    virtual void             open(int* numTypes, FILETYPE* dataTypes) = 0; // for our data files that store everything.  numTypes is a out param for the size of the return array
+    // shouldn't be virtual because all three use identical code so we don't need inheritance
+    void             open(int* numTypes, FILETYPE* dataTypes); // for our data files that store everything.  numTypes is a out param for the size of the return array
 
     virtual bool             getHeaders(int hdrNum) = 0;
     virtual FILETYPE*        getHeaders(int* numTypes)  = 0; // size is an out paramater for the size of the returned array containing the data types stored in the file.
@@ -157,7 +158,7 @@ class fileManager {
 
     virtual bool            saveBase(const char* filename, int* numTypes, FILETYPE* dataTypes) = 0;
 
-    virtual void            save(int* numTypes, FILETYPE* dataTypes)    = 0;
+    virtual void            save(int* numTypes, FILETYPE* dataTypes);
     virtual void            save(ASSOCIATEDMAP  map)                    = 0;
     virtual void            save(ASSOCIATEDSPECTRUM spect)              = 0;
 
@@ -191,6 +192,7 @@ class fileManager {
     void*                    m_uiObject;
     updateFx                 m_updateFunc;
 
+    association*             s_association;
     int                      m_dimensions;
     int                      m_rows;
     int                      m_cols;

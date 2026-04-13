@@ -55,3 +55,7 @@
 1664	1752	1769649442177997232	libgraphics.so	fa6b896ebf6cec8a
 4	1049	1769650512044997175	CMakeFiles/graphics.dir/dataspectrum.cpp.o	d7278121e27bae8b
 1049	1144	1769650512139997169	libgraphics.so	fa6b896ebf6cec8a
+4	950	1776055966830740906	CMakeFiles/graphics.dir/mapper.cpp.o	380ec9d4634703ec
+4	968	1776055966848740904	CMakeFiles/graphics.dir/grapher.cpp.o	65526ad0b59f3fb7
+4	1001	1776055966881740902	CMakeFiles/graphics.dir/mollweide.cpp.o	a28bfd2a486864fc
+1001	1064	1776055966942740898	libgraphics.so	fa6b896ebf6cec8a

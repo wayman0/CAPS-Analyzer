@@ -59,7 +59,7 @@
 #include "transformer.h"
 
 HDF5Manager::HDF5Manager(association* dataMgr, const char *filename, FILETYPE dataType, H5RWMode mode)
-           : fileManager() {
+           : fileManager(dataMgr) {
   *hdf5_err = 0;
   s_association = dataMgr;
 
@@ -113,7 +113,7 @@ HDF5Manager::HDF5Manager(association* dataMgr, const char *filename, FILETYPE da
 }
 
 HDF5Manager::HDF5Manager(association* dataMgr, const char *filename, baseData *data)
-           : fileManager() {
+           : fileManager(dataMgr) {
   *hdf5_err = 0;
   s_association = dataMgr;
 
@@ -452,85 +452,9 @@ bool HDF5Manager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
 
 void HDF5Manager::save(int* numTypes, FILETYPE* dataTypes)
 {
-  baseData *data = 0;
-  *hdf5_err = 0;
-  m_err = noErrors;
-  m_fileFormat   = HDF5;
-  m_observatory  = Analyzer;
+  m_fileFormat = HDF5;
 
-  for(int i = 0; i < *numTypes; i += 1)
-  {
-    if (s_association->exists(dataTypes[i]))
-    {
-      data = s_association->getData(dataTypes[i]);
-
-      m_fileDataType = data->dataType();
-      m_cols         = data->cols();
-      m_rows         = data->rows();
-      m_slices       = data->slices();
-
-      switch (m_fileDataType)
-      {
-        case fileType::Null:
-          m_err = fileInvalidError;
-          s_association->errorValue(m_err);
-          throw m_err;
-        case fileType::InputData:
-        case fileType::InputWeights:
-        case fileType::WeightedData:
-        case fileType::InputNoise:
-        case fileType::InputWeightedNoise:
-        case fileType::InputFilter:
-        case fileType::InputBeam:
-        /*
-        case fileType::BinCouplingMatrix:
-        case fileType::ModeCouplingMatrix:
-        case fileType::InverseBinMatrix:
-        case fileType::InverseModeMatrix:
-        */
-        case fileType::EnsembleIterationNoise:
-        case fileType::EnsembleIterationSpectrum:
-        //case fileType::EnsembleIterationBinnedSpectrum:
-        case fileType::ModeModeMatrix:
-        case fileType::InverseModeModeMatrix:
-        case fileType::InstrumentEffectsMatrix:
-        case fileType::InverseInstrumentEffectsMatrix:
-        case fileType::BinningMatrix:
-        case fileType::UnbinningMatrix:
-        case fileType::BinnedInstrumentEffectsMatrix:
-        case fileType::InverseBinnedInstrumentMatrix:
-          m_dimensions = 2;
-          m_parts = 1;
-          if (!saveMatrixD((matrixData<double>*)data))
-            throw m_err;
-          break;
-        case fileType::AlmData:
-        case fileType::AlmWeights:
-        case fileType::WeightedAlm:
-        case fileType::AlmNoise:
-        case fileType::AlmWeightedNoise:
-        case fileType::AlmFilter:
-        case fileType::AlmBeam:
-          m_dimensions = 4;
-          m_parts = 2;
-          if (!saveCubeCD((cubeData<complex<double> >*)data))
-            throw m_err;
-          break;
-        case fileType::PixelOccupancy:
-          m_dimensions = 1;
-          m_parts = 1;
-          if (!saveVectorI((vectorData<int>*)data))
-            throw m_err;
-          break;
-        default:
-          m_dimensions = 1;
-          m_parts = 1;
-          if (!saveVectorD((vectorData<double>*)data))
-            throw m_err;
-          break;
-      }
-    }
-  }
+  fileManager::save(numTypes, dataTypes);
 
   currInfoGroup->close();
   currDataGroup->close();
@@ -1493,6 +1417,7 @@ void HDF5Manager::open()
   return;
 }
 
+/*
 void HDF5Manager::open(int* numTypes, FILETYPE* dataTypes)
 {
   *hdf5_err = 0;
@@ -1509,35 +1434,10 @@ void HDF5Manager::open(int* numTypes, FILETYPE* dataTypes)
       s_association->addData(dataValue);
   }
 
-  /*
-  if(m_observatory == Analyzer)
-  {
-    for(int i = 0; i < *numTypes; i += 1)
-    {
-      m_fileDataType = dataTypes[i];
-      m_fileFormat = HDF5;
 
-      baseData* dataValue = data();
-
-      dataValue->fileName(this->fileName());
-      dataValue->fileFormat(HDF5);
-
-      s_association->addData(dataValue);
-    }
-  }
-  else
-  {
-    // this is where we will handle the logic for outside sources
-    if(m_observatory == Gadget)
-    {
-      gadgetData();
-    }
-
-    return;
-  }
-  */
   return;
 }
+*/
 
 bool HDF5Manager::getDataType()
 {

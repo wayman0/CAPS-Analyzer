@@ -56,7 +56,7 @@
 #include "transformer.h"
 
 csvManager::csvManager(association *dataMgr, const char *filename, FILETYPE dataType, RWMode mode)
-          : fileManager() {
+          : fileManager(dataMgr) {
   m_err = noErrors;
   s_association = dataMgr;
 
@@ -87,7 +87,7 @@ csvManager::csvManager(association *dataMgr, const char *filename, FILETYPE data
 }
 
 csvManager::csvManager(association *dataMgr, const char *filename,baseData *data)
-          : fileManager() {
+          : fileManager(dataMgr) {
   m_err     = noErrors;
   s_association = dataMgr;
 
@@ -274,80 +274,9 @@ bool csvManager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTyp
 
 void csvManager::save(int* numTypes, FILETYPE* dataTypes)
 {
-  baseData *data = 0;
-  m_err     = noErrors;
+  m_fileFormat = CSV;
 
-  for(int i = 0; i < *numTypes; i += 1)
-  {
-    data = s_association->getData(dataTypes[i]);
-
-    m_fileDataType = data->dataType();
-    m_fileFormat   = CSV;
-    m_observatory  = Analyzer;
-    m_cols         = data->cols();
-    m_rows         = data->rows();
-    m_slices       = data->slices();
-
-    switch (m_fileDataType) {
-        case fileType::Null:
-        m_err = fileInvalidError;
-        s_association->errorValue(m_err);
-        throw m_err;
-      case fileType::InputData:
-      case fileType::InputWeights:
-      case fileType::WeightedData:
-      case fileType::InputNoise:
-      case fileType::InputWeightedNoise:
-      case fileType::InputFilter:
-      case fileType::InputBeam:
-      case fileType::EnsembleIterationNoise:
-      case fileType::EnsembleIterationSpectrum:
-      //case fileType::EnsembleIterationBinnedSpectrum:
-      case fileType::ModeModeMatrix:
-      case fileType::InverseModeModeMatrix:
-      case fileType::InstrumentEffectsMatrix:
-      case fileType::InverseInstrumentEffectsMatrix:
-      case fileType::BinningMatrix:
-      case fileType::UnbinningMatrix:
-      case fileType::BinnedInstrumentEffectsMatrix:
-      case fileType::InverseBinnedInstrumentMatrix:
-      /*
-      case fileType::BinCouplingMatrix:
-      case fileType::ModeCouplingMatrix:
-      case fileType::InverseBinMatrix:
-      case fileType::InverseModeMatrix:
-      */
-        m_dimensions = 2;
-        m_parts = 1;
-        if (!saveMatrixD((matrixData<double>*)data))
-          throw m_err;
-        break;
-      case fileType::AlmData:
-      case fileType::AlmWeights:
-      case fileType::WeightedAlm:
-      case fileType::AlmNoise:
-      case fileType::AlmWeightedNoise:
-      case fileType::AlmFilter:
-      case fileType::AlmBeam:
-        m_dimensions = 4;
-        m_parts = 2;
-        if (!saveCubeCD((cubeData<complex<double> >*)data))
-          throw m_err;
-        break;
-      case fileType::PixelOccupancy:
-        m_dimensions = 1;
-        m_parts = 1;
-        if (!saveVectorI((vectorData<int>*)data))
-          throw m_err;
-        break;
-      default:
-        m_dimensions = 1;
-        m_parts = 1;
-        if (!saveVectorD((vectorData<double>*)data))
-          throw m_err;
-        break;
-    }
-  }
+  fileManager::save(numTypes, dataTypes);
 
   m_ptr->close();
   return;
@@ -862,41 +791,6 @@ void csvManager::open()
   return;
 }
 
-void csvManager::open(int* numTypes, FILETYPE* dataTypes)
-{
-
-  if(m_observatory == Analyzer)
-  {
-    for(int i = 0; i < *numTypes; i += 1)
-    {
-      m_fileDataType = dataTypes[i];
-      baseData* dataValue = data();
-
-      dataValue->fileName(this->fileName());
-      dataValue->fileFormat(CSV);
-
-
-      s_association->addData(dataValue);
-    }
-  }
-  else if(m_observatory == Kascade)
-  {
-    if(!getDimensions())
-      return;
-
-    if(!getDataType())
-      return;
-
-    if(!getEnergy())
-      return;
-
-    baseData* dataValue = data();
-
-    s_association->addData(dataValue);
-  }
-
-}
-
 bool csvManager::getHeaders(int hdrNum)
 {
   std::string headerStr, key, value;
@@ -1176,10 +1070,31 @@ baseData *csvManager::data() {
     case fileType::InputNoise:
     case fileType::InputWeightedNoise:
       if (m_observatory == Egret || m_observatory == Fermi)
-//      if (m_observatory != Analyzer && m_observatory != Telescope_Array && m_observatory != Auger && m_observatory != Kascade)
+      {
+        if(!getDimensions())
+          return 0;
+
+        if(!getDataType())
+          return 0;
+
+        if(!getEnergy())
+          return 0;
+
         return data(m_minSlice,m_maxSlice);
+      }
       if (m_observatory == Telescope_Array || m_observatory == Auger || m_observatory == Kascade)
+      {
+        if(!getDimensions())
+          return 0;
+
+        if(!getDataType())
+          return 0;
+
+        if(!getEnergy())
+          return 0;
+
         return data(m_minE[0],m_maxE[0]);
+      }
     /*
     case fileType::BinCouplingMatrix:
     case fileType::ModeCouplingMatrix:
