@@ -739,8 +739,15 @@ void RshtTransformer::transform(association* dataClasses, FILETYPE type) {
     /* calculate spectrum */
     extract_powspec(*alm,*m_spectrum);
 
+    const int numPoints = m_maxIndex - m_minIndex;
+    int dataPoint = 0;
     for (i = m_minIndex; i < m_maxIndex; i++)
+    {
       (*data)[i] = m_spectrum->tt(i);
+
+      dataPoint += 1;
+      dataClasses->updateProgress((100.0 * dataPoint)/numPoints);
+    }
 
     data->minYIndex(m_minIndex);
     data->maxYIndex(m_maxIndex);
@@ -815,9 +822,15 @@ void RshtTransformer::transformFromAlm(association* dataClasses, FILETYPE type)
   /* calculate spectrum */
   extract_powspec(*alm,*m_spectrum);
 
+  const int numPoints = m_maxIndex - m_minIndex;
+  int dataPoint = 0;
   for (i = m_minIndex; i < m_maxIndex; i++)
+  {
     (*data)[i] = m_spectrum->tt(i);
 
+    dataPoint += 1;
+    dataClasses->updateProgress((100.0 * dataPoint)/numPoints);
+  }
   data->minYIndex(m_minIndex);
   data->maxYIndex(m_maxIndex);
   data->transformerScheme(Rsht);
@@ -894,8 +907,15 @@ void RshtTransformer::invert(association* dataClasses, FILETYPE type) {
   alm2map(*alm,*map);
   //map->Add(offset);
 
+  const int numPoints = m_dataSize;
+  int dataPoint = 0;
   for (i = 0; i < m_dataSize; i++)
+  {
     (*data)[i] = (*map)[i];
+
+    dataPoint += 1;
+    dataClasses->updateProgress((100.0 * dataPoint)/numPoints);
+  }
 }
 
 void RshtTransformer::clear(association* dataClasses) {

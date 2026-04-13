@@ -69,7 +69,7 @@ mainWindow::mainWindow() :
   try
   {
     associationVector = new std::vector<association*>(1);
-    (*associationVector)[0] = new association();
+    (*associationVector)[0] = new association(this, mainWindow::progressBarWrapper);
     s_association = (*associationVector)[0];
 
     //s_association = new association();
@@ -652,7 +652,7 @@ void mainWindow::saveFile() {
 
 void mainWindow::addAssociation()
 {
-  association* newAssoc = new association();
+  association* newAssoc = new association(this, mainWindow::progressBarWrapper);
   associationVector->push_back(newAssoc);
   setAssociation(newAssoc);
 
@@ -1177,8 +1177,12 @@ void mainWindow::pixelize() {
   int type = (int)fileType::InputData;
   int offset = (int)fileType::PixelizedData - (int)fileType::InputData;
 
+  int value = 0;
   while (inputChain <= fileType::InputBeam)
   {
+    mainWindow::progressBarWrapper(this, value);
+    value += 20;
+
     if (s_association->exists(inputChain) && !s_association->exists(pixelChain))
     {
       if (pixelize(inputChain,pixelChain))

@@ -59,3 +59,15 @@
 4	968	1776055966848740904	CMakeFiles/graphics.dir/grapher.cpp.o	65526ad0b59f3fb7
 4	1001	1776055966881740902	CMakeFiles/graphics.dir/mollweide.cpp.o	a28bfd2a486864fc
 1001	1064	1776055966942740898	libgraphics.so	fa6b896ebf6cec8a
+1	925	1776056647689696233	CMakeFiles/graphics.dir/grapher.cpp.o	65526ad0b59f3fb7
+1	938	1776056647702696232	CMakeFiles/graphics.dir/mapper.cpp.o	380ec9d4634703ec
+1	983	1776056647747696229	CMakeFiles/graphics.dir/mollweide.cpp.o	a28bfd2a486864fc
+983	1046	1776056647809696225	libgraphics.so	fa6b896ebf6cec8a
+1	913	1776057583211634850	CMakeFiles/graphics.dir/mapper.cpp.o	380ec9d4634703ec
+1	928	1776057583226634849	CMakeFiles/graphics.dir/grapher.cpp.o	65526ad0b59f3fb7
+1	954	1776057583252634848	CMakeFiles/graphics.dir/mollweide.cpp.o	a28bfd2a486864fc
+954	1002	1776057583300634845	libgraphics.so	fa6b896ebf6cec8a
+4	921	1776057737306624740	CMakeFiles/graphics.dir/mapper.cpp.o	380ec9d4634703ec
+4	938	1776057737323624739	CMakeFiles/graphics.dir/grapher.cpp.o	65526ad0b59f3fb7
+4	967	1776057737352624737	CMakeFiles/graphics.dir/mollweide.cpp.o	a28bfd2a486864fc
+967	1029	1776057737413624733	libgraphics.so	fa6b896ebf6cec8a

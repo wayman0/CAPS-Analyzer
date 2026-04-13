@@ -1572,6 +1572,8 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
       in_mat->initialize();
 
       //in_mat->dataType(fileType::InputData);
+      const int numPoints = fitsData.size();
+      int dataPoint = 0;
       for (int col = 0; col < m_cols; ++col)
       {
       //  m_ptr->column(1).read(fitsData,1,m_rows);
@@ -1582,6 +1584,10 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
           currOp++;
   //        if(m_showProgress && !(currOp % updateUnit))
   //          informProgress(currOp / updateUnit);
+
+          dataPoint += 1;
+          s_association->updateProgress((100.0 * dataPoint)/numPoints);
+
         }
         //printf("\n");
       }
@@ -1592,14 +1598,21 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
       std::valarray<double> fitsData;
       m_ptr->pHDU().read(fitsData);
 
+      const int numPoints = (slice_max - slice_min) * m_rows * m_cols;
+      int dataPoint = 0;
       for(int s = slice_min; s <= slice_max; s += 1)
       {
         int offset = s * m_rows * m_cols;
         for(int r = 0; r < m_rows; r += 1)
         {
           for(int c = 0; c < m_cols; c += 1)
+          {
             //(*in_mat)[c][r] += fitsData[r*m_cols + c];
             (*in_mat)[c][r] += fitsData[offset + (r * m_cols + c)];
+
+            dataPoint += 1;
+            s_association->updateProgress((100.0 * dataPoint)/numPoints);
+          }
         }
       }
     }
@@ -1663,6 +1676,8 @@ baseData *fitsManager::delveData()
           //dataName = "z";
         }
 
+        int numPoints = m_rows;
+        int dataPoints = 0;
         std::valarray<double> raData;
         std::valarray<double> deData;
         table->column(raName).read(raData, 1, m_rows);
@@ -1764,6 +1779,9 @@ baseData *fitsManager::delveData()
             //matrix->angle2bin(deData[row], raData[row], r, c);
 
             (*matrix)[c][r] += 1; // fitsData[row];
+            dataPoints += 1;
+
+            s_association->updateProgress((100.0 * dataPoints)/numPoints);
         }
       }
       catch (CCfits::FitsException& err)
@@ -1849,6 +1867,8 @@ baseData *fitsManager::delveData()
         //table->column(1).readArrays(*fitsData2, 1, m_rows);
 
         int index = 0;
+        const int numPoints = vector->numberOfPixels();
+        int dataPoint = 0;
         // throws random sigsegv even though nothing is improperly indexed
         for (int row = 0; row < fitsData.size(); row += 1)
         {
@@ -1858,6 +1878,9 @@ baseData *fitsManager::delveData()
               {
                 (*vector)[index] = fitsData[row][i];
                 index += 1;
+                dataPoint += 1;
+
+                s_association->updateProgress((100.0 * dataPoint)/numPoints);
               }
             }
             // reclaim the row since we don't need it anymore
@@ -2219,9 +2242,13 @@ vectorData<double> *fitsManager::getVectorD()
   updateUnit = numOps / 100;
   if(updateUnit < 1) updateUnit = 1;
   currOp = 0;
+  const int numPoints = m_rows;
+  int dataPoint = 0;
   for (int row = 0; row < m_rows; ++row) {
     (*d_vec)[row] = fitsData[row];
     currOp++;
+    dataPoint += 1;
+    s_association->updateProgress((100.0 * dataPoint)/numPoints);
 //    if(m_showProgress && !(currOp % updateUnit))
 //      informProgress(currOp / updateUnit);
   }
@@ -2365,9 +2392,18 @@ matrixData<double> *fitsManager::getMatrixD() {
   d_mat->RARes(ra_res);
   d_mat->DecRes(dec_res);
 
+  const int numPoints = m_rows * m_cols;
+  int dataPoint = 0;
   for(int r = 0; r < m_rows; r += 1)
+  {
     for(int c = 0; c < m_cols; c += 1)
+    {
       (*d_mat)[c][r] = fitsData[r*m_cols+c];
+
+      dataPoint += 1;
+      s_association->updateProgress((100.0 * dataPoint)/numPoints);
+    }
+  }
 
   return d_mat;
 }
@@ -2495,6 +2531,8 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
   // make it double the size because we write all the real parts then all the imag parts
   int imagOffset = m_cols * m_rows * m_slices;
 
+  const int numPoints = m_cols * m_rows * m_slices;
+  int dataPoint = 0;
   for (int slice = 0; slice < m_slices; ++slice){
     for (int col = 0; col < m_cols; ++col){
       for (int row = 0; row < m_rows; ++row){
@@ -2506,6 +2544,8 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
         index = index + col;
 
         (*dc_cube)[slice][col][row] = complex<double>(fitsData[index], fitsData[index + imagOffset]);
+        dataPoint += 1;
+        s_association->updateProgress((100.0 * dataPoint)/numPoints);
       }
     }
   }

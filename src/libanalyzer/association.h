@@ -75,7 +75,7 @@ typedef void (*updateFx)(void*, int);
 
 class association {
 public:
-  association();
+  association(void* guiObj, void (*updFX)(void*, int));
   association(association* from);
   ~association() {reset();}
 
@@ -376,6 +376,8 @@ public:
 //  void* userInterface() const {return m_uiObject;}
 //  updateFx updateFunction() const {return m_updateFunc;}
 
+  void updateProgress(int value) { m_updateFunc(m_uiObject, value); }
+
   ERRORCODES  errorValue() const {return m_error;}
   void errorValue(ERRORCODES errNo) {m_error = errNo;}
   std::string errorDetails() const {return m_errorDescription;}
@@ -532,7 +534,6 @@ private:
   MAPTYPE                          m_selectedMapEngine;
   PIXELSCHEME                      m_selectedPixelEngine;
   TRANSFORMERSCHEME                m_selectedTransformEngine;
-
 
 //  std::map<ALLTYPES, std::string>  m_allTypes;
   ERRORCODES                       m_error;

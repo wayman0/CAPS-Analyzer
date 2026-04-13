@@ -1327,6 +1327,8 @@ inputMatrixData *csvManager::data(float minE, float maxE) {
     return 0;
   }
 
+  const int numPoints = m_rows;
+  int dataPoint = 0;
   while (currOp < numOps)
   {
     std::getline(*m_ptr,dataStr);
@@ -1365,6 +1367,9 @@ inputMatrixData *csvManager::data(float minE, float maxE) {
 
     if(currOp % 1000000 == 0)
       std::cout << currOp << " elements read\n";
+
+    dataPoint += 1;
+    s_association->updateProgress((100.0 * dataPoint)/numPoints);
 
     currOp++;
     if (!(currOp % updateUnit))
@@ -1733,9 +1738,13 @@ vectorData<double> *csvManager::getVectorD()
     colData.push_back(std::stod(field));
   }
 
+  const int numPoints = m_rows;
+  int dataPoint = 0;
   for (row = 0; row < m_rows; ++row) {
     (*d_vec)[row] = colData[row];
     currOp++;
+    dataPoint += 1;
+    s_association->updateProgress((100.0 * dataPoint)/numPoints);
 //    if(m_showProgress && !(currOp % updateUnit))
 //      informProgress(currOp / updateUnit);
   }
@@ -1823,6 +1832,8 @@ matrixData<double> *csvManager::getMatrixD()
   std::vector<double> colData;
   int col = 0, row = 0;
 
+  const int numPoints = m_cols * m_rows;
+  int dataPoint = 0;
   while (col < m_cols) {
     std::getline(*m_ptr,dataStr);
     dataStr = convertString(dataStr);
@@ -1835,6 +1846,8 @@ matrixData<double> *csvManager::getMatrixD()
     for (int row = 0; row < m_rows; ++row) {
       (*d_mat)[col][row] = colData[row];
       currOp++;
+      dataPoint += 1;
+      s_association->updateProgress((100.0 * dataPoint)/numPoints);
 //      if(m_showProgress && !(currOp % updateUnit))
 //        informProgress(currOp / updateUnit);
     }
@@ -1919,6 +1932,8 @@ cubeData<complex<double>> *csvManager::getCubeCD() {
   std::complex<double> value;
   int slice = 0, col = 0, row = 0;
 
+  const int numPoints = m_slices * m_rows * m_cols;
+  int dataPoint = 0;
   while (slice < m_slices)
   {
     while (col < m_cols)
@@ -1935,6 +1950,9 @@ cubeData<complex<double>> *csvManager::getCubeCD() {
       for (int row = 0; row < m_rows; ++row) {
         value = complex<double>(colData[2*row], colData[2*row+1]);
         (*dc_cube)[slice][col][row] = value;
+
+        dataPoint += 1;
+        s_association->updateProgress((100.0 * dataPoint)/numPoints);
         currOp++;
 //        if(m_showProgress && !(currOp % updateUnit))
 //          informProgress(currOp / updateUnit);

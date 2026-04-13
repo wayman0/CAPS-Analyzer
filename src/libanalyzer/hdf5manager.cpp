@@ -1919,6 +1919,8 @@ baseData* HDF5Manager::gadgetData()
     mat->RARes(resRA);
     mat->DecRes(resDec);
 
+    const int numPoints = dims1[0]*dims1[1];
+    int dataPoint = 0;
     for(int i = 0; i < dims1[0] * dims1[1]; i += 3)
     {
       double ra  = spherData[i+0];
@@ -1941,6 +1943,8 @@ baseData* HDF5Manager::gadgetData()
       // this maps to the same point a lot of times causing the rest of the graph to get shifted to all blue
       //(*mat)[c][r] += 1;
       (*mat)[c][r] = 1;
+      dataPoint += 1;
+      s_association->updateProgress((100.0 * dataPoint)/numPoints);
     }
 
     return mat;
@@ -2524,9 +2528,13 @@ vectorData<double> *HDF5Manager::getVectorD()
   updateUnit = numOps / 100;
   if(updateUnit < 1) updateUnit = 1;
   currOp = 0;
+  const int numPoints = m_rows;
+  int dataPoint = 0;
   for (int row = 0; row < m_rows; ++row) {
     (*d_vec)[row] = data[row];
     currOp++;
+    dataPoint += 1;
+    s_association->updateProgress((100.0 * dataPoint)/numPoints);
 //    if(m_showProgress && !(currOp % updateUnit))
 //      informProgress(currOp / updateUnit);
   }
@@ -2841,10 +2849,17 @@ matrixData<double> *HDF5Manager::getMatrixD()
   double minValue = 100;
   double maxValue = 0;
 
+  const int numPoints = dataDims[0] * dataDims[1];
+  int dataPoint = 0;
   for(int r = 0; r < dataDims[0]; r += 1)
   {
     for(int c = 0; c < dataDims[1]; c += 1)
+    {
       (*d_mat)[c][r] = data[r * m_cols + c];
+
+      dataPoint += 1;
+      s_association->updateProgress((100.0 * dataPoint)/numPoints);
+    }
   }
 
   delete[] infoData;
@@ -3042,11 +3057,20 @@ cubeData<std::complex<double> > *HDF5Manager::getCubeCD()
     updateUnit = 1;
   currOp = 0;
 
+  const int numPoints = m_slices * m_cols * m_rows;
+  int dataPoint = 0;
   for (int slice = 0; slice < m_slices; ++slice)
+  {
     for (int col = 0; col < m_cols; ++col)
+    {
       for (int row = 0; row < m_rows; ++row)
+      {
         (*dc_cube)[slice][col][row] = data[slice * m_rows * m_cols + row * m_cols + col];
-
+        dataPoint += 1;
+        s_association->updateProgress((100.0 * dataPoint)/numPoints);
+      }
+    }
+  }
   delete[] infoData;
   delete[] data;
 

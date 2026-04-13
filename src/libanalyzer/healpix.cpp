@@ -147,6 +147,8 @@ int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int ran
     // update progress bar
 //    dataClasses->informProgress((double)count / (double)range);
 
+    dataClasses->updateProgress((100.0 * count)/range);
+
     input->bin2angle(i,j,theta,phi);  // convert bin coordinates to angular coordinates
     theta = (90.0 - theta) * angle2rads; // convert theta to 0-180 range and then to radians
     phi *= angle2rads; // convert phi to radians

@@ -74,9 +74,10 @@
 #include "../libgraphics/mollweide.h"
 #include "../libgraphics/grapher.h"
 
-association::association() {
-  m_uiObject = 0;
-  m_updateFunc = 0;
+association::association(void* guiObj, void (*updFX)(void*, int))
+{
+  m_uiObject = guiObj;
+  m_updateFunc = updFX;
   m_showProgress = false;
 
   m_pixelAverage = 0;
