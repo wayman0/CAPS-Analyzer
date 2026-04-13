@@ -741,12 +741,14 @@ void RshtTransformer::transform(association* dataClasses, FILETYPE type) {
 
     const int numPoints = m_maxIndex - m_minIndex;
     int dataPoint = 0;
+    string dataName = dataTypeNames[static_cast<int>(type)];
+    dataClasses->updateProgressText(dataName.c_str());
     for (i = m_minIndex; i < m_maxIndex; i++)
     {
       (*data)[i] = m_spectrum->tt(i);
 
       dataPoint += 1;
-      dataClasses->updateProgress((100.0 * dataPoint)/numPoints);
+      dataClasses->updateProgressValue((100.0 * dataPoint)/numPoints);
     }
 
     data->minYIndex(m_minIndex);
@@ -824,12 +826,14 @@ void RshtTransformer::transformFromAlm(association* dataClasses, FILETYPE type)
 
   const int numPoints = m_maxIndex - m_minIndex;
   int dataPoint = 0;
+  string dataName = dataTypeNames[static_cast<int>(type)];
+  dataClasses->updateProgressText(dataName.c_str());
   for (i = m_minIndex; i < m_maxIndex; i++)
   {
     (*data)[i] = m_spectrum->tt(i);
 
     dataPoint += 1;
-    dataClasses->updateProgress((100.0 * dataPoint)/numPoints);
+    dataClasses->updateProgressValue((100.0 * dataPoint)/numPoints);
   }
   data->minYIndex(m_minIndex);
   data->maxYIndex(m_maxIndex);
@@ -909,12 +913,14 @@ void RshtTransformer::invert(association* dataClasses, FILETYPE type) {
 
   const int numPoints = m_dataSize;
   int dataPoint = 0;
+  string dataName = dataTypeNames[static_cast<int>(type)];
+  dataClasses->updateProgressText(dataName.c_str());
   for (i = 0; i < m_dataSize; i++)
   {
     (*data)[i] = (*map)[i];
 
     dataPoint += 1;
-    dataClasses->updateProgress((100.0 * dataPoint)/numPoints);
+    dataClasses->updateProgressValue((100.0 * dataPoint)/numPoints);
   }
 }
 

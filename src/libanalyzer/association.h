@@ -71,11 +71,12 @@ class Transformer;
 class Pixelizer;
 class Spectrum;
 
-typedef void (*updateFx)(void*, int);
+typedef void (*updateProgressText)(void*, const char*);
+typedef void (*updateProgressBar)(void*, int);
 
 class association {
 public:
-  association(void* guiObj, void (*updFX)(void*, int));
+  association(void* guiObj, void (*updPB)(void*, int), void (*updPT)(void*, const char*));
   association(association* from);
   ~association() {reset();}
 
@@ -376,8 +377,8 @@ public:
 //  void* userInterface() const {return m_uiObject;}
 //  updateFx updateFunction() const {return m_updateFunc;}
 
-  void updateProgress(int value) { m_updateFunc(m_uiObject, value); }
-
+  void updateProgressValue(int value)       { m_updateProgressValue(m_uiObject, value); }
+  void updateProgressText(const char* text) { m_updateProgressText(m_uiObject, text);   }
   ERRORCODES  errorValue() const {return m_error;}
   void errorValue(ERRORCODES errNo) {m_error = errNo;}
   std::string errorDetails() const {return m_errorDescription;}
@@ -394,7 +395,8 @@ private:
 
   bool                             m_showProgress;
   void*                            m_uiObject;
-  updateFx                         m_updateFunc;
+  ::updateProgressBar              m_updateProgressValue;
+  ::updateProgressText             m_updateProgressText;
   progress                         *m_progress;
 
   double                           m_pixelAverage;

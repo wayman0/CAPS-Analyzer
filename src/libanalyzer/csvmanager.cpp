@@ -1369,7 +1369,7 @@ inputMatrixData *csvManager::data(float minE, float maxE) {
       std::cout << currOp << " elements read\n";
 
     dataPoint += 1;
-    s_association->updateProgress((100.0 * dataPoint)/numPoints);
+    s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
 
     currOp++;
     if (!(currOp % updateUnit))
@@ -1744,7 +1744,7 @@ vectorData<double> *csvManager::getVectorD()
     (*d_vec)[row] = colData[row];
     currOp++;
     dataPoint += 1;
-    s_association->updateProgress((100.0 * dataPoint)/numPoints);
+    s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
 //    if(m_showProgress && !(currOp % updateUnit))
 //      informProgress(currOp / updateUnit);
   }
@@ -1847,7 +1847,7 @@ matrixData<double> *csvManager::getMatrixD()
       (*d_mat)[col][row] = colData[row];
       currOp++;
       dataPoint += 1;
-      s_association->updateProgress((100.0 * dataPoint)/numPoints);
+      s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
 //      if(m_showProgress && !(currOp % updateUnit))
 //        informProgress(currOp / updateUnit);
     }
@@ -1952,7 +1952,7 @@ cubeData<complex<double>> *csvManager::getCubeCD() {
         (*dc_cube)[slice][col][row] = value;
 
         dataPoint += 1;
-        s_association->updateProgress((100.0 * dataPoint)/numPoints);
+        s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
         currOp++;
 //        if(m_showProgress && !(currOp % updateUnit))
 //          informProgress(currOp / updateUnit);

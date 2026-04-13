@@ -106,14 +106,14 @@ public:
     QLedLabel *transBeamLED;
     QLedLabel *almBeamLED;
     QLedLabel *inverseBeamLED;
-    QWidget *layoutWidget1;
+    QWidget *widget;
     QHBoxLayout *horizontalLayout;
     QLabel *progressLabel;
+    QSpacerItem *horizontalSpacer_2;
     QProgressBar *progressBar;
     QSpacerItem *horizontalSpacer;
     QLabel *coordinateLabel;
     QLabel *displayCoordinates;
-    QSpacerItem *horizontalSpacer_2;
     QMenuBar *menubar;
     QMenu *menu_File;
     QMenu *menu_Actions;
@@ -481,13 +481,13 @@ public:
 
         verticalLayout->addLayout(gridLayout);
 
-        layoutWidget1 = new QWidget(centralwidget);
-        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(10, 700, 861, 28));
-        horizontalLayout = new QHBoxLayout(layoutWidget1);
+        widget = new QWidget(centralwidget);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(12, 700, 851, 28));
+        horizontalLayout = new QHBoxLayout(widget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        progressLabel = new QLabel(layoutWidget1);
+        progressLabel = new QLabel(widget);
         progressLabel->setObjectName(QString::fromUtf8("progressLabel"));
         QFont font2;
         font2.setBold(true);
@@ -496,7 +496,11 @@ public:
 
         horizontalLayout->addWidget(progressLabel);
 
-        progressBar = new QProgressBar(layoutWidget1);
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer_2);
+
+        progressBar = new QProgressBar(widget);
         progressBar->setObjectName(QString::fromUtf8("progressBar"));
         progressBar->setValue(24);
 
@@ -506,20 +510,16 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer);
 
-        coordinateLabel = new QLabel(layoutWidget1);
+        coordinateLabel = new QLabel(widget);
         coordinateLabel->setObjectName(QString::fromUtf8("coordinateLabel"));
         coordinateLabel->setFont(font2);
 
         horizontalLayout->addWidget(coordinateLabel);
 
-        displayCoordinates = new QLabel(layoutWidget1);
+        displayCoordinates = new QLabel(widget);
         displayCoordinates->setObjectName(QString::fromUtf8("displayCoordinates"));
 
         horizontalLayout->addWidget(displayCoordinates);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_2);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);

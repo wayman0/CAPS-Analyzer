@@ -1586,7 +1586,7 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
   //          informProgress(currOp / updateUnit);
 
           dataPoint += 1;
-          s_association->updateProgress((100.0 * dataPoint)/numPoints);
+          s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
 
         }
         //printf("\n");
@@ -1611,7 +1611,7 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
             (*in_mat)[c][r] += fitsData[offset + (r * m_cols + c)];
 
             dataPoint += 1;
-            s_association->updateProgress((100.0 * dataPoint)/numPoints);
+            s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
           }
         }
       }
@@ -1781,7 +1781,7 @@ baseData *fitsManager::delveData()
             (*matrix)[c][r] += 1; // fitsData[row];
             dataPoints += 1;
 
-            s_association->updateProgress((100.0 * dataPoints)/numPoints);
+            s_association->updateProgressValue((100.0 * dataPoints)/numPoints);
         }
       }
       catch (CCfits::FitsException& err)
@@ -1880,7 +1880,7 @@ baseData *fitsManager::delveData()
                 index += 1;
                 dataPoint += 1;
 
-                s_association->updateProgress((100.0 * dataPoint)/numPoints);
+                s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
               }
             }
             // reclaim the row since we don't need it anymore
@@ -2248,7 +2248,7 @@ vectorData<double> *fitsManager::getVectorD()
     (*d_vec)[row] = fitsData[row];
     currOp++;
     dataPoint += 1;
-    s_association->updateProgress((100.0 * dataPoint)/numPoints);
+    s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
 //    if(m_showProgress && !(currOp % updateUnit))
 //      informProgress(currOp / updateUnit);
   }
@@ -2401,7 +2401,7 @@ matrixData<double> *fitsManager::getMatrixD() {
       (*d_mat)[c][r] = fitsData[r*m_cols+c];
 
       dataPoint += 1;
-      s_association->updateProgress((100.0 * dataPoint)/numPoints);
+      s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
     }
   }
 
@@ -2545,7 +2545,7 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
 
         (*dc_cube)[slice][col][row] = complex<double>(fitsData[index], fitsData[index + imagOffset]);
         dataPoint += 1;
-        s_association->updateProgress((100.0 * dataPoint)/numPoints);
+        s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
       }
     }
   }

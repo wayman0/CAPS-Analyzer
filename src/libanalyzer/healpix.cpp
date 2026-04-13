@@ -79,6 +79,7 @@ void HealPIXPixelizer::initialize() {
 int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int range, FILETYPE type) {
   int count = 0;
   int pixelNumber = 0;
+  FILETYPE pixType = fileType::Null;
   double phi = 0, theta = 0;
   double angle2rads = M_PI / 180.0;
   double maxValue = 0.0, minValue = 0.0;
@@ -96,36 +97,43 @@ int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int ran
 
   switch (type) {
     case fileType::InputData:
+      pixType = fileType::PixelizedData;
       input = dataClasses->inputData();
       pixout = dataClasses->pixelizedData();
       pixOccupancy = dataClasses->pixelOccupancy();
       break;
     case fileType::InputWeights:
+      pixType = fileType::PixelizedWeights;
       input = dataClasses->inputWeights();
       pixout = dataClasses->pixelizedWeights();
       pixOccupancy = dataClasses->pixelOccupancy();
       break;
     case fileType::WeightedData:
+      pixType = fileType::WeightedPixel;
       input = dataClasses->weightedInput();
       pixout = dataClasses->weightedPixel();
       pixOccupancy = dataClasses->pixelOccupancy();
       break;
     case fileType::InputFilter:
+      pixType = fileType::PixelizedFilter;
       input = dataClasses->inputFilter();
       pixout = dataClasses->pixelizedFilter();
       pixOccupancy = dataClasses->pixelOccupancy();
       break;
     case fileType::InputBeam:
+      pixType = fileType::PixelizedBeam;
       input = dataClasses->inputBeam();
       pixout = dataClasses->pixelizedBeam();
       pixOccupancy = dataClasses->pixelOccupancy();
       break;
     case fileType::InputNoise:
+      pixType = fileType::PixelizedNoise;
       input = dataClasses->inputNoise();
       pixout = dataClasses->pixelizedNoise();
       pixOccupancy = dataClasses->pixelOccupancy();
       break;
     case fileType::InputWeightedNoise:
+      pixType = fileType::PixelizedWeightedNoise;
       input = dataClasses->weightedInputNoise();
       pixout = dataClasses->weightedPixelizedNoise();
       pixOccupancy = dataClasses->pixelOccupancy();
@@ -142,12 +150,14 @@ int HealPIXPixelizer::pixelize(association* dataClasses, long x, long y, int ran
   healpix->SetNside((const int)m_sides,(Healpix_Ordering_Scheme)(m_layout-1));
   long i = x, j = y;
 
+  string dataName = dataTypeNames[static_cast<int>(pixType)];
+  dataClasses->updateProgressText(dataName.c_str());
   for (count = 0;count < range;++count)
   {
     // update progress bar
 //    dataClasses->informProgress((double)count / (double)range);
 
-    dataClasses->updateProgress((100.0 * count)/range);
+    dataClasses->updateProgressValue((100.0 * count)/range);
 
     input->bin2angle(i,j,theta,phi);  // convert bin coordinates to angular coordinates
     theta = (90.0 - theta) * angle2rads; // convert theta to 0-180 range and then to radians

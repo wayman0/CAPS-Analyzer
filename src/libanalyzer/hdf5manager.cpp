@@ -1944,7 +1944,7 @@ baseData* HDF5Manager::gadgetData()
       //(*mat)[c][r] += 1;
       (*mat)[c][r] = 1;
       dataPoint += 1;
-      s_association->updateProgress((100.0 * dataPoint)/numPoints);
+      s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
     }
 
     return mat;
@@ -2534,7 +2534,7 @@ vectorData<double> *HDF5Manager::getVectorD()
     (*d_vec)[row] = data[row];
     currOp++;
     dataPoint += 1;
-    s_association->updateProgress((100.0 * dataPoint)/numPoints);
+    s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
 //    if(m_showProgress && !(currOp % updateUnit))
 //      informProgress(currOp / updateUnit);
   }
@@ -2858,7 +2858,7 @@ matrixData<double> *HDF5Manager::getMatrixD()
       (*d_mat)[c][r] = data[r * m_cols + c];
 
       dataPoint += 1;
-      s_association->updateProgress((100.0 * dataPoint)/numPoints);
+      s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
     }
   }
 
@@ -3067,7 +3067,7 @@ cubeData<std::complex<double> > *HDF5Manager::getCubeCD()
       {
         (*dc_cube)[slice][col][row] = data[slice * m_rows * m_cols + row * m_cols + col];
         dataPoint += 1;
-        s_association->updateProgress((100.0 * dataPoint)/numPoints);
+        s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
       }
     }
   }

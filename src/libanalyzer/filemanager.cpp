@@ -286,6 +286,10 @@ void fileManager::open(int* numTypes, FILETYPE* dataTypes)
   for(int i = 0; i < *numTypes; i += 1)
   {
       m_fileDataType = dataTypes[i];
+
+      std::string dataName = dataTypeNames[static_cast<int>(dataTypes[i])];
+
+      s_association->updateProgressText(dataName.c_str());
       baseData* dataValue = data();
 
       dataValue->fileName(this->fileName());

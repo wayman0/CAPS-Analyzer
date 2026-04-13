@@ -74,10 +74,11 @@
 #include "../libgraphics/mollweide.h"
 #include "../libgraphics/grapher.h"
 
-association::association(void* guiObj, void (*updFX)(void*, int))
+association::association(void* guiObj, void (*updFX)(void*, int), void (*updTxt)(void*, const char*))
 {
   m_uiObject = guiObj;
-  m_updateFunc = updFX;
+  m_updateProgressValue = updFX;
+  m_updateProgressText  = updTxt;
   m_showProgress = false;
 
   m_pixelAverage = 0;
@@ -5350,7 +5351,8 @@ void association::discardRelation(FILETYPE type) {
 
 void association::reset() {
   m_uiObject = 0;
-  m_updateFunc = 0;
+  m_updateProgressValue = 0;
+  m_updateProgressText  = 0;
   m_showProgress = false;
 
   m_pixelAverage = 0;

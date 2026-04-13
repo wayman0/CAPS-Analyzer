@@ -213,8 +213,8 @@ mainWindow::~mainWindow() {
     delete s_association;
 }
 
-void mainWindow::progressBarWrapper(void* uiObj, int value)
-{
+void mainWindow::progressBarWrapper(void* uiObj, int value, const char* updateName)
+
   mainWindow* here = (mainWindow*) uiObj;
   here->updateProgressBar(value);
 //  here->ui->progressLabel->setText(QString::fromUtf8(activity));

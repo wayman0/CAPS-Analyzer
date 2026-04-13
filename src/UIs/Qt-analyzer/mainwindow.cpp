@@ -69,7 +69,7 @@ mainWindow::mainWindow() :
   try
   {
     associationVector = new std::vector<association*>(1);
-    (*associationVector)[0] = new association(this, mainWindow::progressBarWrapper);
+    (*associationVector)[0] = new association(this, mainWindow::progressBarWrapper, mainWindow::progressTextWrapper);
     s_association = (*associationVector)[0];
 
     //s_association = new association();
@@ -239,12 +239,24 @@ void mainWindow::progressBarWrapper(void* uiObj, int value)
 {
   mainWindow* here = (mainWindow*) uiObj;
   here->updateProgressBar(value);
-//  here->ui->progressLabel->setText(QString::fromUtf8(activity));
+}
+
+void mainWindow::progressTextWrapper(void* uiObj, const char* updateName)
+{
+  mainWindow* here = (mainWindow*) uiObj;
+  here->updateProgressText(updateName);
 }
 
 void mainWindow::updateProgressBar(int value)
 {
   ui->progressBar->setValue(value);
+}
+
+void mainWindow::updateProgressText(const char* updateName)
+{
+  ui->progressLabel->setText(updateName);
+  ui->progressLabel->adjustSize();
+  //ui->progressLabel->parentWidget()->layout()->update();
 }
 
 void mainWindow::openFile()
@@ -652,7 +664,7 @@ void mainWindow::saveFile() {
 
 void mainWindow::addAssociation()
 {
-  association* newAssoc = new association(this, mainWindow::progressBarWrapper);
+  association* newAssoc = new association(this, mainWindow::progressBarWrapper, mainWindow::progressTextWrapper);
   associationVector->push_back(newAssoc);
   setAssociation(newAssoc);
 
