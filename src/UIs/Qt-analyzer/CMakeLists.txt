@@ -11,13 +11,6 @@ include(FindPkgConfig)
 pkg_check_modules(DEPS REQUIRED sigc++-2.0)
 
 find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
-find_package(GSL REQUIRED)
-find_package(CCfits REQUIRED)
-find_package(GOMP REQUIRED)
-find_package(HealPIX REQUIRED)
-find_package(Freetype REQUIRED)
-find_package(lunar REQUIRED)
-find_package(HDF5 REQUIRED)
 
 add_definitions(-DQT_NO_KEYWORDS)
 
@@ -87,5 +80,5 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR}/../../libanalyzer/ ${CMAKE_CURRENT_
 
 add_executable(Qt-analyzer ${Qt-analyzer_SRCS} ${Qt-analyzer_MOC_SRCS} ${Qt-analyzer_UI_HDRS} ${Qt-analyzer_RC_SRCS})
 
-target_link_libraries(Qt-analyzer graphics analyzer Qt::Core Qt::Gui Qt::Widgets ${FREETYPE_LIBRARIES} ${DEPS_LIBRARIES} ${GOMP_LIBRARIES} ${HEALPIX_LIBRARIES} ${CCFITS_LIBRARIES} ${CFITSIO_LIBRARIES} ${GSL_LIBRARIES} ${HDF5_LIBRARIES})
+target_link_libraries(Qt-analyzer graphics analyzer Qt::Core Qt::Gui Qt::Widgets ${DEPS_LIBRARIES})
 # install(TARGETS q5analyzer RUNTIME DESTINATION bin)

@@ -4,10 +4,14 @@ project(libanalyzer)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../../cmake/Modules/")
 
 include(FindPkgConfig)
-pkg_check_modules(DEPS REQUIRED sigc++-2.0)
 
+pkg_check_modules(DEPS REQUIRED IMPORTED_TARGET sigc++-2.0)
+
+find_package(GSL REQUIRED)
 find_package(CCfits REQUIRED)
+find_package(HealPIX REQUIRED)
 find_package(HDF5 REQUIRED)
+
 
 set(analyzer_SOURCES
     analyzer.cpp
@@ -31,5 +35,7 @@ set(analyzer_SOURCES
 include_directories(/mnt/research/software/include /usr/include/freetype ${DEPS_INCLUDE_DIRS})
 
 add_library(analyzer SHARED ${analyzer_SOURCES})
+
+target_link_libraries(analyzer PUBLIC ${DEPS_LIBRARIES} ${HEALPIX_LIBRARIES} ${CCFITS_LIBRARIES} ${CFITSIO_LIBRARIES} ${GSL_LIBRARIES} ${HDF5_LIBRARIES})
 
 # install(TARGETS libanalyzer RUNTIME DESTINATION bin)
