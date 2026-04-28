@@ -73,6 +73,8 @@
 #include "association.h"
 #include "basedata.h"
 #include "inputmatrixdata.h"
+#include "vectordata.h"
+#include "cubedata.h"
 #include "../libgraphics/datamap.h"
 #include "../libgraphics/dataspectrum.h"
 
@@ -144,6 +146,12 @@ class fileManager {
     virtual bool getDimensions() = 0;
     virtual bool getDataType()   = 0;
     virtual bool getEnergy()     = 0;
+
+    virtual bool writeComments(const char** comments, int size, void* dest) = 0;
+
+    const char** createInfoArray(FILETYPE ft, int* size);
+
+    string dataSetName(FILETYPE ft) { return dataTypeNames[static_cast<int>(ft)]; }
 
     virtual baseData        *data()                        = 0;
     virtual inputMatrixData *data(int s_min,int s_max)     = 0;

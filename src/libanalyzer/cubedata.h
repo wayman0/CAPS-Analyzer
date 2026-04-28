@@ -137,6 +137,15 @@ template <typename _Type> class cubeData : public baseData {
     void transMaxIndex(int i) {m_transMaxIndex = i;}
     int  transMaxIndex() {return m_transMaxIndex;}
 
+    void   transMinValue(double d) {m_transMinValue = d;}
+    double transMinValue()         {return m_transMinValue;}
+
+    void   transMaxValue(double d) {m_transMaxValue = d;}
+    double transMaxValue()         {return m_transMaxValue;}
+
+    void   transMask(int i) {m_transMask = i;}
+    int transMask()         {return m_transMask;}
+
     /**
      * access number of sides for healPIX pixelized data
      */
@@ -168,6 +177,9 @@ template <typename _Type> class cubeData : public baseData {
     TRANSFORMERSCHEME                                 m_transformerScheme;
     int                                               m_transMinIndex;
     int                                               m_transMaxIndex;
+    int                                               m_transMask;
+    double                                            m_transMinValue;
+    double                                            m_transMaxValue;
 };
 
 template <typename _Type> cubeData<_Type>::cubeData()

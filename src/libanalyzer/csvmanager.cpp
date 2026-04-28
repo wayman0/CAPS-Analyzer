@@ -290,6 +290,11 @@ void csvManager::save(ASSOCIATEDSPECTRUM spect)
 {
 }
 
+bool csvManager::writeComments(const char ** comments, int size, void* dest)
+{
+  return true;
+}
+
 bool csvManager::saveVectorI(vectorData<int> *v)
 {
   std::string layout, scheme;

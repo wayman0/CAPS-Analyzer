@@ -109,3 +109,8 @@
 3	21	1776747190136891073	/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/timestamp	f9800dea507bee3f
 3	21	1776747190136891073	/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/Qt-analyzer_autogen/mocs_compilation.cpp	f9800dea507bee3f
 21	361	1776747190474891051	Qt-analyzer	b4876ab1e3900093
+10	3284	1777081686036136831	CMakeFiles/Qt-analyzer.dir/main.cpp.o	7cc472dce9547a56
+11	3324	1777081686076136828	CMakeFiles/Qt-analyzer.dir/moc_mainwindow.cpp.o	7034f5f7a9b48973
+11	3333	1777081686084136828	CMakeFiles/Qt-analyzer.dir/multipleselectiondlg.cpp.o	4edf0856f0a4a2b
+10	4217	1777081686968136770	CMakeFiles/Qt-analyzer.dir/mainwindow.cpp.o	1e22656b60ce4331
+4217	4730	1777081687478136736	Qt-analyzer	b4876ab1e3900093

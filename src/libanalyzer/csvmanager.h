@@ -94,6 +94,7 @@ class csvManager : public fileManager {
     dataSpectrum    *getSpectrum();
 
     bool            saveBase(const char* filename, int* numTypes, FILETYPE* dataTypes);
+    bool            writeComments(const char** comments, int size, void* dest);
 
     void            save(int* numTypes, FILETYPE* dataTypes);
     void            save(ASSOCIATEDMAP  map);

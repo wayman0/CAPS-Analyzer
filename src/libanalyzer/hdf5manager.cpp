@@ -473,6 +473,40 @@ void HDF5Manager::save(ASSOCIATEDSPECTRUM spect)
 {
 }
 
+bool HDF5Manager::writeComments(const char ** comments, int size, void* dest)
+{
+  H5::Group* infoGroup = (H5::Group*) dest;
+  string dataName = dataSetName(m_fileDataType);
+
+  try
+  {
+    if(infoGroup->exists(dataName))
+      infoGroup->unlink(dataName);
+
+    int numInfoDims = 2;
+    hsize_t infoDims[numInfoDims];
+    infoDims[0] = 2;
+    infoDims[1] = size/2;
+
+    H5::DataSpace* currInfoDataSpace = new H5::DataSpace(numInfoDims, infoDims);
+    H5::DataSet*   currInfoDataSet   = new H5::DataSet(currInfoGroup->createDataSet(dataName, *H5String, *currInfoDataSpace));
+
+    currInfoDataSet->write(comments, *H5String, *currInfoDataSpace);
+
+    currInfoDataSpace->close();
+    currInfoDataSet->close();
+
+    return true;
+  }
+  catch (H5::Exception& err) {
+    snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
+    m_err = fileFitsError;
+    m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+    return false;
+  }
+}
+
+
 bool HDF5Manager::saveVectorI(vectorData<int> *v)
 {
   unsigned long long int numOps, updateUnit, currOp;
@@ -566,338 +600,99 @@ bool HDF5Manager::saveVectorI(vectorData<int> *v)
 bool HDF5Manager::saveVectorD(vectorData<double> *v)
 {
   unsigned long long int numOps, updateUnit, currOp;
-  std::string dataSetName = "";
+  std::string dataName = dataSetName(m_fileDataType);
 
-  int numInfoDims = 2;
-  hsize_t infoDims[numInfoDims];
-  infoDims[0] = 2;
-  infoDims[1] = 6;
-
-  const char* infoData[infoDims[0]][infoDims[1]];
 
   switch (m_fileDataType) {
     case fileType::PixelizedData:
-      case fileType::PixelizedWeights:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedWeights)];
+    case fileType::InverseData:
+    case fileType::TransformedData:
+      currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
+      currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
+      break;
+    case fileType::PixelizedWeights:
+    case fileType::InverseWeights:
+    case fileType::TransformedWeights:
       currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTS"));
       currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTS"));
       //hduName = "PIXEL_MASK";
       break;
     case fileType::WeightedPixel:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::WeightedPixel)];
+    case fileType::WeightedInverse:
+    case fileType::WeightedTransform:
       currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
       currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
       //hduName = "PIXEL_DATA";
       break;
     case fileType::PixelizedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedNoise)];
+    case fileType::InverseNoise:
+    case fileType::TransformedNoise:
       currInfoGroup = new H5::Group(infoGroup->openGroup("NOISE"));
       currDataGroup = new H5::Group(dataGroup->openGroup("NOISE"));
       //hduName = "PIXEL_NOISE";
       break;
     case fileType::PixelizedWeightedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedWeightedNoise)];
+    case fileType::InverseWeightedNoise:
+    case fileType::TransformedWeightedNoise:
       currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
       currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
       break;
     case fileType::PixelizedFilter:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedFilter)];
+    case fileType::InverseFilter:
+    case fileType::TransformedFilter:
       currInfoGroup = new H5::Group(infoGroup->openGroup("FILTER"));
       currDataGroup = new H5::Group(dataGroup->openGroup("FILTER"));
       //hduName = "PIXEL_FILTER";
       break;
     case fileType::PixelizedBeam:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedBeam)];
+    case fileType::InverseBeam:
+    case fileType::TransformedBeam:
       currInfoGroup = new H5::Group(infoGroup->openGroup("BEAM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("BEAM"));
       //hduName = "PIXEL_BEAM";
       break;
-    case fileType::InverseData:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseData)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
-      //hduName = "INVERSE_DATA";
-      break;
-    case fileType::InverseWeights:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseWeights)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTS"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTS"));
-      //hduName = "INVERSE_MASK";
-      break;
-    case fileType::WeightedInverse:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::WeightedInverse)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
-      //hduName = "PIXEL_DATA";
-      break;
-    case fileType::InverseNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseNoise)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("NOISE"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("NOISE"));
-      //hduName = "INVERSE_NOISE";
-      break;
-    case fileType::InverseWeightedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseWeightedNoise)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
-      break;
-    case fileType::InverseFilter:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseFilter)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("FILTER"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("FILTER"));
-      //hduName = "INVERSE_FILTER";
-      break;
-    case fileType::InverseBeam:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseBeam)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("BEAM"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("BEAM"));
-      //hduName = "INVERSE_BEAM";
-      break;
-    case fileType::TransformedData:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedData)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
-      //hduName = "TRANSFORMED_DATA";
-      break;
-    case fileType::TransformedWeights:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedWeights)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTS"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTS"));
-      //hduName = "TRANSFORMED_MASK";
-      break;
-    case fileType::WeightedTransform:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::WeightedTransform)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
-      //hduName = "PIXEL_DATA";
-      break;
-    case fileType::TransformedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedNoise)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("NOISE"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("NOISE"));
-      //hduName = "TRANSFORMED_NOISE";
-      break;
-    case fileType::TransformedWeightedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedWeightedNoise)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
-      break;
-    case fileType::TransformedFilter:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedFilter)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("FILTER"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("FILTER"));
-      //hduName = "TRANSFORMED_FILTER";
-      break;
-    case fileType::TransformedBeam:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedBeam)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("BEAM"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("BEAM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
     case fileType::EnsembleAveragedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleAveragedNoise)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::EnsembleAveragedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleAveragedSpectrum)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::ExtrapolatedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::ExtrapolatedSpectrum)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::ExtrapolatedInstrumentSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::ExtrapolatedInstrumentSpectrum)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::BinnedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedSpectrum)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::BinnedExtrapolatedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedSpectrum)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
     case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedInstrumentedSpectrum)];
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
-    /*
-    case fileType::EnsembleAveragedBinnedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleAveragedBinnedSpectrum)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    */
-    /*
-    case fileType::SpectralData:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::SpectralData)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "PSEUDO-SPECTRAL_DATA";
-      break;
-    case fileType::EnsembleData:
-      dataSetName = dataTypeNames[(int)(fileType::EnsembleData)];
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      break;
-    */
   }
 
+  int infoSize = 0;
+  const char** infoData = createInfoArray(m_fileDataType, &infoSize);
+  writeComments(infoData, infoSize, currInfoGroup);
 
-  switch (m_fileDataType) {
-    case fileType::PixelizedData:
-    case fileType::PixelizedWeights:
-    case fileType::WeightedPixel:
-    case fileType::PixelizedNoise:
-    case fileType::PixelizedWeightedNoise:
-    case fileType::PixelizedFilter:
-    case fileType::PixelizedBeam:
-    case fileType::InverseData:
-    case fileType::InverseWeights:
-    case fileType::WeightedInverse:
-    case fileType::InverseNoise:
-    case fileType::InverseWeightedNoise:
-    case fileType::InverseFilter:
-    case fileType::InverseBeam:
-    {
-      string nsides = std::to_string(v->sides());
-      string layout = std::to_string(static_cast<int>(v->layout()));
-      string scheme = std::to_string(static_cast<int>(v->pixelScheme()));
-      string minVal = std::to_string(static_cast<int>(v->minValue()));
-      string maxVal = std::to_string(static_cast<int>(v->maxValue()));
-
-      infoData[0][0] = "NSIDES";
-      infoData[1][0] = nsides.c_str();
-
-      infoData[0][1] = "PIXLAYOUT";
-      infoData[1][1] = layout.c_str();
-
-      infoData[0][2] = "PIXSCHEME";
-      infoData[1][2] = scheme.c_str();
-
-      infoData[0][3] = "MINVALUE";
-      infoData[1][3] = minVal.c_str();
-
-      infoData[0][4] = "MAXVALUE";
-      infoData[1][4] = maxVal.c_str();
-
-      infoData[0][5] = "NA";
-      infoData[1][5] = "NA";
-
-      break;
-    }
-    case fileType::TransformedData:
-    case fileType::TransformedWeights:
-    case fileType::WeightedTransform:
-    case fileType::TransformedNoise:
-    case fileType::TransformedWeightedNoise:
-    case fileType::TransformedFilter:
-    case fileType::TransformedBeam:
-    {
-      string nsides = std::to_string(v->sides());
-      string layout = std::to_string(static_cast<int>(v->layout()));
-      string scheme = std::to_string(static_cast<int>(v->pixelScheme()));
-
-      string trans = std::to_string(static_cast<int>(v->transformerScheme()));
-      string minInd = std::to_string(static_cast<int>(v->minYIndex()));
-      string maxInd = std::to_string(static_cast<int>(v->maxYIndex()));
-
-      infoData[0][0] = "NSIDES";
-      infoData[1][0] = nsides.c_str();
-
-      infoData[0][1] = "PIXLAYOUT";
-      infoData[1][1] = layout.c_str();
-
-      infoData[0][2] = "PIXSCHEME";
-      infoData[1][2] = scheme.c_str();
-
-      infoData[0][3] = "TRANSSCHEME";
-      infoData[1][3] = trans.c_str();
-
-      infoData[0][4] = "MINYINDEX";
-      infoData[1][4] = minInd.c_str();
-
-      infoData[0][5] = "MAXYINDEX";
-      infoData[1][5] = maxInd.c_str();
-
-      break;
-    }
-    //case fileType::SpectralData:
-    //case fileType::EnsembleData:
-    case fileType::EnsembleAveragedNoise:
-    case fileType::EnsembleAveragedSpectrum:
-    case fileType::ExtrapolatedSpectrum:
-    case fileType::ExtrapolatedInstrumentSpectrum:
-    case fileType::BinnedSpectrum:
-    case fileType::BinnedExtrapolatedSpectrum:
-    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-    //case fileType::EnsembleAveragedBinnedSpectrum:
-    {
-      string minInd  = std::to_string(v->minYIndex());
-      string maxInd  = std::to_string(v->maxYIndex());
-      string minVal  = std::to_string(v->minValue());
-      string maxVal  = std::to_string(v->maxValue());
-      string maskInd = std::to_string(v->mask());
-
-      infoData[0][0] = "MININDEX";
-      infoData[1][0] = minInd.c_str();
-
-      infoData[0][1] = "MAXINDEX";
-      infoData[1][1] = maxInd.c_str();
-
-      infoData[0][2] = "MINVALUE";
-      infoData[1][2] = minVal.c_str();
-
-      infoData[0][3] = "MAXVALUE";
-      infoData[1][3] = maxVal.c_str();
-
-      infoData[0][4] = "MASKINDEX";
-      infoData[1][4] = maskInd.c_str();
-
-      infoData[0][5] = "NA";
-      infoData[1][5] = "NA";
-
-      break;
-    }
-  }
-
-  try
-  {
-    if(currInfoGroup->exists(dataSetName))
-      currInfoGroup->unlink(dataSetName);
-
-    currInfoDataSpace = new H5::DataSpace(numInfoDims, infoDims);
-    currInfoDataSet   = new H5::DataSet(currInfoGroup->createDataSet(dataSetName, *H5String, *currInfoDataSpace));
-
-    currInfoDataSet->write(infoData, *H5String, *currInfoDataSpace);
-
-    currInfoDataSpace->close();
-    currInfoDataSet->close();
-  }
-  catch (H5::Exception& err) {
-    snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
-    m_err = fileFitsError;
-    m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-    return false;
-  }
-
- numOps = m_rows;
+  numOps = m_rows;
   updateUnit = numOps / 100;
   if(updateUnit < 1)
     updateUnit = 1;
@@ -917,11 +712,11 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
 
   try
   {
-    if(currDataGroup->exists(dataSetName))
-      currDataGroup->unlink(dataSetName);
+    if(currDataGroup->exists(dataName))
+      currDataGroup->unlink(dataName);
 
     currDataDataSpace = new H5::DataSpace(numDataDims, dataDims);
-    currDataDataSet   = new H5::DataSet(currDataGroup->createDataSet(dataSetName, *H5Double, *currDataDataSpace));
+    currDataDataSet   = new H5::DataSet(currDataGroup->createDataSet(dataName, *H5Double, *currDataDataSpace));
 
     currDataDataSet->write(data, *H5Double, *currDataDataSpace);
 
@@ -1087,34 +882,9 @@ bool HDF5Manager::saveMatrixD(matrixData<double> *m)
     */
   }
 
-  int numInfoDims = 2;
-  hsize_t infoDims[numInfoDims];
-  infoDims[0] = 2;
-  infoDims[1] = 2;
-
-  std::string raRes = std::to_string(m->RARes());
-  std::string decRes = std::to_string(m->DecRes());
-  const char* infoData[2][2] = {{"CDELT1",      "CDELT2"},
-                                {raRes.c_str(), decRes.c_str()}};
-  try
-  {
-    if(currInfoGroup->exists(dataSetName))
-      currInfoGroup->unlink(dataSetName);
-
-    currInfoDataSpace = new H5::DataSpace(numInfoDims, infoDims);
-    currInfoDataSet   = new H5::DataSet(currInfoGroup->createDataSet(dataSetName, *H5String, *currInfoDataSpace));
-
-    currInfoDataSet->write(infoData, *H5String, *currInfoDataSpace);
-
-    currInfoDataSpace->close();
-    currInfoDataSet->close();
-  }
-  catch (H5::Exception& err) {
-    snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
-    m_err = fileFitsError;
-    m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-    return false;
-  }
+  int infoSize = 0;
+  const char** infoData = createInfoArray(m_fileDataType, &infoSize);
+  writeComments(infoData, infoSize, currInfoGroup);
 
   numOps = m_cols * m_rows;
   updateUnit = numOps / 100;
@@ -1214,42 +984,9 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
       break;
   }
 
-  int numInfoDims = 2;
-  hsize_t infoDims[2];
-  infoDims[0] = 2;
-  infoDims[1] = 8;
-
-  std::string polarization = std::to_string(c->polarization());
-  std::string index        = std::to_string(c->index());
-  std::string sides        = std::to_string(c->sides());
-  std::string scheme       = c->pixelScheme() == HealPIX ? "HealPIX":"NotPixelized";
-  std::string layout       = c->layout() == Ring? "Ring":"Nest";
-  std::string trans        = c->transformerScheme() == Rsht ? "Rsht":"NotTransformed";
-  std::string minInd       = std::to_string(c->transMinIndex());
-  std::string maxInd       = std::to_string(c->transMaxIndex());
-  const char* infoData[2][8] = { {"POLARIZATION",       "INDEX",       "NSIDES",     "PIXSCHEME",     "PIXLAYOUT",   "TRANSFORMERSCHEME", "TRANSMININDEX", "TRANSMAXINDEX"},
-                                 {polarization.c_str(), index.c_str(), sides.c_str(), scheme.c_str(), layout.c_str(), trans.c_str(),       minInd.c_str(),  maxInd.c_str()}};
-
-  try
-  {
-    if(currInfoGroup->exists(dataSetName))
-      currInfoGroup->unlink(dataSetName);
-
-    currInfoDataSpace = new H5::DataSpace(numInfoDims, infoDims);
-    currInfoDataSet   = new H5::DataSet(currInfoGroup->createDataSet(dataSetName, *H5String, *currInfoDataSpace));
-
-    currInfoDataSet->write(infoData, *H5String, *currInfoDataSpace);
-
-    currInfoDataSpace->close();
-    currInfoDataSet->close();
-  }
-  catch (H5::Exception& err) {
-    snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
-    m_err = fileFitsError;
-    m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-    return false;
-  }
-
+  int infoSize = 0;
+  const char** infoData = createInfoArray(m_fileDataType, &infoSize);
+  writeComments(infoData, infoSize, currInfoGroup);
 
   std::vector<std::vector<std::vector<complex<double> > > > dataAccess = c->roAccess();
 
@@ -2053,323 +1790,82 @@ vectorData<int> *HDF5Manager::getVectorI()
 vectorData<double> *HDF5Manager::getVectorD()
 {
   vectorData<double> *d_vec;
-  int layout = 0, scheme = 0, trans = 0;
+  string layout = "", scheme = "", trans = "";
   int sides = 0, maxIndex = 0, minIndex = 0, mask = 0;
-  std::string dataSetName = "";
+  string dataName = dataSetName(m_fileDataType);
   double minValue = 0, maxValue = 0;
   unsigned long long int numOps, updateUnit, currOp;
+
+  infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+  dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
 
   switch (m_fileDataType)
   {
     case fileType::PixelizedData:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedData)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+    case fileType::InverseData:
+    case fileType::TransformedData:
       currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
       currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
-      //hduName = "PIXEL_DATA";
       break;
     case fileType::PixelizedWeights:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedWeights)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+    case fileType::InverseWeights:
+    case fileType::TransformedWeights:
       currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTS"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
       currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTS"));
       //hduName = "PIXEL_MASK";
       break;
     case fileType::WeightedPixel:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::WeightedPixel)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+    case fileType::WeightedInverse:
+    case fileType::WeightedTransform:
       currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
       currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
       //hduName = "PIXEL_DATA";
       break;
     case fileType::PixelizedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedNoise)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+    case fileType::InverseNoise:
+    case fileType::TransformedNoise:
       currInfoGroup = new H5::Group(infoGroup->openGroup("NOISE"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
       currDataGroup = new H5::Group(dataGroup->openGroup("NOISE"));
       //hduName = "PIXEL_NOISE";
       break;
     case fileType::PixelizedWeightedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedWeightedNoise)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+    case fileType::InverseWeightedNoise:
+    case fileType::TransformedWeightedNoise:
       currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
       currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
       break;
     case fileType::PixelizedFilter:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedFilter)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+    case fileType::InverseFilter:
+    case fileType::TransformedFilter:
       currInfoGroup = new H5::Group(infoGroup->openGroup("FILTER"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
       currDataGroup = new H5::Group(dataGroup->openGroup("FILTER"));
       //hduName = "PIXEL_FILTER";
       break;
     case fileType::PixelizedBeam:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::PixelizedBeam)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+    case fileType::InverseBeam:
+    case fileType::TransformedBeam:
       currInfoGroup = new H5::Group(infoGroup->openGroup("BEAM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
       currDataGroup = new H5::Group(dataGroup->openGroup("BEAM"));
       //hduName = "PIXEL_BEAM";
       break;
-    case fileType::InverseData:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseData)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
-      //hduName = "INVERSE_DATA";
-      break;
-    case fileType::InverseWeights:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseWeights)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTS"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTS"));
-      //hduName = "INVERSE_MASK";
-      break;
-    case fileType::WeightedInverse:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::WeightedInverse)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
-      //hduName = "PIXEL_DATA";
-      break;
-    case fileType::InverseNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseNoise)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("NOISE"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("NOISE"));
-      //hduName = "INVERSE_NOISE";
-      break;
-    case fileType::InverseWeightedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseWeightedNoise)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
-      break;
-    case fileType::InverseFilter:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseFilter)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("FILTER"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("FILTER"));
-      //hduName = "INVERSE_FILTER";
-      break;
-    case fileType::InverseBeam:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::InverseBeam)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("BEAM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("BEAM"));
-      //hduName = "INVERSE_BEAM";
-      break;
-    case fileType::TransformedData:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedData)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
-      //hduName = "TRANSFORMED_DATA";
-      break;
-    case fileType::TransformedWeights:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedWeights)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTS"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTS"));
-      //hduName = "TRANSFORMED_MASK";
-      break;
-    case fileType::WeightedTransform:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::WeightedTransform)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
-      //hduName = "PIXEL_DATA";
-      break;
-    case fileType::TransformedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedNoise)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("NOISE"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("NOISE"));
-      //hduName = "TRANSFORMED_NOISE";
-      break;
-    case fileType::TransformedWeightedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedWeightedNoise)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
-      //hduName = "PIXEL_DATA";
-      break;
-    case fileType::TransformedFilter:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedFilter)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("FILTER"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("FILTER"));
-      //hduName = "TRANSFORMED_FILTER";
-      break;
-    case fileType::TransformedBeam:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::TransformedBeam)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("BEAM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("BEAM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    /*
-    case fileType::SpectralData:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::SpectralData)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "PSEUDO-SPECTRAL_DATA";
-      break;
-    */
-    case fileType::EnsembleAveragedNoise:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleAveragedNoise)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
     case fileType::EnsembleAveragedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleAveragedSpectrum)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
+    case fileType::EnsembleAveragedNoise:
     case fileType::ExtrapolatedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::ExtrapolatedSpectrum)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
     case fileType::ExtrapolatedInstrumentSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::ExtrapolatedInstrumentSpectrum)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
     case fileType::BinnedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedSpectrum)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
     case fileType::BinnedExtrapolatedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedSpectrum)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
     case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedInstrumentedSpectrum)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
       currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
       currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
       //hduName = "TRANSFORMED_BEAM";
       break;
-    /*
-    case fileType::EnsembleAveragedBinnedSpectrum:
-      dataSetName = dataTypeNames[static_cast<int>(fileType::EnsembleAveragedBinnedSpectrum)];
-
-      infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
-      currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
-
-      dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
-      currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    */
   }
 
   char** infoData;
   hsize_t* infoDims;
   try
   {
-    currInfoDataSet = new H5::DataSet(currInfoGroup->openDataSet(dataSetName));
+    currInfoDataSet = new H5::DataSet(currInfoGroup->openDataSet(dataName));
     currInfoDataSpace = new H5::DataSpace(currInfoDataSet->getSpace());
 
     int numInfoDims = currInfoDataSpace->getSimpleExtentNdims();
@@ -2404,8 +1900,8 @@ vectorData<double> *HDF5Manager::getVectorD()
       case fileType::InverseFilter:
       case fileType::InverseBeam:
         sides  = atoi(infoData[infoDims[1] + 0]);
-        layout = atoi(infoData[infoDims[1] + 1]);
-        scheme = atoi(infoData[infoDims[1] + 2]);
+        layout = infoData[infoDims[1] + 1];   //atoi(infoData[infoDims[1] + 1]);
+        scheme = infoData[infoDims[1] + 2]; //atoi(infoData[infoDims[1] + 2]);
 
         //sides = atoi(infoData[1][0]);
         //layout = atoi(infoData[1][1]);
@@ -2419,11 +1915,12 @@ vectorData<double> *HDF5Manager::getVectorD()
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
         sides  = atoi(infoData[infoDims[1] + 0]);
-        layout = atoi(infoData[infoDims[1] + 1]);
-        scheme = atoi(infoData[infoDims[1] + 2]);
-        trans    = atoi(infoData[infoDims[1] + 3]);
-        minIndex = atoi(infoData[infoDims[1] + 4]);
-        maxIndex = atoi(infoData[infoDims[1] + 5]);
+        layout = infoData[infoDims[1] + 1];   //atoi(infoData[infoDims[1] + 1]);
+        scheme = infoData[infoDims[1] + 2];   //atoi(infoData[infoDims[1] + 2]);
+
+        trans    = infoData[infoDims[1] + 3];
+        maxIndex = atoi(infoData[infoDims[1] + 4]);
+        minIndex = atoi(infoData[infoDims[1] + 5]);
         //trans = atoi(infoData[1][0]);
         //minIndex = atoi(infoData[1][1]);
         //maxIndex = atoi(infoData[1][2]);
@@ -2437,11 +1934,17 @@ vectorData<double> *HDF5Manager::getVectorD()
       case fileType::BinnedExtrapolatedSpectrum:
       case fileType::BinnedExtrapolatedInstrumentedSpectrum:
       //case fileType::EnsembleAveragedBinnedSpectrum:
-        minIndex = atoi(infoData[infoDims[1] + 0]);
-        maxIndex = atoi(infoData[infoDims[1] + 1]);
-        minValue = atof(infoData[infoDims[1] + 2]);
-        maxValue = atof(infoData[infoDims[1] + 3]);
-        mask     = atoi(infoData[infoDims[1] + 4]);
+        sides  = atoi(infoData[infoDims[1] + 0]);
+        layout = infoData[infoDims[1] + 1];   //atoi(infoData[infoDims[1] + 1]);
+        scheme = infoData[infoDims[1] + 2];   //atoi(infoData[infoDims[1] + 2]);
+
+        trans    = infoData[infoDims[1] + 3];
+        maxIndex = atoi(infoData[infoDims[1] + 4]);
+        minIndex = atoi(infoData[infoDims[1] + 5]);
+        maxValue = atof(infoData[infoDims[1] + 6]);
+        minValue = atof(infoData[infoDims[1] + 7]);
+        mask     = atoi(infoData[infoDims[1] + 8]);
+
         //minIndex = atoi(infoData[1][0]);
         //maxIndex = atoi(infoData[1][1]);
         //minValue = atoi(infoData[1][2]);
@@ -2454,7 +1957,7 @@ vectorData<double> *HDF5Manager::getVectorD()
   hsize_t* dataDims;
   try
   {
-    currDataDataSet = new H5::DataSet(currDataGroup->openDataSet(dataSetName));
+    currDataDataSet = new H5::DataSet(currDataGroup->openDataSet(dataName));
     currDataDataSpace = new H5::DataSpace(currDataDataSet->getSpace());
 
     int numDataDims = currDataDataSpace->getSimpleExtentNdims();
@@ -2473,6 +1976,8 @@ vectorData<double> *HDF5Manager::getVectorD()
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    std::cerr << "ERROR " << err.getCDetailMsg() << "\n";
     return 0;
   }
 
@@ -2485,14 +1990,14 @@ vectorData<double> *HDF5Manager::getVectorD()
   d_vec->minValue(minValue);
   d_vec->mask(mask);
 
-  if(layout)
-    d_vec->layout(static_cast<LAYOUT>(layout));
+  if(layout == "Ring")
+    d_vec->layout(Ring);
   else
-    d_vec->layout(Unordered);
+    d_vec->layout(Nest);
 
-  if (scheme)
+  if(scheme == "HealPIX")
   {
-    d_vec->pixelScheme(static_cast<PIXELSCHEME>(scheme));
+    d_vec->pixelScheme(HealPIX);
     d_vec->numberOfPixels(12 * sides * sides);
 
     if(!s_association->exists(dataEngines::Pixelization))
@@ -2509,9 +2014,9 @@ vectorData<double> *HDF5Manager::getVectorD()
     d_vec->numberOfPixels(0);
   }
 
-  if (trans)
+  if (trans == "Rsht")
   {
-    d_vec->transformerScheme(static_cast<TRANSFORMERSCHEME>(trans));
+    d_vec->transformerScheme(Rsht);
 
     if(!s_association->exists(dataEngines::Transformation))
     {

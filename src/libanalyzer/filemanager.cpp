@@ -146,6 +146,279 @@ void fileManager::fileName(const char* name)
     m_filename[i] = name[i];
 }
 
+const char** fileManager::createInfoArray(FILETYPE ft, int* size)
+{
+    baseData* genData = s_association->getData(ft);
+
+    switch(ft)
+    {
+      case fileType::InputData:
+      case fileType::InputWeights:
+      case fileType::InputFilter:
+      case fileType::InputBeam:
+      case fileType::InputNoise:
+      case fileType::WeightedData:
+      case fileType::InputWeightedNoise:
+      case fileType::ModeModeMatrix:
+      case fileType::InverseModeModeMatrix:
+      case fileType::InstrumentEffectsMatrix:
+      case fileType::InverseInstrumentEffectsMatrix:
+      case fileType::BinningMatrix:
+      case fileType::UnbinningMatrix:
+      case fileType::BinnedInstrumentEffectsMatrix:
+      case fileType::InverseBinnedInstrumentMatrix:
+      case fileType::EnsembleIterationSpectrum:
+      case fileType::EnsembleIterationNoise:
+      {
+        matrixData<double>* data = (matrixData<double>*)genData;
+
+        *size = 2 * 2;
+        const char** infoData = new const char*[*size];
+
+        string *ra  = new string(std::to_string(data->RARes()));
+        string *dec = new string(std::to_string(data->DecRes()));
+
+        infoData[0] = "CDELT1";
+        infoData[1] = "CDELT2";
+
+        infoData[2] = ra->c_str();
+        infoData[3] = dec->c_str();
+
+        return infoData;
+      }
+      case fileType::PixelizedData:
+      case fileType::PixelizedWeights:
+      case fileType::WeightedPixel:
+      case fileType::PixelizedNoise:
+      case fileType::PixelizedWeightedNoise:
+      case fileType::PixelizedFilter:
+      case fileType::PixelizedBeam:
+      case fileType::InverseData:
+      case fileType::InverseWeights:
+      case fileType::WeightedInverse:
+      case fileType::InverseNoise:
+      case fileType::InverseWeightedNoise:
+      case fileType::InverseFilter:
+      case fileType::InverseBeam:
+      {
+        vectorData<double>* data = (vectorData<double>*)genData;
+
+        *size = 2 * 3;
+        const char** infoData = new const char*[*size];
+
+        string *nsides = new string(std::to_string(data->sides()));
+        string *layout, *scheme;
+
+        if (data->layout() == Ring)
+          layout = new string("Ring");
+        else if (data->layout() == Nest)
+          layout = new string("Nest");
+        else
+          layout = new string("Unordered");
+
+        if (data->pixelScheme() == HealPIX)
+          scheme = new string("HealPIX");
+        else
+          scheme = new string("NotPixelized");
+
+        infoData[0] = "NSIDES";
+        infoData[1] = "PIXLAYOUT";
+        infoData[2] = "PIXSCHEME";
+
+        infoData[3] = nsides->c_str();
+        infoData[4] = layout->c_str();
+        infoData[5] = scheme->c_str();
+
+        return infoData;
+      }
+      case fileType::TransformedData:
+      case fileType::TransformedWeights:
+      case fileType::WeightedTransform:
+      case fileType::TransformedNoise:
+      case fileType::TransformedWeightedNoise:
+      case fileType::TransformedFilter:
+      case fileType::TransformedBeam:
+      {
+        vectorData<double>* data = (vectorData<double>*)genData;
+
+        *size = 2 * 6;
+        const char** infoData = new const char*[*size];
+
+        string *nsides = new string(std::to_string(data->sides()));
+        string *min    = new string(std::to_string(data->minYIndex()));
+        string *max    = new string(std::to_string(data->maxYIndex()));
+
+        string *layout, *scheme, *trans;
+
+        if (data->layout() == Ring)
+          layout = new string("Ring");
+        else if (data->layout() == Nest)
+          layout = new string("Nest");
+        else
+          layout = new string("Unordered");
+
+        if (data->pixelScheme() == HealPIX)
+          scheme = new string("HealPIX");
+        else
+          scheme = new string("NotPixelized");
+
+        if (data->transformerScheme() == Rsht)
+          trans = new string("Rsht");
+        else
+          trans = new string("NotTransformed");
+
+        infoData[0] = "NSIDES";
+        infoData[1] = "PIXLAYOUT";
+        infoData[2] = "PIXSCHEME";
+        infoData[3] = "TRANSFORMERSCHEME";
+        infoData[5] = "MININDEX";
+        infoData[4] = "MAXINDEX";
+
+        infoData[6]  = nsides->c_str();
+        infoData[7]  = layout->c_str();
+        infoData[8]  = scheme->c_str();
+        infoData[9]  = trans->c_str();
+        infoData[11] = min->c_str();
+        infoData[10] = max->c_str();
+
+        return infoData;
+      }
+      case fileType::EnsembleAveragedNoise:
+      case fileType::EnsembleAveragedSpectrum:
+      case fileType::ExtrapolatedSpectrum:
+      case fileType::ExtrapolatedInstrumentSpectrum:
+      case fileType::BinnedSpectrum:
+      case fileType::BinnedExtrapolatedSpectrum:
+      case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      {
+        vectorData<double>* data = (vectorData<double>*)genData;
+
+        *size = 2 * 9;
+        const char** infoData = new const char*[*size];
+
+        string *nsides = new string(std::to_string(data->sides()));
+        string *minInd = new string(std::to_string(data->minYIndex()));
+        string *maxInd = new string(std::to_string(data->maxYIndex()));
+        string *minVal = new string(std::to_string(data->minValue()));
+        string *maxVal = new string(std::to_string(data->maxValue()));
+        string *mask   = new string(std::to_string(data->mask()));
+
+        string *layout, *scheme, *trans;
+
+        if (data->layout() == Ring)
+          layout = new string("Ring");
+        else if (data->layout() == Nest)
+          layout = new string("Nest");
+        else
+          layout = new string("Unordered");
+
+        if (data->pixelScheme() == HealPIX)
+          scheme = new string("HealPIX");
+        else
+          scheme = new string("NotPixelized");
+
+        if (data->transformerScheme() == Rsht)
+          trans = new string("Rsht");
+        else
+          trans = new string("NotTransformed");
+
+        infoData[0] = "NSIDES";
+        infoData[1] = "PIXLAYOUT";
+        infoData[2] = "PIXSCHEME";
+        infoData[3] = "TRANSFORMERSCHEME";
+        infoData[5] = "MININDEX";
+        infoData[4] = "MAXINDEX";
+        infoData[7] = "MINVALUE";
+        infoData[6] = "MAXVALUE";
+        infoData[8] = "MASKINDEX";
+
+        infoData[9]  = nsides->c_str();
+        infoData[10] = layout->c_str();
+        infoData[11] = scheme->c_str();
+        infoData[12] = trans->c_str();
+        infoData[14] = minInd->c_str();
+        infoData[13] = maxInd->c_str();
+        infoData[16] = minVal->c_str();
+        infoData[15] = maxVal->c_str();
+        infoData[17] = mask->c_str();
+
+        return infoData;
+      }
+      case fileType::AlmData:
+      case fileType::AlmWeights:
+      case fileType::AlmFilter:
+      case fileType::AlmNoise:
+      case fileType::AlmBeam:
+      case fileType::WeightedAlm:
+      case fileType::AlmWeightedNoise:
+      {
+        cubeData<complex<double>>* data = (cubeData<complex<double>>*)genData;
+
+        *size = 2 * 11;
+        const char** infoData = new const char*[*size];
+
+        string *nsides = new string(std::to_string(data->sides()));
+        string *minInd = new string(std::to_string(data->transMinIndex()));
+        string *maxInd = new string(std::to_string(data->transMaxIndex()));
+        string *minVal = new string(std::to_string(data->transMinValue()));
+        string *maxVal = new string(std::to_string(data->transMaxValue()));
+        string *mask   = new string(std::to_string(data->transMask()));
+        string *polar  = new string(std::to_string(data->polarization()));
+        string *index  = new string(std::to_string(data->index()));
+
+        string *layout, *scheme, *trans;
+
+        if (data->layout() == Ring)
+          layout = new string("Ring");
+        else if (data->layout() == Nest)
+          layout = new string("Nest");
+        else
+          layout = new string("Unordered");
+
+        if (data->pixelScheme() == HealPIX)
+          scheme = new string("HealPIX");
+        else
+          scheme = new string("NotPixelized");
+
+        if (data->transformerScheme() == Rsht)
+          trans = new string("Rsht");
+        else
+          trans = new string("NotTransformed");
+
+        infoData[0]  = "POLARIZATION";
+        infoData[1]  = "INDEX";
+        infoData[2]  = "NSIDES";
+        infoData[3]  = "PIXLAYOUT";
+        infoData[4]  = "PIXSCHEME";
+        infoData[5]  = "TRANSFORMERSCHEME";
+        infoData[6]  = "TRANSMININDEX";
+        infoData[7]  = "TRANSMAXINDEX";
+        infoData[8]  = "TRANSMINVALUE";
+        infoData[9]  = "TRANSMAXVALUE";
+        infoData[10] = "TRANSMASKINDEX";
+
+        infoData[11] = polar->c_str();
+        infoData[12] = index->c_str();
+        infoData[13] = nsides->c_str();
+        infoData[14] = layout->c_str();
+        infoData[15] = scheme->c_str();
+        infoData[16] = trans->c_str();
+        infoData[17] = minInd->c_str();
+        infoData[18] = maxInd->c_str();
+        infoData[19] = minVal->c_str();
+        infoData[20] = maxVal->c_str();
+        infoData[21] = mask->c_str();
+
+        return infoData;
+      }
+      default:
+        return 0;
+    }
+
+    return 0;
+}
+
+
 float fileManager::min_energy(int i) {
   if (i > MAX_SLICES || i < 0) {
     m_err = fileEnergyArrayError;

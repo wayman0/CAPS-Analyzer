@@ -3579,6 +3579,9 @@ bool association::generateTransformedData(Transformer *transformer, FILETYPE ft)
   alm->transformerScheme(transformer->scheme());
   alm->transMinIndex(transformer->minIndex());
   alm->transMaxIndex(transformer->maxIndex());
+  alm->transMaxValue(trans->maxValue());
+  alm->transMaxValue(trans->maxValue());
+  alm->transMask(trans->mask());
 
   transformer->dataSize(pix->size());
   transformer->initialize(this);

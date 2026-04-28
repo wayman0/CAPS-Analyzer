@@ -315,6 +315,18 @@ void fitsManager::save(int* numTypes, FILETYPE* dataTypes)
   fileManager::save(numTypes, dataTypes);
 }
 
+bool fitsManager::writeComments(const char** comments, int commentSize, void* dest)
+{
+  CCfits::ExtHDU* hdu = (CCfits::ExtHDU*)(dest);
+
+  int offset = commentSize/2;
+
+  for(int i = 0; i < commentSize/2; i += 1)
+    hdu->addKey(comments[i], comments[i+offset], "");
+
+  return true;
+}
+
 void fitsManager::save(ASSOCIATEDMAP map)
 {
 }
@@ -394,152 +406,8 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
   std::valarray<double> fitsData;
   std::string layout, scheme, trans;
   unsigned long long int numOps, updateUnit, currOp;
-  std::string hduName = "";
+  std::string hduName = dataSetName(m_fileDataType);
   CCfits::ExtHDU* dataImage = 0;
-
-  switch (m_fileDataType) {
-    case fileType::PixelizedData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_DATA";
-      break;
-    case fileType::PixelizedWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_MASK";
-      break;
-    case fileType::WeightedPixel:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_MASK";
-      break;
-    case fileType::PixelizedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_NOISE";
-      break;
-    case fileType::PixelizedWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::PixelizedFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_FILTER";
-      break;
-    case fileType::PixelizedBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_BEAM";
-      break;
-    case fileType::InverseData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_DATA";
-      break;
-    case fileType::InverseWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_MASK";
-      break;
-    case fileType::WeightedInverse:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_MASK";
-      break;
-    case fileType::InverseNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_NOISE";
-      break;
-    case fileType::InverseWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::InverseFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_FILTER";
-      break;
-    case fileType::InverseBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_BEAM";
-      break;
-    case fileType::TransformedData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_DATA";
-      break;
-    case fileType::TransformedWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_MASK";
-      break;
-    case fileType::WeightedTransform:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_MASK";
-      break;
-    case fileType::TransformedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_NOISE";
-      break;
-    case fileType::TransformedWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::TransformedFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_FILTER";
-      break;
-    case fileType::TransformedBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::EnsembleAveragedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::EnsembleAveragedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::ExtrapolatedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::ExtrapolatedInstrumentSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::BinnedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::BinnedExtrapolatedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    /*
-    case fileType::EnsembleAveragedBinnedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    */
-    /*
-    case fileType::SpectralData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PSEUDO-SPECTRAL_DATA";
-      break;
-    case fileType::EnsembleData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    */
-  }
-
-  if (v->layout() == Ring)
-    layout = std::string("Ring");
-  else if (v->layout() == Nest)
-    layout = std::string("Nest");
-  else
-    layout = std::string("Unordered");
-
-  if (v->pixelScheme() == HealPIX)
-    scheme = std::string("HealPIX");
-  else
-    scheme = std::string("NotPixelized");
-
-  if (v->transformerScheme() == Rsht)
-    trans = std::string("Rsht");
-  else
-    trans = std::string("NotTransformed");
 
   numOps = m_rows;
   updateUnit = numOps / 100;
@@ -551,76 +419,17 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
   for (int row = 0; row < m_rows; row++) {
     fitsData[row] = (*v)[row];
     currOp++;
-//    if(m_showProgress && !(currOp % updateUnit))
-//      informProgress(currOp / updateUnit);
   }
-//  int nSides = 0;
+
   std::vector<long> naxes = {m_rows};
   try
   {
     dataImage = m_ptr->addImage(hduName, fitsDouble, naxes);
 
-    switch (m_fileDataType) {
-      case fileType::PixelizedData:
-      case fileType::PixelizedWeights:
-      case fileType::WeightedPixel:
-      case fileType::PixelizedNoise:
-      case fileType::PixelizedWeightedNoise:
-      case fileType::PixelizedFilter:
-      case fileType::PixelizedBeam:
-      case fileType::InverseData:
-      case fileType::InverseWeights:
-      case fileType::WeightedInverse:
-      case fileType::InverseNoise:
-      case fileType::InverseWeightedNoise:
-      case fileType::InverseFilter:
-      case fileType::InverseBeam:
-        dataImage->addKey("NSIDES",v->sides(),"Number of sides.");
-        dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
-        dataImage->addKey("PIXSCHEME",scheme, "Type of pixel scheme used to pixelize.");
-        break;
-      case fileType::TransformedData:
-      case fileType::TransformedWeights:
-      case fileType::WeightedTransform:
-      case fileType::TransformedNoise:
-      case fileType::TransformedWeightedNoise:
-      case fileType::TransformedFilter:
-      case fileType::TransformedBeam:
-        // if the data is transformed it should also be pixelized
-        dataImage->addKey("NSIDES",v->sides(),"Number of sides.");
-        dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
-        dataImage->addKey("PIXSCHEME",scheme, "Type of pixel scheme used to pixelize.");
+    int commentSize = 0;
+    const char** comments = createInfoArray(m_fileDataType, &commentSize);
 
-        dataImage->addKey("TRANSFORMERSCHEME",trans,"Type of transformer scheme");
-        dataImage->addKey("MAXINDEX",v->maxYIndex(), "Maximum index");
-        dataImage->addKey("MININDEX",v->minYIndex(), "Minimum index");
-        break;
-      //case fileType::SpectralData:
-      //case fileType::EnsembleData:
-      case fileType::EnsembleAveragedNoise:
-      case fileType::EnsembleAveragedSpectrum:
-      case fileType::ExtrapolatedSpectrum:
-      case fileType::ExtrapolatedInstrumentSpectrum:
-      case fileType::BinnedSpectrum:
-      case fileType::BinnedExtrapolatedSpectrum:
-      case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-      //case fileType::EnsembleAveragedBinnedSpectrum:
-        // if the data is spectral then it should also be pixelized and transformed
-        dataImage->addKey("NSIDES",v->sides(),"Number of sides.");
-        dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
-        dataImage->addKey("PIXSCHEME",scheme, "Type of pixel scheme used to pixelize.");
-
-        dataImage->addKey("TRANSFORMERSCHEME",trans,"Type of transformer scheme");
-        dataImage->addKey("MAXINDEX",v->maxYIndex(), "Maximum index");
-        dataImage->addKey("MININDEX",v->minYIndex(), "Minimum index");
-
-        dataImage->addKey("MAXINDEX",v->maxYIndex(),"Maximum index");
-        dataImage->addKey("MININDEX",v->minYIndex(),"Minimum index");
-        dataImage->addKey("MAXVALUE",v->maxValue(),"Maximum value");
-        dataImage->addKey("MINVALUE",v->minValue(),"Minimum value");
-        dataImage->addKey("MASKINDEX",v->mask(),   "Mask index");
-        break;
-    }
+    writeComments(comments, commentSize, dataImage);
 
     dataImage->write(1, fitsData.size(), fitsData);
   }
@@ -646,102 +455,8 @@ bool fitsManager::saveMatrixD(matrixData<double> *m)
 {
   std::valarray<double> fitsData;
   unsigned long long int numOps, updateUnit, currOp;
-  std::string hduName = "";
+  std::string hduName = dataSetName(m_fileDataType);
   CCfits::ExtHDU* dataImage = 0;
-
-  switch (m_fileDataType) {
-    case fileType::InputData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_DATA";
-      break;
-    case fileType::InputWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_MASK";
-      break;
-    case fileType::WeightedData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_MASK";
-      break;
-    case fileType::InputNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_NOISE";
-      break;
-    case fileType::InputWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::InputFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::InputBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_BEAM";
-      break;
-    /*
-    case fileType::BinCouplingMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "BIN_COUPLING_MATRIX";
-      break;
-    case fileType::ModeCouplingMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "MODE_COUPLING_MATRIX";
-      break;
-    case fileType::InverseBinMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_BIN_COUPLING_MATRIX";
-      break;
-    case fileType::InverseModeMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_MODE_COUPLING_MATRIX";
-      break;
-    */
-    case fileType::EnsembleIterationNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::EnsembleIterationSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    /*
-    case fileType::EnsembleIterationBinnedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    */
-    case fileType::ModeModeMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::InverseModeModeMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::InstrumentEffectsMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::InverseInstrumentEffectsMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::BinningMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::UnbinningMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::BinnedInstrumentEffectsMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::InverseBinnedInstrumentMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-  }
 
   numOps = m_cols * m_rows;
   updateUnit = numOps / 100;
@@ -759,8 +474,10 @@ bool fitsManager::saveMatrixD(matrixData<double> *m)
   {
     dataImage = m_ptr->addImage(hduName, fitsDouble, naxes);
 
-    dataImage->addKey("CDELT1",m->RARes(), "RaResolution of data stored in file.");
-    dataImage->addKey("CDELT2",m->DecRes(),"DecResolution of data stored in file.");
+    int commentSize = 0;
+    const char** comments = createInfoArray(m_fileDataType, &commentSize);
+
+    writeComments(comments, commentSize, dataImage);
 
     dataImage->write(1, fitsData.size(), fitsData);
   }
@@ -790,45 +507,8 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
   unsigned long long int numOps, updateUnit, currOp;
   string sides, layout, scheme, trans, minIndex, maxIndex;
   vectorData<double>* transformed;
-  std::string hduName = "";
+  std::string hduName = dataSetName(m_fileDataType);
   CCfits::ExtHDU* dataImage = 0;
-
-  switch (m_fileDataType) {
-    case fileType::AlmData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedData);
-      //hduName = "ALM_DATA";
-      break;
-    case fileType::AlmWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedWeights);
-      //hduName = "ALM_MASK";
-      break;
-    case fileType::WeightedAlm:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      transformed = (vectorData<double>*)s_association->getData(fileType::WeightedTransform);
-      //hduName = "ALM_MASK";
-      break;
-    case fileType::AlmNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedNoise);
-      //hduName = "ALM_NOISE";
-      break;
-    case fileType::AlmWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedWeightedNoise);
-      break;
-    case fileType::AlmFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedFilter);
-      //hduName = "ALM_FILTER";
-      break;
-    case fileType::AlmBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      transformed = (vectorData<double>*)s_association->getData(fileType::TransformedBeam);
-      //hduName = "ALM_BEAM";
-      break;
-  }
 
   std::vector<std::vector<std::vector<complex<double> > > > data = c->roAccess();
 
@@ -838,8 +518,6 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
     updateUnit = 1;
   currOp = 0;
 
-  //fitsDataReal.resize(m_cols * m_rows * m_slices);
-  //fitsDataImag.resize(m_cols * m_rows * m_slices);
   std::valarray<double> fitsData(m_cols * m_rows * m_slices * 2);
   int offset = m_cols * m_rows * m_slices;
   for (int slice = 0; slice < m_slices; ++slice)
@@ -855,13 +533,9 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
         // which column we are in
         index += col;
 
-        //fitsDataReal[index] = data[slice][col][row].real();
-        //fitsDataImag[index] = data[slice][col][row].imag();
         fitsData[index]        = data[slice][col][row].real();
         fitsData[index+offset] = data[slice][col][row].imag();
         currOp++;
-//        if(m_showProgress && !(currOp % updateUnit))
-//          informProgress(currOp / updateUnit);
       }
     }
   }
@@ -872,32 +546,16 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
   // axis to account for this by doubling slices
   // then when we read in slices we divide by 2.
   std::vector<long> naxes = {m_cols, m_rows, m_slices*2};
-  //std::vector<long> naxes = {m_cols, m_rows, m_slices};
-
-  sides = transformed->sides();
-  layout = c->layout() == Ring ? "Ring":"Nest";
-  scheme = c->pixelScheme() == PIXELSCHEME::HealPIX ? "HealPIX" : "NotPixelized";
-
-  trans = c->transformerScheme() == Rsht? "Rsht":"NotTransformed";
 
   try
   {
     dataImage = m_ptr->addImage(hduName, fitsDouble, naxes);
+    int commentSize = 0;
 
-    dataImage->addKey("POLARIZATION",c->polarization(),"Polarization of data.");
-    dataImage->addKey("INDEX",c->index(),"Index of data stored in file.");
+    const char** comments = createInfoArray(m_fileDataType, &commentSize);
 
-    // save the transformer info so we can use it when we want to go from alm to transformed
-    dataImage->addKey("NSIDES",   c->sides(),  "Number of sides.");
-    dataImage->addKey("PIXLAYOUT",layout, "Type of layout used to pixelize.");
-    dataImage->addKey("PIXSCHEME",scheme, "Type of pixel scheme used to pixelize.");
+    writeComments(comments, commentSize, dataImage);
 
-    dataImage->addKey("TRANSFORMERSCHEME",trans,"Type of transformer scheme");
-    dataImage->addKey("TRANSMININDEX", c->transMinIndex(), "Transformer Min Index");
-    dataImage->addKey("TRANSMAXINDEX", c->transMaxIndex(), "Transformer Max Index");
-
-    //dataImage->write(1,                       fitsDataReal.size(), fitsDataReal);
-    //dataImage->write(1 + fitsDataReal.size(), fitsDataImag.size(), fitsDataImag);
     dataImage->write(1, fitsData.size(), fitsData);
   }
   catch (CCfits::FitsException& err) {
@@ -1978,140 +1636,14 @@ vectorData<double> *fitsManager::getVectorD()
 {
   vectorData<double> *d_vec;
   std::string layout = "", scheme = "",trans  = "";
-  std::string hduName = "";
+  std::string sidesStr = "",  maxIndexStr = "", minIndexStr = "", maskStr = "", maxValueStr = "", minValueStr = "";
+  int sides, maxIndex, minIndex, mask;
+  double maxValue, minValue;
+  std::string hduName = dataSetName(m_fileDataType);
   std::valarray<double> fitsData;
-  CCfits::ExtHDU* dataImage = 0;
-  int sides = 0, maxIndex = 0, minIndex = 0, mask = 0;
-  double maxValue = 0, minValue = 0;
-  unsigned long long int numOps, updateUnit, currOp;
 
-  switch (m_fileDataType)
-  {
-    case fileType::PixelizedData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_DATA";
-      break;
-    case fileType::PixelizedWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_MASK";
-      break;
-    case fileType::WeightedPixel:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_WEIGHTED_DATA";
-      break;
-    case fileType::PixelizedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_NOISE";
-      break;
-    case fileType::PixelizedWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::PixelizedFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_FILTER";
-      break;
-    case fileType::PixelizedBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PIXEL_BEAM";
-      break;
-    case fileType::InverseData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_DATA";
-      break;
-    case fileType::InverseWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_MASK";
-      break;
-    case fileType::WeightedInverse:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_MASK";
-      break;
-    case fileType::InverseNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_NOISE";
-      break;
-    case fileType::InverseWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::InverseFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_FILTER";
-      break;
-    case fileType::InverseBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_BEAM";
-      break;
-    case fileType::TransformedData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_DATA";
-      break;
-    case fileType::TransformedWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_MASK";
-      break;
-    case fileType::WeightedTransform:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "WEIGHTED_TRANSFORM";
-      break;
-    case fileType::TransformedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_NOISE";
-      break;
-    case fileType::TransformedWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::TransformedFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_FILTER";
-      break;
-    case fileType::TransformedBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::EnsembleAveragedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::EnsembleAveragedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::ExtrapolatedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::ExtrapolatedInstrumentSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::BinnedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::BinnedExtrapolatedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    /*
-    case fileType::EnsembleAveragedBinnedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    */
-    /*
-    case fileType::SpectralData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "PSEUDO-SPECTRAL_DATA";
-      break;
-    case fileType::EnsembleData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    */
-  }
+  CCfits::ExtHDU* dataImage = 0;
+  unsigned long long int numOps, updateUnit, currOp;
 
   try
   {
@@ -2131,7 +1663,7 @@ vectorData<double> *fitsManager::getVectorD()
       case fileType::InverseWeightedNoise:
       case fileType::InverseFilter:
       case fileType::InverseBeam:
-        dataImage->readKey("NSIDES",sides);
+        dataImage->readKey("NSIDES",sidesStr);
         dataImage->readKey("PIXLAYOUT",layout);
         dataImage->readKey("PIXSCHEME",scheme);
         break;
@@ -2143,13 +1675,13 @@ vectorData<double> *fitsManager::getVectorD()
       case fileType::TransformedFilter:
       case fileType::TransformedBeam:
         // if it is transformed it should also be pixelized
-        dataImage->readKey("NSIDES",sides);
+        dataImage->readKey("NSIDES",sidesStr);
         dataImage->readKey("PIXLAYOUT",layout);
         dataImage->readKey("PIXSCHEME",scheme);
 
         dataImage->readKey("TRANSFORMERSCHEME",trans);
-        dataImage->readKey("MAXINDEX",maxIndex);
-        dataImage->readKey("MININDEX",minIndex);
+        dataImage->readKey("MAXINDEX",maxIndexStr);
+        dataImage->readKey("MININDEX",minIndexStr);
         break;
       //case fileType::SpectralData:
       //case fileType::EnsembleData:
@@ -2163,19 +1695,19 @@ vectorData<double> *fitsManager::getVectorD()
       //case fileType::EnsembleAveragedBinnedSpectrum:
 
         // if it is spectral it should also be pixelized and transformed
-        dataImage->readKey("NSIDES",sides);
+        dataImage->readKey("NSIDES",sidesStr);
         dataImage->readKey("PIXLAYOUT",layout);
         dataImage->readKey("PIXSCHEME",scheme);
 
         dataImage->readKey("TRANSFORMERSCHEME",trans);
-        dataImage->readKey("MAXINDEX",maxIndex);
-        dataImage->readKey("MININDEX",minIndex);
+        dataImage->readKey("MAXINDEX",maxIndexStr);
+        dataImage->readKey("MININDEX",minIndexStr);
 
-        dataImage->readKey("MAXINDEX",maxIndex);
-        dataImage->readKey("MININDEX",minIndex);
-        dataImage->readKey("MAXVALUE",maxValue);
-        dataImage->readKey("MINVALUE",minValue);
-        dataImage->readKey("MASKINDEX",mask);
+        dataImage->readKey("MAXINDEX",maxIndexStr);
+        dataImage->readKey("MININDEX",minIndexStr);
+        dataImage->readKey("MAXVALUE",maxValueStr);
+        dataImage->readKey("MINVALUE",minValueStr);
+        dataImage->readKey("MASKINDEX",maskStr);
         break;
     }
 
@@ -2188,6 +1720,14 @@ vectorData<double> *fitsManager::getVectorD()
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     return 0;
   }
+
+  sides    = atoi(sidesStr.c_str());
+  maxIndex = atoi(maxIndexStr.c_str());
+  minIndex = atoi(minIndexStr.c_str());
+  mask     = atoi(maskStr.c_str());
+
+  maxValue = atof(maxValueStr.c_str());
+  minValue = atof(minValueStr.c_str());
 
   d_vec = new vectorData<double>(m_rows,m_fileDataType);
   d_vec->initialize();
@@ -2258,114 +1798,19 @@ vectorData<double> *fitsManager::getVectorD()
 matrixData<double> *fitsManager::getMatrixD() {
   matrixData<double> *d_mat;
   std::valarray<double> fitsData;
-  std::string hduName = "";
+  std::string hduName = dataSetName(m_fileDataType);
   CCfits::ExtHDU* dataImage = 0;
   double ra_res = 0, dec_res = 0;
+  string raStr = "", decStr = "";
   unsigned long long int numOps, updateUnit, currOp;
-
-  // set appropriate hdu name to identify extension
-  switch (m_fileDataType) {
-    case fileType::InputData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_DATA";
-      break;
-    case fileType::InputWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_MASK";
-      break;
-    case fileType::WeightedData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "WEIGHTED_DATA";
-      break;
-    case fileType::InputNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_NOISE";
-      break;
-    case fileType::InputWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::InputFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::InputBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_BEAM";
-      break;
-    /*
-    case fileType::BinCouplingMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "BIN_COUPLING_MATRIX";
-      break;
-    case fileType::ModeCouplingMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "MODE_COUPLING_MATRIX";
-      break;
-    case fileType::InverseBinMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_BIN_COUPLING_MATRIX";
-      break;
-    case fileType::InverseModeMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_MODE_COUPLING_MATRIX";
-      break;
-    */
-    case fileType::EnsembleIterationNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::EnsembleIterationSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    /*
-    case fileType::EnsembleIterationBinnedSpectrum:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    */
-    case fileType::ModeModeMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::InverseModeModeMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::InstrumentEffectsMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::InverseInstrumentEffectsMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "TRANSFORMED_BEAM";
-      break;
-    case fileType::BinningMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::UnbinningMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::BinnedInstrumentEffectsMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-    case fileType::InverseBinnedInstrumentMatrix:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "RAW_FILTER";
-      break;
-  }
 
   // load data
   try
   {
-    //dataImage = currHeader;
     dataImage = &(m_ptr->extension(hduName));
 
-    dataImage->readKey("CDELT1",ra_res);
-    dataImage->readKey("CDELT2",dec_res);
+    dataImage->readKey("CDELT1",raStr);
+    dataImage->readKey("CDELT2",decStr);
 
     m_cols = dataImage->axis(0);
     m_rows = dataImage->axis(1);
@@ -2389,6 +1834,9 @@ matrixData<double> *fitsManager::getMatrixD() {
   if(updateUnit < 1) updateUnit = 1;
   currOp = 0;
 
+  ra_res  = atof(raStr.c_str());
+  dec_res = atof(decStr.c_str());
+
   d_mat->RARes(ra_res);
   d_mat->DecRes(dec_res);
 
@@ -2408,56 +1856,25 @@ matrixData<double> *fitsManager::getMatrixD() {
   return d_mat;
 }
 
-cubeData<std::complex<double> > *fitsManager::getCubeCD() {
+cubeData<std::complex<double> > *fitsManager::getCubeCD()
+{
   cubeData<std::complex<double> > *dc_cube;
   std::vector<std::vector<std::vector<std::complex<double> > > > data;
   std::valarray<double> fitsData;
-  std::string hduName = "";
+  std::string hduName = dataSetName(m_fileDataType);
   CCfits::ExtHDU* dataImage = 0;
   int polarization, index; //, offset;
   unsigned long long int numOps, updateUnit, currOp;
-  int slice = 0, col = 0, row = 0;
-  int dataCols = 0, dataRows = 0, dataSlices = 0;
 
-  string sides, layout, scheme, trans, minIndex, maxIndex;
-
-  switch (m_fileDataType) {
-    case fileType::AlmData:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "ALM_DATA";
-      break;
-    case fileType::AlmWeights:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "ALM_MASK";
-      break;
-    case fileType::WeightedAlm:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "INVERSE_MASK";
-      break;
-    case fileType::AlmNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "ALM_NOISE";
-      break;
-    case fileType::AlmWeightedNoise:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      break;
-    case fileType::AlmFilter:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "ALM_FILTER";
-      break;
-    case fileType::AlmBeam:
-      hduName = dataTypeNames[static_cast<int>(m_fileDataType)];
-      //hduName = "ALM_BEAM";
-      break;
-  }
+  string sides = "", layout = "", scheme = "", trans = "", minIndex = "", maxIndex = "", minVal = "", maxVal = "", mask = "", polarStr = "", indexStr = "";
 
   try
   {
     dataImage = &(m_ptr->extension(hduName));
 
     /* These may not be necessary anymore (redundant with rows, slices)... */
-    dataImage->readKey("POLARIZATION",polarization);
-    dataImage->readKey("INDEX",index);
+    dataImage->readKey("POLARIZATION",polarStr);
+    dataImage->readKey("INDEX",indexStr);
 
     dataImage->readKey("NSIDES", sides);
     dataImage->readKey("PIXSCHEME", scheme);
@@ -2466,6 +1883,10 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
     dataImage->readKey("TRANSFORMERSCHEME", trans);
     dataImage->readKey("TRANSMININDEX", minIndex);
     dataImage->readKey("TRANSMAXINDEX", maxIndex);
+    dataImage->readKey("TRANSMINVALUE", minVal);
+    dataImage->readKey("TRANSMAXVALUE", maxVal);
+    dataImage->readKey("TRANSMASKINDEX", mask);
+
 
     m_cols   = dataImage->axis(0);
     m_rows   = dataImage->axis(1);
@@ -2488,16 +1909,22 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD() {
   dc_cube = new cubeData<std::complex<double> >(m_cols,m_rows,m_slices,m_fileDataType);
   dc_cube->initialize();
 
+  polarization = atoi(polarStr.c_str());
+  index = atoi(indexStr.c_str());
+
   dc_cube->polarization(polarization);
   dc_cube->index(index);
 
   dc_cube->pixelScheme(scheme == "HealPIX" ? HealPIX:NotPixelized);
   dc_cube->layout(layout == "Ring"? Ring:Nest);
-  dc_cube->sides(stoi(sides));
+  dc_cube->sides(atoi(sides.c_str()));
 
   dc_cube->transformerScheme(trans == "Rsht" ? Rsht:NotTransformed);
-  dc_cube->transMinIndex(stoi(minIndex));
-  dc_cube->transMaxIndex(stoi(maxIndex));
+  dc_cube->transMinIndex(atoi(minIndex.c_str()));
+  dc_cube->transMaxIndex(atoi(maxIndex.c_str()));
+  dc_cube->transMinValue(atoi(minVal.c_str()));
+  dc_cube->transMaxValue(atoi(maxVal.c_str()));
+  dc_cube->transMask(atoi(mask.c_str()));
 
   if(scheme == "HealPIX")
   {
