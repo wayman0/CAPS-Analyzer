@@ -95,6 +95,8 @@ class mainWindow : public QMainWindow {
     void updateProgressBar(int value);
     void updateProgressText(const char* updateName);
     
+    void invert();
+
   public Q_SLOTS:
     void openFile();
     void readData(double minEnergy, double maxEnergy);
@@ -132,6 +134,7 @@ class mainWindow : public QMainWindow {
     void readData();
     bool pixelize(FILETYPE inputDataType, FILETYPE pixelDataType);
     bool transform(FILETYPE pixelDataType, FILETYPE transDataType);
+    bool invert(FILETYPE inverseType, FILETYPE almType);
 
     Ui::MainWindow *ui;
     

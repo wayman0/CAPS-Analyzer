@@ -409,6 +409,9 @@ void mainWindow::openFile()
     std::vector<FILETYPE> types(2);
     types.assign(2, fileType::Null);
 
+    bool readTrans = false;
+    bool readALM   = false;
+    bool readPixel = false;
     for(int i = 0; i < *numTypes; i += 1)
     {
       switch(dataTypes[i])
@@ -457,6 +460,8 @@ void mainWindow::openFile()
           break;
       }
     }
+
+    invert();
 
     for(fileType type : types)
       configureDisplay(type);
@@ -1364,6 +1369,35 @@ void mainWindow::transform() {
   if (count)
     configureDisplay(fileType::TransformedData);
   return;
+}
+
+void mainWindow::invert()
+{
+  QString title, message;
+  int count = 0;
+
+  FILETYPE inverseChain = fileType::InverseData;
+  FILETYPE almChain     = fileType::AlmData;
+
+  while(almChain <= fileType::AlmBeam)
+  {
+    if(invert(inverseChain, almChain))
+      count++;
+
+    inverseChain = static_cast<FILETYPE>(static_cast<int>(inverseChain) + 1);
+    almChain     = static_cast<FILETYPE>(static_cast<int>(almChain) + 1);
+  }
+
+  if(count)
+    configureDisplay(fileType::InverseData);
+}
+
+bool mainWindow::invert(FILETYPE inverseType, FILETYPE almType)
+{
+  if(!s_association->exists(inverseType) && s_association->exists(almType))
+    return s_association->generateInverseData(s_association->transformationEngine(), almType);
+  else
+    return false;
 }
 
 void mainWindow::analyze() {
