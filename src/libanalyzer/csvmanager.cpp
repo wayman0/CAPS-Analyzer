@@ -295,6 +295,15 @@ bool csvManager::writeComments(const char ** comments, int size, void* dest)
   return true;
 }
 
+bool csvManager::readComments(void* src)
+{
+  return true;
+}
+
+bool setAttributes(vectorData<double>* vData)       { return true; }
+bool setAttributes(matrixData<double>* mData)       { return true; }
+bool setAttributes(cubeData<complex<double>>* cData){ return true; }
+
 bool csvManager::saveVectorI(vectorData<int> *v)
 {
   std::string layout, scheme;

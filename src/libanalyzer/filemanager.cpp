@@ -65,6 +65,8 @@
  * program must reference the fact that it was developed by Daniel Suson   *
  ***************************************************************************/
 #include "filemanager.h"
+#include "pixelizer.h"
+#include "transformer.h"
 
 fileManager::fileManager(association* dataMgr)
 {
@@ -88,6 +90,8 @@ fileManager::fileManager(association* dataMgr)
 
   m_observatory = Analyzer;
   s_association = dataMgr;
+
+  m_commentMap = new std::map<string, string>();
 }
 
 fileManager::fileManager(fileManager* from) {
@@ -418,6 +422,302 @@ const char** fileManager::createInfoArray(FILETYPE ft, int* size)
     return 0;
 }
 
+bool fileManager::setAttributes(FILETYPE ft, baseData* genData)
+{
+    switch(ft)
+    {
+      case fileType::InputData:
+      case fileType::InputWeights:
+      case fileType::InputFilter:
+      case fileType::InputBeam:
+      case fileType::InputNoise:
+      case fileType::WeightedData:
+      case fileType::InputWeightedNoise:
+      case fileType::ModeModeMatrix:
+      case fileType::InverseModeModeMatrix:
+      case fileType::InstrumentEffectsMatrix:
+      case fileType::InverseInstrumentEffectsMatrix:
+      case fileType::BinningMatrix:
+      case fileType::UnbinningMatrix:
+      case fileType::BinnedInstrumentEffectsMatrix:
+      case fileType::InverseBinnedInstrumentMatrix:
+      case fileType::EnsembleIterationSpectrum:
+      case fileType::EnsembleIterationNoise:
+      {
+        matrixData<double>* data = (matrixData<double>*)genData;
+
+        double ra  = std::stod((*m_commentMap)["CDELT1"]);
+        double dec = std::stod((*m_commentMap)["CDELT2"]);
+
+        data->RARes(ra);
+        data->DecRes(dec);
+
+        return true;
+      }
+      case fileType::PixelizedData:
+      case fileType::PixelizedWeights:
+      case fileType::WeightedPixel:
+      case fileType::PixelizedNoise:
+      case fileType::PixelizedWeightedNoise:
+      case fileType::PixelizedFilter:
+      case fileType::PixelizedBeam:
+      case fileType::InverseData:
+      case fileType::InverseWeights:
+      case fileType::WeightedInverse:
+      case fileType::InverseNoise:
+      case fileType::InverseWeightedNoise:
+      case fileType::InverseFilter:
+      case fileType::InverseBeam:
+      {
+        vectorData<double>* data = (vectorData<double>*)genData;
+
+        int nsides = std::stoi((*m_commentMap)["NSIDES"]);
+
+        PIXELSCHEME scheme = (*m_commentMap)["PIXSCHEME"] == "HealPIX" ? HealPIX : NotPixelized;
+
+        LAYOUT layout = Unordered;
+        if((*m_commentMap)["PIXLAYOUT"] == "Ring")
+          layout = Ring;
+        else if((*m_commentMap)["PIXLAYOUT"] == "Nest")
+          layout = Nest;
+        else
+          layout = Unordered;
+
+        data->sides(nsides);
+        data->layout(layout);
+        data->pixelScheme(scheme);
+
+        data->transformerScheme(NotTransformed);
+
+        if (scheme == HealPIX)
+        {
+          data->numberOfPixels(12 * nsides * nsides);
+
+          if(!s_association->exists(dataEngines::Pixelization))
+          {
+            s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
+            s_association->pixelizationEngine()->pixelLayout(data->layout());
+            s_association->pixelizationEngine()->pixelizerScheme(data->pixelScheme());
+            s_association->pixelizationEngine()->scale(nsides);
+          }
+        }
+        else
+        {
+          data->pixelScheme(NotPixelized);
+          data->numberOfPixels(0);
+        }
+
+
+        return true;
+      }
+      case fileType::TransformedData:
+      case fileType::TransformedWeights:
+      case fileType::WeightedTransform:
+      case fileType::TransformedNoise:
+      case fileType::TransformedWeightedNoise:
+      case fileType::TransformedFilter:
+      case fileType::TransformedBeam:
+      {
+        vectorData<double>* data = (vectorData<double>*)genData;
+
+        int nsides = std::stoi((*m_commentMap)["NSIDES"]);
+        int min    = std::stoi((*m_commentMap)["MININDEX"]);
+        int max    = std::stoi((*m_commentMap)["MAXINDEX"]);
+
+        PIXELSCHEME scheme = (*m_commentMap)["PIXSCHEME"] == "HealPIX" ? HealPIX : NotPixelized;
+
+        LAYOUT layout = Unordered;
+        if((*m_commentMap)["PIXLAYOUT"] == "Ring")
+          layout = Ring;
+        else if((*m_commentMap)["PIXLAYOUT"] == "Nest")
+          layout = Nest;
+        else
+          layout = Unordered;
+
+        TRANSFORMERSCHEME trans = (*m_commentMap)["TRANSFORMERSCHEME"] == "Rsht" ? Rsht : NotTransformed;
+
+        data->sides(nsides);
+        data->layout(layout);
+        data->pixelScheme(scheme);
+
+        data->transformerScheme(trans);
+        data->minYIndex(min);
+        data->maxYIndex(max);
+
+        if (scheme == HealPIX)
+        {
+          data->numberOfPixels(12 * nsides * nsides);
+
+          if(!s_association->exists(dataEngines::Pixelization))
+          {
+            s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
+            s_association->pixelizationEngine()->pixelLayout(data->layout());
+            s_association->pixelizationEngine()->pixelizerScheme(data->pixelScheme());
+            s_association->pixelizationEngine()->scale(nsides);
+          }
+        }
+        else
+          data->numberOfPixels(0);
+
+        if (trans == Rsht)
+        {
+          if(!s_association->exists(dataEngines::Transformation))
+          {
+            s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
+            s_association->transformationEngine()->transformerScheme(data->transformerScheme());
+            s_association->transformationEngine()->minIndex(data->minYIndex());
+            s_association->transformationEngine()->maxIndex(data->maxYIndex());
+          }
+        }
+
+        return true;
+
+      }
+      case fileType::EnsembleAveragedNoise:
+      case fileType::EnsembleAveragedSpectrum:
+      case fileType::ExtrapolatedSpectrum:
+      case fileType::ExtrapolatedInstrumentSpectrum:
+      case fileType::BinnedSpectrum:
+      case fileType::BinnedExtrapolatedSpectrum:
+      case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+      {
+        vectorData<double>* data = (vectorData<double>*)genData;
+
+        int nsides  = std::stoi((*m_commentMap)["NSIDES"]);
+        int minInd  = std::stoi((*m_commentMap)["MININDEX"]);
+        int maxInd  = std::stoi((*m_commentMap)["MAXINDEX"]);
+        int maskInd = std::stoi((*m_commentMap)["MASKINDEX"]);
+
+        double minVal = std::stod((*m_commentMap)["MINVALUE"]);
+        double maxVal = std::stod((*m_commentMap)["MAXVALUE"]);
+
+        PIXELSCHEME scheme = (*m_commentMap)["PIXSCHEME"] == "HealPIX" ? HealPIX : NotPixelized;
+
+        LAYOUT layout = Unordered;
+        if((*m_commentMap)["PIXLAYOUT"] == "Ring")
+          layout = Ring;
+        else if((*m_commentMap)["PIXLAYOUT"] == "Nest")
+          layout = Nest;
+        else
+          layout = Unordered;
+
+        TRANSFORMERSCHEME trans = (*m_commentMap)["TRANSFORMERSCHEME"] == "Rsht" ? Rsht : NotTransformed;
+
+        data->sides(nsides);
+        data->layout(layout);
+        data->pixelScheme(scheme);
+
+        data->transformerScheme(trans);
+        data->minYIndex(minInd);
+        data->maxYIndex(maxInd);
+        data->minValue(minVal);
+        data->maxValue(maxVal);
+        data->mask(maskInd);
+
+        if (scheme == HealPIX)
+        {
+          data->numberOfPixels(12 * nsides * nsides);
+
+          if(!s_association->exists(dataEngines::Pixelization))
+          {
+            s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
+            s_association->pixelizationEngine()->pixelLayout(data->layout());
+            s_association->pixelizationEngine()->pixelizerScheme(data->pixelScheme());
+            s_association->pixelizationEngine()->scale(nsides);
+          }
+        }
+        else
+          data->numberOfPixels(0);
+
+        if (trans == Rsht)
+        {
+          if(!s_association->exists(dataEngines::Transformation))
+          {
+            s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
+            s_association->transformationEngine()->transformerScheme(data->transformerScheme());
+            s_association->transformationEngine()->minIndex(data->minYIndex());
+            s_association->transformationEngine()->maxIndex(data->maxYIndex());
+          }
+        }
+
+        return true;
+      }
+      case fileType::AlmData:
+      case fileType::AlmWeights:
+      case fileType::AlmFilter:
+      case fileType::AlmNoise:
+      case fileType::AlmBeam:
+      case fileType::WeightedAlm:
+      case fileType::AlmWeightedNoise:
+      {
+        cubeData<complex<double>>* data = (cubeData<complex<double>>*)genData;
+
+        int nsides  = std::stoi((*m_commentMap)["NSIDES"]);
+        int minInd  = std::stoi((*m_commentMap)["TRANSMININDEX"]);
+        int maxInd  = std::stoi((*m_commentMap)["TRANSMAXINDEX"]);
+        int maskInd = std::stoi((*m_commentMap)["TRANSMASKINDEX"]);
+        int polar   = std::stoi((*m_commentMap)["POLARIZATION"]);
+        int index   = std::stoi((*m_commentMap)["INDEX"]);
+
+        double minVal = std::stod((*m_commentMap)["TRANSMINVALUE"]);
+        double maxVal = std::stod((*m_commentMap)["TRANSMAXVALUE"]);
+
+        PIXELSCHEME scheme = (*m_commentMap)["PIXSCHEME"] == "HealPIX" ? HealPIX : NotPixelized;
+
+        LAYOUT layout = Unordered;
+        if((*m_commentMap)["PIXLAYOUT"] == "Ring")
+          layout = Ring;
+        else if((*m_commentMap)["PIXLAYOUT"] == "Nest")
+          layout = Nest;
+        else
+          layout = Unordered;
+
+        TRANSFORMERSCHEME trans = (*m_commentMap)["TRANSFORMERSCHEME"] == "Rsht" ? Rsht : NotTransformed;
+
+        data->sides(nsides);
+        data->layout(layout);
+        data->pixelScheme(scheme);
+
+        data->transformerScheme(trans);
+        data->minYIndex(minInd);
+        data->maxYIndex(maxInd);
+        data->transMinValue(minVal);
+        data->transMaxValue(maxVal);
+        data->transMask(maskInd);
+
+        data->polarization(polar);
+        data->index(index);
+
+        if (scheme == HealPIX)
+        {
+          if(!s_association->exists(dataEngines::Pixelization))
+          {
+            s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
+            s_association->pixelizationEngine()->pixelLayout(data->layout());
+            s_association->pixelizationEngine()->pixelizerScheme(data->pixelScheme());
+            s_association->pixelizationEngine()->scale(nsides);
+          }
+        }
+
+        if (trans == Rsht)
+        {
+          if(!s_association->exists(dataEngines::Transformation))
+          {
+            s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
+            s_association->transformationEngine()->transformerScheme(data->transformerScheme());
+            s_association->transformationEngine()->minIndex(data->minYIndex());
+            s_association->transformationEngine()->maxIndex(data->maxYIndex());
+          }
+        }
+
+        return true;
+      }
+      default:
+        return false;
+    }
+
+    return false;
+}
 
 float fileManager::min_energy(int i) {
   if (i > MAX_SLICES || i < 0) {

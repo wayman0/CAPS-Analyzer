@@ -148,10 +148,13 @@ class fileManager {
     virtual bool getEnergy()     = 0;
 
     virtual bool writeComments(const char** comments, int size, void* dest) = 0;
+    virtual bool readComments(void* src) = 0;
 
     const char** createInfoArray(FILETYPE ft, int* size);
 
     string dataSetName(FILETYPE ft) { return dataTypeNames[static_cast<int>(ft)]; }
+
+    bool setAttributes(FILETYPE ft, baseData* genData);
 
     virtual baseData        *data()                        = 0;
     virtual inputMatrixData *data(int s_min,int s_max)     = 0;
@@ -215,6 +218,8 @@ class fileManager {
     ERRORCODES               m_err;
     std::string              m_errDetail;
     char*                    m_filename;
+
+    std::map<string, string>* m_commentMap;
 };
 
 #endif /* __FILEMANAGER_H__ */

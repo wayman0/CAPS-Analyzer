@@ -77,6 +77,7 @@ class HDF5Manager : public fileManager {
     bool      getDataType();
     bool      getDimensions();
     bool      getEnergy();
+    bool      getGroups();
 
     baseData        *data();
     inputMatrixData *data(int s_min,int s_max);
@@ -92,7 +93,9 @@ class HDF5Manager : public fileManager {
     dataSpectrum       *getSpectrum();
 
     bool            saveBase(const char* filename, int* numTypes, FILETYPE* dataTypes);
+
     bool            writeComments(const char** comments, int size, void* dest);
+    bool            readComments(void* src);
 
     void            save(int* numTypes, FILETYPE* dataTypes);
     void            save(ASSOCIATEDMAP  map);

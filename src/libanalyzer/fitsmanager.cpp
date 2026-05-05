@@ -327,6 +327,38 @@ bool fitsManager::writeComments(const char** comments, int commentSize, void* de
   return true;
 }
 
+bool fitsManager::readComments(void* src)
+{
+  CCfits::ExtHDU* image = (CCfits::ExtHDU*)src;
+
+  try
+  {
+    image->readAllKeys();
+    std::map<string, CCfits::Keyword*> fitsKeys = image->keyWord();
+    std::map<string, CCfits::Keyword*>::iterator fitsIter;
+    m_commentMap = new std::map<string, string>;
+
+    for(fitsIter = fitsKeys.begin(); fitsIter != fitsKeys.end(); fitsIter++)
+    {
+      string key = fitsIter->first;
+      string tmp = "";
+      string val = fitsIter->second->value(tmp);
+      (*m_commentMap)[key] = val;
+    }
+
+    return true;
+  }
+  catch (CCfits::FitsException& err) {
+    m_err = fileFitsError;
+    snprintf(fits_err,FITS_ERR_LEN,"%s",err.message().c_str());
+    m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
+    s_association->errorValue(m_err);
+    s_association->errorDetails(m_errDetail);
+    return false;
+  }
+
+}
+
 void fitsManager::save(ASSOCIATEDMAP map)
 {
 }
@@ -1635,10 +1667,6 @@ vectorData<int> *fitsManager::getVectorI() {
 vectorData<double> *fitsManager::getVectorD()
 {
   vectorData<double> *d_vec;
-  std::string layout = "", scheme = "",trans  = "";
-  std::string sidesStr = "",  maxIndexStr = "", minIndexStr = "", maskStr = "", maxValueStr = "", minValueStr = "";
-  int sides, maxIndex, minIndex, mask;
-  double maxValue, minValue;
   std::string hduName = dataSetName(m_fileDataType);
   std::valarray<double> fitsData;
 
@@ -1648,68 +1676,8 @@ vectorData<double> *fitsManager::getVectorD()
   try
   {
     dataImage = &(m_ptr->extension(hduName));
-    switch (m_fileDataType) {
-      case fileType::PixelizedData:
-      case fileType::PixelizedWeights:
-      case fileType::WeightedPixel:
-      case fileType::PixelizedNoise:
-      case fileType::PixelizedWeightedNoise:
-      case fileType::PixelizedFilter:
-      case fileType::PixelizedBeam:
-      case fileType::InverseData:
-      case fileType::InverseWeights:
-      case fileType::WeightedInverse:
-      case fileType::InverseNoise:
-      case fileType::InverseWeightedNoise:
-      case fileType::InverseFilter:
-      case fileType::InverseBeam:
-        dataImage->readKey("NSIDES",sidesStr);
-        dataImage->readKey("PIXLAYOUT",layout);
-        dataImage->readKey("PIXSCHEME",scheme);
-        break;
-      case fileType::TransformedData:
-      case fileType::TransformedWeights:
-      case fileType::WeightedTransform:
-      case fileType::TransformedNoise:
-      case fileType::TransformedWeightedNoise:
-      case fileType::TransformedFilter:
-      case fileType::TransformedBeam:
-        // if it is transformed it should also be pixelized
-        dataImage->readKey("NSIDES",sidesStr);
-        dataImage->readKey("PIXLAYOUT",layout);
-        dataImage->readKey("PIXSCHEME",scheme);
 
-        dataImage->readKey("TRANSFORMERSCHEME",trans);
-        dataImage->readKey("MAXINDEX",maxIndexStr);
-        dataImage->readKey("MININDEX",minIndexStr);
-        break;
-      //case fileType::SpectralData:
-      //case fileType::EnsembleData:
-      case fileType::EnsembleAveragedNoise:
-      case fileType::EnsembleAveragedSpectrum:
-      case fileType::ExtrapolatedSpectrum:
-      case fileType::ExtrapolatedInstrumentSpectrum:
-      case fileType::BinnedSpectrum:
-      case fileType::BinnedExtrapolatedSpectrum:
-      // case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-      //case fileType::EnsembleAveragedBinnedSpectrum:
-
-        // if it is spectral it should also be pixelized and transformed
-        dataImage->readKey("NSIDES",sidesStr);
-        dataImage->readKey("PIXLAYOUT",layout);
-        dataImage->readKey("PIXSCHEME",scheme);
-
-        dataImage->readKey("TRANSFORMERSCHEME",trans);
-        dataImage->readKey("MAXINDEX",maxIndexStr);
-        dataImage->readKey("MININDEX",minIndexStr);
-
-        dataImage->readKey("MAXINDEX",maxIndexStr);
-        dataImage->readKey("MININDEX",minIndexStr);
-        dataImage->readKey("MAXVALUE",maxValueStr);
-        dataImage->readKey("MINVALUE",minValueStr);
-        dataImage->readKey("MASKINDEX",maskStr);
-        break;
-    }
+    readComments(dataImage);
 
     m_rows = dataImage->axis(0);
     dataImage->read(fitsData);
@@ -1721,77 +1689,26 @@ vectorData<double> *fitsManager::getVectorD()
     return 0;
   }
 
-  sides    = atoi(sidesStr.c_str());
-  maxIndex = atoi(maxIndexStr.c_str());
-  minIndex = atoi(minIndexStr.c_str());
-  mask     = atoi(maskStr.c_str());
-
-  maxValue = atof(maxValueStr.c_str());
-  minValue = atof(minValueStr.c_str());
-
   d_vec = new vectorData<double>(m_rows,m_fileDataType);
   d_vec->initialize();
-  d_vec->sides(sides);
-  d_vec->maxYIndex(maxIndex);
-  d_vec->minYIndex(minIndex);
-  d_vec->maxValue(maxValue);
-  d_vec->minValue(minValue);
-  d_vec->mask(mask);
 
-
-  if (layout == "Ring")
-    d_vec->layout(Ring);
-  else if (layout == "Nest")
-    d_vec->layout(Nest);
-  else
-    d_vec->layout(Unordered);
-
-  if (scheme == "HealPIX") {
-    d_vec->pixelScheme(HealPIX);
-    d_vec->numberOfPixels(12 * sides * sides);
-
-    if(!s_association->exists(dataEngines::Pixelization))
-    {
-      s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
-      s_association->pixelizationEngine()->pixelLayout(d_vec->layout());
-      s_association->pixelizationEngine()->pixelizerScheme(d_vec->pixelScheme());
-      s_association->pixelizationEngine()->scale(sides);
-    }
-  }
-  else {
-    d_vec->pixelScheme(NotPixelized);
-    d_vec->numberOfPixels(0);
-  }
-
-  if (trans == "Rsht")
-  {
-    d_vec->transformerScheme(Rsht);
-
-    if(!s_association->exists(dataEngines::Transformation))
-    {
-      s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
-      s_association->transformationEngine()->transformerScheme(d_vec->transformerScheme());
-      s_association->transformationEngine()->minIndex(d_vec->minYIndex());
-      s_association->transformationEngine()->maxIndex(d_vec->maxYIndex());
-    }
-  }
-  else
-    d_vec->transformerScheme(NotTransformed);
+  setAttributes(m_fileDataType, d_vec);
 
   numOps = m_rows;
   updateUnit = numOps / 100;
   if(updateUnit < 1) updateUnit = 1;
   currOp = 0;
+
   const int numPoints = m_rows;
   int dataPoint = 0;
-  for (int row = 0; row < m_rows; ++row) {
+  for (int row = 0; row < m_rows; ++row)
+  {
     (*d_vec)[row] = fitsData[row];
     currOp++;
     dataPoint += 1;
     s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
-//    if(m_showProgress && !(currOp % updateUnit))
-//      informProgress(currOp / updateUnit);
   }
+
   return d_vec;
 }
 
@@ -1800,8 +1717,6 @@ matrixData<double> *fitsManager::getMatrixD() {
   std::valarray<double> fitsData;
   std::string hduName = dataSetName(m_fileDataType);
   CCfits::ExtHDU* dataImage = 0;
-  double ra_res = 0, dec_res = 0;
-  string raStr = "", decStr = "";
   unsigned long long int numOps, updateUnit, currOp;
 
   // load data
@@ -1809,8 +1724,7 @@ matrixData<double> *fitsManager::getMatrixD() {
   {
     dataImage = &(m_ptr->extension(hduName));
 
-    dataImage->readKey("CDELT1",raStr);
-    dataImage->readKey("CDELT2",decStr);
+    readComments(dataImage);
 
     m_cols = dataImage->axis(0);
     m_rows = dataImage->axis(1);
@@ -1829,16 +1743,12 @@ matrixData<double> *fitsManager::getMatrixD() {
   d_mat = new matrixData<double>(m_cols,m_rows,m_fileDataType);
   d_mat->initialize();
 
+  setAttributes(m_fileDataType, d_mat);
+
   numOps = m_rows * m_cols;
   updateUnit = numOps / 100;
   if(updateUnit < 1) updateUnit = 1;
   currOp = 0;
-
-  ra_res  = atof(raStr.c_str());
-  dec_res = atof(decStr.c_str());
-
-  d_mat->RARes(ra_res);
-  d_mat->DecRes(dec_res);
 
   const int numPoints = m_rows * m_cols;
   int dataPoint = 0;
@@ -1863,36 +1773,19 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD()
   std::valarray<double> fitsData;
   std::string hduName = dataSetName(m_fileDataType);
   CCfits::ExtHDU* dataImage = 0;
-  int polarization, index; //, offset;
   unsigned long long int numOps, updateUnit, currOp;
-
-  string sides = "", layout = "", scheme = "", trans = "", minIndex = "", maxIndex = "", minVal = "", maxVal = "", mask = "", polarStr = "", indexStr = "";
 
   try
   {
     dataImage = &(m_ptr->extension(hduName));
 
-    /* These may not be necessary anymore (redundant with rows, slices)... */
-    dataImage->readKey("POLARIZATION",polarStr);
-    dataImage->readKey("INDEX",indexStr);
+    readComments(dataImage);
 
-    dataImage->readKey("NSIDES", sides);
-    dataImage->readKey("PIXSCHEME", scheme);
-    dataImage->readKey("PIXLAYOUT", layout);
-
-    dataImage->readKey("TRANSFORMERSCHEME", trans);
-    dataImage->readKey("TRANSMININDEX", minIndex);
-    dataImage->readKey("TRANSMAXINDEX", maxIndex);
-    dataImage->readKey("TRANSMINVALUE", minVal);
-    dataImage->readKey("TRANSMAXVALUE", maxVal);
-    dataImage->readKey("TRANSMASKINDEX", mask);
-
-
-    m_cols   = dataImage->axis(0);
-    m_rows   = dataImage->axis(1);
     // split slices in half because we double it
     // when writing the data to account for splitting
     // of the complex into real and imag
+    m_cols   = dataImage->axis(0);
+    m_rows   = dataImage->axis(1);
     m_slices = dataImage->axis(2)/2;
 
     dataImage->read(fitsData);
@@ -1909,51 +1802,14 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD()
   dc_cube = new cubeData<std::complex<double> >(m_cols,m_rows,m_slices,m_fileDataType);
   dc_cube->initialize();
 
-  polarization = atoi(polarStr.c_str());
-  index = atoi(indexStr.c_str());
-
-  dc_cube->polarization(polarization);
-  dc_cube->index(index);
-
-  dc_cube->pixelScheme(scheme == "HealPIX" ? HealPIX:NotPixelized);
-  dc_cube->layout(layout == "Ring"? Ring:Nest);
-  dc_cube->sides(atoi(sides.c_str()));
-
-  dc_cube->transformerScheme(trans == "Rsht" ? Rsht:NotTransformed);
-  dc_cube->transMinIndex(atoi(minIndex.c_str()));
-  dc_cube->transMaxIndex(atoi(maxIndex.c_str()));
-  dc_cube->transMinValue(atoi(minVal.c_str()));
-  dc_cube->transMaxValue(atoi(maxVal.c_str()));
-  dc_cube->transMask(atoi(mask.c_str()));
-
-  if(scheme == "HealPIX")
-  {
-    if(!s_association->exists(dataEngines::Pixelization))
-    {
-      s_association->addEngine(dataEngines::Pixelization, PIXELSCHEME::HealPIX);
-      s_association->pixelizationEngine()->pixelLayout(dc_cube->layout());
-      s_association->pixelizationEngine()->pixelizerScheme(dc_cube->pixelScheme());
-      s_association->pixelizationEngine()->scale(stoi(sides));
-    }
-  }
-
-  if (trans == "Rsht")
-  {
-    if(!s_association->exists(dataEngines::Transformation))
-    {
-      s_association->addEngine(dataEngines::Transformation, TRANSFORMERSCHEME::Rsht);
-      s_association->transformationEngine()->transformerScheme(dc_cube->transformerScheme());
-      s_association->transformationEngine()->minIndex(dc_cube->transMinIndex());
-      s_association->transformationEngine()->maxIndex(dc_cube->transMaxIndex());
-    }
-  }
+  setAttributes(m_fileDataType, dc_cube);
 
   data = dc_cube->rwAccess();
 
   numOps = m_slices;
   updateUnit = numOps / 100;
   if(updateUnit < 1) updateUnit = 1;
-  currOp = 0;
+    currOp = 0;
 
   // make it double the size because we write all the real parts then all the imag parts
   int imagOffset = m_cols * m_rows * m_slices;
