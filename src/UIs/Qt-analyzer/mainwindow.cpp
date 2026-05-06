@@ -69,7 +69,9 @@ mainWindow::mainWindow() :
   try
   {
     associationVector = new std::vector<association*>(1);
-    (*associationVector)[0] = new association(this, mainWindow::progressBarWrapper, mainWindow::progressTextWrapper);
+    (*associationVector)[0] = new association(this, mainWindow::progressBarWrapper,
+                                                    mainWindow::progressTextWrapper,
+                                                    mainWindow::errorMessageWrapper);
     s_association = (*associationVector)[0];
 
     //s_association = new association();
@@ -247,6 +249,12 @@ void mainWindow::progressTextWrapper(void* uiObj, const char* updateName)
   here->updateProgressText(updateName);
 }
 
+void mainWindow::errorMessageWrapper(void* uiObj, const char* errMess)
+{
+  mainWindow* here = (mainWindow*) uiObj;
+  here->errorMessage(errMess);
+}
+
 void mainWindow::updateProgressBar(int value)
 {
   ui->progressBar->setValue(value);
@@ -257,6 +265,11 @@ void mainWindow::updateProgressText(const char* updateName)
   ui->progressLabel->setText(updateName);
   ui->progressLabel->adjustSize();
   //ui->progressLabel->parentWidget()->layout()->update();
+}
+
+void mainWindow::errorMessage(const char* errMess)
+{
+  QMessageBox::critical(this, "Error", errMess);
 }
 
 void mainWindow::openFile()
@@ -669,7 +682,9 @@ void mainWindow::saveFile() {
 
 void mainWindow::addAssociation()
 {
-  association* newAssoc = new association(this, mainWindow::progressBarWrapper, mainWindow::progressTextWrapper);
+  association* newAssoc = new association(this, mainWindow::progressBarWrapper,
+                                                mainWindow::progressTextWrapper,
+                                                mainWindow::errorMessageWrapper);
   associationVector->push_back(newAssoc);
   setAssociation(newAssoc);
 

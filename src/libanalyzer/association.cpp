@@ -74,11 +74,15 @@
 #include "../libgraphics/mollweide.h"
 #include "../libgraphics/grapher.h"
 
-association::association(void* guiObj, void (*updFX)(void*, int), void (*updTxt)(void*, const char*))
+association::association(void* guiObj, void (*updFX)(void*, int),
+                                       void (*updTxt)(void*, const char*),
+                                      void (*dispErr)(void*, const char*))
 {
   m_uiObject = guiObj;
   m_updateProgressValue = updFX;
   m_updateProgressText  = updTxt;
+  m_displayErrorMessage = dispErr;
+
   m_showProgress = false;
 
   m_pixelAverage = 0;

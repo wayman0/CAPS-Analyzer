@@ -87,6 +87,11 @@ HDF5Manager::HDF5Manager(association* dataMgr, const char *filename, FILETYPE da
       m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
       s_association->errorValue(m_err);
       s_association->errorDetails(m_errDetail);
+
+      s_association->displayErrorMessage(hdf5_err);
+
+      close(true);
+
       throw m_err;
     }
   }
@@ -104,8 +109,20 @@ HDF5Manager::HDF5Manager(association* dataMgr, const char *filename, FILETYPE da
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
 
+    s_association->displayErrorMessage(hdf5_err);
+
+    close(true);
+
     throw m_err;
   }
+
+  currInfoGroup     = 0;
+  currInfoDataSpace = 0;
+  currInfoDataSet   = 0;
+
+  currDataGroup     = 0;
+  currDataDataSpace = 0;
+  currDataDataSet   = 0;
 
   m_fileDataType = dataType;
   fileName(filename);
@@ -141,6 +158,10 @@ HDF5Manager::HDF5Manager(association* dataMgr, const char *filename, baseData *d
       m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
       s_association->errorValue(m_err);
       s_association->errorDetails(m_errDetail);
+
+      s_association->displayErrorMessage(hdf5_err);
+      close(true);
+
       throw m_err;
     }
   }
@@ -158,6 +179,10 @@ HDF5Manager::HDF5Manager(association* dataMgr, const char *filename, baseData *d
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
 
+    s_association->displayErrorMessage(hdf5_err);
+
+    close(true);
+
     throw m_err;
   }
 
@@ -168,107 +193,14 @@ HDF5Manager::HDF5Manager(association* dataMgr, const char *filename, baseData *d
   m_cols         = data->cols();
   m_rows         = data->rows();
   m_slices       = data->slices();
-  /*
-  switch (m_fileDataType) {
-      case fileType::Null:
-      m_err = fileInvalidError;
-      s_association->errorValue(m_err);
-      throw m_err;
-    case fileType::InputData:
-    case fileType::InputWeights:
-    case fileType::WeightedData:
-    case fileType::InputNoise:
-    case fileType::InputFilter:
-    case fileType::InputBeam:
-    case fileType::BinCouplingMatrix:
-    case fileType::ModeCouplingMatrix:
-    case fileType::InverseBinMatrix:
-    case fileType::InverseModeMatrix:
-      m_dimensions = 2;
-      m_parts = 1;
-      //m_fitsType = fitsDouble;
-      if (!saveBase(filename)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " +  std::string(hdf5_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      if (!saveMatrixD((matrixData<double>*)data)) {
-//      if (!saveMatrixD(m_fileDataType)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      break;
-    case fileType::AlmData:
-    case fileType::AlmWeights:
-    case fileType::AlmNoise:
-    case fileType::AlmFilter:
-    case fileType::AlmBeam:
-      m_dimensions = 4;
-      m_parts = 2;
-      //m_fitsType = fitsDouble;
-      if (!saveBase(filename)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      if (!saveCubeCD((cubeData<complex<double> >*)data)) {
-//      if (!saveCubeCD(m_fileDataType)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      break;
-    case fileType::PixelOccupancy:
-      m_dimensions = 1;
-      m_parts = 1;
-      //m_fitsType = fitsInt32;
-      if (!saveBase(filename)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      if (!saveVectorI((vectorData<int>*)data)) {
-//      if (!saveVectorI(m_fileDataType)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      break;
-    default:
-      m_dimensions = 1;
-      m_parts = 1;
-      //m_fitsType = fitsDouble;
-      if (!saveBase(filename)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      if (!saveVectorD((vectorData<double>*)data)) {
-//      if (!saveVectorD(m_fileDataType)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      break;
-  }
-  */
+
+  currInfoGroup     = 0;
+  currInfoDataSpace = 0;
+  currInfoDataSet   = 0;
+
+  currDataGroup     = 0;
+  currDataDataSpace = 0;
+  currDataDataSet   = 0;
 }
 
 HDF5Manager::HDF5Manager(HDF5Manager* from)
@@ -284,9 +216,51 @@ HDF5Manager::~HDF5Manager() {
   }
 }
 
+void HDF5Manager::close(bool file)
+{
+  if(currInfoDataSpace && currInfoDataSpace->getId() > 0)
+    currInfoDataSpace->close();
+  currInfoDataSpace = 0;
+
+  if(currInfoDataSet && currInfoDataSet->getId() > 0)
+    currInfoDataSet->close();
+  currInfoDataSet = 0;
+
+  if(currDataDataSpace && currDataDataSpace->getId() > 0)
+    currDataDataSpace->close();
+  currDataDataSpace = 0;
+
+  if(currDataDataSet && currDataDataSet->getId() > 0)
+    currDataDataSet->close();
+  currDataDataSet = 0;
+
+  if(file)
+  {
+    if(currInfoGroup)
+      currInfoGroup->close();
+    currInfoGroup = 0;
+
+    if(currDataGroup)
+      currDataGroup->close();
+    currDataGroup = 0;
+
+    if(m_ptr)
+      m_ptr->close();
+    m_ptr = 0;
+  }
+}
+
 bool HDF5Manager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTypes)
 {
   std::string text, comment = "Analyzer";
+
+  currInfoGroup     = 0;
+  currInfoDataSpace = 0;
+  currInfoDataSet   = 0;
+
+  currDataGroup     = 0;
+  currDataDataSpace = 0;
+  currDataDataSet   = 0;
 
   if(!m_ptr)
   {
@@ -307,6 +281,11 @@ bool HDF5Manager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
         m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
         s_association->errorValue(m_err);
         s_association->errorDetails(m_errDetail);
+
+        s_association->displayErrorMessage(hdf5_err);
+
+        close(true);
+
         return false;
       }
     }
@@ -363,14 +342,16 @@ bool HDF5Manager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
     currInfoDataSpace = new H5::DataSpace(numDims, dims);
     currInfoDataSet   = new H5::DataSet(infoGroup->createDataSet("PRIMARY", *H5String, *currInfoDataSpace));
     currInfoDataSet->write(infoData, *H5String, *currInfoDataSpace);
-
-    currInfoDataSpace->close();
-    currInfoDataSet->close();
   }
   catch (H5::Exception& err) {
     snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
     m_err = fileFitsError;
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+
+    s_association->displayErrorMessage(hdf5_err);
+
+    close(true);
+
     return false;
   }
 
@@ -405,6 +386,11 @@ bool HDF5Manager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
     snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
     m_err = fileFitsError;
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+
+    s_association->displayErrorMessage(hdf5_err);
+
+    close(true);
+
     return false;
   }
 
@@ -444,9 +430,15 @@ bool HDF5Manager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
     snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
     m_err = fileFitsError;
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+
+    s_association->displayErrorMessage(hdf5_err);
+
+    close(true);
+
     return false;
   }
 
+  close();
   return true;
 }
 
@@ -456,12 +448,10 @@ void HDF5Manager::save(int* numTypes, FILETYPE* dataTypes)
 
   fileManager::save(numTypes, dataTypes);
 
-  currInfoGroup->close();
-  currDataGroup->close();
-  infoGroup->close();
-  dataGroup->close();
+  s_association->displayErrorMessage(hdf5_err);
 
-  m_ptr->close();
+  close(true);
+
   return;
 }
 
@@ -488,13 +478,17 @@ bool HDF5Manager::writeComments(const char ** comments, int size, void* dest)
     infoDims[0] = 2;
     infoDims[1] = size/2;
 
-    H5::DataSpace* currInfoDataSpace = new H5::DataSpace(numInfoDims, infoDims);
-    H5::DataSet*   currInfoDataSet   = new H5::DataSet(currInfoGroup->createDataSet(dataName, *H5String, *currInfoDataSpace));
+    if(currInfoDataSpace && currInfoDataSpace->getId() > 0)
+      currInfoDataSpace->close();
+    currInfoDataSpace = new H5::DataSpace(numInfoDims, infoDims);
+
+    if(currInfoDataSet && currInfoDataSet->getId() > 0)
+      currInfoDataSet->close();
+    currInfoDataSet   = new H5::DataSet(currInfoGroup->createDataSet(dataName, *H5String, *currInfoDataSpace));
 
     currInfoDataSet->write(comments, *H5String, *currInfoDataSpace);
 
-    currInfoDataSpace->close();
-    currInfoDataSet->close();
+    close();
 
     return true;
   }
@@ -502,6 +496,11 @@ bool HDF5Manager::writeComments(const char ** comments, int size, void* dest)
     snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
     m_err = fileFitsError;
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+
+    s_association->displayErrorMessage(hdf5_err);
+
+    close(true);
+
     return false;
   }
 }
@@ -514,7 +513,12 @@ bool HDF5Manager::readComments(void* src)
   hsize_t* infoDims;
   try
   {
+    if(currInfoDataSet && currInfoDataSet->getId() > 0)
+      currInfoDataSet->close();
     currInfoDataSet = new H5::DataSet(currInfoGroup->openDataSet(dataName));
+
+    if(currInfoDataSpace && currInfoDataSpace->getId() > 0)
+      currInfoDataSpace->close();
     currInfoDataSpace = new H5::DataSpace(currInfoDataSet->getSpace());
 
     int numInfoDims = currInfoDataSpace->getSimpleExtentNdims();
@@ -528,15 +532,22 @@ bool HDF5Manager::readComments(void* src)
     for(int keyIndex = 0; keyIndex < infoDims[1]; keyIndex += 1)
       (*m_commentMap)[infoData[keyIndex]] = infoData[keyIndex+infoDims[1]];
 
+    close();
+
     return true;
   }
-  catch (H5::Exception& err) {
+  catch (H5::Exception& err)
+  {
     snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
     m_err = fileFitsError;
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+
+    s_association->displayErrorMessage(hdf5_err);
+
+    close(true);
+
     return 0;
   }
-
 }
 
 bool HDF5Manager::getGroups()
@@ -557,8 +568,14 @@ bool HDF5Manager::getGroups()
       case fileType::TransformedData:
       case fileType::AlmData:
       {
+        if(currInfoGroup && currInfoGroup->getId() > 0)
+          currInfoGroup->close();
         currInfoGroup = new H5::Group(infoGroup->openGroup("DATA"));
+
+        if(currDataGroup && currDataGroup->getId() > 0)
+          currDataGroup->close();
         currDataGroup = new H5::Group(dataGroup->openGroup("DATA"));
+
         return true;
       }
       case fileType::InputWeights:
@@ -567,8 +584,14 @@ bool HDF5Manager::getGroups()
       case fileType::TransformedWeights:
       case fileType::AlmWeights:
       {
+        if(currInfoGroup && currInfoGroup->getId() > 0)
+          currInfoGroup->close();
         currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTS"));
+
+        if(currDataGroup && currDataGroup->getId() > 0)
+          currDataGroup->close();
         currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTS"));
+
         return true;
       }
       case fileType::InputNoise:
@@ -577,8 +600,14 @@ bool HDF5Manager::getGroups()
       case fileType::TransformedNoise:
       case fileType::AlmNoise:
       {
+        if(currInfoGroup && currInfoGroup->getId() > 0)
+          currInfoGroup->close();
         currInfoGroup = new H5::Group(infoGroup->openGroup("NOISE"));
+
+        if(currDataGroup && currDataGroup->getId() > 0)
+          currDataGroup->close();
         currDataGroup = new H5::Group(dataGroup->openGroup("NOISE"));
+
         return true;
       }
       case fileType::InputFilter:
@@ -587,8 +616,14 @@ bool HDF5Manager::getGroups()
       case fileType::TransformedFilter:
       case fileType::AlmFilter:
       {
+        if(currInfoGroup && currInfoGroup->getId() > 0)
+          currInfoGroup->close();
         currInfoGroup = new H5::Group(infoGroup->openGroup("FILTER"));
+
+        if(currDataGroup && currDataGroup->getId() > 0)
+          currDataGroup->close();
         currDataGroup = new H5::Group(dataGroup->openGroup("FILTER"));
+
         return true;
       }
       case fileType::InputBeam:
@@ -597,8 +632,14 @@ bool HDF5Manager::getGroups()
       case fileType::TransformedBeam:
       case fileType::AlmBeam:
       {
+        if(currInfoGroup && currInfoGroup->getId() > 0)
+          currInfoGroup->close();
         currInfoGroup = new H5::Group(infoGroup->openGroup("BEAM"));
+
+        if(currDataGroup && currDataGroup->getId() > 0)
+          currDataGroup->close();
         currDataGroup = new H5::Group(dataGroup->openGroup("BEAM"));
+
         return true;
       }
       case fileType::WeightedData:
@@ -611,10 +652,15 @@ bool HDF5Manager::getGroups()
       case fileType::TransformedWeightedNoise:
       case fileType::WeightedAlm:
       case fileType::AlmWeightedNoise:
-
       {
+        if(currInfoGroup && currInfoGroup->getId() > 0)
+          currInfoGroup->close();
         currInfoGroup = new H5::Group(infoGroup->openGroup("WEIGHTED"));
+
+        if(currDataGroup && currDataGroup->getId() > 0)
+          currDataGroup->close();
         currDataGroup = new H5::Group(dataGroup->openGroup("WEIGHTED"));
+
         return true;
       }
       case fileType::EnsembleIterationSpectrum:
@@ -635,8 +681,15 @@ bool HDF5Manager::getGroups()
       case fileType::BinnedExtrapolatedSpectrum:
       case fileType::BinnedExtrapolatedInstrumentedSpectrum:
       {
+        if(currInfoGroup && currInfoGroup->getId() > 0)
+          currInfoGroup->close();
         currInfoGroup = new H5::Group(infoGroup->openGroup("SPECTRUM"));
+
+        if(currDataGroup && currDataGroup->getId() > 0)
+          currDataGroup->close();
         currDataGroup = new H5::Group(dataGroup->openGroup("SPECTRUM"));
+
+        return true;
       }
       default:
         return false;
@@ -647,6 +700,11 @@ bool HDF5Manager::getGroups()
     snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
     m_err = fileFitsError;
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+
+    s_association->displayErrorMessage(hdf5_err);
+
+    close(true);
+
     return false;
   }
 }
@@ -746,11 +804,15 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
 {
   unsigned long long int numOps, updateUnit, currOp;
   std::string dataName = dataSetName(m_fileDataType);
-  getGroups();
+
+  if(!getGroups())
+    return 0;
 
   int infoSize = 0;
   const char** infoData = createInfoArray(m_fileDataType, &infoSize);
-  writeComments(infoData, infoSize, currInfoGroup);
+
+  if(!writeComments(infoData, infoSize, currInfoGroup))
+    return 0;
 
   numOps = m_rows;
   updateUnit = numOps / 100;
@@ -775,18 +837,24 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
     if(currDataGroup->exists(dataName))
       currDataGroup->unlink(dataName);
 
+    if(currDataDataSpace && currDataDataSpace->getId() > 0)
+      currDataDataSpace->close();
     currDataDataSpace = new H5::DataSpace(numDataDims, dataDims);
+
+    if(currDataDataSet && currDataDataSet->getId() > 0)
+      currDataDataSet->close();
     currDataDataSet   = new H5::DataSet(currDataGroup->createDataSet(dataName, *H5Double, *currDataDataSpace));
 
     currDataDataSet->write(data, *H5Double, *currDataDataSpace);
-
-    currDataDataSpace->close();
-    currDataDataSet->close();
   }
   catch (H5::Exception& err) {
     snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
     m_err = fileFitsError;
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+
+    s_association->displayErrorMessage(hdf5_err);
+    close(true);
+
     return false;
   }
 
@@ -796,6 +864,7 @@ bool HDF5Manager::saveVectorD(vectorData<double> *v)
     return false;
   }
 
+  close();
   return true;
 }
 
@@ -803,11 +872,15 @@ bool HDF5Manager::saveMatrixD(matrixData<double> *m)
 {
   unsigned long long int numOps, updateUnit, currOp;
   std::string dataName = dataSetName(m_fileDataType);
-  getGroups();
+
+  if(!getGroups())
+    return 0;
 
   int infoSize = 0;
   const char** infoData = createInfoArray(m_fileDataType, &infoSize);
-  writeComments(infoData, infoSize, currInfoGroup);
+
+  if(!writeComments(infoData, infoSize, currInfoGroup))
+    return 0;
 
   numOps = m_cols * m_rows;
   updateUnit = numOps / 100;
@@ -831,13 +904,15 @@ bool HDF5Manager::saveMatrixD(matrixData<double> *m)
     if(currDataGroup->exists(dataName))
       currDataGroup->unlink(dataName);
 
+    if(currDataDataSpace && currDataDataSpace->getId() > 0)
+      currDataDataSpace->close();
     currDataDataSpace = new H5::DataSpace(numDataDims, dataDims);
+
+    if(currDataDataSet && currDataDataSet->getId() > 0)
+      currDataDataSet->close();
     currDataDataSet   = new H5::DataSet(currDataGroup->createDataSet(dataName, *H5Double, *currDataDataSpace));
 
     currDataDataSet->write(data, *H5Double, *currDataDataSpace);
-
-    currDataDataSpace->close();
-    currDataDataSet->close();
   }
   catch (H5::Exception& err) {
     snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
@@ -845,6 +920,10 @@ bool HDF5Manager::saveMatrixD(matrixData<double> *m)
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(hdf5_err);
+    close(true);
+
     return false;
   }
 
@@ -854,6 +933,8 @@ bool HDF5Manager::saveMatrixD(matrixData<double> *m)
     return false;
   }
 
+  close();
+
   return true;
 }
 
@@ -861,11 +942,15 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
 {
   unsigned long long int numOps, updateUnit, currOp;
   std::string dataName = dataSetName(m_fileDataType);
-  getGroups();
+
+  if(!getGroups())
+    return 0;
 
   int infoSize = 0;
   const char** infoData = createInfoArray(m_fileDataType, &infoSize);
-  writeComments(infoData, infoSize, currInfoGroup);
+
+  if(!writeComments(infoData, infoSize, currInfoGroup))
+    return 0;
 
   std::vector<std::vector<std::vector<complex<double> > > > dataAccess = c->roAccess();
 
@@ -882,15 +967,6 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
   dataDims[2] = m_cols;
 
   complex<double>* data = new complex<double>[m_slices * m_rows * m_cols];
-  /*
-  for(int slice = 0; slice < m_slices; slice += 1)
-  {
-    data[slice] = new complex<double>*[m_rows];
-    for(int row = 0; row < m_rows; row += 1)
-      data[slice][row] = new complex<double>[m_cols];
-  }
-  */
-
   for(int slice = 0; slice < m_slices; slice += 1)
   {
     for(int row = 0; row < m_rows; row += 1)
@@ -898,8 +974,6 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
       for(int col = 0; col < m_cols; col += 1)
         data[slice * m_rows * m_cols + row * m_cols + col] = complex<double>( (*c)[slice][col][row].real(),
                                                                               (*c)[slice][col][row].imag());
-        //data[slice][row][col].real(dataAccess[slice][col][row].real());
-
     }
   }
 
@@ -908,13 +982,15 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
     if(currDataGroup->exists(dataName))
       currDataGroup->unlink(dataName);
 
+    if(currDataDataSpace && currDataDataSpace->getId() > 0)
+      currDataDataSpace->close();
     currDataDataSpace = new H5::DataSpace(numDataDims, dataDims);
+
+    if(currDataDataSet && currDataDataSet->getId() > 0)
+      currDataDataSet->close();
     currDataDataSet   = new H5::DataSet(currDataGroup->createDataSet(dataName, *H5Complex, *currDataDataSpace));
 
     currDataDataSet->write(data, *H5Complex, *currDataDataSpace);
-
-    currDataDataSpace->close();
-    currDataDataSet->close();
   }
   catch (H5::Exception& err)
   {
@@ -923,6 +999,10 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(hdf5_err);
+    close(true);
+
     return false;
   }
 
@@ -931,6 +1011,8 @@ bool HDF5Manager::saveCubeCD(cubeData<complex<double> > *c)
     s_association->errorValue(m_err);
     return false;
   }
+
+  close();
 
   return true;
 }
@@ -952,9 +1034,18 @@ FILETYPE* HDF5Manager::getHeaders(int* numTypes)
   {
     try
     {
+        currInfoGroup     = 0;
+        currInfoDataSpace = 0;
+        currInfoDataSet   = 0;
+
+        currDataGroup     = 0;
+        currDataDataSpace = 0;
+        currDataDataSet   = 0;
+
         dataGroup = new H5::Group(m_ptr->openGroup(dataGroupName));
 
         infoGroup = new H5::Group(m_ptr->openGroup(infoGroupName));
+
         currInfoDataSet = new H5::DataSet(infoGroup->openDataSet("PRIMARY"));
         currInfoDataSpace = new H5::DataSpace(currInfoDataSet->getSpace());
 
@@ -970,15 +1061,16 @@ FILETYPE* HDF5Manager::getHeaders(int* numTypes)
       snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
       m_err = fileFitsError;
       m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
+
+      s_association->displayErrorMessage(hdf5_err);
+      close(true);
+
       return 0;//false;
     }
     catch(...)
     {
-      currInfoDataSpace->close();
-      currInfoDataSet->close();
-      currInfoGroup->close();
-      infoGroup->close();
-      m_ptr->close();
+      s_association->displayErrorMessage("Unknown error");
+      close(true);
     }
 
     string telescope(data[dims[1]]);
@@ -1026,6 +1118,8 @@ FILETYPE* HDF5Manager::getHeaders(int* numTypes)
     s_association->errorDetails(m_errDetail);
     return 0;//false;
   }
+
+  close();
 
   return dataTypes;
 }
@@ -1111,133 +1205,6 @@ baseData *HDF5Manager::data()
 
 inputMatrixData *HDF5Manager::data(int slice_min, int slice_max)
 {
-  /*
-  std::valarray<double> fitsData;
-  inputMatrixData* in_mat;
-  long span, n, begin;
-  std::string hduName = "";
-  std::vector<string> colName(m_cols,"");
-  const std::string cols = "COLUMN-";
-  double ra_res = 0, dec_res = 0;
-  unsigned long long int numOps, updateUnit, currOp;
-
-  if (!m_ptr) {
-    m_err = fileFitsError;
-    m_errDetail = errorText[abs(m_err)] + ": No CCfits pointer";
-    s_association->errorValue(m_err);
-    s_association->errorDetails(m_errDetail);
-    return 0;
-  }
-  if (!(m_observatory == Egret || m_observatory == Fermi)) {
-    m_err = fileSliceError;
-    m_errDetail = errorText[abs(m_err)] + ": No slices in file";
-    s_association->errorValue(m_err);
-    s_association->errorDetails(m_errDetail);
-    return 0;
-  }
-  if (slice_min < 0 || slice_max < 0) {
-    m_err = fileSliceError;
-    m_errDetail = errorText[abs(m_err)] + ": Minimum slice number or maximum slice number less than 0";
-    s_association->errorValue(m_err);
-    s_association->errorDetails(m_errDetail);
-    return 0;
-  }
-  if (slice_min > m_slices || slice_max > m_slices) {
-    m_err = fileSliceError;
-    m_errDetail = errorText[abs(m_err)] + ": Slice number is greater than the available slices";
-    s_association->errorValue(m_err);
-    s_association->errorDetails(m_errDetail);
-    return 0;
-  }
-  if (slice_min > slice_max) {
-    m_err = fileFitsError;
-    m_errDetail = errorText[abs(m_err)] + ": Minimum slice number greater than maximum slice number";
-    s_association->errorValue(m_err);
-    s_association->errorDetails(m_errDetail);
-    return 0;
-  }
-
-  span  = slice_max - slice_min + 1;
-  n     = span * m_cols * m_rows;
-  begin = slice_min * m_cols * m_rows + 1;
-
-  // set appropriate hdu name to identify extension
-  switch (m_fileDataType) {
-    case fileType::InputData:
-      hduName = "RAW_DATA";
-      break;
-    case fileType::InputWeights:
-      hduName = "RAW_MASK";
-      break;
-    case fileType::WeightedData:
-      hduName = "WEIGHTED_DATA";
-      break;
-    case fileType::InputNoise:
-      hduName = "RAW_NOISE";
-      break;
-    case fileType::InputFilter:
-      hduName = "RAW_FILTER";
-      break;
-    case fileType::InputBeam:
-      hduName = "RAW_BEAM";
-      break;
-    case fileType::BinCouplingMatrix:
-      hduName = "BIN_COUPLING_MATRIX";
-      break;
-    case fileType::ModeCouplingMatrix:
-      hduName = "MODE_COUPLING_MATRIX";
-      break;
-    case fileType::InverseBinMatrix:
-      hduName = "INVERSE_BIN_COUPLING_MATRIX";
-      break;
-    case fileType::InverseModeMatrix:
-      hduName = "INVERSE_MODE_COUPLING_MATRIX";
-      break;
-  }
-
-  // set column names
-  for (int col = 0; col < m_cols; col++)
-    colName[col] = cols + std::to_string(col);
-
-  // create data structure for storage
-  in_mat = new inputMatrixData(m_cols,m_rows,m_fileDataType);
-  in_mat->initialize();
-
-  numOps = m_rows * m_cols;
-  updateUnit = numOps / 100;
-  if(updateUnit < 1) updateUnit = 1;
-  currOp = 0;
-
-  // load data
-  try {
-    LOAD("CDELT1",ra_res);
-    LOAD("CDELT2",dec_res);
-    in_mat->RARes(ra_res);
-    in_mat->DecRes(dec_res);
-
-    H5::ExtHDU& binTable = m_ptr->extension(hduName);
-    for (int col = 0; col < m_cols; ++col) {
-      binTable.column(colName[col]).read(fitsData,1,m_rows);
-      for (int row = 0; row < m_rows; ++row) {
-        (*in_mat)[col][row] = fitsData[row];
-        currOp++;
-//        if(m_showProgress && !(currOp % updateUnit))
-//          informProgress(currOp / updateUnit);
-      }
-    }
-  }
-  catch (H5::Exception& err) {
-    snprintf(hdf5_err,HDF5_ERR_LEN,"%s",err.getCDetailMsg());
-    m_err = fileFitsError;
-    m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
-    s_association->errorValue(m_err);
-    s_association->errorDetails(m_errDetail);
-    delete in_mat;
-    return 0;
-  }
-
-  return in_mat;
-  */
   return NULL;
 }
 
@@ -1652,14 +1619,22 @@ vectorData<double> *HDF5Manager::getVectorD()
   string dataName = dataSetName(m_fileDataType);
   unsigned long long int numOps, updateUnit, currOp;
 
-  getGroups();
-  readComments(infoGroup);
+  if(!getGroups())
+    return 0;
+
+  if(!readComments(infoGroup))
+    return 0;
 
   double* data;
   hsize_t* dataDims;
   try
   {
+    if(currDataDataSet && currDataDataSet->getId() > 0)
+      currDataDataSet->close();
     currDataDataSet = new H5::DataSet(currDataGroup->openDataSet(dataName));
+
+    if(currDataDataSpace && currDataDataSpace->getId() > 0)
+      currDataDataSpace->close();
     currDataDataSpace = new H5::DataSpace(currDataDataSet->getSpace());
 
     int numDataDims = currDataDataSpace->getSimpleExtentNdims();
@@ -1679,7 +1654,9 @@ vectorData<double> *HDF5Manager::getVectorD()
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
 
-    std::cerr << "ERROR " << err.getCDetailMsg() << "\n";
+    s_association->displayErrorMessage(hdf5_err);
+    close(true);
+
     return 0;
   }
 
@@ -1702,6 +1679,8 @@ vectorData<double> *HDF5Manager::getVectorD()
     s_association->updateProgressValue((100.0 * dataPoint)/numPoints);
   }
 
+  close();
+
   delete[] data;
 
   return d_vec;
@@ -1713,14 +1692,22 @@ matrixData<double> *HDF5Manager::getMatrixD()
   unsigned long long int numOps, updateUnit, currOp;
   string dataName = dataSetName(m_fileDataType);
 
-  getGroups();
-  readComments(infoGroup);
+  if(!getGroups())
+    return 0;
+
+  if(!readComments(infoGroup))
+    return 0;
 
   double* data;
   hsize_t* dataDims;
   try
   {
+    if(currDataDataSet && currDataDataSet->getId() > 0)
+      currDataDataSet->close();
     currDataDataSet = new H5::DataSet(currDataGroup->openDataSet(dataName));
+
+    if(currDataDataSpace && currDataDataSpace->getId() > 0)
+      currDataDataSpace->close();
     currDataDataSpace = new H5::DataSpace(currDataDataSet->getSpace());
 
     int numDataDims = currDataDataSpace->getSimpleExtentNdims();
@@ -1742,6 +1729,10 @@ matrixData<double> *HDF5Manager::getMatrixD()
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(hdf5_err);
+    close(true);
+
     delete d_mat;
     return 0;
   }
@@ -1765,6 +1756,8 @@ matrixData<double> *HDF5Manager::getMatrixD()
     }
   }
 
+  close();
+
   delete[] data;
 
   return d_mat;
@@ -1778,14 +1771,22 @@ cubeData<std::complex<double> > *HDF5Manager::getCubeCD()
   unsigned long long int numOps, updateUnit, currOp;
   string dataName = dataSetName(m_fileDataType);
 
-  getGroups();
-  readComments(infoGroup);
+  if(!getGroups())
+    return 0;
+
+  if(!readComments(infoGroup))
+    return 0;
 
   complex<double>* data;
   hsize_t* dataDims;
   try
   {
+    if(currDataDataSet && currDataDataSet->getId() > 0)
+      currDataDataSet->close();
     currDataDataSet = new H5::DataSet(currDataGroup->openDataSet(dataName));
+
+    if(currDataDataSpace && currDataDataSpace->getId() > 0)
+      currDataDataSpace->close();
     currDataDataSpace = new H5::DataSpace(currDataDataSet->getSpace());
 
     int numDataDims = currDataDataSpace->getSimpleExtentNdims();
@@ -1805,6 +1806,10 @@ cubeData<std::complex<double> > *HDF5Manager::getCubeCD()
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(hdf5_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(hdf5_err);
+    close(true);
+
     return 0;
   }
 
@@ -1834,6 +1839,8 @@ cubeData<std::complex<double> > *HDF5Manager::getCubeCD()
       }
     }
   }
+
+  close();
 
   delete[] data;
 

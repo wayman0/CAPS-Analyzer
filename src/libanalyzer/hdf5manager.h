@@ -108,6 +108,7 @@ class HDF5Manager : public fileManager {
     bool            saveMap(dataMap *map);
     bool            saveSpectrum(dataSpectrum *spect);
 
+    void            close(bool file = false);
     H5::H5File* filePtr() {return m_ptr;}
   private:
     association  *s_association;

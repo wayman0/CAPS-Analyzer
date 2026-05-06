@@ -73,10 +73,11 @@ class Spectrum;
 
 typedef void (*updateProgressText)(void*, const char*);
 typedef void (*updateProgressBar)(void*, int);
+typedef void (*displayErrorMess)(void*, const char*);
 
 class association {
 public:
-  association(void* guiObj, void (*updPB)(void*, int), void (*updPT)(void*, const char*));
+  association(void* guiObj, void (*updPB)(void*, int), void (*updPT)(void*, const char*), void (*dispErr)(void*, const char*));
   association(association* from);
   ~association() {reset();}
 
@@ -379,6 +380,8 @@ public:
 
   void updateProgressValue(int value)       { m_updateProgressValue(m_uiObject, value); }
   void updateProgressText(const char* text) { m_updateProgressText(m_uiObject, text);   }
+  void displayErrorMessage(const char* mess){ m_displayErrorMessage(m_uiObject, mess);    }
+
   ERRORCODES  errorValue() const {return m_error;}
   void errorValue(ERRORCODES errNo) {m_error = errNo;}
   std::string errorDetails() const {return m_errorDescription;}
@@ -397,6 +400,7 @@ private:
   void*                            m_uiObject;
   ::updateProgressBar              m_updateProgressValue;
   ::updateProgressText             m_updateProgressText;
+  ::displayErrorMess               m_displayErrorMessage;
   progress                         *m_progress;
 
   double                           m_pixelAverage;

@@ -92,8 +92,10 @@ class mainWindow : public QMainWindow {
     virtual ~mainWindow();
     static void progressBarWrapper(void* uiObj, int value);
     static void progressTextWrapper(void* uiObj, const char* updateName);
+    static void errorMessageWrapper(void* uiObj, const char* errMess);
     void updateProgressBar(int value);
     void updateProgressText(const char* updateName);
+    void errorMessage(const char* errMess);
     
     void invert();
 

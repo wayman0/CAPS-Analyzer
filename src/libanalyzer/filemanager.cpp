@@ -784,6 +784,7 @@ void fileManager::save(int* numTypes, FILETYPE* dataTypes)
   for(int i = 0; i < *numTypes; i += 1)
   {
     data = s_association->getData(dataTypes[i]);
+    string dataName = dataSetName(dataTypes[i]);
 
     m_fileDataType = dataTypes[i];
 
@@ -823,7 +824,11 @@ void fileManager::save(int* numTypes, FILETYPE* dataTypes)
         m_dimensions = 2;
         m_parts = 1;
         if (!saveMatrixD((matrixData<double>*)data))
+        {
+          m_errDetail += "File Manager Error: Unable to save dataset: " + dataName;
+          s_association->displayErrorMessage(m_errDetail.c_str());
           throw m_err;
+        }
         break;
       case fileType::AlmData:
       case fileType::AlmWeights:
@@ -835,19 +840,31 @@ void fileManager::save(int* numTypes, FILETYPE* dataTypes)
         m_dimensions = 4;
         m_parts = 2;
         if (!saveCubeCD((cubeData<complex<double> >*)data))
+        {
+          m_errDetail += "File Manager Error: Unable to save dataset: " + dataName;
+          s_association->displayErrorMessage(m_errDetail.c_str());
           throw m_err;
+        }
         break;
       case fileType::PixelOccupancy:
         m_dimensions = 1;
         m_parts = 1;
         if (!saveVectorI((vectorData<int>*)data))
+        {
+          m_errDetail += "File Manager Error: Unable to save dataset: " + dataName;
+          s_association->displayErrorMessage(m_errDetail.c_str());
           throw m_err;
+        }
         break;
       default:
         m_dimensions = 1;
         m_parts = 1;
         if (!saveVectorD((vectorData<double>*)data))
+        {
+          m_errDetail += "File Manager Error: Unable to save dataset: " + dataName;
+          s_association->displayErrorMessage(m_errDetail.c_str());
           throw m_err;
+        }
         break;
     }
   }
@@ -865,8 +882,14 @@ void fileManager::open(int* numTypes, FILETYPE* dataTypes)
       s_association->updateProgressText(dataName.c_str());
       baseData* dataValue = data();
 
-      dataValue->fileName(this->fileName());
+      if(dataValue == 0)
+      {
+        m_errDetail += "File Manager Error: Unable to open dataset: " + dataName;
+        s_association->displayErrorMessage(m_errDetail.c_str());
+        return;
+      }
 
+      dataValue->fileName(this->fileName());
       s_association->addData(dataValue);
   }
 }
