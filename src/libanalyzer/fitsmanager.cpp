@@ -74,16 +74,6 @@ fitsManager::fitsManager(association* dataMgr, const char *filename, FILETYPE da
   try {
     if(CCfits::RWmode::Read == mode)
       m_ptr = new CCfits::FITS(filename, mode);
-    /*
-    else
-    {
-      long naxes[4] = {m_cols,m_rows,m_slices,m_parts};
-      if(FILETYPE::PixelOccupancy == dataType)
-        m_ptr = new CCfits::FITS(filename, fitsInt32, m_dimensions, naxes);
-      else
-        m_ptr = new CCfits::FITS(filename, fitsDouble, m_dimensions, naxes);
-    }
-    */
   }
   catch (CCfits::FitsException& err) {
     m_err = fileFitsError;
@@ -91,6 +81,9 @@ fitsManager::fitsManager(association* dataMgr, const char *filename, FILETYPE da
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     throw m_err;
   }
 
@@ -117,107 +110,6 @@ fitsManager::fitsManager(association* dataMgr, const char *filename, baseData *d
   m_cols         = data->cols();
   m_rows         = data->rows();
   m_slices       = data->slices();
-/*
-  switch (m_fileDataType) {
-      case fileType::Null:
-      m_err = fileInvalidError;
-      s_association->errorValue(m_err);
-      throw m_err;
-    case fileType::InputData:
-    case fileType::InputWeights:
-    case fileType::WeightedData:
-    case fileType::InputNoise:
-    case fileType::InputFilter:
-    case fileType::InputBeam:
-    case fileType::BinCouplingMatrix:
-    case fileType::ModeCouplingMatrix:
-    case fileType::InverseBinMatrix:
-    case fileType::InverseModeMatrix:
-      m_dimensions = 2;
-      m_parts = 1;
-      m_fitsType = fitsDouble;
-      if (!saveBase(filename)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " +  std::string(fits_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      if (!saveMatrixD((matrixData<double>*)data)) {
-//      if (!saveMatrixD(m_fileDataType)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      break;
-    case fileType::AlmData:
-    case fileType::AlmWeights:
-    case fileType::AlmNoise:
-    case fileType::AlmFilter:
-    case fileType::AlmBeam:
-      m_dimensions = 4;
-      m_parts = 2;
-      m_fitsType = fitsDouble;
-      if (!saveBase(filename)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      if (!saveCubeCD((cubeData<complex<double> >*)data)) {
-//      if (!saveCubeCD(m_fileDataType)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      break;
-    case fileType::PixelOccupancy:
-      m_dimensions = 1;
-      m_parts = 1;
-      m_fitsType = fitsInt32;
-      if (!saveBase(filename)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      if (!saveVectorI((vectorData<int>*)data)) {
-//      if (!saveVectorI(m_fileDataType)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      break;
-    default:
-      m_dimensions = 1;
-      m_parts = 1;
-      m_fitsType = fitsDouble;
-      if (!saveBase(filename)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      if (!saveVectorD((vectorData<double>*)data)) {
-//      if (!saveVectorD(m_fileDataType)) {
-        m_err = fileFitsError;
-        m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-        s_association->errorValue(m_err);
-        s_association->errorDetails(m_errDetail);
-        throw m_err;
-      }
-      break;
-  }
-  */
 }
 
 fitsManager::fitsManager(fitsManager* from)
@@ -254,6 +146,9 @@ bool fitsManager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return false;
   }
 
@@ -283,6 +178,9 @@ bool fitsManager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return false;
   }
 
@@ -301,6 +199,9 @@ bool fitsManager::saveBase(const char* filename, int* numTypes, FILETYPE* dataTy
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return false;
   }
 
@@ -354,6 +255,9 @@ bool fitsManager::readComments(void* src)
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return false;
   }
 
@@ -421,6 +325,9 @@ bool fitsManager::saveVectorI(vectorData<int> *v)
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return false;
   }
 
@@ -471,6 +378,9 @@ bool fitsManager::saveVectorD(vectorData<double> *v)
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return false;
   }
 
@@ -519,6 +429,9 @@ bool fitsManager::saveMatrixD(matrixData<double> *m)
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return false;
   }
 
@@ -596,6 +509,9 @@ bool fitsManager::saveCubeCD(cubeData<complex<double> > *c) {
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return false;
   }
 
@@ -694,34 +610,6 @@ FILETYPE* fitsManager::getHeaders(int* numTypes)
   std::string instrument = "";
   std::string telescope  = "";
 
-
-   /* Next, we determine the "telescope" (really, the data generation device),
-      and resolve what the file data represents... */
-  /*
-   try {
-     LOAD("TELESCOP",telescope);
-  }
-  catch (CCfits::FitsException& err) {
-     snprintf(fits_err,FITS_ERR_LEN,"%s",err.message().c_str());
-     m_err = fileFitsError;
-     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
-     s_association->errorValue(m_err);
-     s_association->errorDetails(m_errDetail);
-     return 0; //false;
-  }
-
-  OBSERVATORY obsType = Unknown;
-  int obsValue = (int)Unknown;
-  while (obsType < OBSERVATORY_LIMIT) {
-    obsType = static_cast<OBSERVATORY>(obsValue);
-    if (telescope == observatoryNames[obsValue])
-      break;
-    obsValue++;
-  }
-
-  m_observatory = obsType;
-  m_fileDataType = fileType::InputData;
-  */
   string nTypes = "";
 
   if (m_observatory == Analyzer)
@@ -748,7 +636,10 @@ FILETYPE* fitsManager::getHeaders(int* numTypes)
        m_err = fileFitsError;
        m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
        s_association->errorValue(m_err);
-      s_association->errorDetails(m_errDetail);
+       s_association->errorDetails(m_errDetail);
+
+       s_association->displayErrorMessage(fits_err);
+
        return 0;//false;
      }
   }
@@ -828,6 +719,9 @@ FILETYPE* fitsManager::getHeaders(int* numTypes)
      m_errDetail = errorText[abs(m_err)] + ": Observatory not recognized";
      s_association->errorValue(m_err);
      s_association->errorDetails(m_errDetail);
+
+     s_association->displayErrorMessage(fits_err);
+
      return 0; //false;
    }
 
@@ -895,6 +789,9 @@ bool fitsManager::getDataType() {
       m_errDetail = errorText[abs(m_err)] + ": Observatory not recognized";
       s_association->errorValue(m_err);
       s_association->errorDetails(m_errDetail);
+
+      s_association->displayErrorMessage(fits_err);
+
       return false;
     }
 
@@ -1108,6 +1005,9 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
     m_errDetail = errorText[abs(m_err)] + ": No CCfits pointer";
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return 0;
   }
   if (!(m_observatory == Egret || m_observatory == Fermi)) {
@@ -1115,6 +1015,9 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
     m_errDetail = errorText[abs(m_err)] + ": No slices in file";
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return 0;
   }
   if (slice_min < 0 || slice_max < 0) {
@@ -1122,6 +1025,9 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
     m_errDetail = errorText[abs(m_err)] + ": Minimum slice number or maximum slice number less than 0";
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return 0;
   }
   if (slice_min > m_slices || slice_max > m_slices) {
@@ -1129,6 +1035,9 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
     m_errDetail = errorText[abs(m_err)] + ": Slice number is greater than the available slices";
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return 0;
   }
   if (slice_min > slice_max) {
@@ -1136,6 +1045,9 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
     m_errDetail = errorText[abs(m_err)] + ": Minimum slice number greater than maximum slice number";
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return 0;
   }
 
@@ -1313,6 +1225,9 @@ inputMatrixData *fitsManager::data(int slice_min, int slice_max)
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
 
     std::cout << err.message() << "\n";
     delete in_mat;
@@ -1586,6 +1501,9 @@ baseData *fitsManager::delveData()
         s_association->errorValue(m_err);
         s_association->errorDetails(m_errDetail);
 
+        s_association->displayErrorMessage(fits_err);
+
+
         std::cout << fits_err << "\n";
         return 0;
       }
@@ -1796,6 +1714,9 @@ cubeData<std::complex<double> > *fitsManager::getCubeCD()
     m_errDetail = errorText[abs(m_err)] + ": " + std::string(fits_err);
     s_association->errorValue(m_err);
     s_association->errorDetails(m_errDetail);
+
+    s_association->displayErrorMessage(fits_err);
+
     return 0;
   }
 
