@@ -84,7 +84,8 @@ class dataSelectDialog : public QDialog {
 
   private:
     void validate();
-    
+    void selectAll();
+
     Ui::dataSelectDialog *ui;
     association * dataMgr;
     FILETYPE dataType;

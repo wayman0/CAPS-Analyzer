@@ -38,318 +38,10 @@
     <string>Select Data Types</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QCheckBox" name="inputDataCB">
-      <property name="text">
-       <string>Input Data</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QCheckBox" name="inputWeightCB">
-      <property name="text">
-       <string>Input Mask</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QCheckBox" name="WeightedInputCB">
-      <property name="text">
-       <string>Weighted Input</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QCheckBox" name="inputNoiseCB">
-      <property name="text">
-       <string>Input Noise</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4">
-     <widget class="QCheckBox" name="inputWeightedNoiseCB">
-      <property name="text">
-       <string>Weighted Input Noise</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="6">
-     <widget class="QCheckBox" name="inputFilterCB">
-      <property name="text">
-       <string>Input Filter</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="7">
-     <widget class="QCheckBox" name="inputBeamCB">
-      <property name="text">
-       <string>Input Beam</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QCheckBox" name="pixelDataCB">
-      <property name="text">
-       <string>Pixelized Data</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QCheckBox" name="pixelWeightsCB">
-      <property name="text">
-       <string>Pixelized Mask</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QCheckBox" name="WeightedPixelCB">
-      <property name="text">
-       <string>Weighted Pixel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="3">
-     <widget class="QCheckBox" name="pixelNoiseCB">
-      <property name="text">
-       <string>Pixelized Noise</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="4">
-     <widget class="QCheckBox" name="pixelWeightedNoiseCB">
-      <property name="text">
-       <string>Weighted Pixelized Noise</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="7">
-     <widget class="QCheckBox" name="pixelBeamCB">
-      <property name="text">
-       <string>Pixelized Beam</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QCheckBox" name="transDataCB">
-      <property name="text">
-       <string>Transformed Data</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QCheckBox" name="transWeightCB">
-      <property name="text">
-       <string>Transformed Mask</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QCheckBox" name="WeightedTransformCB">
-      <property name="text">
-       <string>Weighted Transform</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="3">
-     <widget class="QCheckBox" name="transNoiseCB">
-      <property name="text">
-       <string>Transformed Noise</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="4">
-     <widget class="QCheckBox" name="transWeightedNoiseCB">
-      <property name="text">
-       <string>Weighted Transformed Noise</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="6">
-     <widget class="QCheckBox" name="transFilterCB">
-      <property name="text">
-       <string>Transformed Filter</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="7">
-     <widget class="QCheckBox" name="transBeamCB">
-      <property name="text">
-       <string>Transformed Beam</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QCheckBox" name="dataAlmCB">
-      <property name="text">
-       <string>Data Alm Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QCheckBox" name="weightAlmCB">
-      <property name="text">
-       <string>Mask Alm Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QCheckBox" name="weightedAlmCB">
-      <property name="text">
-       <string>Weighted Alm Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="3">
-     <widget class="QCheckBox" name="noiseAlmCB">
-      <property name="text">
-       <string>Noise Alm Matrix</string>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="4">
      <widget class="QCheckBox" name="noiseWeightedAlmCB">
       <property name="text">
        <string>Weighted Noise Alm Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="6">
-     <widget class="QCheckBox" name="filterAlmCB">
-      <property name="text">
-       <string>Filter Alm Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="7">
-     <widget class="QCheckBox" name="beamAlmCB">
-      <property name="text">
-       <string>Beam Alm Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QCheckBox" name="invDataCB">
-      <property name="text">
-       <string>Inverse Data</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QCheckBox" name="invWeightsCB">
-      <property name="text">
-       <string>Inverse Mask</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="2">
-     <widget class="QCheckBox" name="WeightedInverseCB">
-      <property name="text">
-       <string>Weighted Inverse</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="3">
-     <widget class="QCheckBox" name="invNoiseCB">
-      <property name="text">
-       <string>Inverse Noise</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="4">
-     <widget class="QCheckBox" name="invWeightedNoiseCB">
-      <property name="text">
-       <string>Weighted Inverse Noise</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="6">
-     <widget class="QCheckBox" name="invFilterCB">
-      <property name="text">
-       <string>Inverse Filter</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="7">
-     <widget class="QCheckBox" name="invBeamCB">
-      <property name="text">
-       <string>Inverse Beam</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0" colspan="8">
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="0" colspan="2">
-     <widget class="QCheckBox" name="EnsAvgSpectrumCB">
-      <property name="text">
-       <string>Pseudo Ensemble Average</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="2" colspan="2">
-     <widget class="QCheckBox" name="extrapolatedSpectrumCB">
-      <property name="text">
-       <string>Extrapolated Spectrum</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="4">
-     <widget class="QCheckBox" name="modeMatrixCB">
-      <property name="text">
-       <string>Mode-Mode Coupling Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="6">
-     <widget class="QCheckBox" name="binningMatrixCB">
-      <property name="text">
-       <string>Binning Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="0" colspan="2">
-     <widget class="QCheckBox" name="EnsIterSpectrumCB">
-      <property name="text">
-       <string>Pseudo Ensemble Iteration Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="2" colspan="2">
-     <widget class="QCheckBox" name="extrapolatedInstrumentSpectrumCB">
-      <property name="text">
-       <string>Extrapolated Instrumented Spectrum</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="4" colspan="2">
-     <widget class="QCheckBox" name="inverseModeMatrixCB">
-      <property name="text">
-       <string>Inverse Mode-Mode Coupling Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="6">
-     <widget class="QCheckBox" name="unbinningMatrixCB">
-      <property name="text">
-       <string>Unbinning Matrix</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0" colspan="2">
-     <widget class="QCheckBox" name="EnsAvgNoiseCB">
-      <property name="text">
-       <string>Noise Ensemble Average</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="2" colspan="2">
-     <widget class="QCheckBox" name="binnedSpectrumCB">
-      <property name="text">
-       <string>Binned Spectrum</string>
       </property>
      </widget>
     </item>
@@ -360,10 +52,10 @@
       </property>
      </widget>
     </item>
-    <item row="8" column="6" colspan="2">
-     <widget class="QCheckBox" name="binnedInstrumentEffectsMatrixCB">
+    <item row="3" column="3">
+     <widget class="QCheckBox" name="noiseAlmCB">
       <property name="text">
-       <string>Binned Instrument Effects Matrix</string>
+       <string>Noise Alm Matrix</string>
       </property>
      </widget>
     </item>
@@ -374,17 +66,10 @@
       </property>
      </widget>
     </item>
-    <item row="9" column="2" colspan="2">
-     <widget class="QCheckBox" name="binnedExtrapolatedSpectrumCB">
+    <item row="6" column="6">
+     <widget class="QCheckBox" name="binningMatrixCB">
       <property name="text">
-       <string>Binned Extrapolated Spectrum</string>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="4">
-     <widget class="QCheckBox" name="inverseInstrumentEffectsMatrixCB">
-      <property name="text">
-       <string>Inverse Instrument Effects Matrix</string>
+       <string>Binning Matrix</string>
       </property>
      </widget>
     </item>
@@ -395,10 +80,115 @@
       </property>
      </widget>
     </item>
-    <item row="10" column="2" colspan="2">
-     <widget class="QCheckBox" name="binnedExtrapolatedInstrumentSpectrumCB">
+    <item row="0" column="0">
+     <widget class="QCheckBox" name="inputDataCB">
       <property name="text">
-       <string>Binned Extrapolated Instrumented Spectrum</string>
+       <string>Input Data</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="transWeightCB">
+      <property name="text">
+       <string>Transformed Mask</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="6">
+     <widget class="QCheckBox" name="pixelFilterCB">
+      <property name="text">
+       <string>Pixelized Filter</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QCheckBox" name="WeightedInverseCB">
+      <property name="text">
+       <string>Weighted Inverse</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QCheckBox" name="dataAlmCB">
+      <property name="text">
+       <string>Data Alm Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0" colspan="2">
+     <widget class="QCheckBox" name="EnsAvgNoiseCB">
+      <property name="text">
+       <string>Noise Ensemble Average</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QCheckBox" name="WeightedInputCB">
+      <property name="text">
+       <string>Weighted Input</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" colspan="2">
+     <widget class="QCheckBox" name="EnsAvgSpectrumCB">
+      <property name="text">
+       <string>Pseudo Ensemble Average</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="4">
+     <widget class="QCheckBox" name="invWeightedNoiseCB">
+      <property name="text">
+       <string>Weighted Inverse Noise</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="2" colspan="2">
+     <widget class="QCheckBox" name="binnedSpectrumCB">
+      <property name="text">
+       <string>Binned Spectrum</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" colspan="2">
+     <widget class="QCheckBox" name="EnsIterSpectrumCB">
+      <property name="text">
+       <string>Pseudo Ensemble Iteration Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="6" colspan="2">
+     <widget class="QCheckBox" name="binnedInstrumentEffectsMatrixCB">
+      <property name="text">
+       <string>Binned Instrument Effects Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QCheckBox" name="inputNoiseCB">
+      <property name="text">
+       <string>Input Noise</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QCheckBox" name="WeightedPixelCB">
+      <property name="text">
+       <string>Weighted Pixel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QCheckBox" name="inputWeightedNoiseCB">
+      <property name="text">
+       <string>Weighted Input Noise</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="7">
+     <widget class="QCheckBox" name="pixelBeamCB">
+      <property name="text">
+       <string>Pixelized Beam</string>
       </property>
      </widget>
     </item>
@@ -436,12 +226,229 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QPushButton" name="selectAllButton">
+        <property name="text">
+         <string>Select All</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
-    <item row="1" column="6">
-     <widget class="QCheckBox" name="pixelFilterCB">
+    <item row="2" column="4">
+     <widget class="QCheckBox" name="transWeightedNoiseCB">
       <property name="text">
-       <string>Pixelized Filter</string>
+       <string>Weighted Transformed Noise</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="6">
+     <widget class="QCheckBox" name="transFilterCB">
+      <property name="text">
+       <string>Transformed Filter</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QCheckBox" name="invNoiseCB">
+      <property name="text">
+       <string>Inverse Noise</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="6">
+     <widget class="QCheckBox" name="unbinningMatrixCB">
+      <property name="text">
+       <string>Unbinning Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QCheckBox" name="weightedAlmCB">
+      <property name="text">
+       <string>Weighted Alm Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="2" colspan="2">
+     <widget class="QCheckBox" name="binnedExtrapolatedSpectrumCB">
+      <property name="text">
+       <string>Binned Extrapolated Spectrum</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="7">
+     <widget class="QCheckBox" name="transBeamCB">
+      <property name="text">
+       <string>Transformed Beam</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCheckBox" name="pixelDataCB">
+      <property name="text">
+       <string>Pixelized Data</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QCheckBox" name="pixelNoiseCB">
+      <property name="text">
+       <string>Pixelized Noise</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QCheckBox" name="weightAlmCB">
+      <property name="text">
+       <string>Mask Alm Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="transDataCB">
+      <property name="text">
+       <string>Transformed Data</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QCheckBox" name="WeightedTransformCB">
+      <property name="text">
+       <string>Weighted Transform</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="7">
+     <widget class="QCheckBox" name="beamAlmCB">
+      <property name="text">
+       <string>Beam Alm Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QCheckBox" name="transNoiseCB">
+      <property name="text">
+       <string>Transformed Noise</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="7">
+     <widget class="QCheckBox" name="inputBeamCB">
+      <property name="text">
+       <string>Input Beam</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="4">
+     <widget class="QCheckBox" name="inverseInstrumentEffectsMatrixCB">
+      <property name="text">
+       <string>Inverse Instrument Effects Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="7">
+     <widget class="QCheckBox" name="invBeamCB">
+      <property name="text">
+       <string>Inverse Beam</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QCheckBox" name="invDataCB">
+      <property name="text">
+       <string>Inverse Data</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QCheckBox" name="invWeightsCB">
+      <property name="text">
+       <string>Inverse Mask</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2" colspan="2">
+     <widget class="QCheckBox" name="extrapolatedInstrumentSpectrumCB">
+      <property name="text">
+       <string>Extrapolated Instrumented Spectrum</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="6">
+     <widget class="QCheckBox" name="filterAlmCB">
+      <property name="text">
+       <string>Filter Alm Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="4">
+     <widget class="QCheckBox" name="modeMatrixCB">
+      <property name="text">
+       <string>Mode-Mode Coupling Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4">
+     <widget class="QCheckBox" name="pixelWeightedNoiseCB">
+      <property name="text">
+       <string>Weighted Pixelized Noise</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="6">
+     <widget class="QCheckBox" name="invFilterCB">
+      <property name="text">
+       <string>Inverse Filter</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QCheckBox" name="inputWeightCB">
+      <property name="text">
+       <string>Input Mask</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QCheckBox" name="pixelWeightsCB">
+      <property name="text">
+       <string>Pixelized Mask</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6">
+     <widget class="QCheckBox" name="inputFilterCB">
+      <property name="text">
+       <string>Input Filter</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="4" colspan="2">
+     <widget class="QCheckBox" name="inverseModeMatrixCB">
+      <property name="text">
+       <string>Inverse Mode-Mode Coupling Matrix</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2" colspan="2">
+     <widget class="QCheckBox" name="extrapolatedSpectrumCB">
+      <property name="text">
+       <string>Extrapolated Spectrum</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="8">
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="2" colspan="2">
+     <widget class="QCheckBox" name="binnedExtrapolatedInstrumentSpectrumCB">
+      <property name="text">
+       <string>Binned Extrapolated Instrumented Spectrum</string>
       </property>
      </widget>
     </item>

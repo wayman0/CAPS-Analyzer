@@ -68,6 +68,7 @@ dataSelectDialog::dataSelectDialog(association *assoc, RWMode m) :
   dirty = false;
   mode = m;
   
+  connect(ui->selectAllButton, &QPushButton::clicked, this, &dataSelectDialog::selectAll);
 
   //if(mode == Write)
   //{
@@ -148,6 +149,125 @@ dataSelectDialog::dataSelectDialog(association *assoc, RWMode m) :
 dataSelectDialog::~dataSelectDialog() {
   delete dataSets;
   delete ui;
+}
+
+void dataSelectDialog::selectAll()
+{
+  for(int i = 0; i < static_cast<int>(fileType::FILETYPE_LIMIT); i += 1)
+  {
+    FILETYPE t = static_cast<FILETYPE>(i);
+
+    if(t == fileType::InputData && ui->inputDataCB->isEnabled())
+      ui->inputDataCB->setChecked(true);
+    else if(t == fileType::InputWeights && ui->inputWeightCB->isEnabled())
+      ui->inputWeightCB->setChecked(true);
+    else if(t == fileType::WeightedData && ui->WeightedInputCB->isEnabled())
+      ui->WeightedInputCB->setChecked(true);
+    else if(t == fileType::InputNoise && ui->inputNoiseCB->isEnabled())
+      ui->inputNoiseCB->setChecked(true);
+    else if(t == fileType::InputWeightedNoise && ui->inputWeightedNoiseCB->isEnabled())
+      ui->inputWeightedNoiseCB->setChecked(true);
+    else if(t == fileType::InputFilter && ui->inputFilterCB->isEnabled())
+      ui->inputFilterCB->setChecked(true);
+    else if(t == fileType::InputBeam && ui->inputBeamCB->isEnabled())
+      ui->inputBeamCB->setChecked(true);
+
+    else if(t == fileType::PixelizedData && ui->pixelDataCB->isEnabled())
+      ui->pixelDataCB->setChecked(true);
+    else if(t == fileType::PixelizedWeights && ui->pixelWeightsCB->isEnabled())
+      ui->pixelWeightsCB->setChecked(true);
+    else if(t == fileType::WeightedPixel && ui->WeightedPixelCB->isEnabled())
+      ui->WeightedPixelCB->setChecked(true);
+    else if(t == fileType::PixelizedNoise && ui->pixelNoiseCB->isEnabled())
+      ui->pixelNoiseCB->setChecked(true);
+    else if(t == fileType::PixelizedWeightedNoise && ui->pixelWeightedNoiseCB->isEnabled())
+      ui->pixelWeightedNoiseCB->setChecked(true);
+    else if(t == fileType::PixelizedFilter && ui->pixelFilterCB->isEnabled())
+      ui->pixelFilterCB->setChecked(true);
+    else if(t == fileType::PixelizedBeam && ui->pixelBeamCB->isEnabled())
+      ui->pixelBeamCB->setChecked(true);
+
+    else if(t == fileType::InverseData && ui->invDataCB->isEnabled())
+      ui->invDataCB->setChecked(true);
+    else if(t == fileType::InverseWeights && ui->invWeightsCB->isEnabled())
+      ui->invWeightsCB->setChecked(true);
+    else if(t == fileType::WeightedInverse && ui->WeightedInverseCB->isEnabled())
+      ui->WeightedInverseCB->setChecked(true);
+    else if(t == fileType::InverseNoise && ui->invNoiseCB->isEnabled())
+      ui->invNoiseCB->setChecked(true);
+    else if(t == fileType::InverseWeightedNoise && ui->invWeightedNoiseCB->isEnabled())
+      ui->invWeightedNoiseCB->setChecked(true);
+    else if(t == fileType::InverseFilter && ui->invFilterCB->isEnabled())
+      ui->invFilterCB->setChecked(true);
+    else if(t == fileType::InverseBeam && ui->invBeamCB->isEnabled())
+      ui->invBeamCB->setChecked(true);
+
+    else if(t == fileType::TransformedData && ui->transDataCB->isEnabled())
+      ui->transDataCB->setChecked(true);
+    else if(t == fileType::TransformedWeights && ui->transWeightCB->isEnabled())
+      ui->transWeightCB->setChecked(true);
+    else if(t == fileType::WeightedTransform && ui->WeightedTransformCB->isEnabled())
+      ui->WeightedTransformCB->setChecked(true);
+    else if(t == fileType::TransformedNoise && ui->transNoiseCB->isEnabled())
+      ui->transNoiseCB->setChecked(true);
+    else if(t == fileType::TransformedWeightedNoise && ui->transWeightedNoiseCB->isEnabled())
+      ui->transWeightedNoiseCB->setChecked(true);
+    else if(t == fileType::TransformedFilter && ui->transFilterCB->isEnabled())
+      ui->transFilterCB->setChecked(true);
+    else if(t == fileType::TransformedBeam && ui->transBeamCB->isEnabled())
+      ui->transBeamCB->setChecked(true);
+
+    else if(t == fileType::AlmData && ui->dataAlmCB->isEnabled())
+      ui->dataAlmCB->setChecked(true);
+    else if(t == fileType::AlmWeights && ui->weightAlmCB->isEnabled())
+      ui->weightAlmCB->setChecked(true);
+  else if(t == fileType::WeightedAlm && ui->weightedAlmCB->isEnabled())
+      ui->weightedAlmCB->setChecked(true);
+    else if(t == fileType::AlmNoise && ui->noiseAlmCB->isEnabled())
+      ui->noiseAlmCB->setChecked(true);
+    else if(t == fileType::AlmWeightedNoise && ui->noiseWeightedAlmCB->isEnabled())
+      ui->noiseWeightedAlmCB->setChecked(true);
+    else if(t == fileType::AlmFilter && ui->filterAlmCB->isEnabled())
+      ui->filterAlmCB->setChecked(true);
+    else if(t == fileType::AlmBeam && ui->beamAlmCB->isEnabled())
+      ui->beamAlmCB->setChecked(true);
+
+    else if(t == fileType::EnsembleAveragedNoise && ui->EnsAvgNoiseCB->isEnabled())
+      ui->EnsAvgNoiseCB->setChecked(true);
+    else if(t == fileType::EnsembleIterationNoise && ui->EnsIterNoiseCB->isEnabled())
+      ui->EnsIterNoiseCB->setChecked(true);
+    else if(t == fileType::EnsembleAveragedSpectrum && ui->EnsAvgSpectrumCB->isEnabled())
+      ui->EnsAvgSpectrumCB->setChecked(true);
+    else if(t == fileType::EnsembleIterationSpectrum && ui->EnsIterSpectrumCB->isEnabled())
+      ui->EnsIterSpectrumCB->setChecked(true);
+    else if(t == fileType::ExtrapolatedSpectrum && ui->extrapolatedSpectrumCB->isEnabled())
+      ui->extrapolatedSpectrumCB->setChecked(true);
+    else if(t == fileType::ExtrapolatedInstrumentSpectrum && ui->extrapolatedInstrumentSpectrumCB->isEnabled())
+      ui->extrapolatedInstrumentSpectrumCB->setChecked(true);
+    else if(t == fileType::BinnedSpectrum && ui->binnedSpectrumCB->isEnabled())
+      ui->binnedSpectrumCB->setChecked(true);
+    else if(t == fileType::BinnedExtrapolatedSpectrum && ui->binnedExtrapolatedSpectrumCB->isEnabled())
+      ui->binnedExtrapolatedSpectrumCB->setChecked(true);
+    else if(t == fileType::BinnedExtrapolatedInstrumentedSpectrum && ui->binnedExtrapolatedInstrumentSpectrumCB->isEnabled())
+      ui->binnedExtrapolatedInstrumentSpectrumCB->setChecked(true);
+
+    else if(t == fileType::ModeModeMatrix && ui->modeMatrixCB->isEnabled())
+      ui->modeMatrixCB->setChecked(true);
+    else if(t == fileType::InverseModeModeMatrix && ui->inverseModeMatrixCB->isEnabled())
+      ui->inverseModeMatrixCB->setChecked(true);
+    else if(t == fileType::InstrumentEffectsMatrix && ui->instrumentEffectsMatrixCB->isEnabled())
+      ui->instrumentEffectsMatrixCB->setChecked(true);
+    else if(t == fileType::InverseInstrumentEffectsMatrix && ui->inverseInstrumentEffectsMatrixCB->isEnabled())
+      ui->inverseInstrumentEffectsMatrixCB->setChecked(true);
+    else if(t == fileType::BinningMatrix && ui->binningMatrixCB->isEnabled())
+      ui->binningMatrixCB->setChecked(true);
+    else if(t == fileType::UnbinningMatrix && ui->unbinningMatrixCB->isEnabled())
+      ui->unbinningMatrixCB->setChecked(true);
+    else if(t == fileType::BinnedInstrumentEffectsMatrix && ui->binnedInstrumentEffectsMatrixCB->isEnabled())
+      ui->binnedInstrumentEffectsMatrixCB->setChecked(true);
+    else if(t == fileType::InverseBinnedInstrumentMatrix && ui->inverseBinnedInstrumentMatrixCB->isEnabled())
+      ui->inverseBinnedInstrumentMatrixCB->setChecked(true);
+  }
 }
 
 void dataSelectDialog::validate() {
