@@ -17,6 +17,7 @@ add_definitions(-DQT_NO_KEYWORDS)
 set(Qt-analyzer_SRCS
     main.cpp
     mainwindow.cpp
+    ../GUIManager.cpp
     associationselectdlg.cpp
     controldatadlg.cpp
     energydlg.cpp

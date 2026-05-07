@@ -58,48 +58,44 @@
 #include "../libanalyzer/csvmanager.h"
 
 mainWindow::mainWindow() :
-            ui(new Ui::MainWindow) {
+            GUIManager(),
+            ui(new Ui::MainWindow)
+{
+  associationVector = new std::vector<association*>();
+  try
+  {
+    associationVector->push_back(new association(this,  GUIManager::progressBarWrapper,
+                                                        GUIManager::progressTextWrapper,
+                                                        GUIManager::errorMessageWrapper));
+    s_association = (*associationVector)[0];
+  }
+  catch (const std::overflow_error &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to overflow error.");
+    return;
+  }
+  catch (const std::runtime_error &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to runtime error.");
+    return;
+  }
+  catch (const std::exception &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to exception error.");
+    return;
+  }
+  catch (...)
+  {
+    errorMessage("The attempt to create a new data association failed.");
+    return;
+  }
+
   /* set up the user interface */
   ui->setupUi(this);
 
+
   /* create data stream association */
   QString title, message;
-
-  s_association = 0;
-  try
-  {
-    associationVector = new std::vector<association*>(1);
-    (*associationVector)[0] = new association(this, mainWindow::progressBarWrapper,
-                                                    mainWindow::progressTextWrapper,
-                                                    mainWindow::errorMessageWrapper);
-    s_association = (*associationVector)[0];
-
-    //s_association = new association();
-  }
-  catch (const std::overflow_error &e) {
-    title = QString(tr("Error code returned"));
-    message = QString(tr("The attempt to create a new data association failed.\n The overflow error is %1\n")).arg(e.what());
-    QMessageBox::critical(this,title,message);
-    return;
-  }
-  catch (const std::runtime_error &e) {
-    title = QString(tr("Error code returned"));
-    message = QString(tr("The attempt to create a new data association failed.\n The runtime error is %1\n")).arg(e.what());
-    QMessageBox::critical(this,title,message);
-    return;
-  }
-  catch (const std::exception &e) {
-    title = QString(tr("Error code returned"));
-    message = QString(tr("The attempt to create a new data association failed.\n The exception is %1\n")).arg(e.what());
-    QMessageBox::critical(this,title,message);
-    return;
-  }
-  catch (...) {
-    title = QString(tr("Error code returned"));
-    message = QString(tr("The attempt to create a new data association failed.\n"));
-    QMessageBox::critical(this,title,message);
-    return;
-  }
 
   /* create dialogs needed to pass signals back and forth */
   assocDlg = new associationSelectDialog(associationVector);
@@ -232,9 +228,6 @@ mainWindow::~mainWindow() {
   delete mapSelectDlg;
   delete grapherDlg;
   delete graphSelectDlg;
-
-  // delete association
-    delete s_association;
 }
 
 void mainWindow::progressBarWrapper(void* uiObj, int value)
@@ -268,7 +261,8 @@ void mainWindow::updateProgressText(const char* updateName)
 }
 
 void mainWindow::errorMessage(const char* errMess)
-{
+{ s_association = 0;
+    associationVector = new std::vector<association*>();
   QMessageBox::critical(this, "Error", errMess);
 }
 
@@ -533,19 +527,6 @@ void mainWindow::readData(double minEnergy, double maxEnergy) {
   //Q_EMIT dataReady(selectedDataType);
 }
 
-/*
-void mainWindow::readData() {
-  // set up progress bar call back
-  ui->progressBar->reset();
-  ui->progressLabel->setText(QString(tr("Reading Data")));
-//  analyzer_get_progress_callback("Reading Data");
-
-  s_association->addData(s_association->fileIOEngine()->data());
-  s_association->sequenceStep(setSky);
-  configureDisplay(selectedDataType);
-}
-*/
-
 void mainWindow::saveFile() {
   QString title, message;
   
@@ -693,11 +674,34 @@ void mainWindow::saveFile() {
 
 void mainWindow::addAssociation()
 {
-  association* newAssoc = new association(this, mainWindow::progressBarWrapper,
-                                                mainWindow::progressTextWrapper,
-                                                mainWindow::errorMessageWrapper);
-  associationVector->push_back(newAssoc);
-  setAssociation(newAssoc);
+  try
+  {
+    association* newAssoc = new association(this,   GUIManager::progressBarWrapper,
+                                                    GUIManager::progressTextWrapper,
+                                                    GUIManager::errorMessageWrapper);
+    associationVector->push_back(newAssoc);
+    setAssociation(newAssoc);
+  }
+  catch (const std::overflow_error &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to overflow error.");
+    return;
+  }
+  catch (const std::runtime_error &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to runtime error.");
+    return;
+  }
+  catch (const std::exception &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to exception error.");
+    return;
+  }
+  catch (...)
+  {
+    errorMessage("The attempt to create a new data association failed.");
+    return;
+  }
 
    mapperDlg->configured(false);
   grapherDlg->configured(false);
@@ -713,6 +717,7 @@ void mainWindow::addAssociation()
 void mainWindow::setAssociation(association* newAssoc)
 {
   s_association = newAssoc;
+
   assocDlg->setCurrAssoc(s_association);
 
   if(dataSelectDlg)
@@ -738,23 +743,6 @@ void mainWindow::setAssociation(association* newAssoc)
   transSelectDlg->configured(false);
          rshtDlg->configured(false);
          specDlg->configured(false);
-
-  /*
-  if(dataSelectDlg)
-    dataSelectDlg->reset();
-
-  ctrlDlg->reset();
-  energyDlg->reset();
-  multSelDlg->reset();
-  pixSelectDlg->reset();
-  healpixDlg->reset();
-  transSelectDlg->reset();
-  rshtDlg->reset();
-  mapperDlg->reset();
-  grapherDlg->reset();
-  mapSelectDlg->reset();
-  graphSelectDlg->reset();
-  */
 
   clearMaps();
   clearGraphs();
@@ -1041,155 +1029,11 @@ void mainWindow::setPixelizerAttr()
   }
 }
 
-bool mainWindow::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType)
-{
-  switch(inputDataType) {
-    case fileType::InputData:
-      if (!s_association->exists(fileType::InputData))
-      {
-        if(!addDataMessage("No data map has been specified.  Do you wish to create or input a data map?"))
-          return false;
-      }
-      else {
-        if (!s_association->exists(pixelDataType))
-          s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
-      }
-      break;
-    case fileType::InputWeights:
-      if (!s_association->exists(fileType::InputWeights))
-      {
-        if(!addDataMessage("No mask map has been specified.  Do you wish to create or input a mask map?"))
-          return false;
-      }
-      else {
-        if (!s_association->exists(pixelDataType))
-          s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
-      }
-      break;
-    case fileType::WeightedData:
-      if(!s_association->exists(fileType::WeightedData))
-      {
-        if(s_association->exists(fileType::InputData) &&
-           s_association->exists(fileType::InputWeights))
-        {
-          s_association->generateWeightedData(fileType::WeightedData);
-
-          if(!s_association->exists(pixelDataType))
-            s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
-        }
-      }
-
-      if(!s_association->exists(fileType::WeightedPixel))
-      {
-        if (s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
-            s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
-
-        if( s_association->exists(fileType::PixelizedData) &&
-            s_association->exists(fileType::PixelizedWeights) &&
-           !s_association->exists(fileType::WeightedPixel))
-          s_association->generateWeightedData(fileType::WeightedPixel);
-      }
-
-      break;
-    case fileType::InputWeightedNoise:
-      if(!s_association->exists(fileType::InputWeightedNoise))
-      {
-        if(s_association->exists(fileType::InputNoise) &&
-           s_association->exists(fileType::InputWeights))
-        {
-          s_association->generateWeightedData(fileType::InputWeightedNoise);
-
-          if(!s_association->exists(pixelDataType))
-            s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
-        }
-      }
-
-      if(s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
-        s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
-      break;
-    default:
-      if (s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
-        s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
-      break;
-  }
-
-  if (s_association->exists(pixelDataType))
-    return true;
-  else
-    return false;
-}
-
 int mainWindow::pixelize()
 {
-  int count = 0;
+  int count = GUIManager::pixelize();
 
-  // create the pixelization engine, if it doesn't already exist
-  if (!s_association->exists(dataEngines::Pixelization))
-    setPixelizerAttr();
-  else
-  {
-    if (s_association->pixelizationEngine()->configured() == false)
-    {
-      s_association->reset(allTypes::Pixelization);
-      setPixelizerAttr();
-    }
-  }
-
-  // walk through all input data types
-  FILETYPE inputChain = fileType::InputData;
-  FILETYPE pixelChain = fileType::PixelizedData;
-  int type = (int)fileType::InputData;
-  int offset = (int)fileType::PixelizedData - (int)fileType::InputData;
-
-  int value = 0;
-  while (inputChain <= fileType::InputBeam)
-  {
-    if (s_association->exists(inputChain) && !s_association->exists(pixelChain))
-    {
-      if (pixelize(inputChain,pixelChain))
-        count++;
-    }
-    // have to account for possibly starting with a file that
-    // doesn't contain weighted data but we do have weights and data
-    // so we can generate weighted pixel
-    else if(pixelChain == fileType::WeightedPixel)
-    {
-      if(s_association->exists(fileType::PixelizedData) &&
-         s_association->exists(fileType::PixelizedWeights))
-      {
-        if(pixelize(inputChain, pixelChain))
-          count++;
-      }
-    }
-    else if(pixelChain == fileType::PixelizedWeightedNoise)
-    {
-      if(s_association->exists(fileType::PixelizedNoise) &&
-         s_association->exists(fileType::PixelizedWeights))
-      {
-        if(pixelize(inputChain, pixelChain))
-          count++;
-      }
-    }
-
-    inputChain = static_cast<FILETYPE>(++type);
-    pixelChain = static_cast<FILETYPE>(offset+type);
-    if (pixelChain == fileType::PixelOccupancy) {
-      offset++;
-      pixelChain = static_cast<FILETYPE>(offset+type);
-    }
-  }
-
-  if(s_association->exists(fileType::PixelizedData) &&
-     s_association->exists(fileType::PixelizedWeights) )
-     //!s_association->exists(fileType::InputWeightedNoise))
-    s_association->generateWeightedData(fileType::WeightedPixel);
-
-  if(s_association->exists(fileType::PixelizedNoise) &&
-     s_association->exists(fileType::PixelizedWeights) )
-     //!s_association->exists(fileType::InputWeightedNoise))
-    s_association->generateWeightedData(fileType::PixelizedWeightedNoise);
-
-  if (count)
+  if(count)
     configureDisplay(fileType::PixelizedData);
 
   return count;
@@ -1211,140 +1055,24 @@ void mainWindow::setTransformerAttr()
   }
 }
 
-bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
-{
-  if (!s_association->exists(pixelDataType))
-  {
-    if (!s_association->exists(dataEngines::Pixelization))
-      selectPixelizer();
-
-    int offset = (int)fileType::PixelizedData - (int)fileType::InputData;
-    FILETYPE inputDataType = fileType::Null;
-    if (pixelDataType >= fileType::PixelOccupancy)
-      inputDataType = static_cast<FILETYPE>((int)pixelDataType - offset - 1);
-    else
-      inputDataType = static_cast<FILETYPE>((int)pixelDataType - offset);
-
-    pixelize(inputDataType,pixelDataType);
-  }
-
-  bool display = false;
-  switch(pixelDataType)
-  {
-    case fileType::WeightedPixel:
-      if(!s_association->exists(fileType::WeightedPixel))
-      {
-        if(s_association->exists(fileType::PixelizedData) &&
-           s_association->exists(fileType::PixelizedWeights))
-        {
-          s_association->generateWeightedData(fileType::WeightedPixel);
-
-          if(!s_association->exists(fileType::WeightedPixel))
-            s_association->generatePixelData(s_association->pixelizationEngine(), fileType::WeightedPixel);
-
-          display = true;
-        }
-      }
-      break;
-    case fileType::PixelizedWeightedNoise:
-      if(!s_association->exists(fileType::PixelizedWeightedNoise))
-      {
-        if(s_association->exists(fileType::PixelizedNoise) &&
-           s_association->exists(fileType::PixelizedWeights))
-        {
-          s_association->generateWeightedData(fileType::PixelizedWeightedNoise);
-
-          if(!s_association->exists(fileType::PixelizedWeightedNoise))
-            s_association->generatePixelData(s_association->pixelizationEngine(), fileType::PixelizedWeightedNoise);
-
-          display = true;
-        }
-      }
-      break;
-    default:
-      break;
-  }
-
-  if(display)
-    configureDisplay(fileType::WeightedPixel);
-
-  if (s_association->exists(pixelDataType) && !s_association->exists(transDataType))
-  {
-    s_association->generateTransformedData(s_association->transformationEngine(),pixelDataType);
-    return true;
-  }
-  else
-    return false;
-}
-
 int mainWindow::transform()
 {
-  int count = 0;
-
-  // create transformer engine, if it doesn't already exist
-  if (!s_association->exists(dataEngines::Transformation))
-    setTransformerAttr();
-  else
-  {
-    if (s_association->transformationEngine()->configured() == false)
-    {
-      s_association->reset(allTypes::Transformation);
-      setTransformerAttr();
-    }
-  }
-
-  // walk through all of the pixelized data types
-  FILETYPE pixelChain = fileType::PixelizedData;
-  FILETYPE transChain = fileType::TransformedData;
-  int type = (int)fileType::PixelizedData;
-  int offset = (int)fileType::TransformedData - (int)fileType::PixelizedData;
-
-  while (pixelChain <= fileType::PixelizedBeam) {
-    if (!s_association->exists(transChain)) {
-      if (transform(pixelChain,transChain))
-        count++;
-    }
-    pixelChain = static_cast<FILETYPE>(++type);
-    if (pixelChain == fileType::PixelOccupancy) {
-      pixelChain = static_cast<FILETYPE>(++type);
-      offset--;
-    }
-    transChain = static_cast<FILETYPE>(offset+type);
-  }
+  int count = GUIManager::transform();
 
   if (count)
     configureDisplay(fileType::TransformedData);
+
   return count;
 }
 
 int mainWindow::invert()
 {
-  int count = 0;
-
-  FILETYPE inverseChain = fileType::InverseData;
-  FILETYPE almChain     = fileType::AlmData;
-
-  while(almChain <= fileType::AlmBeam)
-  {
-    if(invert(inverseChain, almChain))
-      count++;
-
-    inverseChain = static_cast<FILETYPE>(static_cast<int>(inverseChain) + 1);
-    almChain     = static_cast<FILETYPE>(static_cast<int>(almChain) + 1);
-  }
+  int count = GUIManager::invert();
 
   if(count)
     configureDisplay(fileType::InverseData);
 
   return count;
-}
-
-bool mainWindow::invert(FILETYPE inverseType, FILETYPE almType)
-{
-  if(!s_association->exists(inverseType) && s_association->exists(almType))
-    return s_association->generateInverseData(s_association->transformationEngine(), almType);
-  else
-    return false;
 }
 
 void mainWindow::setAnalyzerAttr()
@@ -1359,233 +1087,22 @@ void mainWindow::setAnalyzerAttr()
   s_association->powerSpectraEngine()->configured(true);
 }
 
-void mainWindow::analyze() {
-  QString title, message;
+bool mainWindow::handleMissingTransformer()
+{
+  selectTransformer();
 
+  return true;
+}
+
+void mainWindow::analyze()
+{
   //create pseudospectrum engine, if it doesn't already exist
   if (!specDlg->configured())
     specDlg->configure();
 
-  if (!s_association->exists(dataEngines::PseudoSpectrum))
-    setAnalyzerAttr();
-  else
-  {
-    if (s_association->powerSpectraEngine()->configured() == false)
-    {
-      s_association->reset(allTypes::PseudoSpectrum);
-      setAnalyzerAttr();
-    }
-  }
+  GUIManager::analyze();
 
-  // check that all of the transformed data exists
-  if (!s_association->exists(fileType::TransformedData))
-  {
-    if(!s_association->exists(fileType::AlmData))
-    {
-      if (!s_association->exists(dataEngines::Transformation))
-        selectTransformer();
-
-      if (!transform(fileType::PixelizedData,fileType::TransformedData))
-      {
-        errorMessage("No transformed data set is available.\nPlease check your data entries to insure that one has been entered correctly.");
-        return;
-      }
-    }
-    else
-    {
-      // generate transformed data from the alm's
-      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmData);
-      configureDisplay(fileType::TransformedData);
-
-      // create the inverse map for use when creating the pseudo spectrum
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmData);
-      configureDisplay(fileType::InverseData);
-    }
-  }
-
-  if (!s_association->exists(fileType::TransformedWeights))
-  {
-    if(!s_association->exists(fileType::AlmWeights))
-    {
-      if (!s_association->exists(dataEngines::Transformation))
-        selectTransformer();
-
-      if (!transform(fileType::PixelizedWeights,fileType::TransformedWeights))
-      {
-        errorMessage("No transformed mask set is available.\nPlease check your data entries to insure that one has been entered correctly.");
-        return;
-      }
-    }
-    else
-    {
-      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmWeights);
-      configureDisplay(fileType::TransformedData);
-
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeights);
-      configureDisplay(fileType::InverseWeights);
-    }
-  }
-
-  if (!s_association->exists(fileType::WeightedTransform))
-  {
-    if(!s_association->exists(fileType::WeightedAlm))
-    {
-      if(s_association->exists(fileType::PixelizedData) &&
-         s_association->exists(fileType::PixelizedWeights))
-      {
-        vectorData<double>* pixelData = s_association->pixelizedData();
-        vectorData<double>* pixelWeight = s_association->pixelizedWeights();
-        vectorData<double>* weightedPixel = new vectorData<double>(pixelData);
-
-        for(int i = 0; i < weightedPixel->rows(); i += 1)
-          (*weightedPixel)[i] = (*pixelData)[i] * (*pixelWeight)[i];
-
-        weightedPixel->dataType(fileType::WeightedPixel);
-        s_association->addData(weightedPixel);
-      }
-
-      if (!s_association->exists(dataEngines::Transformation))
-        selectTransformer();
-
-      if (!transform(fileType::WeightedPixel, fileType::WeightedTransform))
-      {
-       errorMessage("No weighted transformed set is available.\nPlease check your data entries to insure that one has been entered correctly.");
-        return;
-        return;
-      }
-    }
-    else
-    {
-      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::WeightedAlm);
-      configureDisplay(fileType::WeightedTransform);
-
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::WeightedAlm);
-      configureDisplay(fileType::WeightedInverse);
-    }
-  }
-
-  if (!s_association->exists(fileType::TransformedNoise))
-  {
-    if(!s_association->exists(fileType::AlmNoise))
-    {
-      if (!s_association->exists(dataEngines::Transformation))
-        selectTransformer();
-
-      if (!transform(fileType::PixelizedNoise,fileType::TransformedNoise))
-      {
-        s_association->merge(fileType::TransformedNoise,s_association->transformedData(),false);
-        s_association->transformedNoise()->dataType(fileType::TransformedNoise);
-
-        // fill vector with white noise
-        //s_association->createWhiteNoise(s_association->transformedNoise());
-        //s_association->createShotNoise(s_association->transformedNoise());
-
-        // this is wrong but the math says to subtract the noise which will give negatives
-        int rows = s_association->transformedNoise()->rows();
-        s_association->transformedNoise()->rwAccess().assign(rows, 0.0);
-      }
-    }
-    else
-    {
-      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmNoise);
-      configureDisplay(fileType::TransformedNoise);
-
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmNoise);
-      configureDisplay(fileType::InverseNoise);
-    }
-  }
-
-  if (!s_association->exists(fileType::TransformedWeightedNoise))
-  {
-    if(!s_association->exists(fileType::AlmWeightedNoise))
-    {
-      if(s_association->exists(fileType::PixelizedNoise) &&
-         s_association->exists(fileType::PixelizedWeights))
-      {
-        s_association->generateWeightedData(fileType::PixelizedWeightedNoise);
-      }
-
-      if (!s_association->exists(dataEngines::Transformation))
-        selectTransformer();
-
-      if (!transform(fileType::PixelizedWeightedNoise, fileType::TransformedWeightedNoise))
-      {
-        s_association->merge(fileType::TransformedWeightedNoise, s_association->transformedData(), false);
-        s_association->weightedTransformedNoise()->dataType(fileType::TransformedWeightedNoise);
-        int rows = s_association->weightedTransformedNoise()->rows();
-        s_association->weightedTransformedNoise()->rwAccess().assign(rows, 0);
-      }
-    }
-    else
-    {
-      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmWeightedNoise);
-      configureDisplay(fileType::AlmWeightedNoise);
-
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmWeightedNoise);
-      configureDisplay(fileType::AlmWeightedNoise);
-    }
-  }
-
-  if (!s_association->exists(fileType::TransformedFilter))
-  {
-    if(!s_association->exists(fileType::AlmFilter))
-    {
-      if (!s_association->exists(dataEngines::Transformation))
-        selectTransformer();
-
-      if (!transform(fileType::PixelizedFilter,fileType::TransformedFilter))
-      {
-        s_association->merge(fileType::TransformedFilter,s_association->transformedData(),false);
-        s_association->transformedFilter()->dataType(fileType::TransformedFilter);
-        int rows = s_association->transformedFilter()->rows();
-        //s_association->transformedFilter()->rwAccess().assign(rows,1.0);
-        s_association->transformedFilter()->rwAccess().assign(rows, 1.0);
-      }
-    }
-    else
-    {
-      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmFilter);
-      configureDisplay(fileType::TransformedFilter);
-
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmFilter);
-      configureDisplay(fileType::InverseFilter);
-    }
-  }
-
-  if (!s_association->exists(fileType::TransformedBeam))
-  {
-    if(!s_association->exists(fileType::AlmBeam))
-    {
-      if (!s_association->exists(dataEngines::Transformation))
-        selectTransformer();
-
-      if (!transform(fileType::PixelizedBeam,fileType::TransformedBeam))
-      {
-        s_association->merge(fileType::TransformedBeam,s_association->transformedData(),false);
-        s_association->transformedBeam()->dataType(fileType::TransformedBeam);
-        int rows = s_association->transformedData()->rows();
-        s_association->transformedBeam()->rwAccess().assign(rows, 1.0);
-      }
-    }
-    else
-    {
-      s_association->generateTransformedDataFromAlm(s_association->transformationEngine(), fileType::AlmBeam);
-      configureDisplay(fileType::TransformedBeam);
-
-      s_association->generateInverseData(s_association->transformationEngine(), fileType::AlmBeam);
-      configureDisplay(fileType::InverseBeam);
-    }
-  }
-
-  // set the number of ls in the spectra
-  s_association->powerSpectraEngine()->maxIndex(s_association->weightedTransform()->rows());
-
-  // everything is here and ready to go, so carry out analysis
-  // generatePowerSpectrumData will just do everything including ensembling
-  s_association->generatePowerSpectrumData(s_association->powerSpectraEngine());
   configureDisplay(fileType::BinnedExtrapolatedInstrumentedSpectrum);
-
-  return;
 }
 
 void mainWindow::configureDisplay(FILETYPE dataType) {

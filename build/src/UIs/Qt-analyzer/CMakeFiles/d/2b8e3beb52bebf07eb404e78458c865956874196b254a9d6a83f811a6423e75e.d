@@ -2,6 +2,8 @@ Qt-analyzer_autogen/timestamp: \
   CMakeFiles/3.28.1/CMakeCCompiler.cmake \
   CMakeFiles/3.28.1/CMakeCXXCompiler.cmake \
   CMakeFiles/3.28.1/CMakeSystem.cmake \
+  /mnt/research/software/CAPS-Analyzer/src/UIs/GUIManager.cpp \
+  /mnt/research/software/CAPS-Analyzer/src/UIs/GUIManager.h \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/CMakeLists.txt \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.cpp \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.ui \

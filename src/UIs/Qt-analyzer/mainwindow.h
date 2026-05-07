@@ -52,6 +52,8 @@
 #define _MAINWINDOW_H_
 
 //#include "../libanalyzer/analyzer.h"
+#include "../GUIManager.h"
+
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
 #include "../../libanalyzer/filemanager.h"
@@ -84,7 +86,7 @@ namespace Ui {
   class MainWindow;
 }
 
-class mainWindow : public QMainWindow {
+class mainWindow : public QMainWindow, GUIManager {
   Q_OBJECT
   
   public:
@@ -102,6 +104,7 @@ class mainWindow : public QMainWindow {
     void setPixelizerAttr();
     void setTransformerAttr();
     void setAnalyzerAttr();
+    bool handleMissingTransformer();
 
   public Q_SLOTS:
     void openFile();
@@ -138,9 +141,6 @@ class mainWindow : public QMainWindow {
     void clearMaps();
     void clearGraphs();
     void readData();
-    bool pixelize(FILETYPE inputDataType, FILETYPE pixelDataType);
-    bool transform(FILETYPE pixelDataType, FILETYPE transDataType);
-    bool invert(FILETYPE inverseType, FILETYPE almType);
 
     Ui::MainWindow *ui;
     
@@ -161,11 +161,6 @@ class mainWindow : public QMainWindow {
     
     progress                *s_progressInterface;
 
-    association               *s_association;
-    std::vector<association*> *associationVector;
-    FILETYPE                  selectedDataType;
-    GENERICTYPE               selectedDataStream;
-    FORMAT                    dataFormat;
     unsigned char             *activeMap;
     unsigned char             *activeGraph;
     QString                   fileName;

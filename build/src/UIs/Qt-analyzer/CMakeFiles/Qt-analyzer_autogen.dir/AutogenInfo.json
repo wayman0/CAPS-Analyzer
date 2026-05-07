@@ -104,6 +104,12 @@
 	"HEADERS" : 
 	[
 		[
+			"/mnt/research/software/CAPS-Analyzer/src/UIs/GUIManager.h",
+			"MU",
+			"H35KTLCIUO/moc_GUIManager.cpp",
+			null
+		],
+		[
 			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.h",
 			"mU",
 			"",
@@ -306,6 +312,11 @@
 	"SETTINGS_FILE" : "/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/CMakeFiles/Qt-analyzer_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
+		[
+			"/mnt/research/software/CAPS-Analyzer/src/UIs/GUIManager.cpp",
+			"MU",
+			null
+		],
 		[
 			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.cpp",
 			"MU",
