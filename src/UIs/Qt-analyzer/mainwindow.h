@@ -96,8 +96,12 @@ class mainWindow : public QMainWindow {
     void updateProgressBar(int value);
     void updateProgressText(const char* updateName);
     void errorMessage(const char* errMess);
-    
-    void invert();
+    bool addDataMessage(const char* mess);
+
+    int invert();
+    void setPixelizerAttr();
+    void setTransformerAttr();
+    void setAnalyzerAttr();
 
   public Q_SLOTS:
     void openFile();
@@ -105,8 +109,8 @@ class mainWindow : public QMainWindow {
     void saveFile();
     void addAssociation();
     void setAssociation(association* newAssoc);
-    void pixelize();
-    void transform();
+    int  pixelize();
+    int  transform();
     void analyze();
     void createControlData(FILETYPE dataType,bool complete);
     void configureDisplay(FILETYPE dataType);

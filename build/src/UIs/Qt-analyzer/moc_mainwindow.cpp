@@ -168,8 +168,8 @@ static const uint qt_meta_data_mainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 23,   24,
-    QMetaType::Void,
-    QMetaType::Void,
+    QMetaType::Int,
+    QMetaType::Int,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 15, QMetaType::Bool,   29,   30,
     QMetaType::Void, 0x80000000 | 15,   29,
@@ -208,8 +208,10 @@ void mainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 11: _t->saveFile(); break;
         case 12: _t->addAssociation(); break;
         case 13: _t->setAssociation((*reinterpret_cast< association*(*)>(_a[1]))); break;
-        case 14: _t->pixelize(); break;
-        case 15: _t->transform(); break;
+        case 14: { int _r = _t->pixelize();
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
+        case 15: { int _r = _t->transform();
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
         case 16: _t->analyze(); break;
         case 17: _t->createControlData((*reinterpret_cast< FILETYPE(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 18: _t->configureDisplay((*reinterpret_cast< FILETYPE(*)>(_a[1]))); break;

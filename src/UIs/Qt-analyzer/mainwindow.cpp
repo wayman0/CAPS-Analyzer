@@ -272,6 +272,29 @@ void mainWindow::errorMessage(const char* errMess)
   QMessageBox::critical(this, "Error", errMess);
 }
 
+bool mainWindow::addDataMessage(const char* mess)
+{
+  QMessageBox questionBox;
+  questionBox.setWindowTitle("Data Missing");
+  questionBox.setText(mess);
+
+  QPushButton *createButton = questionBox.addButton(tr("Create"),QMessageBox::ActionRole);
+  QPushButton *openButton = questionBox.addButton(tr("Open"),QMessageBox::ActionRole);
+  QPushButton *noneButton = questionBox.addButton(tr("No"),QMessageBox::ActionRole);
+
+  questionBox.exec();
+  if (questionBox.clickedButton() == createButton)
+    ctrlDlg->configure(false);
+
+  if (questionBox.clickedButton() == openButton)
+    openFile();
+
+  if (questionBox.clickedButton() == noneButton)
+    return false;
+
+  return true;
+}
+
 void mainWindow::openFile()
 {
   QString title, message;
@@ -341,9 +364,7 @@ void mainWindow::openFile()
       s_association->addEngine(dataEngines::fileIO,fileName.toStdString().c_str(),dataFormat,selectedDataType,Read);
     }
     catch (ERRORCODES error) {
-      title = QString("Error creating file I/O engine");
-      message = QString::fromStdString(s_association->errorDetails());
-      QMessageBox::critical(this,title,message);
+      errorMessage("Error creating FILE IO Engine.");
       return;
     }
 
@@ -357,9 +378,7 @@ void mainWindow::openFile()
 
     if(obs == static_cast<int>(OBSERVATORY::Unknown))
     {
-      title = QString(tr("Observatory Error"));
-      message = QString(tr("Invalid observatory selected."));
-      QMessageBox::critical(this, title, message);
+      errorMessage("Invalid observatory selected");
       return;
     }
 
@@ -422,9 +441,6 @@ void mainWindow::openFile()
     std::vector<FILETYPE> types(2);
     types.assign(2, fileType::Null);
 
-    bool readTrans = false;
-    bool readALM   = false;
-    bool readPixel = false;
     for(int i = 0; i < *numTypes; i += 1)
     {
       switch(dataTypes[i])
@@ -483,26 +499,19 @@ void mainWindow::openFile()
 }
 
 void mainWindow::readData(double minEnergy, double maxEnergy) {
-  QString title, message;
   fileManager* fm;
 
   // update energy keys, if necessary
   if (minEnergy < 0.0) {
-    title = QString(tr("Invalid minimum energy"));
-    message = QString(tr("Minimum energy must be greater than zero"));
-    QMessageBox::critical(this,title,message);
+    errorMessage("Minimum energy must be greater than 0");
     return;
   }
   if (maxEnergy < 0.0) {
-    title = QString(tr("Invalid maximum energy"));
-    message = QString(tr("Maximum energy must be greater than zero"));
-    QMessageBox::critical(this,title,message);
+    errorMessage("Maximum energy must be greater than 0");
     return;
   }
   if (minEnergy > maxEnergy) {
-    title = QString(tr("Energy mismatch"));
-    message = QString(tr("The minimum energy must be less than the maximum energy"));
-    QMessageBox::critical(this,title,message);
+    errorMessage("Min energy must be less than Max energy");
     return;
   }
 
@@ -524,6 +533,7 @@ void mainWindow::readData(double minEnergy, double maxEnergy) {
   //Q_EMIT dataReady(selectedDataType);
 }
 
+/*
 void mainWindow::readData() {
   // set up progress bar call back
   ui->progressBar->reset();
@@ -534,6 +544,7 @@ void mainWindow::readData() {
   s_association->sequenceStep(setSky);
   configureDisplay(selectedDataType);
 }
+*/
 
 void mainWindow::saveFile() {
   QString title, message;
@@ -691,7 +702,7 @@ void mainWindow::addAssociation()
    mapperDlg->configured(false);
   grapherDlg->configured(false);
 
-   ctrlDlg->reset();
+  ctrlDlg->reset();
 
   QMessageBox addSuccessful;
   addSuccessful.setText("Addition Successful. Now using the new addition.");
@@ -772,14 +783,13 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
     switch (dataType) {
       case fileType::InputData:
         if (s_association->exists(fileType::InputWeights)) {
-          try {
+          try
+          {
             s_association->getResolution(fileType::InputWeights, ra, dec);
           }
-          catch (ERRORCODES error) {
-            title = QString(tr("Error getting resolution"));
-            message = QString(tr("There was an error getting the data set's resolution.\nThe error is %1."))
-                              .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-            QMessageBox::critical(this,title,message);
+          catch (ERRORCODES error)
+          {
+            errorMessage("There was an error getting the data set's resolution.");
             return;
           }
         }
@@ -790,14 +800,13 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
         break;
       case fileType::InputWeights:
         if (s_association->exists(fileType::InputData)) {
-          try {
+          try
+          {
             s_association->getResolution(fileType::InputData, ra, dec);
           }
-          catch (ERRORCODES error) {
-            title = QString(tr("Error getting resolution"));
-            message = QString(tr("There was an error getting the data set's resolution.\nThe error is %1."))
-                              .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-            QMessageBox::critical(this,title,message);
+          catch (ERRORCODES error)
+          {
+            errorMessage("There was an error getting the data set's resolution.");
             return;
           }
         }
@@ -808,26 +817,24 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
         break;
       case fileType::InputNoise:
         if (s_association->exists(fileType::InputData)) {
-          try {
+          try
+          {
             s_association->getResolution(fileType::InputData, ra, dec);
           }
-          catch (ERRORCODES error) {
-            title = QString(tr("Error getting resolution"));
-            message = QString(tr("There was an error getting the data set's resolution.\nThe error is %1."))
-                              .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-            QMessageBox::critical(this,title,message);
+          catch (ERRORCODES error)
+          {
+            errorMessage("There was an error getting the data set's resolution.");
             return;
           }
         }
         else if(s_association->exists(fileType::InputWeights)) {
-          try {
+          try
+          {
             s_association->getResolution(fileType::InputWeights, ra, dec);
           }
-          catch (ERRORCODES error) {
-            title = QString(tr("Error getting resolution"));
-            message = QString(tr("There was an error getting the data set's resolution.\nThe error is %1."))
-                              .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-            QMessageBox::critical(this,title,message);
+          catch (ERRORCODES error)
+          {
+            errorMessage("There was an error getting the data set's resolution.");
             return;
           }
         }
@@ -838,26 +845,24 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
         break;
       case fileType::InputFilter:
         if (s_association->exists(fileType::InputData)) {
-          try {
+          try
+          {
             s_association->getResolution(fileType::InputData, ra, dec);
           }
-          catch (ERRORCODES error) {
-            title = QString(tr("Error getting resolution"));
-            message = QString(tr("There was an error getting the data set's resolution.\nThe error is %1."))
-                              .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-            QMessageBox::critical(this,title,message);
+          catch (ERRORCODES error)
+          {
+            errorMessage("There was an error getting the data set's resolution.");
             return;
           }
         }
         else if(s_association->exists(fileType::InputWeights)) {
-          try {
+          try
+          {
             s_association->getResolution(fileType::InputWeights, ra, dec);
           }
-          catch (ERRORCODES error) {
-            title = QString(tr("Error getting resolution"));
-            message = QString(tr("There was an error getting the data set's resolution.\nThe error is %1."))
-                              .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-            QMessageBox::critical(this,title,message);
+          catch (ERRORCODES error)
+          {
+            errorMessage("There was an error getting the data set's resolution.");
             return;
           }
         }
@@ -868,26 +873,24 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
         break;
       case fileType::InputBeam:
         if (s_association->exists(fileType::InputData)) {
-          try {
+          try
+          {
             s_association->getResolution(fileType::InputData, ra, dec);
           }
-          catch (ERRORCODES error) {
-            title = QString(tr("Error getting resolution"));
-            message = QString(tr("There was an error getting the data set's resolution.\nThe error is %1."))
-                              .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-            QMessageBox::critical(this,title,message);
+          catch (ERRORCODES error)
+          {
+            errorMessage("There was an error getting the data set's resolution.");
             return;
           }
         }
         else if(s_association->exists(fileType::InputWeights)) {
-          try {
+          try
+          {
             s_association->getResolution(fileType::InputWeights, ra, dec);
           }
-          catch (ERRORCODES error) {
-            title = QString(tr("Error getting resolution"));
-            message = QString(tr("There was an error getting the data set's resolution.\nThe error is %1."))
-                              .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-            QMessageBox::critical(this,title,message);
+          catch (ERRORCODES error)
+          {
+            errorMessage("There was an error getting the data set's resolution.");
             return;
           }
         }
@@ -898,15 +901,13 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
         break;
     }
 
-    try {
+    try
+    {
       s_association->createEmptyDataSet(dataType,ra,dec);
     }
-    catch (ERRORCODES error) {
-      title = QString(tr("Error encountered creating data set"));
-      message = QString(tr("An error was encountered creating the %1 data set.\nThe error was %2"))
-                        .arg(QString::fromStdString(s_association->dataNames((int)dataType)))
-                        .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-      QMessageBox::critical(this,title,message);
+    catch (ERRORCODES error)
+    {
+      errorMessage("An error was encountered creating the data set");
       return;
     }
   }
@@ -933,11 +934,9 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
       try {
         s_association->createUniformPatch(dataType,top,bottom,from,to,signalStrength,operation);
       }
-      catch (ERRORCODES error) {
-        title = QString(tr("Error code returned"));
-        message = QString(tr("The attempt to create a uniform distribution over a patch of sky failed.\nError code is %1"))
-                          .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-        QMessageBox::critical(this,title,message);
+      catch (ERRORCODES error)
+      {
+        errorMessage("The attempt to create a uniform patch failed.");
         return;
       }
       break;
@@ -945,11 +944,9 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
       try {
         s_association->createDeltaFunction(dataType,peakRA,peakDec,signalStrength,operation);
       }
-      catch (ERRORCODES error) {
-        title = QString(tr("Error code returned"));
-        message = QString(tr("The attempt to create a delta function failed.\nError code is %1"))
-                          .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-        QMessageBox::critical(this,title,message);
+      catch (ERRORCODES error)
+      {
+        errorMessage("The attempt to create a delta failed");
         return;
       }
       break;
@@ -957,11 +954,9 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
       try {
         s_association->createGaussian(dataType,peakRA,peakDec,fwhm,signalStrength,operation);
       }
-      catch (ERRORCODES error) {
-        title = QString(tr("Error code returned"));
-        message = QString(tr("The attempt to create a Gaussian function failed.\nError code is %1"))
-                          .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-        QMessageBox::critical(this,title,message);
+      catch (ERRORCODES error)
+      {
+        errorMessage("The attempt to create a Gaussian failed.");
         return;
       }
       break;
@@ -969,11 +964,9 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
       try {
         s_association->createCheckerboard(dataType,checkRA,checkDec,signalStrength,operation);
       }
-      catch (ERRORCODES error) {
-        title = QString(tr("Error code returned"));
-        message = QString(tr("The attempt to create a checkboard pattern failed.\nError code is %1"))
-                          .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-        QMessageBox::critical(this,title,message);
+      catch (ERRORCODES error)
+      {
+        errorMessage("The attempt to create a checkerboard failed.");
         return;
       }
       break;
@@ -981,11 +974,9 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
       try {
         s_association->createHarmonic(dataType,(int)l,(int)m,signalStrength,operation);
       }
-      catch (ERRORCODES error) {
-        title = QString(tr("Error code returned"));
-        message = QString(tr("The attempt to create a spherical harmonic function failed.\nError code is %1"))
-                          .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-        QMessageBox::critical(this,title,message);
+      catch (ERRORCODES error)
+      {
+        errorMessage("The attempt to create a harmonic failed.");
         return;
       }
       break;
@@ -994,11 +985,9 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
       try {
         s_association->createUniformSky(dataType, signalStrength, operation);
       }
-      catch (ERRORCODES error) {
-        title = QString(tr("Error code returned"));
-        message = QString(tr("The attempt to create a uniform distribution failed.\nError code is %1"))
-                          .arg(QString::fromStdString(s_association->errorDetails((int)error)));
-        QMessageBox::critical(this,title,message);
+      catch (ERRORCODES error)
+      {
+        errorMessage("The attempt to create a uniform sky failed.");
         return;
       }
       break;
@@ -1006,34 +995,13 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
 
   if(   s_association->exists(fileType::InputData)
      && s_association->exists(fileType::InputWeights) )
-     //&& !s_association->exists(fileType::WeightedData))// this line causes any updates to input data to not be reflected in the weighted data
-  {
-    /*matrixData<double>* inData = s_association->inputData();
-    matrixData<double>* wgData = s_association->inputWeights();
+        s_association->generateWeightedData(fileType::WeightedData);
 
-    matrixData<double>* weightedData = new matrixData<double>(inData->cols(), inData->rows(), fileType::WeightedData);
-    weightedData->initialize();
 
-    for(int r = 0; r < inData->rows(); r += 1)
-    {
-      for(int c = 0; c < inData->cols(); c += 1)
-      {
-        (*weightedData)[c][r] = (*inData)[c][r] * (*wgData)[c][r];
-        //std::cout << "ROW: " << r << " " << "COL: " << c << "VAL: " << (*weightedData)[r][c] << "\t";
-        //printf("%s: %04d %s: %04d = %s: %04f\t", "ROW", r, "COL", c, "VAL", (*weightedData)[r][c]);
-
-      }
-      //std::cout << "\n";
-    }
-    s_association->addData(weightedData);
-    */
-    s_association->generateWeightedData(fileType::WeightedData);
-  }
-
-  if(s_association->exists(fileType::InputNoise) &&
-     s_association->exists(fileType::InputWeights) &&
+  if( s_association->exists(fileType::InputNoise) &&
+      s_association->exists(fileType::InputWeights) &&
      !s_association->exists(fileType::InputWeightedNoise))
-    s_association->generateWeightedData(fileType::InputWeightedNoise);
+      s_association->generateWeightedData(fileType::InputWeightedNoise);
 
   configureDisplay(dataType);
 
@@ -1045,24 +1013,41 @@ void mainWindow::createControlData(FILETYPE dataType, bool complete)
     ctrlDlg->configure(true);
 }
 
-bool mainWindow::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType) {
-  QString title, message;
+void mainWindow::setPixelizerAttr()
+{
+  switch (s_association->pixelizationEngineType())
+  {
+    case HealPIX:
+      s_association->addEngine(dataEngines::Pixelization, HealPIX);
+      s_association->pixelizationEngine()->scale(healpixDlg->scale());
 
+      s_association->pixelizationEngine()->usePixelAvg(healpixDlg->usePixelAvg());
+      s_association->pixelizationEngine()->usePixelDev(healpixDlg->usePixelDev());
+      s_association->pixelizationEngine()->usePixelVar(healpixDlg->usePixelVar());
+
+      s_association->pixelizationEngine()->doAvgNormalize(healpixDlg->doAvgNormalize());
+      s_association->pixelizationEngine()->doVarNormalize(healpixDlg->doVarNormalize());
+      s_association->pixelizationEngine()->doMinMaxScale(healpixDlg->doMinMaxScale());
+
+      if (healpixDlg->order())
+        s_association->pixelizationEngine()->pixelLayout(Nest);
+      else
+        s_association->pixelizationEngine()->pixelLayout(Ring);
+
+      s_association->pixelizationEngine()->configured(true);
+      break;
+    default:
+      selectPixelizer();
+  }
+}
+
+bool mainWindow::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType)
+{
   switch(inputDataType) {
     case fileType::InputData:
-      if (!s_association->exists(fileType::InputData)) {
-        title = QString(tr("No data skymap specified"));
-        message = QString(tr("No data skymap has been specified.\nDo you wish to create or input a data skymap?"));
-        QMessageBox questionBox;
-        QPushButton *createButton = questionBox.addButton(tr("Create"),QMessageBox::ActionRole);
-        QPushButton *openButton = questionBox.addButton(tr("Open"),QMessageBox::ActionRole);
-        QPushButton *noneButton = questionBox.addButton(tr("No"),QMessageBox::ActionRole);
-        questionBox.exec();
-        if (questionBox.clickedButton() == createButton)
-          ctrlDlg->configure(false);
-        if (questionBox.clickedButton() == openButton)
-          openFile();
-        if (questionBox.clickedButton() == noneButton)
+      if (!s_association->exists(fileType::InputData))
+      {
+        if(!addDataMessage("No data map has been specified.  Do you wish to create or input a data map?"))
           return false;
       }
       else {
@@ -1071,19 +1056,9 @@ bool mainWindow::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType) {
       }
       break;
     case fileType::InputWeights:
-      if (!s_association->exists(fileType::InputWeights)) {
-        title = QString(tr("No data mask specified"));
-        message = QString(tr("No data mask has been specified.\nDo you wish to create or input a data mask skymap?"));
-        QMessageBox questionBox;
-        QPushButton *createButton = questionBox.addButton(tr("Create"),QMessageBox::ActionRole);
-        QPushButton *openButton = questionBox.addButton(tr("Open"),QMessageBox::ActionRole);
-        QPushButton *noneButton = questionBox.addButton(tr("No"),QMessageBox::ActionRole);
-        questionBox.exec();
-        if (questionBox.clickedButton() == createButton)
-          ctrlDlg->configure(false);
-        if (questionBox.clickedButton() == openButton)
-          openFile();
-        if (questionBox.clickedButton() == noneButton)
+      if (!s_association->exists(fileType::InputWeights))
+      {
+        if(!addDataMessage("No mask map has been specified.  Do you wish to create or input a mask map?"))
           return false;
       }
       else {
@@ -1144,64 +1119,21 @@ bool mainWindow::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType) {
     return false;
 }
 
-void mainWindow::pixelize() {
-  QString title, message;
+int mainWindow::pixelize()
+{
   int count = 0;
 
   // create the pixelization engine, if it doesn't already exist
   if (!s_association->exists(dataEngines::Pixelization))
+    setPixelizerAttr();
+  else
   {
-    switch (s_association->pixelizationEngineType()) {
-      case HealPIX:
-        s_association->addEngine(dataEngines::Pixelization, HealPIX);
-        s_association->pixelizationEngine()->scale(healpixDlg->scale());
-
-        s_association->pixelizationEngine()->usePixelAvg(healpixDlg->usePixelAvg());
-        s_association->pixelizationEngine()->usePixelDev(healpixDlg->usePixelDev());
-        s_association->pixelizationEngine()->usePixelVar(healpixDlg->usePixelVar());
-
-        s_association->pixelizationEngine()->doAvgNormalize(healpixDlg->doAvgNormalize());
-        s_association->pixelizationEngine()->doVarNormalize(healpixDlg->doVarNormalize());
-        s_association->pixelizationEngine()->doMinMaxScale(healpixDlg->doMinMaxScale());
-
-        if (healpixDlg->order())
-          s_association->pixelizationEngine()->pixelLayout(Nest);
-        else
-          s_association->pixelizationEngine()->pixelLayout(Ring);
-
-        s_association->pixelizationEngine()->configured(true);
-        break;
-      default:
-        selectPixelizer();
+    if (s_association->pixelizationEngine()->configured() == false)
+    {
+      s_association->reset(allTypes::Pixelization);
+      setPixelizerAttr();
     }
   }
-  else
-    if (s_association->pixelizationEngine()->configured() == false) {
-      s_association->reset(allTypes::Pixelization);
-      switch (s_association->pixelizationEngineType()) {
-        case HealPIX:
-          s_association->addEngine(dataEngines::Pixelization, HealPIX);
-          s_association->pixelizationEngine()->scale(healpixDlg->scale());
-
-          s_association->pixelizationEngine()->usePixelAvg(healpixDlg->usePixelAvg());
-          s_association->pixelizationEngine()->usePixelDev(healpixDlg->usePixelDev());
-          s_association->pixelizationEngine()->usePixelVar(healpixDlg->usePixelVar());
-
-          s_association->pixelizationEngine()->doAvgNormalize(healpixDlg->doAvgNormalize());
-          s_association->pixelizationEngine()->doVarNormalize(healpixDlg->doVarNormalize());
-          s_association->pixelizationEngine()->doMinMaxScale(healpixDlg->doMinMaxScale());
-
-          if (healpixDlg->order())
-            s_association->pixelizationEngine()->pixelLayout(Nest);
-          else
-            s_association->pixelizationEngine()->pixelLayout(Ring);
-
-          s_association->pixelizationEngine()->configured(true);
-          break;
-        default:
-          selectPixelizer();
-      }
-    }
 
   // walk through all input data types
   FILETYPE inputChain = fileType::InputData;
@@ -1212,9 +1144,6 @@ void mainWindow::pixelize() {
   int value = 0;
   while (inputChain <= fileType::InputBeam)
   {
-    mainWindow::progressBarWrapper(this, value);
-    value += 20;
-
     if (s_association->exists(inputChain) && !s_association->exists(pixelChain))
     {
       if (pixelize(inputChain,pixelChain))
@@ -1263,7 +1192,23 @@ void mainWindow::pixelize() {
   if (count)
     configureDisplay(fileType::PixelizedData);
 
-  return;
+  return count;
+}
+
+void mainWindow::setTransformerAttr()
+{
+  switch (s_association->transformationEngineType())
+  {
+    case Rsht:
+      s_association->addEngine(dataEngines::Transformation, Rsht);
+      s_association->transformationEngine()->minIndex(rshtDlg->minimumIndex());
+      s_association->transformationEngine()->maxIndex(rshtDlg->maximumIndex());
+      s_association->transformationEngine()->iterations(rshtDlg->iterations());
+      s_association->transformationEngine()->configured(true);
+      break;
+    default:
+      selectTransformer();
+  }
 }
 
 bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
@@ -1283,6 +1228,7 @@ bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
     pixelize(inputDataType,pixelDataType);
   }
 
+  bool display = false;
   switch(pixelDataType)
   {
     case fileType::WeightedPixel:
@@ -1296,7 +1242,7 @@ bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
           if(!s_association->exists(fileType::WeightedPixel))
             s_association->generatePixelData(s_association->pixelizationEngine(), fileType::WeightedPixel);
 
-          configureDisplay(fileType::WeightedPixel);
+          display = true;
         }
       }
       break;
@@ -1311,13 +1257,16 @@ bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
           if(!s_association->exists(fileType::PixelizedWeightedNoise))
             s_association->generatePixelData(s_association->pixelizationEngine(), fileType::PixelizedWeightedNoise);
 
-          configureDisplay(fileType::PixelizedWeightedNoise);
+          display = true;
         }
       }
       break;
     default:
       break;
   }
+
+  if(display)
+    configureDisplay(fileType::WeightedPixel);
 
   if (s_association->exists(pixelDataType) && !s_association->exists(transDataType))
   {
@@ -1328,39 +1277,21 @@ bool mainWindow::transform(FILETYPE pixelDataType, FILETYPE transDataType)
     return false;
 }
 
-void mainWindow::transform() {
-  QString title, message;
+int mainWindow::transform()
+{
   int count = 0;
 
   // create transformer engine, if it doesn't already exist
-  if (!s_association->exists(dataEngines::Transformation)) {
-    switch (s_association->transformationEngineType()) {
-      case Rsht:
-        s_association->addEngine(dataEngines::Transformation, Rsht);
-        s_association->transformationEngine()->minIndex(rshtDlg->minimumIndex());
-        s_association->transformationEngine()->maxIndex(rshtDlg->maximumIndex());
-        s_association->transformationEngine()->iterations(rshtDlg->iterations());
-        s_association->transformationEngine()->configured(true);
-        break;
-      default:
-        selectTransformer();
+  if (!s_association->exists(dataEngines::Transformation))
+    setTransformerAttr();
+  else
+  {
+    if (s_association->transformationEngine()->configured() == false)
+    {
+      s_association->reset(allTypes::Transformation);
+      setTransformerAttr();
     }
   }
-  else
-    if (s_association->transformationEngine()->configured() == false) {
-      s_association->reset(allTypes::Transformation);
-      switch (s_association->transformationEngineType()) {
-        case Rsht:
-          s_association->addEngine(dataEngines::Transformation, Rsht);
-          s_association->transformationEngine()->minIndex(rshtDlg->minimumIndex());
-          s_association->transformationEngine()->maxIndex(rshtDlg->maximumIndex());
-          s_association->transformationEngine()->iterations(rshtDlg->iterations());
-          s_association->transformationEngine()->configured(true);
-          break;
-        default:
-          selectTransformer();
-      }
-    }
 
   // walk through all of the pixelized data types
   FILETYPE pixelChain = fileType::PixelizedData;
@@ -1383,12 +1314,11 @@ void mainWindow::transform() {
 
   if (count)
     configureDisplay(fileType::TransformedData);
-  return;
+  return count;
 }
 
-void mainWindow::invert()
+int mainWindow::invert()
 {
-  QString title, message;
   int count = 0;
 
   FILETYPE inverseChain = fileType::InverseData;
@@ -1405,6 +1335,8 @@ void mainWindow::invert()
 
   if(count)
     configureDisplay(fileType::InverseData);
+
+  return count;
 }
 
 bool mainWindow::invert(FILETYPE inverseType, FILETYPE almType)
@@ -1415,6 +1347,18 @@ bool mainWindow::invert(FILETYPE inverseType, FILETYPE almType)
     return false;
 }
 
+void mainWindow::setAnalyzerAttr()
+{
+  s_association->addEngine(dataEngines::PseudoSpectrum);
+  s_association->powerSpectraEngine()->binning(specDlg->binSpectrum());
+  s_association->powerSpectraEngine()->computeInverse(specDlg->invertTransforms());
+  s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
+  s_association->powerSpectraEngine()->numLPerBin(specDlg->indicesPerBin());
+  s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
+  s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
+  s_association->powerSpectraEngine()->configured(true);
+}
+
 void mainWindow::analyze() {
   QString title, message;
 
@@ -1422,29 +1366,14 @@ void mainWindow::analyze() {
   if (!specDlg->configured())
     specDlg->configure();
 
-  if (!s_association->exists(dataEngines::PseudoSpectrum)) {
-    s_association->addEngine(dataEngines::PseudoSpectrum);
-    s_association->powerSpectraEngine()->binning(specDlg->binSpectrum());
-    s_association->powerSpectraEngine()->computeInverse(specDlg->invertTransforms());
-    s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
-    s_association->powerSpectraEngine()->numLPerBin(specDlg->indicesPerBin());
-    s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
-    s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
-    s_association->powerSpectraEngine()->configured(true);
-  }
+  if (!s_association->exists(dataEngines::PseudoSpectrum))
+    setAnalyzerAttr();
   else
   {
     if (s_association->powerSpectraEngine()->configured() == false)
     {
       s_association->reset(allTypes::PseudoSpectrum);
-      s_association->addEngine(dataEngines::PseudoSpectrum);
-      s_association->powerSpectraEngine()->binning(specDlg->binSpectrum());
-      s_association->powerSpectraEngine()->computeInverse(specDlg->invertTransforms());
-      s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
-      s_association->powerSpectraEngine()->numLPerBin(specDlg->indicesPerBin());
-      s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
-      s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
-      s_association->powerSpectraEngine()->configured(true);
+      setAnalyzerAttr();
     }
   }
 
@@ -1456,10 +1385,9 @@ void mainWindow::analyze() {
       if (!s_association->exists(dataEngines::Transformation))
         selectTransformer();
 
-      if (!transform(fileType::PixelizedData,fileType::TransformedData)) {
-        title = QString(tr("No transformed data set available"));
-        message = QString(tr("No transformed data set is available.\nPlease check your data entries to insure that one has been entered correctly."));
-        QMessageBox::critical(this,title,message);
+      if (!transform(fileType::PixelizedData,fileType::TransformedData))
+      {
+        errorMessage("No transformed data set is available.\nPlease check your data entries to insure that one has been entered correctly.");
         return;
       }
     }
@@ -1484,9 +1412,7 @@ void mainWindow::analyze() {
 
       if (!transform(fileType::PixelizedWeights,fileType::TransformedWeights))
       {
-        title = QString(tr("No transformed data mask available"));
-        message = QString(tr("No transformed data mask is available.\nPlease check your data entries to insure that one has been entered correctly."));
-        QMessageBox::critical(this,title,message);
+        errorMessage("No transformed mask set is available.\nPlease check your data entries to insure that one has been entered correctly.");
         return;
       }
     }
@@ -1523,9 +1449,8 @@ void mainWindow::analyze() {
 
       if (!transform(fileType::WeightedPixel, fileType::WeightedTransform))
       {
-        title = QString(tr("No weighted transformed data available"));
-        message = QString(tr("No weighted transformed data is available.\nPlease check your data entries to insure that one has been entered correctly."));
-        QMessageBox::critical(this,title,message);
+       errorMessage("No weighted transformed set is available.\nPlease check your data entries to insure that one has been entered correctly.");
+        return;
         return;
       }
     }
@@ -1589,12 +1514,6 @@ void mainWindow::analyze() {
         s_association->weightedTransformedNoise()->dataType(fileType::TransformedWeightedNoise);
         int rows = s_association->weightedTransformedNoise()->rows();
         s_association->weightedTransformedNoise()->rwAccess().assign(rows, 0);
-        /*
-        title = QString(tr("No weighted transformed data available"));
-        message = QString(tr("No weighted transformed data is available.\nPlease check your data entries to insure that one has been entered correctly."));
-        QMessageBox::critical(this,title,message);
-        return;
-        */
       }
     }
     else
