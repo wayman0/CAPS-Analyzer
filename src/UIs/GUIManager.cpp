@@ -82,8 +82,8 @@ int GUIManager::pixelize()
     {
         if (s_association->pixelizationEngine()->configured() == false)
         {
-        s_association->reset(allTypes::Pixelization);
-        setPixelizerAttr();
+            s_association->reset(allTypes::Pixelization);
+            setPixelizerAttr();
         }
     }
 

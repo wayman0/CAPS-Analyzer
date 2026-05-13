@@ -94,6 +94,16 @@ class GUIManager
         virtual bool handleMissingTransformer() = 0;
         virtual void analyze();
 
+        virtual void selectPixelizer() = 0;
+        virtual void configurePixelizer(PIXELSCHEME scheme) = 0;
+
+        virtual void selectTransformer() = 0;
+        virtual void configureTransformer(TRANSFORMERSCHEME scheme) = 0;
+
+        void configureDisplay(FILETYPE dataType);
+        virtual void displayGraph(ASSOCIATEDSPECTRUM graph) = 0;
+        virtual void displayMap(ASSOCIATEDMAP map) = 0;
+
         virtual void createControlData(FILETYPE dataType,bool complete) = 0;
     protected:
         association               *s_association;

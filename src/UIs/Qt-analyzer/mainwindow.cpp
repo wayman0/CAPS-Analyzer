@@ -1105,7 +1105,9 @@ void mainWindow::analyze()
   configureDisplay(fileType::BinnedExtrapolatedInstrumentedSpectrum);
 }
 
-void mainWindow::configureDisplay(FILETYPE dataType) {
+void mainWindow::configureDisplay(FILETYPE dataType)
+//void GUIManager::configureDisplay(FILETYPE dataType)
+{
   //If running pixelizer
   //ui->progressBar->setValue(value);  
   
@@ -1599,7 +1601,9 @@ void mainWindow::selectTransformer() {
   return;
 }
 
-void mainWindow::configurePixelizer(PIXELSCHEME scheme) {
+void mainWindow::configurePixelizer(PIXELSCHEME scheme)
+//void GUIManager::configurePixelizer(PIXELSCHEME scheme)
+{
   QString title, message;
   bool error = false;
 
@@ -1619,7 +1623,9 @@ void mainWindow::configurePixelizer(PIXELSCHEME scheme) {
   }
 }
 
-void mainWindow::configureTransformer(TRANSFORMERSCHEME scheme) {
+void mainWindow::configureTransformer(TRANSFORMERSCHEME scheme)
+//void GUIManager::configureTransformer(TRANSFORMERSCHEME scheme)
+{
   QString title, message;
   bool error = false;
 
