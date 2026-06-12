@@ -5,6 +5,8 @@ Qt-analyzer_autogen/timestamp: \
   /mnt/research/software/CAPS-Analyzer/src/UIs/GUIManager.cpp \
   /mnt/research/software/CAPS-Analyzer/src/UIs/GUIManager.h \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/CMakeLists.txt \
+  /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/analyzerdlg.cpp \
+  /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/analyzerdlg.ui \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.cpp \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.ui \
   /mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.cpp \

@@ -108,6 +108,7 @@ mainWindow::mainWindow() :
   healpixDlg = new healpixDialog(s_association);
   transSelectDlg = new transformerDialog(s_association);
   rshtDlg = new rshtDialog(s_association);
+  analSelectDlg = new analyzerDialog(s_association);
   specDlg = new spectrumDialog();
   mapperDlg = new mapperDialog(s_association);
   mapSelectDlg = new mapSelectDialog(s_association);
@@ -166,7 +167,10 @@ mainWindow::mainWindow() :
   connect(ui->exitAction, &QAction::triggered, [=](){close();});
   connect(ui->pixelizeAction, &QAction::triggered, [=](){selectPixelizer();});
   connect(ui->transformAction, &QAction::triggered, [=](){selectTransformer();});
-  connect(ui->analyzeAction, &QAction::triggered, [=](){analyze();});
+  //connect(ui->analyzeAction, &QAction::triggered, [=](){analyze();});
+
+  connect(ui->analyzeAction, &QAction::triggered, [=](){selectAnalzyer();});
+
 //  connect(ui->inverseAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
   connect(ui->selectMapsAction, &QAction::triggered, [=](){mapSelectDlg->configure();});
   connect(ui->selectGraphsAction, &QAction::triggered, [=](){graphSelectDlg->configure();});
@@ -196,6 +200,9 @@ mainWindow::mainWindow() :
   connect(graphSelectDlg, &graphSelectDialog::graphSelected, [=](associatedSpectrum graph){displayGraph(graph);});
   connect(pixSelectDlg, &pixelizerDialog::pixelizerSelected, [=](PIXELSCHEME scheme){configurePixelizer(scheme);});
   connect(transSelectDlg, &transformerDialog::transformerSelected, [=](TRANSFORMERSCHEME scheme){configureTransformer(scheme);});
+
+  connect(analSelectDlg, &analyzerDialog::analyzerSelected, [=](){configureAnalyzer();});
+
   connect(healpixDlg, &healpixDialog::pixelizeData, [=](){pixelize();});
   connect(rshtDlg, &rshtDialog::transformData, [=](){transform();});
   connect(specDlg, &spectrumDialog::spectrumReady, [=](){analyze();});
@@ -261,8 +268,7 @@ void mainWindow::updateProgressText(const char* updateName)
 }
 
 void mainWindow::errorMessage(const char* errMess)
-{ s_association = 0;
-    associationVector = new std::vector<association*>();
+{
   QMessageBox::critical(this, "Error", errMess);
 }
 
@@ -1029,16 +1035,6 @@ void mainWindow::setPixelizerAttr()
   }
 }
 
-int mainWindow::pixelize()
-{
-  int count = GUIManager::pixelize();
-
-  if(count)
-    configureDisplay(fileType::PixelizedData);
-
-  return count;
-}
-
 void mainWindow::setTransformerAttr()
 {
   switch (s_association->transformationEngineType())
@@ -1053,16 +1049,6 @@ void mainWindow::setTransformerAttr()
     default:
       selectTransformer();
   }
-}
-
-int mainWindow::transform()
-{
-  int count = GUIManager::transform();
-
-  if (count)
-    configureDisplay(fileType::TransformedData);
-
-  return count;
 }
 
 int mainWindow::invert()
@@ -1094,19 +1080,7 @@ bool mainWindow::handleMissingTransformer()
   return true;
 }
 
-void mainWindow::analyze()
-{
-  //create pseudospectrum engine, if it doesn't already exist
-  if (!specDlg->configured())
-    specDlg->configure();
-
-  GUIManager::analyze();
-
-  configureDisplay(fileType::BinnedExtrapolatedInstrumentedSpectrum);
-}
-
 void mainWindow::configureDisplay(FILETYPE dataType)
-//void GUIManager::configureDisplay(FILETYPE dataType)
 {
   //If running pixelizer
   //ui->progressBar->setValue(value);  
@@ -1589,11 +1563,13 @@ void mainWindow::selectTransformer() {
     transCount = static_cast <TRANSFORMERSCHEME>(++i);
   }  
 
-  if (count > 1) {
+  if (count > 1)
+  {
     if (!transSelectDlg->configured())
       transSelectDlg->configure();
   }
-  else {
+  else
+  {
     if (!rshtDlg->configured())
       rshtDlg->configure();
   }
@@ -1601,10 +1577,14 @@ void mainWindow::selectTransformer() {
   return;
 }
 
-void mainWindow::configurePixelizer(PIXELSCHEME scheme)
-//void GUIManager::configurePixelizer(PIXELSCHEME scheme)
+void mainWindow::selectAnalzyer()
 {
-  QString title, message;
+  if (!specDlg->configured())
+    specDlg->configure();
+}
+
+void mainWindow::configurePixelizer(PIXELSCHEME scheme)
+{
   bool error = false;
 
   switch (scheme) {
@@ -1615,18 +1595,12 @@ void mainWindow::configurePixelizer(PIXELSCHEME scheme)
       error = true;
   }
 
-  if (error) {
-    title = QString(tr("Pixelization configuration error"));
-    message = QString(tr("An invalid pixelization engine was specified.\nPixelization aborted."));
-    QMessageBox::critical(this,title,message);
-    return;
-  }
+  if (error)
+    errorMessage("An invalid pixelization engine was specified.\nPixelization aborted.");
 }
 
 void mainWindow::configureTransformer(TRANSFORMERSCHEME scheme)
-//void GUIManager::configureTransformer(TRANSFORMERSCHEME scheme)
 {
-  QString title, message;
   bool error = false;
 
   switch (scheme) {
@@ -1637,14 +1611,16 @@ void mainWindow::configureTransformer(TRANSFORMERSCHEME scheme)
       error = true;
   }
 
-  if (error) {
-    title = QString(tr("Transformation configuration error"));
-    message = QString(tr("An invalid transformation engine was specified.\nTransformation aborted."));
-    QMessageBox::critical(this,title,message);
-    return;
-  }
+  if (error)
+    errorMessage("An invalid transformation engine was specified. \nTransformation aborted.");
 }
 
+void mainWindow::configureAnalyzer()
+{
+  if(!specDlg->configured())
+    specDlg->configure();
+
+}
 void mainWindow::reset() {
   ctrlDlg->reset();
   mapperDlg->reset();

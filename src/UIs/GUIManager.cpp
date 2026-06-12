@@ -142,6 +142,9 @@ int GUIManager::pixelize()
         //!s_association->exists(fileType::InputWeightedNoise))
         s_association->generateWeightedData(fileType::PixelizedWeightedNoise);
 
+    if(count)
+        configureDisplay(fileType::PixelizedData);
+
     return count;
 }
 
@@ -272,11 +275,29 @@ int GUIManager::transform()
         transChain = static_cast<FILETYPE>(offset+type);
     }
 
+    if(count)
+        configureDisplay(fileType::TransformedData);
+
     return count;
 }
 
 bool GUIManager::transform(FILETYPE pixelDataType, FILETYPE transDataType)
 {
+    if (!s_association->exists(pixelDataType))
+    {
+        if (!s_association->exists(dataEngines::Pixelization))
+            selectPixelizer();
+
+        int offset = (int)fileType::PixelizedData - (int)fileType::InputData;
+        FILETYPE inputDataType = fileType::Null;
+        if (pixelDataType >= fileType::PixelOccupancy)
+            inputDataType = static_cast<FILETYPE>((int)pixelDataType - offset - 1);
+        else
+            inputDataType = static_cast<FILETYPE>((int)pixelDataType - offset);
+
+        pixelize(inputDataType,pixelDataType);
+    }
+
     switch(pixelDataType)
     {
         case fileType::WeightedPixel:
@@ -558,4 +579,6 @@ void GUIManager::analyze()
     // everything is here and ready to go, so carry out analysis
     // generatePowerSpectrumData will just do everything including ensembling
     s_association->generatePowerSpectrumData(s_association->powerSpectraEngine());
+
+    configureDisplay(fileType::BinnedExtrapolatedInstrumentedSpectrum);
 }

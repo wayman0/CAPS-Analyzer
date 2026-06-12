@@ -110,6 +110,12 @@
 			null
 		],
 		[
+			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/analyzerdlg.h",
+			"mU",
+			"",
+			null
+		],
+		[
 			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.h",
 			"mU",
 			"",
@@ -253,6 +259,7 @@
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : 
 	[
+		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_analyzerdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp",
@@ -270,6 +277,7 @@
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/qrc_mainwindow.cpp",
+		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_analyzerdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_associationselectdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_controldatadlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_dataselectdlg.h",
@@ -285,6 +293,7 @@
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_rshtdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_spectrumdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_transformerdlg.h",
+		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/analyzerdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.h",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.h",
@@ -314,6 +323,11 @@
 	[
 		[
 			"/mnt/research/software/CAPS-Analyzer/src/UIs/GUIManager.cpp",
+			"MU",
+			null
+		],
+		[
+			"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/analyzerdlg.cpp",
 			"MU",
 			null
 		],
@@ -407,6 +421,7 @@
 	"UIC_SEARCH_PATHS" : [],
 	"UIC_SKIP" : 
 	[
+		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_analyzerdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_associationselectdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_controldatadlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_dataselectdlg.cpp",
@@ -424,6 +439,7 @@
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_spectrumdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/moc_transformerdlg.cpp",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/qrc_mainwindow.cpp",
+		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_analyzerdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_associationselectdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_controldatadlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_dataselectdlg.h",
@@ -439,6 +455,7 @@
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_rshtdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_spectrumdlg.h",
 		"/mnt/research/software/CAPS-Analyzer/build/src/UIs/Qt-analyzer/ui_transformerdlg.h",
+		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/analyzerdlg.ui",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/associationselectdlg.ui",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/controldatadlg.ui",
 		"/mnt/research/software/CAPS-Analyzer/src/UIs/Qt-analyzer/dataselectdlg.ui",

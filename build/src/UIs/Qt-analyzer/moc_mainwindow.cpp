@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_mainWindow_t {
-    QByteArrayData data[51];
-    char stringdata0[596];
+    QByteArrayData data[50];
+    char stringdata0[602];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -57,32 +57,31 @@ QT_MOC_LITERAL(21, 223, 14), // "addAssociation"
 QT_MOC_LITERAL(22, 238, 14), // "setAssociation"
 QT_MOC_LITERAL(23, 253, 12), // "association*"
 QT_MOC_LITERAL(24, 266, 8), // "newAssoc"
-QT_MOC_LITERAL(25, 275, 8), // "pixelize"
-QT_MOC_LITERAL(26, 284, 9), // "transform"
-QT_MOC_LITERAL(27, 294, 7), // "analyze"
-QT_MOC_LITERAL(28, 302, 17), // "createControlData"
-QT_MOC_LITERAL(29, 320, 8), // "dataType"
-QT_MOC_LITERAL(30, 329, 8), // "complete"
-QT_MOC_LITERAL(31, 338, 16), // "configureDisplay"
-QT_MOC_LITERAL(32, 355, 9), // "buildMaps"
-QT_MOC_LITERAL(33, 365, 10), // "displayMap"
-QT_MOC_LITERAL(34, 376, 13), // "ASSOCIATEDMAP"
-QT_MOC_LITERAL(35, 390, 3), // "map"
-QT_MOC_LITERAL(36, 394, 11), // "buildGraphs"
-QT_MOC_LITERAL(37, 406, 12), // "displayGraph"
-QT_MOC_LITERAL(38, 419, 18), // "ASSOCIATEDSPECTRUM"
-QT_MOC_LITERAL(39, 438, 5), // "graph"
-QT_MOC_LITERAL(40, 444, 18), // "configurePixelizer"
-QT_MOC_LITERAL(41, 463, 11), // "PIXELSCHEME"
-QT_MOC_LITERAL(42, 475, 6), // "scheme"
-QT_MOC_LITERAL(43, 482, 20), // "configureTransformer"
-QT_MOC_LITERAL(44, 503, 17), // "TRANSFORMERSCHEME"
-QT_MOC_LITERAL(45, 521, 8), // "paintMap"
-QT_MOC_LITERAL(46, 530, 14), // "unsigned char*"
-QT_MOC_LITERAL(47, 545, 10), // "paintGraph"
-QT_MOC_LITERAL(48, 556, 5), // "reset"
-QT_MOC_LITERAL(49, 562, 15), // "selectPixelizer"
-QT_MOC_LITERAL(50, 578, 17) // "selectTransformer"
+QT_MOC_LITERAL(25, 275, 17), // "createControlData"
+QT_MOC_LITERAL(26, 293, 8), // "dataType"
+QT_MOC_LITERAL(27, 302, 8), // "complete"
+QT_MOC_LITERAL(28, 311, 16), // "configureDisplay"
+QT_MOC_LITERAL(29, 328, 9), // "buildMaps"
+QT_MOC_LITERAL(30, 338, 10), // "displayMap"
+QT_MOC_LITERAL(31, 349, 13), // "ASSOCIATEDMAP"
+QT_MOC_LITERAL(32, 363, 3), // "map"
+QT_MOC_LITERAL(33, 367, 11), // "buildGraphs"
+QT_MOC_LITERAL(34, 379, 12), // "displayGraph"
+QT_MOC_LITERAL(35, 392, 18), // "ASSOCIATEDSPECTRUM"
+QT_MOC_LITERAL(36, 411, 5), // "graph"
+QT_MOC_LITERAL(37, 417, 18), // "configurePixelizer"
+QT_MOC_LITERAL(38, 436, 11), // "PIXELSCHEME"
+QT_MOC_LITERAL(39, 448, 6), // "scheme"
+QT_MOC_LITERAL(40, 455, 20), // "configureTransformer"
+QT_MOC_LITERAL(41, 476, 17), // "TRANSFORMERSCHEME"
+QT_MOC_LITERAL(42, 494, 17), // "configureAnalyzer"
+QT_MOC_LITERAL(43, 512, 8), // "paintMap"
+QT_MOC_LITERAL(44, 521, 14), // "unsigned char*"
+QT_MOC_LITERAL(45, 536, 10), // "paintGraph"
+QT_MOC_LITERAL(46, 547, 5), // "reset"
+QT_MOC_LITERAL(47, 553, 15), // "selectPixelizer"
+QT_MOC_LITERAL(48, 569, 17), // "selectTransformer"
+QT_MOC_LITERAL(49, 587, 14) // "selectAnalzyer"
 
     },
     "mainWindow\0redrawMap\0\0redrawGraph\0"
@@ -92,15 +91,16 @@ QT_MOC_LITERAL(50, 578, 17) // "selectTransformer"
     "selectGraphDisplay\0dataReady\0FILETYPE\0"
     "openFile\0readData\0minEnergy\0maxEnergy\0"
     "saveFile\0addAssociation\0setAssociation\0"
-    "association*\0newAssoc\0pixelize\0transform\0"
-    "analyze\0createControlData\0dataType\0"
-    "complete\0configureDisplay\0buildMaps\0"
-    "displayMap\0ASSOCIATEDMAP\0map\0buildGraphs\0"
-    "displayGraph\0ASSOCIATEDSPECTRUM\0graph\0"
-    "configurePixelizer\0PIXELSCHEME\0scheme\0"
-    "configureTransformer\0TRANSFORMERSCHEME\0"
+    "association*\0newAssoc\0createControlData\0"
+    "dataType\0complete\0configureDisplay\0"
+    "buildMaps\0displayMap\0ASSOCIATEDMAP\0"
+    "map\0buildGraphs\0displayGraph\0"
+    "ASSOCIATEDSPECTRUM\0graph\0configurePixelizer\0"
+    "PIXELSCHEME\0scheme\0configureTransformer\0"
+    "TRANSFORMERSCHEME\0configureAnalyzer\0"
     "paintMap\0unsigned char*\0paintGraph\0"
-    "reset\0selectPixelizer\0selectTransformer"
+    "reset\0selectPixelizer\0selectTransformer\0"
+    "selectAnalzyer"
 };
 #undef QT_MOC_LITERAL
 
@@ -110,7 +110,7 @@ static const uint qt_meta_data_mainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      30,   14, // methods
+      29,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -118,38 +118,37 @@ static const uint qt_meta_data_mainWindow[] = {
        9,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,  164,    2, 0x06 /* Public */,
-       3,    0,  165,    2, 0x06 /* Public */,
-       4,    0,  166,    2, 0x06 /* Public */,
-       5,    2,  167,    2, 0x06 /* Public */,
-      10,    2,  172,    2, 0x06 /* Public */,
-      11,    0,  177,    2, 0x06 /* Public */,
-      12,    1,  178,    2, 0x06 /* Public */,
-      13,    1,  181,    2, 0x06 /* Public */,
-      14,    1,  184,    2, 0x06 /* Public */,
+       1,    0,  159,    2, 0x06 /* Public */,
+       3,    0,  160,    2, 0x06 /* Public */,
+       4,    0,  161,    2, 0x06 /* Public */,
+       5,    2,  162,    2, 0x06 /* Public */,
+      10,    2,  167,    2, 0x06 /* Public */,
+      11,    0,  172,    2, 0x06 /* Public */,
+      12,    1,  173,    2, 0x06 /* Public */,
+      13,    1,  176,    2, 0x06 /* Public */,
+      14,    1,  179,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      16,    0,  187,    2, 0x0a /* Public */,
-      17,    2,  188,    2, 0x0a /* Public */,
-      20,    0,  193,    2, 0x0a /* Public */,
-      21,    0,  194,    2, 0x0a /* Public */,
-      22,    1,  195,    2, 0x0a /* Public */,
-      25,    0,  198,    2, 0x0a /* Public */,
-      26,    0,  199,    2, 0x0a /* Public */,
-      27,    0,  200,    2, 0x0a /* Public */,
-      28,    2,  201,    2, 0x0a /* Public */,
-      31,    1,  206,    2, 0x0a /* Public */,
-      32,    0,  209,    2, 0x0a /* Public */,
-      33,    1,  210,    2, 0x0a /* Public */,
-      36,    0,  213,    2, 0x0a /* Public */,
-      37,    1,  214,    2, 0x0a /* Public */,
-      40,    1,  217,    2, 0x0a /* Public */,
-      43,    1,  220,    2, 0x0a /* Public */,
-      45,    1,  223,    2, 0x08 /* Private */,
-      47,    1,  226,    2, 0x08 /* Private */,
-      48,    0,  229,    2, 0x08 /* Private */,
-      49,    0,  230,    2, 0x08 /* Private */,
-      50,    0,  231,    2, 0x08 /* Private */,
+      16,    0,  182,    2, 0x0a /* Public */,
+      17,    2,  183,    2, 0x0a /* Public */,
+      20,    0,  188,    2, 0x0a /* Public */,
+      21,    0,  189,    2, 0x0a /* Public */,
+      22,    1,  190,    2, 0x0a /* Public */,
+      25,    2,  193,    2, 0x0a /* Public */,
+      28,    1,  198,    2, 0x0a /* Public */,
+      29,    0,  201,    2, 0x0a /* Public */,
+      30,    1,  202,    2, 0x0a /* Public */,
+      33,    0,  205,    2, 0x0a /* Public */,
+      34,    1,  206,    2, 0x0a /* Public */,
+      37,    1,  209,    2, 0x0a /* Public */,
+      40,    1,  212,    2, 0x0a /* Public */,
+      42,    0,  215,    2, 0x0a /* Public */,
+      43,    1,  216,    2, 0x08 /* Private */,
+      45,    1,  219,    2, 0x08 /* Private */,
+      46,    0,  222,    2, 0x08 /* Private */,
+      47,    0,  223,    2, 0x08 /* Private */,
+      48,    0,  224,    2, 0x08 /* Private */,
+      49,    0,  225,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
@@ -168,19 +167,18 @@ static const uint qt_meta_data_mainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 23,   24,
-    QMetaType::Int,
-    QMetaType::Int,
+    QMetaType::Void, 0x80000000 | 15, QMetaType::Bool,   26,   27,
+    QMetaType::Void, 0x80000000 | 15,   26,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 15, QMetaType::Bool,   29,   30,
-    QMetaType::Void, 0x80000000 | 15,   29,
+    QMetaType::Void, 0x80000000 | 31,   32,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 34,   35,
-    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 35,   36,
     QMetaType::Void, 0x80000000 | 38,   39,
-    QMetaType::Void, 0x80000000 | 41,   42,
-    QMetaType::Void, 0x80000000 | 44,   42,
-    QMetaType::Void, 0x80000000 | 46,   35,
-    QMetaType::Void, 0x80000000 | 46,   39,
+    QMetaType::Void, 0x80000000 | 41,   39,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 44,   32,
+    QMetaType::Void, 0x80000000 | 44,   36,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -208,24 +206,21 @@ void mainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 11: _t->saveFile(); break;
         case 12: _t->addAssociation(); break;
         case 13: _t->setAssociation((*reinterpret_cast< association*(*)>(_a[1]))); break;
-        case 14: { int _r = _t->pixelize();
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 15: { int _r = _t->transform();
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 16: _t->analyze(); break;
-        case 17: _t->createControlData((*reinterpret_cast< FILETYPE(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 18: _t->configureDisplay((*reinterpret_cast< FILETYPE(*)>(_a[1]))); break;
-        case 19: _t->buildMaps(); break;
-        case 20: _t->displayMap((*reinterpret_cast< ASSOCIATEDMAP(*)>(_a[1]))); break;
-        case 21: _t->buildGraphs(); break;
-        case 22: _t->displayGraph((*reinterpret_cast< ASSOCIATEDSPECTRUM(*)>(_a[1]))); break;
-        case 23: _t->configurePixelizer((*reinterpret_cast< PIXELSCHEME(*)>(_a[1]))); break;
-        case 24: _t->configureTransformer((*reinterpret_cast< TRANSFORMERSCHEME(*)>(_a[1]))); break;
-        case 25: _t->paintMap((*reinterpret_cast< unsigned char*(*)>(_a[1]))); break;
-        case 26: _t->paintGraph((*reinterpret_cast< unsigned char*(*)>(_a[1]))); break;
-        case 27: _t->reset(); break;
-        case 28: _t->selectPixelizer(); break;
-        case 29: _t->selectTransformer(); break;
+        case 14: _t->createControlData((*reinterpret_cast< FILETYPE(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 15: _t->configureDisplay((*reinterpret_cast< FILETYPE(*)>(_a[1]))); break;
+        case 16: _t->buildMaps(); break;
+        case 17: _t->displayMap((*reinterpret_cast< ASSOCIATEDMAP(*)>(_a[1]))); break;
+        case 18: _t->buildGraphs(); break;
+        case 19: _t->displayGraph((*reinterpret_cast< ASSOCIATEDSPECTRUM(*)>(_a[1]))); break;
+        case 20: _t->configurePixelizer((*reinterpret_cast< PIXELSCHEME(*)>(_a[1]))); break;
+        case 21: _t->configureTransformer((*reinterpret_cast< TRANSFORMERSCHEME(*)>(_a[1]))); break;
+        case 22: _t->configureAnalyzer(); break;
+        case 23: _t->paintMap((*reinterpret_cast< unsigned char*(*)>(_a[1]))); break;
+        case 24: _t->paintGraph((*reinterpret_cast< unsigned char*(*)>(_a[1]))); break;
+        case 25: _t->reset(); break;
+        case 26: _t->selectPixelizer(); break;
+        case 27: _t->selectTransformer(); break;
+        case 28: _t->selectAnalzyer(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -327,13 +322,13 @@ int mainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 30)
+        if (_id < 29)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 30;
+        _id -= 29;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 30)
+        if (_id < 29)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 30;
+        _id -= 29;
     }
     return _id;
 }
