@@ -71,6 +71,32 @@ void GUIManager::progressTextWrapper(void* ui, const char* updateName)
 void GUIManager::errorMessageWrapper(void* ui, const char* errMess)
 {}
 
+void GUIManager::writeData(int numTypes, FILETYPE dataTypes[])
+{
+    try
+    {
+        s_association->fileIOEngine()->saveBase(fileName.c_str(), &numTypes, dataTypes);
+        s_association->fileIOEngine()->save(&numTypes, dataTypes);
+    }
+    catch(ERRORCODES error)
+    {
+        errorMessage(s_association->errorDetails().c_str());
+    }
+}
+
+void GUIManager::saveFile()
+{
+    FORMAT dataFormat = selectFileName();
+
+    if (s_association->exists(dataEngines::fileIO))
+        s_association->reset(allTypes::fileIO);
+    s_association->addEngine(dataEngines::fileIO, fileName.c_str(), dataFormat, selectedDataType, Write);
+
+    emitSaveDataSets();
+
+    displayMessage("Save Successfull.");
+}
+
 int GUIManager::pixelize()
 {
     int count = 0;

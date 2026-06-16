@@ -272,6 +272,11 @@ void mainWindow::errorMessage(const char* errMess)
   QMessageBox::critical(this, "Error", errMess);
 }
 
+void mainWindow::displayMessage(const char* mess)
+{
+  QMessageBox::information(this, "Info Box", mess);
+}
+
 bool mainWindow::addDataMessage(const char* mess)
 {
   QMessageBox questionBox;
@@ -297,7 +302,7 @@ bool mainWindow::addDataMessage(const char* mess)
 
 void mainWindow::openFile()
 {
-  QString title, message;
+  QString title, message, fileName;
 
   QComboBox *observatoryBox = new QComboBox();
   FILETYPE dataTypes = fileType::Null;
@@ -393,13 +398,20 @@ void mainWindow::openFile()
       dataSelectDlg = new dataSelectDialog(s_association, RWMode::Read);
       connect(dataSelectDlg,
               &dataSelectDialog::dataSelected,
-              [=](std::vector<FILETYPE>* dataSets)
+              [=](int size, FILETYPE types[])
+              {
+                *numTypes = size;
+                for(int i = 0; i < *numTypes; i += 1)
+                  dataTypes[i] = types[i];
+              });
+
+              /*(std::vector<FILETYPE>* dataSets)
               {
                 *numTypes = dataSets->size();
                 for(int i = 0; i < *numTypes; i += 1)
                   dataTypes[i] = (*dataSets)[i];
               });
-
+              */
       Q_EMIT readDataSets(dataTypes, numTypes);
 
       if (s_association->fileIOEngine()->slices() > 1)
@@ -533,8 +545,10 @@ void mainWindow::readData(double minEnergy, double maxEnergy) {
   //Q_EMIT dataReady(selectedDataType);
 }
 
-void mainWindow::saveFile() {
-  QString title, message;
+//void mainWindow::saveFile()
+//{
+  /*
+  QString title, message, fName;
   
   // extend the standard QFileDialog by adding the data types as a combo box
   title = QString(tr("Save File"));
@@ -620,27 +634,6 @@ void mainWindow::saveFile() {
     int* numTypes = new int(0);
     //FILETYPE dataType = FILETYPE::Null;
     FILETYPE* dataTypes = new FILETYPE[static_cast<int>(FILETYPE::FILETYPE_LIMIT)];
-    /*
-    for(int i = 0; i < static_cast<int>(FILETYPE::FILETYPE_LIMIT); i += 1)
-    {
-      dataType = static_cast<FILETYPE>(i);
-      if( s_association->exists(dataType)          &&
-        // these file types are not opened or saved as a I/O file
-          !(dataType == fileType::Null              ||
-            dataType == fileType::WeightedData      ||
-            dataType == fileType::WeightedPixel     ||
-            dataType == fileType::PixelOccupancy    ||
-            dataType == fileType::WeightedInverse   ||
-            dataType == fileType::MAP_LIMIT         ||
-            dataType == fileType::WeightedTransform ||
-            dataType == fileType::GRAPH_LIMIT       ||
-            dataType == fileType::TRANSFORM_LIMIT))
-      {
-        dataTypes[*numTypes] = dataType;
-        *numTypes += 1;
-      }
-    }
-    */
 
     dataSelectDlg = new dataSelectDialog(s_association, RWMode::Write);
     connect(dataSelectDlg, &dataSelectDialog::dataSelected,
@@ -676,6 +669,113 @@ void mainWindow::saveFile() {
   saveSuccessful.setText("Save Successful.");
   saveSuccessful.setStandardButtons(QMessageBox::Ok);
   saveSuccessful.exec();
+  */
+//}
+
+FORMAT mainWindow::selectFileName()
+{
+  QString title, message, fName;
+
+  // extend the standard QFileDialog by adding the data types as a combo box
+  title = QString(tr("Save File"));
+  QFileDialog *saveDialog = new QFileDialog(this, title, QDir::homePath(), tr("Fits File (*.fits);; HDF5 File (*.hdf5);; CSV File (*.csv)"));
+  saveDialog->setOption(QFileDialog::DontUseNativeDialog);
+  saveDialog->setAcceptMode(QFileDialog::AcceptSave);
+  saveDialog->setOption(QFileDialog::DontConfirmOverwrite);
+  saveDialog->setDirectory(directory);
+  QLayout *layout = saveDialog->layout();
+  QGridLayout *gridbox = qobject_cast<QGridLayout*>(layout);
+  saveDialog->setLayout(gridbox);
+
+  // execute the new dialog box
+  if (saveDialog->exec())
+  {
+    // get current directory
+    directory = saveDialog->directory();
+
+    // get file name
+    QStringList selectedFileNames;
+    selectedFileNames = saveDialog->selectedFiles();
+
+    if (selectedFileNames.size() > 1)
+    {
+      errorMessage("To many files selected.");
+      return FORMAT::None;
+    }
+
+    // check that file type is a supported type
+    FORMAT dataFormat;
+    fName = selectedFileNames[0];
+    QString filter = saveDialog->selectedNameFilter();
+
+    if (fName.contains(".fits",Qt::CaseInsensitive))
+      dataFormat = Fits;
+    else
+      if (filter.contains(".fits",Qt::CaseInsensitive))
+      {
+        fName += QString(tr(".fits"));
+        dataFormat = Fits;
+      }
+
+    if (fName.contains(".fits",Qt::CaseInsensitive))
+    {
+      QFileInfo checkFile(fName);
+      if (checkFile.exists() && checkFile.isFile())
+        fName = "!" + fName;
+    }
+
+    if (fName.contains(".hdf5", Qt::CaseInsensitive))
+      dataFormat = HDF5;
+    else
+    {
+      if(filter.contains(".hdf5", Qt::CaseInsensitive))
+      {
+        fName += QString(tr(".hdf5"));
+        dataFormat = HDF5;
+      }
+    }
+
+    if (fName.contains(".h5", Qt::CaseInsensitive))
+      dataFormat = HDF5;
+    else
+    {
+      if(filter.contains(".h5", Qt::CaseInsensitive))
+      {
+        fName += QString(tr(".h5"));
+        dataFormat = HDF5;
+      }
+    }
+
+    if (fName.contains(".csv",Qt::CaseInsensitive))
+      dataFormat = CSV;
+    else
+      if(filter.contains(".csv",Qt::CaseInsensitive))
+      {
+        fName += QString(tr(".csv"));
+        dataFormat = CSV;
+      }
+
+    if (dataFormat == None)
+    {
+      errorMessage("File Format must be FITS, HDF5 or CSV.");
+
+      return FORMAT::None;
+    }
+
+    fileName = fName.toStdString();
+    return dataFormat;
+  }
+
+  return FORMAT::None;
+}
+
+void mainWindow::emitSaveDataSets()
+{
+  dataSelectDlg = new dataSelectDialog(s_association, RWMode::Write);
+  connect(dataSelectDlg, &dataSelectDialog::dataSelected,
+          [=](int numTypes, FILETYPE dataTypes[]) { writeData(numTypes, dataTypes); });
+
+  Q_EMIT saveDataSets();
 }
 
 void mainWindow::addAssociation()
@@ -1621,6 +1721,7 @@ void mainWindow::configureAnalyzer()
     specDlg->configure();
 
 }
+
 void mainWindow::reset() {
   ctrlDlg->reset();
   mapperDlg->reset();

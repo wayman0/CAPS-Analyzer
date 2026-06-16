@@ -74,7 +74,8 @@ class dataSelectDialog : public QDialog {
     void setAssociation(association* newAssoc) {dataMgr = newAssoc;}
 
   Q_SIGNALS:
-    void dataSelected(std::vector<FILETYPE>*);
+    //void dataSelected(std::vector<FILETYPE>*);
+    void dataSelected(int size, FILETYPE data[]);
 
   public Q_SLOTS:
     void configure() {configure(mode);}

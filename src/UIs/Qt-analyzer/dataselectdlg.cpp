@@ -2205,7 +2205,8 @@ void dataSelectDialog::reset() {
 void dataSelectDialog::finalize() {
 
   validate();
-  Q_EMIT dataSelected(dataSets);
+  //Q_EMIT dataSelected(dataSets);
+  Q_EMIT dataSelected(dataSets->size(), dataSets->data());
   accept();
 }
 
