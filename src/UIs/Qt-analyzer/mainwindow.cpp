@@ -64,9 +64,10 @@ mainWindow::mainWindow() :
   associationVector = new std::vector<association*>();
   try
   {
-    associationVector->push_back(new association(this,  GUIManager::progressBarWrapper,
-                                                        GUIManager::progressTextWrapper,
-                                                        GUIManager::errorMessageWrapper));
+    associationVector->push_back(new association(this,  mainWindow::progressBarWrapper,
+                                                        mainWindow::progressTextWrapper,
+                                                        mainWindow::errorMessageWrapper));
+
     s_association = (*associationVector)[0];
   }
   catch (const std::overflow_error &e)
