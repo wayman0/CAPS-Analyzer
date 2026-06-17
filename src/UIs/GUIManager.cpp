@@ -52,6 +52,9 @@
 
 GUIManager::GUIManager()
 {
+    dataSource = OBSERVATORY::Analyzer;
+    fileName = "";
+    dataFormat = FORMAT::None;
 }
 
 GUIManager::~GUIManager()
@@ -86,7 +89,8 @@ void GUIManager::writeData(int numTypes, FILETYPE dataTypes[])
 
 void GUIManager::saveFile()
 {
-    FORMAT dataFormat = selectFileName();
+    //pass in false to show that we are writing not reading
+    selectFileName(false);
 
     if (s_association->exists(dataEngines::fileIO))
         s_association->reset(allTypes::fileIO);
@@ -95,6 +99,105 @@ void GUIManager::saveFile()
     emitSaveDataSets();
 
     displayMessage("Save Successfull.");
+}
+
+void GUIManager::readData(int numTypes, FILETYPE dataTypes[])
+{
+    try
+    {
+        if (s_association->fileIOEngine()->slices() > 1)
+        {
+            if(dataSource == Fermi || dataSource == Egret)
+            {
+                emitSelectSlices();
+
+                s_association->fileIOEngine()->open(&numTypes, dataTypes);
+            }
+            else
+                emitSelectEnergies();
+        }
+        else
+            s_association->fileIOEngine()->open(&numTypes, dataTypes);
+    }
+    catch (ERRORCODES error)
+    {
+        errorMessage((s_association->errorDetails().c_str()));
+    }
+}
+
+void GUIManager::openFile()
+{
+    selectFileName(true);
+    if (s_association->exists(dataEngines::fileIO))
+        s_association->reset(allTypes::fileIO);
+
+    s_association->addEngine(dataEngines::fileIO, fileName.c_str(), dataFormat, selectedDataType, Read);
+    s_association->fileIOEngine()->observatory(dataSource);
+
+    int* numTypes = new int(0);
+    FILETYPE* dataTypes = s_association->fileIOEngine()->getHeaders(numTypes);
+
+    emitReadDataSets(dataTypes, numTypes);
+
+    // this vector represents whether
+    // we have to map or graph or both
+    std::vector<FILETYPE> types(2);
+    types.assign(2, fileType::Null);
+
+    for(int i = 0; i < *numTypes; i += 1)
+    {
+      switch(dataTypes[i])
+      {
+        // these are all maps
+        case fileType::InputData:
+        case fileType::InputWeights:
+        case fileType::WeightedData:
+        case fileType::InputNoise:
+        case fileType::InputWeightedNoise:
+        case fileType::InputFilter:
+        case fileType::InputBeam:
+        case fileType::PixelizedData:
+        case fileType::PixelizedWeights:
+        case fileType::WeightedPixel:
+        case fileType::PixelizedNoise:
+        case fileType::PixelizedWeightedNoise:
+        case fileType::PixelizedFilter:
+        case fileType::PixelizedBeam:
+        case fileType::InverseData:
+        case fileType::InverseWeights:
+        case fileType::WeightedInverse:
+        case fileType::InverseNoise:
+        case fileType::InverseWeightedNoise:
+        case fileType::InverseFilter:
+        case fileType::InverseBeam:
+          types[0] = dataTypes[i];
+          break;
+          // these are all graphs
+        case fileType::TransformedData:
+        case fileType::TransformedWeights:
+        case fileType::WeightedTransform:
+        case fileType::TransformedNoise:
+        case fileType::TransformedWeightedNoise:
+        case fileType::TransformedFilter:
+        case fileType::TransformedBeam:
+        case fileType::EnsembleAveragedNoise:
+        case fileType::EnsembleAveragedSpectrum:
+        case fileType::ExtrapolatedSpectrum:
+        case fileType::ExtrapolatedInstrumentSpectrum:
+        case fileType::BinnedSpectrum:
+        case fileType::BinnedExtrapolatedSpectrum:
+        case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+        //case fileType::EnsembleAveragedBinnedSpectrum:
+          types[1] = dataTypes[i];
+          break;
+      }
+    }
+
+    invert();
+
+    for(fileType type : types)
+      configureDisplay(type);
+
 }
 
 int GUIManager::pixelize()

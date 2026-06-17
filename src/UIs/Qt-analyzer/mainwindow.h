@@ -109,9 +109,6 @@ class mainWindow : public QMainWindow, GUIManager {
     bool handleMissingTransformer();
 
   public Q_SLOTS:
-    void openFile();
-    void readData(double minEnergy, double maxEnergy);
-    //void saveFile();
     void addAssociation();
     void setAssociation(association* newAssoc);
     void createControlData(FILETYPE dataType,bool complete);
@@ -140,10 +137,12 @@ class mainWindow : public QMainWindow, GUIManager {
     void configureGraphs();
     void clearMaps();
     void clearGraphs();
-    void readData();
 
-    FORMAT selectFileName();
+    void selectFileName(bool read);
     void emitSaveDataSets();
+    void emitReadDataSets(FILETYPE* dataTypes, int* numTypes);
+    void emitSelectSlices();
+    void emitSelectEnergies();
 
     Ui::MainWindow *ui;
     

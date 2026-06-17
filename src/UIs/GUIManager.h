@@ -77,9 +77,14 @@ class GUIManager
         virtual void addAssociation()                           = 0;
         virtual void setAssociation(association* newAssoc)      = 0;
 
-        virtual void openFile() = 0;
+        virtual void selectFileName(bool read) = 0;
 
-        virtual FORMAT selectFileName() = 0;
+        virtual void emitReadDataSets(FILETYPE* dataTypes, int* numTypes) = 0;
+        virtual void emitSelectSlices() = 0;
+        virtual void emitSelectEnergies() = 0;
+        void readData(int numTypes, FILETYPE dataTypes[]);
+        void openFile();
+
         virtual void emitSaveDataSets() = 0;
         void writeData(int numTypes, FILETYPE dataTypes[]);
         void saveFile();
@@ -120,6 +125,7 @@ class GUIManager
         GENERICTYPE                selectedDataStream;
         FORMAT                     dataFormat;
         std::string                fileName;
+        OBSERVATORY                dataSource;
 };
 #endif
 

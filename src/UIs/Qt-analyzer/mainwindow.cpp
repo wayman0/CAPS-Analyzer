@@ -191,7 +191,7 @@ mainWindow::mainWindow() :
   connect(this,&mainWindow::selectEnergies,[=](double low, double high){energyDlg->configure(low,high);});
   connect(this,&mainWindow::selectSlices,[=](){multSelDlg->configure(); });
 
-  connect(energyDlg,&energyDialog::energySelected,[=](double low, double high){readData(low,high);});
+  //connect(energyDlg,&energyDialog::energySelected,[=](double low, double high){readData(low,high);});
   connect(mapperDlg, &mapperDialog::mapperReady, [=](){buildMaps();});
   connect(this, &mainWindow::selectMapDisplay, [=](unsigned int selection){mapSelectDlg->configure(selection);});
   connect(mapSelectDlg, &mapSelectDialog::mapSelected, [=](ASSOCIATEDMAP map){displayMap(map);});
@@ -300,16 +300,25 @@ bool mainWindow::addDataMessage(const char* mess)
   return true;
 }
 
-void mainWindow::openFile()
+void mainWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
 {
-  QString title, message, fileName;
+  dataSelectDlg = new dataSelectDialog(s_association, RWMode::Read);
+  connect(dataSelectDlg, &dataSelectDialog::dataSelected,
+              [=](int size, FILETYPE types[])
+              {
+                dataSelectDlg->accept();
+                readData(size, types);
+              });
+
+  Q_EMIT readDataSets(dataTypes, numTypes);
+}
+
+void mainWindow::selectFileName(bool read)
+{
+  QString title, fileTypes, fName;
 
   QComboBox *observatoryBox = new QComboBox();
-  FILETYPE dataTypes = fileType::Null;
   int obs = static_cast<int>(Unknown);
-  FORMAT dataFormat = None;
-  int types = static_cast<int>(dataTypes);
-  unsigned int loadedTypes = 0;
 
   while (static_cast<OBSERVATORY>(obs) != OBSERVATORY_LIMIT)
   {
@@ -318,466 +327,124 @@ void mainWindow::openFile()
     obs += 1;
   }
 
-
-  // extend the standard QFileDialog by adding the data types as a combo box
-  title = QString(tr("Open File"));
-  QFileDialog *openDialog = new QFileDialog(this, title, QDir::homePath(), tr("Input Files (*.fits *.hdf5 *.csv)"));
-  openDialog->setOption(QFileDialog::DontUseNativeDialog);
-  openDialog->setAcceptMode(QFileDialog::AcceptOpen);
-  openDialog->setDirectory(directory);
-  QLayout *layout = openDialog->layout();
-  QGridLayout *gridbox = qobject_cast<QGridLayout*>(layout);
-  if(gridbox)
+  if(read)
   {
-    gridbox->addWidget(new QLabel(tr("Observatory:")));
-    gridbox->addWidget(observatoryBox);
+    title = QString(tr("Open File"));
+    fileTypes = QString(tr("Input Files (*.fits *.hdf5 *.csv)"));
   }
-
-  openDialog->setLayout(gridbox);
-  
-  // execute the new dialog box
-  if (openDialog->exec())
+  else// write
   {
-    // get current directory
-    directory = openDialog->directory();
-    // get file name
-    QStringList selectedFileNames;
-    selectedFileNames = openDialog->selectedFiles();
-    if (selectedFileNames.size() > 1) {
-      title = QString(tr("File Selection Error"));
-      message = QString(tr("Too many file names selected"));
-      QMessageBox::critical(this,title,message);
-      return;
-    }
-
-    // check file type
-    fileName = selectedFileNames[0];
-    double minEnergy = 0.0, maxEnergy = 0.0;
-
-    if (fileName.contains(".fits",Qt::CaseInsensitive))
-      dataFormat = Fits;
-    if (fileName.contains(".csv",Qt::CaseInsensitive))
-      dataFormat = CSV;
-    if (fileName.contains(".hdf5",Qt::CaseInsensitive) ||
-       (fileName.contains(".h5",Qt::CaseInsensitive)))
-      dataFormat = HDF5;
-
-    // get data from file
-    if (s_association->exists(dataEngines::fileIO))
-      s_association->reset(allTypes::fileIO);
-    try {
-      s_association->addEngine(dataEngines::fileIO,fileName.toStdString().c_str(),dataFormat,selectedDataType,Read);
-    }
-    catch (ERRORCODES error) {
-      errorMessage("Error creating FILE IO Engine.");
-      return;
-    }
-
-    if (s_association->fileIOEngine()->fileFormat() != dataFormat) {
-      s_association->reset(allTypes::fileIO);
-      s_association->addEngine(dataEngines::fileIO,fileName.toStdString().c_str(),dataFormat,selectedDataType,Read);
-    }
-
-    obs = observatoryBox->currentIndex();
-    s_association->fileIOEngine()->observatory(static_cast<OBSERVATORY>(obs));
-
-    if(obs == static_cast<int>(OBSERVATORY::Unknown))
-    {
-      errorMessage("Invalid observatory selected");
-      return;
-    }
-
-    int* numTypes = new int(0);
-    FILETYPE* dataTypes = new FILETYPE[1];
-    dataTypes[0] = fileType::InputData;
-
-    try
-    {
-      dataTypes = s_association->fileIOEngine()->getHeaders(numTypes);
-
-      dataSelectDlg = new dataSelectDialog(s_association, RWMode::Read);
-      connect(dataSelectDlg,
-              &dataSelectDialog::dataSelected,
-              [=](int size, FILETYPE types[])
-              {
-                *numTypes = size;
-                for(int i = 0; i < *numTypes; i += 1)
-                  dataTypes[i] = types[i];
-              });
-
-              /*(std::vector<FILETYPE>* dataSets)
-              {
-                *numTypes = dataSets->size();
-                for(int i = 0; i < *numTypes; i += 1)
-                  dataTypes[i] = (*dataSets)[i];
-              });
-              */
-      Q_EMIT readDataSets(dataTypes, numTypes);
-
-      if (s_association->fileIOEngine()->slices() > 1)
-      {
-        if(obs == Fermi || obs == Egret)
-        {
-          connect(multSelDlg, &multipleSelectionDialog::slicesSelected,
-                  [=](int min, int max)
-                  {
-                    s_association->fileIOEngine()->minSlice(min);
-                    s_association->fileIOEngine()->maxSlice(max);
-                  });
-
-          Q_EMIT selectSlices();
-
-          s_association->fileIOEngine()->open(numTypes, dataTypes);
-        }
-        else
-        {
-          minEnergy = s_association->fileIOEngine()->min_energy();
-          maxEnergy = s_association->fileIOEngine()->max_energy();
-
-          // let user change energy range before reading data
-          Q_EMIT selectEnergies(minEnergy, maxEnergy);
-        }
-      }
-      else
-        s_association->fileIOEngine()->open(numTypes, dataTypes);
-    }
-    catch (ERRORCODES error) {
-      title = QString("Error reading file");
-      message = QString::fromStdString(s_association->errorDetails());
-      QMessageBox::critical(this,title,message);
-      return;
-    }
-
-    // this vector represents whether
-    // we have to map or graph or both
-    std::vector<FILETYPE> types(2);
-    types.assign(2, fileType::Null);
-
-    for(int i = 0; i < *numTypes; i += 1)
-    {
-      switch(dataTypes[i])
-      {
-        // these are all maps
-        case fileType::InputData:
-        case fileType::InputWeights:
-        case fileType::WeightedData:
-        case fileType::InputNoise:
-        case fileType::InputWeightedNoise:
-        case fileType::InputFilter:
-        case fileType::InputBeam:
-        case fileType::PixelizedData:
-        case fileType::PixelizedWeights:
-        case fileType::WeightedPixel:
-        case fileType::PixelizedNoise:
-        case fileType::PixelizedWeightedNoise:
-        case fileType::PixelizedFilter:
-        case fileType::PixelizedBeam:
-        case fileType::InverseData:
-        case fileType::InverseWeights:
-        case fileType::WeightedInverse:
-        case fileType::InverseNoise:
-        case fileType::InverseWeightedNoise:
-        case fileType::InverseFilter:
-        case fileType::InverseBeam:
-          types[0] = dataTypes[i];
-          break;
-          // these are all graphs
-        case fileType::TransformedData:
-        case fileType::TransformedWeights:
-        case fileType::WeightedTransform:
-        case fileType::TransformedNoise:
-        case fileType::TransformedWeightedNoise:
-        case fileType::TransformedFilter:
-        case fileType::TransformedBeam:
-        case fileType::EnsembleAveragedNoise:
-        case fileType::EnsembleAveragedSpectrum:
-        case fileType::ExtrapolatedSpectrum:
-        case fileType::ExtrapolatedInstrumentSpectrum:
-        case fileType::BinnedSpectrum:
-        case fileType::BinnedExtrapolatedSpectrum:
-        case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-        //case fileType::EnsembleAveragedBinnedSpectrum:
-          types[1] = dataTypes[i];
-          break;
-      }
-    }
-
-    invert();
-
-    for(fileType type : types)
-      configureDisplay(type);
-
-  }
-}
-
-void mainWindow::readData(double minEnergy, double maxEnergy) {
-  fileManager* fm;
-
-  // update energy keys, if necessary
-  if (minEnergy < 0.0) {
-    errorMessage("Minimum energy must be greater than 0");
-    return;
-  }
-  if (maxEnergy < 0.0) {
-    errorMessage("Maximum energy must be greater than 0");
-    return;
-  }
-  if (minEnergy > maxEnergy) {
-    errorMessage("Min energy must be less than Max energy");
-    return;
+    // extend the standard QFileDialog by adding the data types as a combo box
+    title = QString(tr("Save File"));
+    fileTypes = QString(tr("Fits File (*.fits);; HDF5 File (*.hdf5);; CSV File (*.csv);;"));
   }
 
-  fm = s_association->fileIOEngine();
+  QFileDialog* fileDialog = new QFileDialog(this, title, QDir::homePath(), fileTypes);
+  fileDialog->setOption(QFileDialog::DontUseNativeDialog);
+  fileDialog->setDirectory(directory);
 
-  //fm->min_energy(0,minEnergy);
-  //fm->max_energy(0,maxEnergy);
-
-  fm->minSlice(fm->min_energy(minEnergy, 0));
-  fm->maxSlice(fm->max_energy(maxEnergy, 0));
-
-  // set up progress bar call back
-  ui->progressBar->reset();
-  ui->progressLabel->setText(QString(tr("Reading Data")));
-//  analyzer_get_progress_callback("Reading Data");
-
-  s_association->addData(fm->data());
-  //s_association->sequenceStep(setSky);
-  //Q_EMIT dataReady(selectedDataType);
-}
-
-//void mainWindow::saveFile()
-//{
-  /*
-  QString title, message, fName;
-  
-  // extend the standard QFileDialog by adding the data types as a combo box
-  title = QString(tr("Save File"));
-  QFileDialog *saveDialog = new QFileDialog(this, title, QDir::homePath(), tr("Fits File (*.fits);; HDF5 File (*.hdf5);; CSV File (*.csv)"));
-  saveDialog->setOption(QFileDialog::DontUseNativeDialog);
-  saveDialog->setAcceptMode(QFileDialog::AcceptSave);
-  saveDialog->setOption(QFileDialog::DontConfirmOverwrite);
-  saveDialog->setDirectory(directory);
-  QLayout *layout = saveDialog->layout();
+  QLayout *layout = fileDialog->layout();
   QGridLayout *gridbox = qobject_cast<QGridLayout*>(layout);
-  saveDialog->setLayout(gridbox);
-  
-  // execute the new dialog box
-  if (saveDialog->exec())
+
+  fileDialog->setLayout(gridbox);
+
+  if(read)
   {
-    // get current directory
-    directory = saveDialog->directory();
-    // get file name
-    QStringList selectedFileNames;
-    selectedFileNames = saveDialog->selectedFiles();
-    if (selectedFileNames.size() > 1) {
-      title = QString(tr("File Selection Error"));
-      message = QString(tr("Too many file names selected"));
-      QMessageBox::critical(this,title,message);
-      return;
-    }
+    fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
 
-    // check that file type is a supported type
-    FORMAT dataFormat;
-    fileName = selectedFileNames[0];
-    QString filter = saveDialog->selectedNameFilter();
-    if (fileName.contains(".fits",Qt::CaseInsensitive))
-      dataFormat = Fits;
-    else
-      if (filter.contains(".fits",Qt::CaseInsensitive)) {
-        fileName += QString(tr(".fits"));
-        dataFormat = Fits;
-      }
-    if (fileName.contains(".fits",Qt::CaseInsensitive)) {
-      QFileInfo checkFile(fileName);
-      if (checkFile.exists() && checkFile.isFile())
-        fileName = "!" + fileName;
-    }
-
-    if (fileName.contains(".hdf5", Qt::CaseInsensitive))
-      dataFormat = HDF5;
-    else
+    if(gridbox)
     {
-      if(filter.contains(".hdf5", Qt::CaseInsensitive))
-      {
-        fileName += QString(tr(".hdf5"));
-        dataFormat = HDF5;
-      }
-    }
-
-    if (fileName.contains(".h5", Qt::CaseInsensitive))
-      dataFormat = HDF5;
-    else
-    {
-      if(filter.contains(".h5", Qt::CaseInsensitive))
-      {
-        fileName += QString(tr(".h5"));
-        dataFormat = HDF5;
-      }
-    }
-
-    if (fileName.contains(".csv",Qt::CaseInsensitive))
-      dataFormat = CSV;
-    else
-      if(filter.contains(".csv",Qt::CaseInsensitive)) {
-        fileName += QString(tr(".csv"));
-        dataFormat = CSV;
-      }
-
-    if (dataFormat == None)
-    {
-      title = QString(tr("Mismatched File Type"));
-      message = QString(tr("File type must be .fits or .csv"));
-      QMessageBox::critical(this,title,message);
-      return;
-    }
-
-    int* numTypes = new int(0);
-    //FILETYPE dataType = FILETYPE::Null;
-    FILETYPE* dataTypes = new FILETYPE[static_cast<int>(FILETYPE::FILETYPE_LIMIT)];
-
-    dataSelectDlg = new dataSelectDialog(s_association, RWMode::Write);
-    connect(dataSelectDlg, &dataSelectDialog::dataSelected,
-            [=](std::vector<FILETYPE>* dataSets)
-            {
-                *numTypes = dataSets->size();
-                //dataTypes = new FILETYPE[*numTypes];
-                for(int i = 0; i < *numTypes; i += 1)
-                  dataTypes[i] = (*dataSets)[i];
-            });
-
-    Q_EMIT saveDataSets();
-
-    // save data to file
-    if (s_association->exists(dataEngines::fileIO))
-      s_association->reset(allTypes::fileIO);
-    s_association->addEngine(dataEngines::fileIO,fileName.toStdString().c_str(),dataFormat,selectedDataType,Write);
-
-    try
-    {
-      s_association->fileIOEngine()->saveBase(fileName.toStdString().c_str(), numTypes, dataTypes);
-      s_association->fileIOEngine()->save(numTypes, dataTypes);
-    }
-    catch (ERRORCODES error) {
-      title = QString("Error saving file");
-      message = QString::fromStdString(s_association->errorDetails());
-      QMessageBox::critical(this,title,message);
-      return;
+      gridbox->addWidget(new QLabel(tr("Observatory:")));
+      gridbox->addWidget(observatoryBox);
     }
   }
-
-  QMessageBox saveSuccessful;
-  saveSuccessful.setText("Save Successful.");
-  saveSuccessful.setStandardButtons(QMessageBox::Ok);
-  saveSuccessful.exec();
-  */
-//}
-
-FORMAT mainWindow::selectFileName()
-{
-  QString title, message, fName;
-
-  // extend the standard QFileDialog by adding the data types as a combo box
-  title = QString(tr("Save File"));
-  QFileDialog *saveDialog = new QFileDialog(this, title, QDir::homePath(), tr("Fits File (*.fits);; HDF5 File (*.hdf5);; CSV File (*.csv)"));
-  saveDialog->setOption(QFileDialog::DontUseNativeDialog);
-  saveDialog->setAcceptMode(QFileDialog::AcceptSave);
-  saveDialog->setOption(QFileDialog::DontConfirmOverwrite);
-  saveDialog->setDirectory(directory);
-  QLayout *layout = saveDialog->layout();
-  QGridLayout *gridbox = qobject_cast<QGridLayout*>(layout);
-  saveDialog->setLayout(gridbox);
+  else // write
+  {
+    fileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog->setOption(QFileDialog::DontConfirmOverwrite);
+  }
 
   // execute the new dialog box
-  if (saveDialog->exec())
+  if (fileDialog->exec())
   {
     // get current directory
-    directory = saveDialog->directory();
+    directory = fileDialog->directory();
 
     // get file name
     QStringList selectedFileNames;
-    selectedFileNames = saveDialog->selectedFiles();
+    selectedFileNames = fileDialog->selectedFiles();
 
     if (selectedFileNames.size() > 1)
-    {
       errorMessage("To many files selected.");
-      return FORMAT::None;
-    }
 
     // check that file type is a supported type
-    FORMAT dataFormat;
     fName = selectedFileNames[0];
-    QString filter = saveDialog->selectedNameFilter();
+    fileName = fName.toStdString();
 
-    if (fName.contains(".fits",Qt::CaseInsensitive))
-      dataFormat = Fits;
-    else
-      if (filter.contains(".fits",Qt::CaseInsensitive))
-      {
-        fName += QString(tr(".fits"));
-        dataFormat = Fits;
-      }
+    QString filter = fileDialog->selectedNameFilter();
 
     if (fName.contains(".fits",Qt::CaseInsensitive))
     {
+      dataFormat = Fits;
+
       QFileInfo checkFile(fName);
       if (checkFile.exists() && checkFile.isFile())
         fName = "!" + fName;
     }
 
-    if (fName.contains(".hdf5", Qt::CaseInsensitive))
+    if (fName.contains(".hdf5", Qt::CaseInsensitive) || fName.contains(".h5", Qt::CaseInsensitive))
       dataFormat = HDF5;
-    else
-    {
-      if(filter.contains(".hdf5", Qt::CaseInsensitive))
-      {
-        fName += QString(tr(".hdf5"));
-        dataFormat = HDF5;
-      }
-    }
-
-    if (fName.contains(".h5", Qt::CaseInsensitive))
-      dataFormat = HDF5;
-    else
-    {
-      if(filter.contains(".h5", Qt::CaseInsensitive))
-      {
-        fName += QString(tr(".h5"));
-        dataFormat = HDF5;
-      }
-    }
 
     if (fName.contains(".csv",Qt::CaseInsensitive))
       dataFormat = CSV;
-    else
-      if(filter.contains(".csv",Qt::CaseInsensitive))
-      {
-        fName += QString(tr(".csv"));
-        dataFormat = CSV;
-      }
 
     if (dataFormat == None)
-    {
       errorMessage("File Format must be FITS, HDF5 or CSV.");
 
-      return FORMAT::None;
+    if(read)
+    {
+      obs = observatoryBox->currentIndex();
+      dataSource = static_cast<OBSERVATORY>(obs);
+
+      if(obs == static_cast<int>(OBSERVATORY::Unknown))
+        errorMessage("Invalid observatory selected");
     }
-
-    fileName = fName.toStdString();
-    return dataFormat;
   }
-
-  return FORMAT::None;
 }
 
 void mainWindow::emitSaveDataSets()
 {
   dataSelectDlg = new dataSelectDialog(s_association, RWMode::Write);
   connect(dataSelectDlg, &dataSelectDialog::dataSelected,
-          [=](int numTypes, FILETYPE dataTypes[]) { writeData(numTypes, dataTypes); });
+          [=](int numTypes, FILETYPE dataTypes[])
+          {
+            dataSelectDlg->accept();
+            writeData(numTypes, dataTypes);
+          });
 
   Q_EMIT saveDataSets();
 }
 
+void mainWindow::emitSelectSlices()
+{
+  connect(multSelDlg, &multipleSelectionDialog::slicesSelected,
+          [=](int min, int max)
+          {
+            s_association->fileIOEngine()->minSlice(min);
+            s_association->fileIOEngine()->maxSlice(max);
+          });
+
+  Q_EMIT selectSlices();
+}
+
+void mainWindow::emitSelectEnergies()
+{
+  double minEnergy = s_association->fileIOEngine()->min_energy();
+  double maxEnergy = s_association->fileIOEngine()->max_energy();
+
+  // let user change energy range before reading data
+  Q_EMIT selectEnergies(minEnergy, maxEnergy);
+}
 void mainWindow::addAssociation()
 {
   try
