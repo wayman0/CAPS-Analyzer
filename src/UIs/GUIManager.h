@@ -73,6 +73,7 @@ class GUIManager
         virtual void errorMessage(const char* errMess)          = 0;
         virtual void displayMessage(const char* mess)           = 0;
         virtual bool addDataMessage(const char* errMess)        = 0;
+        virtual bool replaceDataChain(const char* mess)         = 0;
 
         virtual void addAssociation()                           = 0;
         virtual void setAssociation(association* newAssoc)      = 0;
@@ -89,6 +90,16 @@ class GUIManager
         void writeData(int numTypes, FILETYPE dataTypes[]);
         void saveFile();
 
+        virtual void getControlDataAttr(CONTROLTYPE* dataSet, double* strength, M_OP* op,
+                                        double* raRes, double* decRes,
+                                        double* top, double* bot,
+                                        double* left, double* right,
+                                        double* peakDec, double* peakRA, double* fwhm,
+                                        double* checkRA, double* checkDec,
+                                        long* l, long* m) = 0;
+        virtual void setControlDlgConfigured(bool config) = 0;
+        void createControlData(FILETYPE dataType, bool complete);
+
         virtual void setPixelizerAttr() = 0;
         int pixelize();
         bool pixelize(FILETYPE inputDataType, FILETYPE pixelDataType);
@@ -97,7 +108,7 @@ class GUIManager
         int transform();
         bool transform(FILETYPE pixelDataType, FILETYPE transDataType);
 
-        virtual int invert();
+        int invert();
         bool invert(FILETYPE inverseType, FILETYPE almType);
 
         virtual void setAnalyzerAttr() = 0;
@@ -117,7 +128,6 @@ class GUIManager
         virtual void displayGraph(ASSOCIATEDSPECTRUM graph) = 0;
         virtual void displayMap(ASSOCIATEDMAP map) = 0;
 
-        virtual void createControlData(FILETYPE dataType,bool complete) = 0;
     protected:
         association               *s_association;
         std::vector<association*> *associationVector;

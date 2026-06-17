@@ -300,6 +300,16 @@ bool mainWindow::addDataMessage(const char* mess)
   return true;
 }
 
+bool mainWindow::replaceDataChain(const char* mess)
+{
+  QMessageBox::StandardButton reply = QMessageBox::question(this, "Replace Current Data Chain?", mess,
+                                                            QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+  if (reply == QMessageBox::Yes)
+    return true;
+  else
+    return false;
+}
+
 void mainWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
 {
   dataSelectDlg = new dataSelectDialog(s_association, RWMode::Read);
@@ -521,257 +531,35 @@ void mainWindow::setAssociation(association* newAssoc)
   clearGraphs();
 }
 
-void mainWindow::createControlData(FILETYPE dataType, bool complete)
+void mainWindow::getControlDataAttr(CONTROLTYPE* dataSet, double* strength, M_OP* op,
+                                        double* raRes,    double* decRes,
+                                        double* top,      double* bot,
+                                        double* left,     double* right,
+                                        double* peakDec,  double* peakRA,   double* fwhm,
+                                        double* checkRA,  double* checkDec,
+                                        long* l,          long* m)
 {
-  QString title, message;
+  *raRes = ctrlDlg->RAResolution();
+  *decRes = ctrlDlg->decResolution();
+  *dataSet = ctrlDlg->dataPattern();
+  *strength = ctrlDlg->controlSignalStrength();
+  *op = ctrlDlg->controlOperation();
+  *top = ctrlDlg->highDec();
+  *bot = ctrlDlg->lowDec();
+  *left = ctrlDlg->lowRA();
+  *right = ctrlDlg->highRA();
+  *peakDec = ctrlDlg->decPeak();
+  *peakRA = ctrlDlg->RAPeak();
+  *fwhm = ctrlDlg->fullWidthHalfMax();
+  *checkRA = ctrlDlg->checkerRAWidth();
+  *checkDec = ctrlDlg->checkerDecWidth();
+  *l = ctrlDlg->harmonicL();
+  *m = ctrlDlg->harmonicM();
+}
 
-  // check to see if a data chain already exists and is current
-  if (s_association->exists(dataType) && s_association->getData(dataType)->current()) {
-    title = QString(tr("Replace current data chain?"));
-    message = QString(tr("A data chain currently exists.\nDo you want to replace it?"));
-    QMessageBox::StandardButton reply = QMessageBox::question(this,title,message,QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
-    if (reply == QMessageBox::Yes)
-      s_association->discardRelation(dataType);
-  }
-
-  // set up progress bar call back
-//  ui->progressBar->reset();
-//  analyzer_set_progress_callback(this,progressBarWrapper);
-
-  if (!s_association->exists(dataType)) {
-    double ra = 0.0, dec = 0.0;
-
-    switch (dataType) {
-      case fileType::InputData:
-        if (s_association->exists(fileType::InputWeights)) {
-          try
-          {
-            s_association->getResolution(fileType::InputWeights, ra, dec);
-          }
-          catch (ERRORCODES error)
-          {
-            errorMessage("There was an error getting the data set's resolution.");
-            return;
-          }
-        }
-        else {
-          ra = ctrlDlg->RAResolution();
-          dec = ctrlDlg->decResolution();
-        }
-        break;
-      case fileType::InputWeights:
-        if (s_association->exists(fileType::InputData)) {
-          try
-          {
-            s_association->getResolution(fileType::InputData, ra, dec);
-          }
-          catch (ERRORCODES error)
-          {
-            errorMessage("There was an error getting the data set's resolution.");
-            return;
-          }
-        }
-        else {
-          ra = ctrlDlg->RAResolution();
-          dec = ctrlDlg->decResolution();
-        }
-        break;
-      case fileType::InputNoise:
-        if (s_association->exists(fileType::InputData)) {
-          try
-          {
-            s_association->getResolution(fileType::InputData, ra, dec);
-          }
-          catch (ERRORCODES error)
-          {
-            errorMessage("There was an error getting the data set's resolution.");
-            return;
-          }
-        }
-        else if(s_association->exists(fileType::InputWeights)) {
-          try
-          {
-            s_association->getResolution(fileType::InputWeights, ra, dec);
-          }
-          catch (ERRORCODES error)
-          {
-            errorMessage("There was an error getting the data set's resolution.");
-            return;
-          }
-        }
-        else {
-          ra = ctrlDlg->RAResolution();
-          dec = ctrlDlg->decResolution();
-        }
-        break;
-      case fileType::InputFilter:
-        if (s_association->exists(fileType::InputData)) {
-          try
-          {
-            s_association->getResolution(fileType::InputData, ra, dec);
-          }
-          catch (ERRORCODES error)
-          {
-            errorMessage("There was an error getting the data set's resolution.");
-            return;
-          }
-        }
-        else if(s_association->exists(fileType::InputWeights)) {
-          try
-          {
-            s_association->getResolution(fileType::InputWeights, ra, dec);
-          }
-          catch (ERRORCODES error)
-          {
-            errorMessage("There was an error getting the data set's resolution.");
-            return;
-          }
-        }
-        else {
-          ra = ctrlDlg->RAResolution();
-          dec = ctrlDlg->decResolution();
-        }
-        break;
-      case fileType::InputBeam:
-        if (s_association->exists(fileType::InputData)) {
-          try
-          {
-            s_association->getResolution(fileType::InputData, ra, dec);
-          }
-          catch (ERRORCODES error)
-          {
-            errorMessage("There was an error getting the data set's resolution.");
-            return;
-          }
-        }
-        else if(s_association->exists(fileType::InputWeights)) {
-          try
-          {
-            s_association->getResolution(fileType::InputWeights, ra, dec);
-          }
-          catch (ERRORCODES error)
-          {
-            errorMessage("There was an error getting the data set's resolution.");
-            return;
-          }
-        }
-        else {
-          ra = ctrlDlg->RAResolution();
-          dec = ctrlDlg->decResolution();
-        }
-        break;
-    }
-
-    try
-    {
-      s_association->createEmptyDataSet(dataType,ra,dec);
-    }
-    catch (ERRORCODES error)
-    {
-      errorMessage("An error was encountered creating the data set");
-      return;
-    }
-  }
-
-  CONTROLTYPE dataSet = ctrlDlg->dataPattern();
-  double signalStrength = ctrlDlg->controlSignalStrength();
-  M_OP operation = ctrlDlg->controlOperation();
-  double top = ctrlDlg->highDec();
-  double bottom = ctrlDlg->lowDec();
-  double from = ctrlDlg->lowRA();
-  double to = ctrlDlg->highRA();
-  double peakDec = ctrlDlg->decPeak();
-  double peakRA = ctrlDlg->RAPeak();
-  double fwhm = ctrlDlg->fullWidthHalfMax();
-  double checkRA = ctrlDlg->checkerRAWidth();
-  double checkDec = ctrlDlg->checkerDecWidth();
-  long l = ctrlDlg->harmonicL();
-  long m = ctrlDlg->harmonicM();
-
-  matrixData<double>* current = 0;
-  inputMatrixData* workspace = 0;
-  switch(dataSet) {
-    case Regional:
-      try {
-        s_association->createUniformPatch(dataType,top,bottom,from,to,signalStrength,operation);
-      }
-      catch (ERRORCODES error)
-      {
-        errorMessage("The attempt to create a uniform patch failed.");
-        return;
-      }
-      break;
-    case Delta:
-      try {
-        s_association->createDeltaFunction(dataType,peakRA,peakDec,signalStrength,operation);
-      }
-      catch (ERRORCODES error)
-      {
-        errorMessage("The attempt to create a delta failed");
-        return;
-      }
-      break;
-    case Gaussian:
-      try {
-        s_association->createGaussian(dataType,peakRA,peakDec,fwhm,signalStrength,operation);
-      }
-      catch (ERRORCODES error)
-      {
-        errorMessage("The attempt to create a Gaussian failed.");
-        return;
-      }
-      break;
-    case Checker:
-      try {
-        s_association->createCheckerboard(dataType,checkRA,checkDec,signalStrength,operation);
-      }
-      catch (ERRORCODES error)
-      {
-        errorMessage("The attempt to create a checkerboard failed.");
-        return;
-      }
-      break;
-    case Harmonic:
-      try {
-        s_association->createHarmonic(dataType,(int)l,(int)m,signalStrength,operation);
-      }
-      catch (ERRORCODES error)
-      {
-        errorMessage("The attempt to create a harmonic failed.");
-        return;
-      }
-      break;
-    case Uniform:
-    default:
-      try {
-        s_association->createUniformSky(dataType, signalStrength, operation);
-      }
-      catch (ERRORCODES error)
-      {
-        errorMessage("The attempt to create a uniform sky failed.");
-        return;
-      }
-      break;
-  }
-
-  if(   s_association->exists(fileType::InputData)
-     && s_association->exists(fileType::InputWeights) )
-        s_association->generateWeightedData(fileType::WeightedData);
-
-
-  if( s_association->exists(fileType::InputNoise) &&
-      s_association->exists(fileType::InputWeights) &&
-     !s_association->exists(fileType::InputWeightedNoise))
-      s_association->generateWeightedData(fileType::InputWeightedNoise);
-
-  configureDisplay(dataType);
-
-  if (complete) {
-    s_association->getData(dataType)->dataType(dataType);
-    s_association->getData(dataType)->current(true);
-  }
-  else
-    ctrlDlg->configure(true);
+void mainWindow::setControlDlgConfigured(bool config)
+{
+    ctrlDlg->configure(config);
 }
 
 void mainWindow::setPixelizerAttr()
@@ -816,16 +604,6 @@ void mainWindow::setTransformerAttr()
     default:
       selectTransformer();
   }
-}
-
-int mainWindow::invert()
-{
-  int count = GUIManager::invert();
-
-  if(count)
-    configureDisplay(fileType::InverseData);
-
-  return count;
 }
 
 void mainWindow::setAnalyzerAttr()

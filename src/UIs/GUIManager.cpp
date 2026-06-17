@@ -89,7 +89,6 @@ void GUIManager::writeData(int numTypes, FILETYPE dataTypes[])
 
 void GUIManager::saveFile()
 {
-    //pass in false to show that we are writing not reading
     selectFileName(false);
 
     if (s_association->exists(dataEngines::fileIO))
@@ -198,6 +197,128 @@ void GUIManager::openFile()
     for(fileType type : types)
       configureDisplay(type);
 
+}
+
+void GUIManager::createControlData(FILETYPE dataType, bool complete)
+{
+    if(s_association->exists(dataType) && s_association->getData(dataType)->current())
+        if(replaceDataChain("A data chain currently exists.\n Do you want to replace it?"))
+            s_association->discardRelation(dataType);
+
+    CONTROLTYPE dataSet;
+    M_OP op;
+    double strength;
+    double raRes, decRes;
+    double top, bot;
+    double left, right;
+    double peakDec, peakRA, fwhm;
+    double checkRA, checkDec;
+    long l, m;
+
+    getControlDataAttr(&dataSet, &strength, &op,
+                       &raRes, &decRes,
+                       &top, &bot,
+                       &left, &right,
+                       &peakDec, &peakRA, &fwhm,
+                       &checkRA, &checkDec,
+                       &l, &m);
+
+    if (!s_association->exists(dataType))
+    {
+        try
+        {
+            switch (dataType)
+            {
+                case fileType::InputData:
+                    if (s_association->exists(fileType::InputWeights))
+                        s_association->getResolution(fileType::InputWeights, raRes, decRes);
+                    break;
+                case fileType::InputWeights:
+                    if (s_association->exists(fileType::InputData))
+                        s_association->getResolution(fileType::InputData, raRes, decRes);
+                    break;
+                case fileType::InputNoise:
+                    if (s_association->exists(fileType::InputData))
+                        s_association->getResolution(fileType::InputData, raRes, decRes);
+                    else if(s_association->exists(fileType::InputWeights))
+                        s_association->getResolution(fileType::InputWeights, raRes, decRes);
+                    break;
+                case fileType::InputFilter:
+                    if (s_association->exists(fileType::InputData))
+                        s_association->getResolution(fileType::InputData, raRes, decRes);
+                    else if(s_association->exists(fileType::InputWeights))
+                        s_association->getResolution(fileType::InputWeights, raRes, decRes);
+                    break;
+                case fileType::InputBeam:
+                    if (s_association->exists(fileType::InputData))
+                        s_association->getResolution(fileType::InputData, raRes, decRes);
+                    else if(s_association->exists(fileType::InputWeights))
+                        s_association->getResolution(fileType::InputWeights, raRes, decRes);
+                    break;
+            }
+        }
+        catch(ERRORCODES err)
+        {
+            errorMessage("An error was encountered getting the resolution");
+            return;
+        }
+
+        try
+        {
+            s_association->createEmptyDataSet(dataType,raRes,decRes);
+        }
+        catch (ERRORCODES error)
+        {
+            errorMessage("An error was encountered creating the data set");
+            return;
+        }
+    }
+
+    matrixData<double>* current = 0;
+    inputMatrixData* workspace = 0;
+
+    try
+    {
+        if(dataSet == Uniform)
+            s_association->createUniformSky(dataType, strength, op);
+        else if(dataSet == Regional)
+            s_association->createUniformPatch(dataType, top, bot, left, right, strength, op);
+        else if(dataSet == Checker)
+            s_association->createCheckerboard(dataType, checkRA, checkDec, strength, op);
+        else if(dataSet == Delta)
+            s_association->createDeltaFunction(dataType, peakRA, peakDec, strength, op);
+        else if(dataSet == Gaussian)
+            s_association->createGaussian(dataType, peakRA, peakDec, fwhm, strength, op);
+        else if(dataSet == Harmonic)
+            s_association->createHarmonic(dataType, (int)l, (int)m, strength, op);
+        else
+            errorMessage("Unknown Control Data Type.");
+    }
+    catch(ERRORCODES err)
+    {
+        errorMessage("An error was encountered creating the control data");
+        return;
+    }
+
+    if(    s_association->exists(fileType::InputData)
+        && s_association->exists(fileType::InputWeights))
+        s_association->generateWeightedData(fileType::WeightedData);
+
+
+    if( s_association->exists(fileType::InputNoise) &&
+        s_association->exists(fileType::InputWeights) &&
+       !s_association->exists(fileType::InputWeightedNoise))
+        s_association->generateWeightedData(fileType::InputWeightedNoise);
+
+    configureDisplay(dataType);
+
+    if (complete)
+    {
+        s_association->getData(dataType)->dataType(dataType);
+        s_association->getData(dataType)->current(true);
+    }
+    else
+        setControlDlgConfigured(true);
 }
 
 int GUIManager::pixelize()
@@ -487,6 +608,9 @@ int GUIManager::invert()
         inverseChain = static_cast<FILETYPE>(static_cast<int>(inverseChain) + 1);
         almChain     = static_cast<FILETYPE>(static_cast<int>(almChain) + 1);
     }
+
+    if(count)
+        configureDisplay(fileType::InverseData);
 
     return count;
 }

@@ -101,8 +101,16 @@ class mainWindow : public QMainWindow, GUIManager {
     void errorMessage(const char* errMess);
     void displayMessage(const char* mess);
     bool addDataMessage(const char* mess);
+    bool replaceDataChain(const char* mess);
 
-    int invert();
+    void getControlDataAttr(CONTROLTYPE* dataSet, double* strength, M_OP* op,
+                                        double* raRes, double* decRes,
+                                        double* top, double* bot,
+                                        double* left, double* right,
+                                        double* peakDec, double* peakRA, double* fwhm,
+                                        double* checkRA, double* checkDec,
+                                        long* l, long* m);
+    void setControlDlgConfigured(bool config);
     void setPixelizerAttr();
     void setTransformerAttr();
     void setAnalyzerAttr();
@@ -111,7 +119,6 @@ class mainWindow : public QMainWindow, GUIManager {
   public Q_SLOTS:
     void addAssociation();
     void setAssociation(association* newAssoc);
-    void createControlData(FILETYPE dataType,bool complete);
     void configureDisplay(FILETYPE dataType);
     void buildMaps();
     void displayMap(ASSOCIATEDMAP map);
