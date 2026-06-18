@@ -17,7 +17,6 @@ add_definitions(-DQT_NO_KEYWORDS)
 set(Qt-analyzer_SRCS
     main.cpp
     mainwindow.cpp
-    ../GUIManager.cpp
     associationselectdlg.cpp
     analyzerdlg.cpp
     controldatadlg.cpp
@@ -84,5 +83,20 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR}/../../libanalyzer/ ${CMAKE_CURRENT_
 
 add_executable(Qt-analyzer ${Qt-analyzer_SRCS} ${Qt-analyzer_MOC_SRCS} ${Qt-analyzer_UI_HDRS} ${Qt-analyzer_RC_SRCS})
 
+target_sources(Qt-analyzer PUBLIC
+				../GUIManager.cpp
+				../analyzerdlgpar.cpp
+				../associationselectdlgpar.cpp
+				../controldatadlgpar.cpp
+				../dataselectdlgpar.cpp
+				../energydlgpar.cpp
+				../healpixdlgpar.cpp
+				../multipleselectiondlgpar.cpp
+				../pixelizerdlgpar.cpp
+				../rshtdlgpar.cpp
+				../spectrumdlgpar.cpp
+				../transformerdlgpar.cpp)
+
 target_link_libraries(Qt-analyzer graphics analyzer Qt::Core Qt::Gui Qt::Widgets ${DEPS_LIBRARIES})
+
 # install(TARGETS q5analyzer RUNTIME DESTINATION bin)
