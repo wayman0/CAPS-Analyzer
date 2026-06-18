@@ -51,7 +51,6 @@
 #ifndef _SHELLWINDOW_H_
 #define _SHELLWINDOW_H_
 
-//#include "../libanalyzer/analyzer.h"
 #include "../GUIManager.h"
 
 #include "../../libanalyzer/atypes.h"
@@ -66,33 +65,57 @@ class ShellWindow : GUIManager
         ShellWindow();
         ~ShellWindow();
 
-        static void progressBarWrapper(void* uiObj, int value);
-        static void progressTextWrapper(void* uiObj, const char* updateName);
-        static void errorMessageWrapper(void* uiObj, const char* errMess);
+		void updateProgressBar(int value);
+		void updateProgressText(const char* updateName);
+		void errorMessage(const char* errMess);
+		void displayMessage(const char* mess);
+		bool addDataMessage(const char* errMess);
+		bool replaceDataChain(const char* mess);
 
-        void updateProgressBar(int value);
-        void updateProgressText(const char* updateName);
-        void errorMessage(const char* errMess);
-        bool addDataMessage(const char* errMess);
+		void addAssociation();
+		void setAssociation(association* newAssoc);
 
-        void openFile();
-        void saveFile();
+		void selectFileName(bool read);
 
-        void setPixelizerAttr();
+		void emitReadDataSets(FILETYPE* dataTypes, int* numTypes);
+		void emitSelectSlices();
+		void emitSelectEnergies();
 
-        int pixelize();
-        bool pixelize(FILETYPE inputDataType, FILETYPE pixelDataType);
+		void emitSaveDataSets();
 
-        void setTransformerAttr();
-        int transform();
-        bool transform(FILETYPE pixelDataType, FILETYPE transDataType);
+		void getControlDataAttr(CONTROLTYPE* dataSet, double* strength, M_OP* op,
+                                        double* raRes, double* decRes,
+                                        double* top, double* bot,
+                                        double* left, double* right,
+                                        double* peakDec, double* peakRA, double* fwhm,
+                                        double* checkRA, double* checkDec,
+                                        long* l, long* m);
+		void setControlDlgConfigured(bool config);
 
-        int invert();
-        bool invert(FILETYPE inverseType, FILETYPE almType);
+		void setPixelizerAttr();
 
-        void setAnalyzerAttr();
-        void analyze();
+		void setTransformerAttr();
 
-        void createControlData(FILETYPE dataType,bool complete);
+		void setAnalyzerAttr();
+		bool handleMissingTransformer();
+
+		void selectPixelizer();
+		void configurePixelizer(PIXELSCHEME scheme);
+
+		void selectTransformer();
+		void configureTransformer(TRANSFORMERSCHEME scheme);
+
+		void selectAnalzyer();
+		void configureAnalyzer();
+
+		void configureDisplay(FILETYPE dataType);
+		void displayGraph(ASSOCIATEDSPECTRUM graph);
+		void displayMap(ASSOCIATEDMAP map);
+
+		void execute();
+		void printMenu();
+	protected:
+		std::istream* input;
+		std::ostream* output;
 };
 #endif

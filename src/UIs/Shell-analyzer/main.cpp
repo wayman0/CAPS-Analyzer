@@ -32,7 +32,7 @@ Calumet by Daniel Suson
 
 int main( int argc, char **argv )
 {
-    ShellWindow* window = new ShellWindow(argc, argv);
+    ShellWindow* window = new ShellWindow();
 
-    window.execute();
+    window->execute();
 }
