@@ -55,19 +55,12 @@
 #include "../libanalyzer/matrixdata.h"
 #include "ui_dataselectdlg.h"
 
-dataSelectDialog::dataSelectDialog(association *assoc, RWMode m) :
-                 ui(new Ui::dataSelectDialog) {
+dataSelectDialog::dataSelectDialog(association *assoc, RWMode m)
+                 : dataSelectDialogParent(assoc, m),
+                   ui(new Ui::dataSelectDialog) {
   /* set up the user interface first */
   ui->setupUi(this);
 
-  dataMgr = assoc;
-  
-  /* initialize internal variables*/
-  dataType = fileType::Null;
-  dataSets = new std::vector<FILETYPE>;
-  dirty = false;
-  mode = m;
-  
   connect(ui->selectAllButton, &QPushButton::clicked, this, &dataSelectDialog::selectAll);
 
   //if(mode == Write)
@@ -2020,12 +2013,6 @@ void dataSelectDialog::configure(FILETYPE* dataTypes, int* numTypes)
   }
 
   exec();
-}
-
-void dataSelectDialog::setData(FILETYPE* dataTypes, int numTypes)
-{
-  for(int i = 0; i < numTypes; i += 1)
-    dataSets->push_back(dataTypes[i]);
 }
 
 void dataSelectDialog::reset() {

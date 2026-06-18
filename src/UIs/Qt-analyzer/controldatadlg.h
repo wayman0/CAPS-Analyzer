@@ -55,38 +55,19 @@
 
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
+#include "../controldatadlgpar.h"
 
 namespace Ui {
   class controlDataDialog;
 }
 
-class controlDataDialog : public QDialog {
+class controlDataDialog : public QDialog, public controlDataDialogParent
+{
   Q_OBJECT
   
   public:
     controlDataDialog(association* assoc);
     virtual ~controlDataDialog();
-    bool configured() {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
-    CONTROLTYPE dataPattern() const {return dataSet;}
-    double RAPeak() const {return peakRA;}
-    double decPeak() const {return peakDec;}
-    double fullWidthHalfMax() const {return fwhm;}
-    double checkerRAWidth() const {return checkRA;}
-    double checkerDecWidth() const {return checkDec;}
-    long harmonicL() const {return l;}
-    long harmonicM() const {return m;}
-    double RAResolution() const {return resRA;}
-    double decResolution() const {return resDec;}
-    double controlSignalStrength() const {return signalStrength;}
-    double highDec() const {return top;}
-    double lowDec() const {return bottom;}
-    double highRA() const {return to;}
-    double lowRA() const {return from;}
-    M_OP controlOperation() const {return operation;}
-    COORDSYSTEM coordSys() const {return coords;}
 
   public Q_SLOTS:
     void configure(bool open);
@@ -96,23 +77,10 @@ class controlDataDialog : public QDialog {
     void dataCreationCancelled();
     void buildControlData(FILETYPE,bool);
 
-private:
+  private:
     Ui::controlDataDialog *ui;
     QSignalMapper *mapper;
     
-    association* dataAssoc;
-    CONTROLTYPE dataSet;
-    FILETYPE dataType;
-    double peakRA, peakDec, fwhm;
-    double checkRA, checkDec;
-    long l, m;
-    double resRA, resDec;
-    double signalStrength;
-    double top, bottom, to, from;
-    M_OP operation;
-    COORDSYSTEM coords;
-    bool dirty, isConfigured;
-
   private Q_SLOTS:
     bool validate();
     void finalize();

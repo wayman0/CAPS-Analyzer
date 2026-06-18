@@ -54,31 +54,27 @@
 #include <QtWidgets>
 #include <vector>
 
-//#include "../libanalyzer/analyzer.h"
 #include "../libanalyzer/atypes.h"
 #include "../libanalyzer/association.h"
+
+#include "../dataselectdlgpar.h"
 
 namespace Ui {
   class dataSelectDialog;
 }
 
-class dataSelectDialog : public QDialog {
+class dataSelectDialog : public QDialog, public dataSelectDialogParent
+{
   Q_OBJECT
   
   public:
     dataSelectDialog(association* assoc, RWMode m = RWMode::Write);
     ~dataSelectDialog();
-    void setMode(RWMode selectedMode) {mode = selectedMode;};
-    RWMode getMode()                  {return mode;};
-    void setData(FILETYPE* dataTypes, int numTypes);
-    void setAssociation(association* newAssoc) {dataMgr = newAssoc;}
 
   Q_SIGNALS:
-    //void dataSelected(std::vector<FILETYPE>*);
     void dataSelected(int size, FILETYPE data[]);
 
   public Q_SLOTS:
-    void configure() {configure(mode);}
     void configure(RWMode uiMode);
     void configure(FILETYPE* dataTypes, int* numTypes);
     void reset();
@@ -88,12 +84,7 @@ class dataSelectDialog : public QDialog {
     void selectAll();
 
     Ui::dataSelectDialog *ui;
-    association * dataMgr;
-    FILETYPE dataType;
-    bool dirty;
-    RWMode mode;
-    std::vector<FILETYPE> *dataSets;
-    
+
   private Q_SLOTS:
     void help();
     void finalize();

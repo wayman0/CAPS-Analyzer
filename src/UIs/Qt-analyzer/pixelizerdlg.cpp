@@ -49,23 +49,15 @@
  * program must reference the fact that it was developed by Daniel Suson   *
  ***************************************************************************/
 #include "pixelizerdlg.h"
-//#include "../libanalyzer/analyzer.h"
 #include "ui_pixelizerdlg.h"
 
 pixelizerDialog::pixelizerDialog(association* assoc)
-                : ui(new Ui::pixelizerDialog) {
+                : pixelizerDialogParent(assoc),
+                  ui(new Ui::pixelizerDialog)
+{
   /* set up the user interface first */
   ui->setupUi((QDialog*)this);
 
-  /* save the data association for later use */
-  dataAssoc = assoc;
-  
-  /* initialize internal variables*/
-  pixType = NotPixelized;
-  dirty = false;
-  isConfigured = false;
-//  selectedPixelizer = 0;
-  
   /* enable all pixelizers */
   ui->healpixButton->setEnabled(true);
    

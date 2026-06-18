@@ -51,14 +51,12 @@
 #include "controldatadlg.h"
 #include "ui_controldatadlg.h"
 
-controlDataDialog::controlDataDialog(association *assoc) :
-                   ui(new Ui::controlDataDialog) {
-
+controlDataDialog::controlDataDialog(association *assoc)
+                   : controlDataDialogParent(assoc),
+                     ui(new Ui::controlDataDialog)
+{
   // set up the user interface first
   ui->setupUi(this);
-
-  // get access to association class
-  dataAssoc = assoc;
   
   // set up signals and slots
   ui->stackedWidget->setCurrentIndex(0); //insure that blank widget is originally visual
@@ -77,23 +75,6 @@ controlDataDialog::controlDataDialog(association *assoc) :
   connect(ui->checkerButton, &QRadioButton::clicked, [=](){changeStack(5);});
   connect(ui->harmonicButton, &QRadioButton::clicked, [=](){changeStack(6);});
 
-  // initialize internal variables
-  dataSet = Empty;
-  dataType = fileType::Null;
-  peakDec = peakRA = 0.0;
-  fwhm = 0.0;
-  checkRA = checkDec = 0.0;
-  l = m = 0;
-  resRA = resDec = 0.0;
-  signalStrength = 1.0;
-  top = 90.0;
-  bottom = -90.0;
-  from = -180.0;
-  to = 180.0;
-  operation = Add;
-  coords = RAdec;
-  dirty = false;
-  isConfigured = false;
   
   // set initially displayed values
   ui->decResolutionValue->setText(QString("%1").arg(resDec,0,'f',1));
@@ -101,6 +82,7 @@ controlDataDialog::controlDataDialog(association *assoc) :
   ui->sigValue->setText(QString("%1").arg(signalStrength,0,'f',1));
   ui->dataButton->setChecked(true);
   ui->addButton->setChecked(true);
+
   changeStack(0);
 }
 

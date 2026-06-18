@@ -50,20 +50,15 @@
  ***************************************************************************/
 #include "transformerdlg.h"
 #include "ui_transformerdlg.h"
-//#include "../libanalyzer/analyzer.h"
 
-transformerDialog::transformerDialog(association *assoc) :
-                   ui(new Ui::transformerDialog) {
+#include "../transformerdlgpar.h"
+
+transformerDialog::transformerDialog(association *assoc)
+                   : transformerDialogParent(assoc),
+				     ui(new Ui::transformerDialog)
+{
   /* set up the user interface first */
   ui->setupUi(this);
-  
-  dataAssoc = assoc;
-
-  /* initialize internal variables*/
-  transType = NotTransformed;
-  dirty = false;
-  isConfigured = false;
-//  selectedTransformer = 0;
   
   /* enable all pixelizers */
   ui->rshtButton->setEnabled(true);

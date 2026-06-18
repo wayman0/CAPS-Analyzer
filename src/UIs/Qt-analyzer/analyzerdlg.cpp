@@ -49,21 +49,15 @@
  * program must reference the fact that it was developed by Daniel Suson   *
  ***************************************************************************/
 #include "analyzerdlg.h"
-//#include "../libanalyzer/analyzer.h"
 #include "ui_analyzerdlg.h"
 
 analyzerDialog::analyzerDialog(association* assoc)
-                : ui(new Ui::analyzerDialog) {
+                : analyzerDialogParent(assoc),
+				  ui(new Ui::analyzerDialog)
+{
   /* set up the user interface first */
   ui->setupUi((QDialog*)this);
 
-  /* save the data association for later use */
-  dataAssoc = assoc;
-  
-  /* initialize internal variables*/
-  dirty = false;
-  isConfigured = false;
-  
   /* enable all pixelizers */
   ui->analyzerButton->setEnabled(true);
    

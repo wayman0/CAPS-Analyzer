@@ -58,7 +58,7 @@ class multipleSelectionDialogParent
 {
   public:
     multipleSelectionDialogParent(association* s_assoc);
-    virtual ~multipleSelectionDialogParent() = 0;
+    virtual ~multipleSelectionDialogParent() {}
 
 	bool configured() {return isConfigured;}
     void configured(bool config) {isConfigured = config;}

@@ -53,23 +53,22 @@
 
 #include <QtWidgets>
 
-//#include "../libanalyzer/analyzer.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
+
+#include "../transformerdlgpar.h"
 
 namespace Ui {
   class transformerDialog;
 }
 
-class transformerDialog : public QDialog {
+class transformerDialog : public QDialog, public transformerDialogParent
+{
   Q_OBJECT
   
   public:
     transformerDialog(association *assoc);
     virtual ~transformerDialog();
-    bool configured() const {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   Q_SIGNALS:
     void transformerSelected(TRANSFORMERSCHEME);
@@ -82,11 +81,6 @@ class transformerDialog : public QDialog {
     void validate();
     
     Ui::transformerDialog *ui;
-    association *dataAssoc;
-    bool dirty;
-    bool isConfigured;
-    TRANSFORMERSCHEME transType;
-//    unsigned int selectedTransformer;
     
   private Q_SLOTS:
     void help();

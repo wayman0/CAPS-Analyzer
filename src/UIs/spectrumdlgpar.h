@@ -63,7 +63,7 @@ class spectrumDialogParent
     bool invertTransforms() const {return inverse;}
     bool weighIndices() const {return weigh;}
     int indicesPerBin() const {return binSize;}
-    int maskLowestIndices() const {return mask;}
+    int maskLowestIndices() const {return maskInd;}
     int ensembleIterations() const {return ensIter;}
 
   // Q_SLOTS:
@@ -78,7 +78,7 @@ class spectrumDialogParent
     virtual void validate() = 0;
 
 	bool bin, inverse, weigh;
-    int binSize, mask, ensIter;
+    int binSize, maskInd, ensIter;
     bool dirty, isConfigured;
 
  //Q_SLOTS:

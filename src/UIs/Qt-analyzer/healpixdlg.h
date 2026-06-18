@@ -53,35 +53,23 @@
 
 #include <QtWidgets>
 
-//#include "../libanalyzer/analyzer.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
 #include "../../libanalyzer/healpix.h"
+
+#include "../healpixdlgpar.h"
 
 namespace Ui {
   class healpixDialog;
 }
 
-class healpixDialog : public QDialog {
+class healpixDialog : public QDialog, public healpixDialogParent
+{
   Q_OBJECT
   
   public:
     healpixDialog(association* assoc);
     virtual ~healpixDialog();
-    bool configured() const {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    int scale() const {return nSides;}
-
-    bool usePixelAvg() const {return usePixAvg;}
-    bool usePixelDev() const {return usePixDev;}
-    bool usePixelVar() const {return usePixVar;}
-
-    bool doAvgNormalize() const {return doAvgNorm;}
-    bool doVarNormalize() const {return doVarNorm;}
-    bool doMinMaxScale()  const {return doMinMax;}
-
-    bool order() const {return nestedFlag;}
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
     void configure();
@@ -93,29 +81,11 @@ class healpixDialog : public QDialog {
     
   private:
     void validate();
-    int sides(double resolution);
-    double resolution (int sides);
-//    int pixelize();
-//    int configureInterface();
-    
-//    void initializeProgressBar(analyzer_hdl hdl);
-//    static void updateProgressBar(void* object, double progress);
     
     Ui::healpixDialog *ui;
-    association *dataAssoc;
-    FILETYPE dataType;
-    bool nestedFlag;
-    bool usePixAvg, usePixDev, usePixVar;
-    bool doAvgNorm, doVarNorm, doMinMax;
-    int nSides; // index;
-    double res;
-    bool dirty, isConfigured;
-//    analyzer_pixelizer_hdl currentHandle;
-//    analyzer_hdl dataHandle;
 
   private Q_SLOTS:
     void syncSides();
-//    void syncResolution();
     void finalize();
     void help();
     void cancel();

@@ -51,8 +51,10 @@
 #include "spectrumdlg.h"
 #include "ui_spectrumdlg.h"
 
-spectrumDialog::spectrumDialog() :
-                ui(new Ui::spectrumDialog) {
+spectrumDialog::spectrumDialog()
+			: spectrumDialogParent(),
+			  ui(new Ui::spectrumDialog)
+{
   /* set up the user interface first */
   ui->setupUi(this);
 
@@ -66,21 +68,8 @@ spectrumDialog::spectrumDialog() :
   connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &spectrumDialog::cancel);
   connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &spectrumDialog::help);
   
-  /* initialize internal variables*/
-//  currentHandle = -1;
-//  dataHandle = -1;
-  bin     = true;
-  inverse = true;
-  weigh   = false;
-  binSize = 1;
-  ensIter = 1;
-  mask   = 0;
-  dirty  = false;
-
-  isConfigured = false;
-  
   /* set initially displayed values */
-  ui->maskSpinBox->setValue(mask);
+  ui->maskSpinBox->setValue(maskInd);
   ui->countSpinBox->setValue(binSize);
   ui->ensembleIter->setValue(ensIter);
 }
@@ -111,7 +100,7 @@ void spectrumDialog::configure() {
     else
       ui->inverseCheckBox->setChecked(false);
 
-    ui->maskSpinBox->setValue(mask);
+    ui->maskSpinBox->setValue(maskInd);
     ui->countSpinBox->setValue(binSize);
     ui->ensembleIter->setValue(ensIter);
   }
@@ -156,9 +145,9 @@ void spectrumDialog::validate() {
     dirty = true;
 
   /* determine if any part of the spectrum is to be masked out */
-  int oldMask = mask;
-  mask = ui->maskSpinBox->value();
-  if (oldMask != mask)
+  int oldMask = maskInd;
+  maskInd = ui->maskSpinBox->value();
+  if (oldMask != maskInd)
     dirty = true;
 
   int oldEnsIter = ensIter;

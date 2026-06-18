@@ -53,26 +53,19 @@
 
 #include <QtWidgets>
 
-//#include "../libanalyzer/analyzer.h"
+#include "../spectrumdlgpar.h"
 
 namespace Ui {
   class spectrumDialog;
 }
 
-class spectrumDialog : public QDialog {
+class spectrumDialog : public QDialog, public spectrumDialogParent
+{
   Q_OBJECT
   
   public:
     spectrumDialog();
     virtual ~spectrumDialog();
-    bool configured() const {return isConfigured;}
-    void configured(bool isConfig) {isConfigured = isConfig;}
-    bool binSpectrum() const {return bin;}
-    bool invertTransforms() const {return inverse;}
-    bool weighIndices() const {return weigh;}
-    int indicesPerBin() const {return binSize;}
-    int maskLowestIndices() const {return mask;}
-    int ensembleIterations() const {return ensIter;}
 
   public Q_SLOTS:
     void configure();
@@ -84,15 +77,8 @@ class spectrumDialog : public QDialog {
     
   private:
     void validate();
-//    int computeSpectrum();
-//    int configureInterface();
     
     Ui::spectrumDialog *ui;
-    bool bin, inverse, weigh;
-    int binSize, mask, ensIter;
-    bool dirty, isConfigured;
-//    analyzer_power_spect_hdl currentHandle;
-//    analyzer_hdl dataHandle;
 
   private Q_SLOTS:
     void finalize();

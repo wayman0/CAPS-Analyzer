@@ -53,27 +53,25 @@
 
 #include <QtWidgets>
 
-//#include "../libanalyzer/analyzer.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
+
+#include "../multipleselectiondlgpar.h"
 
 namespace Ui {
   class multipleSelectionDialog;
 }
 
-class multipleSelectionDialog : public QDialog {
+class multipleSelectionDialog : public QDialog, public multipleSelectionDialogParent
+{
   Q_OBJECT
   
   public:
     multipleSelectionDialog(association* s_assoc);
     virtual ~multipleSelectionDialog();
-    bool configured() {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
     void configure();
-//    void configure(bool triggered);
     void reset();
     
   Q_SIGNALS:
@@ -84,12 +82,6 @@ class multipleSelectionDialog : public QDialog {
     void validate();
 
     Ui::multipleSelectionDialog *ui;
-    association* dataAssoc;
-    double minEnergy;
-    double maxEnergy;
-    int minSlice;
-    int maxSlice;
-    bool dirty, isConfigured;
 
   private Q_SLOTS:
     void finalize();

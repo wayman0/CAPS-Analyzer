@@ -111,6 +111,7 @@ mainWindow::mainWindow() :
   rshtDlg = new rshtDialog(s_association);
   analSelectDlg = new analyzerDialog(s_association);
   specDlg = new spectrumDialog();
+
   mapperDlg = new mapperDialog(s_association);
   mapSelectDlg = new mapSelectDialog(s_association);
   grapherDlg = new graphDialog(s_association);
@@ -160,7 +161,7 @@ mainWindow::mainWindow() :
   connect(ui->addAssociationAction, &QAction::triggered, [=](){addAssociation(); });
   connect(ui->selectAssociation, &QAction::triggered, [=](){assocDlg->configure();});
 
-  connect(assocDlg, &associationSelectDialog::associationSelected, [=](association* newAssoc){setAssociation(newAssoc);});
+  connect(dynamic_cast<associationSelectDialog*>(assocDlg), &associationSelectDialog::associationSelected, [=](association* newAssoc){setAssociation(newAssoc);});
 
 //  connect(ui->informationAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->printAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
@@ -183,7 +184,7 @@ mainWindow::mainWindow() :
 //  connect*ui->configureTransformer, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->HandbookAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->aboutAnalyzerAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-  connect(ctrlDlg, &controlDataDialog::buildControlData, [=](FILETYPE value,bool complete){createControlData(value,complete);});
+  connect(dynamic_cast<controlDataDialog*>(ctrlDlg), &controlDataDialog::buildControlData, [=](FILETYPE value,bool complete){createControlData(value,complete);});
 
 
   connect(this, &mainWindow::saveDataSets, [=](){dataSelectDlg->configure();});
@@ -199,14 +200,14 @@ mainWindow::mainWindow() :
   connect(grapherDlg, &graphDialog::grapherReady, [=](){buildGraphs();});
   connect(this, &mainWindow::selectGraphDisplay, [=](unsigned int selection){graphSelectDlg->configure(selection);});
   connect(graphSelectDlg, &graphSelectDialog::graphSelected, [=](associatedSpectrum graph){displayGraph(graph);});
-  connect(pixSelectDlg, &pixelizerDialog::pixelizerSelected, [=](PIXELSCHEME scheme){configurePixelizer(scheme);});
-  connect(transSelectDlg, &transformerDialog::transformerSelected, [=](TRANSFORMERSCHEME scheme){configureTransformer(scheme);});
+  connect(dynamic_cast<pixelizerDialog*>(pixSelectDlg), &pixelizerDialog::pixelizerSelected, [=](PIXELSCHEME scheme){configurePixelizer(scheme);});
+  connect(dynamic_cast<transformerDialog*>(transSelectDlg), &transformerDialog::transformerSelected, [=](TRANSFORMERSCHEME scheme){configureTransformer(scheme);});
 
-  connect(analSelectDlg, &analyzerDialog::analyzerSelected, [=](){configureAnalyzer();});
+  connect(dynamic_cast<analyzerDialog*>(analSelectDlg), &analyzerDialog::analyzerSelected, [=](){configureAnalyzer();});
 
-  connect(healpixDlg, &healpixDialog::pixelizeData, [=](){pixelize();});
-  connect(rshtDlg, &rshtDialog::transformData, [=](){transform();});
-  connect(specDlg, &spectrumDialog::spectrumReady, [=](){analyze();});
+  connect(dynamic_cast<healpixDialog*>(healpixDlg), &healpixDialog::pixelizeData, [=](){pixelize();});
+  connect(dynamic_cast<rshtDialog*>(rshtDlg), &rshtDialog::transformData, [=](){transform();});
+  connect(dynamic_cast<spectrumDialog*>(specDlg), &spectrumDialog::spectrumReady, [=](){analyze();});
 //  connect(this, Q_SIGNAL(redrawMap()), ui->mapTab, Q_SLOT(paintEvent(QPaintEvent*)));
 //  connect(ctrlDlg, Q_SIGNAL(controlDataSet()), this, Q_SLOT(checkMapper()));
 //  connect(mapperDlg, Q_SIGNAL(mapperSet(MAPTYPE,long,long,ORIENTATION)), this, Q_SLOT(createMaps(MAPTYPE,long,long,ORIENTATION)));
@@ -314,10 +315,10 @@ bool mainWindow::replaceDataChain(const char* mess)
 void mainWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
 {
   dataSelectDlg = new dataSelectDialog(s_association, RWMode::Read);
-  connect(dataSelectDlg, &dataSelectDialog::dataSelected,
+  connect(dynamic_cast<dataSelectDialog*>(dataSelectDlg), &dataSelectDialog::dataSelected,
               [=](int size, FILETYPE types[])
               {
-                dataSelectDlg->accept();
+                dynamic_cast<dataSelectDialog*>(dataSelectDlg)->accept();
                 readData(size, types);
               });
 
@@ -426,10 +427,10 @@ void mainWindow::selectFileName(bool read)
 void mainWindow::emitSaveDataSets()
 {
   dataSelectDlg = new dataSelectDialog(s_association, RWMode::Write);
-  connect(dataSelectDlg, &dataSelectDialog::dataSelected,
+  connect(dynamic_cast<dataSelectDialog*>(dataSelectDlg), &dataSelectDialog::dataSelected,
           [=](int numTypes, FILETYPE dataTypes[])
           {
-            dataSelectDlg->accept();
+            dynamic_cast<dataSelectDialog*>(dataSelectDlg)->accept();
             writeData(numTypes, dataTypes);
           });
 
@@ -438,7 +439,7 @@ void mainWindow::emitSaveDataSets()
 
 void mainWindow::emitSelectSlices()
 {
-  connect(multSelDlg, &multipleSelectionDialog::slicesSelected,
+  connect(dynamic_cast<multipleSelectionDialog*>(multSelDlg), &multipleSelectionDialog::slicesSelected,
           [=](int min, int max)
           {
             s_association->fileIOEngine()->minSlice(min);

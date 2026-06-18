@@ -57,6 +57,18 @@
 #include "../libanalyzer/transformer.h"
 #include "../libanalyzer/spectrum.h"
 
+#include "analyzerdlgpar.h"
+#include "associationselectdlgpar.h"
+#include "controldatadlgpar.h"
+#include "dataselectdlgpar.h"
+#include "energydlgpar.h"
+#include "healpixdlgpar.h"
+#include "multipleselectiondlgpar.h"
+#include "pixelizerdlgpar.h"
+#include "rshtdlgpar.h"
+#include "spectrumdlgpar.h"
+#include "transformerdlgpar.h"
+
 class GUIManager
 {
     public:
@@ -136,6 +148,18 @@ class GUIManager
         FORMAT                     dataFormat;
         std::string                fileName;
         OBSERVATORY                dataSource;
+
+        associationSelectDialogParent *assocDlg;
+        controlDataDialogParent       *ctrlDlg;
+        dataSelectDialogParent        *dataSelectDlg;
+        energyDialogParent            *energyDlg;
+        multipleSelectionDialogParent *multSelDlg;
+        pixelizerDialogParent         *pixSelectDlg;
+        healpixDialogParent           *healpixDlg;
+        transformerDialogParent       *transSelectDlg;
+        rshtDialogParent              *rshtDlg;
+        analyzerDialogParent          *analSelectDlg;
+        spectrumDialogParent          *specDlg;
 };
 #endif
 

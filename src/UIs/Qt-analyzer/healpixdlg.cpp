@@ -56,35 +56,23 @@
 #include "../libanalyzer/matrixdata.h"
 #include "../libanalyzer/healpix.h"
 
+#include "../healpixdlgpar.h"
+
 #define SIDERES 0.00001
 
 healpixDialog::healpixDialog(association* assoc)
-              : ui(new Ui::healpixDialog) {
+              : healpixDialogParent(assoc),
+                ui(new Ui::healpixDialog)
+{
   /* set up the user interface first */
   ui->setupUi(this);
 
-  dataAssoc = assoc;
-//  pixelizer = 0;
-
   /* set up signals and slots */
   connect(ui->sideEdit, &QLineEdit::editingFinished, [=]() {healpixDialog::syncSides();});
-//  connect(ui->resEdit, &QLineEdit::editingFinished, [=](){healpixDialog::syncResolution();});
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &healpixDialog::finalize);
   connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &healpixDialog::cancel);
   connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &healpixDialog::help);
-  
-  /* initialize internal variables*/
-  usePixAvg = false;
-  usePixDev = false;
-  usePixVar = false;
-  doAvgNorm = false;
-  doVarNorm = false;
-  doMinMax  = false;
 
-  nestedFlag = true;
-  dirty = false;
-  isConfigured = false;
-  
   /* set initially displayed values */
   ui->avgNormalize->setChecked(false);
   ui->varNormalize->setChecked(false);
@@ -107,7 +95,6 @@ healpixDialog::~healpixDialog() {
 
 void healpixDialog::configure() {
   dirty = false;
-//  dataAssoc->addEngine(dataEngines::Pixelization, HealPIX);
   
   if (isConfigured) {
     if (nestedFlag)
@@ -344,16 +331,6 @@ void healpixDialog::syncResolution() {
   ui->sideEdit->insert(QString::number(sides));
 }
 */
-
-double healpixDialog::resolution(int sides) {
-  double result = 360.0 / (sides * sqrt(12.0*M_PI));
-  return(result);
-}
-
-int healpixDialog::sides(double resolution) {
-  int result = (int)(360.0 / (resolution * sqrt(12.0*M_PI)));
-  return result;
-}
 
 void healpixDialog::finalize() {
   validate(); //check and store selections

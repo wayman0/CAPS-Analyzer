@@ -55,17 +55,13 @@
 #include "associationselectdlg.h"
 #include "ui_associationselectdlg.h"
 
-associationSelectDialog::associationSelectDialog(std::vector<association*>* assocVector):ui(new Ui::associationSelectDialog)
+associationSelectDialog::associationSelectDialog(std::vector<association*>* assocVector)
+	: associationSelectDialogParent(assocVector),
+	  ui(new Ui::associationSelectDialog)
 {
   /* set up the user interface first */
   ui->setupUi(this);
   
-  /* initialize internal variables*/
-  dirty = false;
-  
-  dataMgrs = assocVector;
-  currAssoc = (*dataMgrs)[0];
-
   for(int i = 0; i < dataMgrs->size(); i += 1)
     ui->assocSelectBox->addItem("Association: " + QString::number(i + 1));
 
@@ -82,12 +78,6 @@ associationSelectDialog::~associationSelectDialog() {
 
   delete dataMgrs;
 }
-
-void associationSelectDialog::setCurrAssoc(association* assoc)
-{
-  currAssoc = assoc;
-}
-
 
 void associationSelectDialog::validate() {
   dirty = false; // assume nothing has changed

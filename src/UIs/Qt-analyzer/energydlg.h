@@ -57,23 +57,22 @@
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
 
+#include "../energydlgpar.h"
+
 namespace Ui {
   class energyDialog;
 }
 
-class energyDialog : public QDialog {
+class energyDialog : public QDialog, public energyDialogParent
+{
   Q_OBJECT
   
   public:
     energyDialog();
     virtual ~energyDialog();
-    bool configured() {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
     void configure(double min, double max);
-//    void configure(bool triggered);
     void reset();
     
   Q_SIGNALS:
@@ -84,10 +83,6 @@ class energyDialog : public QDialog {
     void validate();
 
     Ui::energyDialog *ui;
-    association* dataAssoc;
-    double minEnergy;
-    double maxEnergy;
-    bool dirty, isConfigured;
 
   private Q_SLOTS:
     void finalize();

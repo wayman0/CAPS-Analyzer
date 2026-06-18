@@ -51,37 +51,22 @@
 #include "rshtdlg.h"
 #include "ui_rshtdlg.h"
 
-rshtDialog::rshtDialog(association *assoc) :
-            ui(new Ui::rshtDialog) {
+rshtDialog::rshtDialog(association *assoc)
+            : rshtDialogParent(assoc),
+			  ui(new Ui::rshtDialog)
+{
   /* set up the user interface first */
   ui->setupUi(this);
 
-  dataAssoc = assoc;
-
-  ui->minBox->setValue(0);
-  ui->maxBox->setValue(1);
-  ui->iterationBox->setValue(1);
-  
-  minIndex = 0;
-  maxIndex = 1;
-  noIterations = 1;
-    
   /* set up signals and slots */
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &rshtDialog::finalize);
   connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &rshtDialog::cancel);
   connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &rshtDialog::help);
   
-  /* initialize internal variables*/
-//  currentHandle = -1;
-//  dataHandle = -1;
-  dirty = false;
-  isConfigured = false;
-  
   /* set initially displayed values */
   ui->minBox->setValue(minIndex);
   ui->maxBox->setValue(maxIndex);
   ui->iterationBox->setValue(noIterations);
-
 }
 
 rshtDialog::~rshtDialog() {
@@ -147,62 +132,6 @@ void rshtDialog::validate() {
   isConfigured = true;
   return;
 }
-
-/*
-int rshtDialog::transform() {
-  analyzer_transform_hdl th = analyzer_get_transformer();
-  analyzer_hdl hdl = analyzer_get_instance();
-  
-  // Set transformer operational parameters
-  analyzer_trans_set_spectral_indices(th, minIndex, maxIndex);
-  analyzer_trans_set_iterations(th, iterations);
-  
-  // transform available data types
-  analyzer_data_t pixType = ANALYZER_PIXEL;
-  analyzer_data_t transType = ANALYZER_TRANSFORM;
-  int type = static_cast<int>(pixType);
-  int offset = 14, result = 0;
-  
-  while (type) {
-    if (analyzer_check_existence(hdl,pixType) && !analyzer_check_existence(hdl,transType)) {
-      result = analyzer_transform(th,hdl,pixType);
-      if (result < 0)
-        return result;
-    }
-    pixType = static_cast<analyzer_data_t>(++type);
-    transType = static_cast<analyzer_data_t>(type + offset);
-    if (pixType == ANALYZER_PIXEL_OCCUPANCY)
-      break;
-  }
-  
-  return result;
-}
-
-int rshtDialog::configureInterface() {
-  QString title, message;
-
-  // check to see if a transformer already exists
-  if (currentHandle >= 0) {
-    QMessageBox::StandardButton reply;
-    title = QString(tr("Replace current transformer?"));
-    message = QString(tr("A transformer currently exists.\nDo you want to replace it?"));
-    reply = QMessageBox::question(this,title,message,QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
-    if (reply == QMessageBox::Yes)
-      analyzer_transformer_release(currentHandle);
-  }
-  
-  // create a new transformer either way
-  currentHandle = analyzer_create_transformer(ANALYZER_TRANS_RSHT);
-  if (currentHandle < 0) {
-    title = QString(tr("Error code returned"));
-    message = QString(tr("The attempt to create a new transformer failed.\nError code is %1 - %2")).arg(currentHandle).arg(analyzer_get_error(currentHandle));
-    QMessageBox::critical(this,title,message);
-    return currentHandle;
-  }
-  
-  return 0;
-}
-*/
 
 void rshtDialog::finalize() {
   validate(); //check and store selections

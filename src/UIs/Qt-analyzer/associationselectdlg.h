@@ -54,20 +54,20 @@
 #include <QtWidgets>
 
 #include "../../libanalyzer/association.h"
+#include "../associationselectdlgpar.h"
 
 namespace Ui {
   class associationSelectDialog;
 }
 
-class associationSelectDialog : public QDialog {
+class associationSelectDialog : public QDialog, public associationSelectDialogParent
+{
   Q_OBJECT
   
   public:
     associationSelectDialog(std::vector<association*>* assocVector);
     virtual ~associationSelectDialog();
 
-    void setCurrAssoc(association* assoc);
-    
   Q_SIGNALS:
     void associationSelected(association*);
 
@@ -79,10 +79,7 @@ class associationSelectDialog : public QDialog {
     void validate();
     
     Ui::associationSelectDialog  *ui;
-    association*                 currAssoc;
-    std::vector<association*>*   dataMgrs;
-    bool dirty;
-    
+
   private Q_SLOTS:
     void help();
     void finalize();

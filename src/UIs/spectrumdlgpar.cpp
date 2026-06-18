@@ -57,7 +57,7 @@ spectrumDialogParent::spectrumDialogParent()
   weigh   = false;
   binSize = 1;
   ensIter = 1;
-  mask   = 0;
+  maskInd   = 0;
   dirty  = false;
 
   isConfigured = false;

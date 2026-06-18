@@ -53,23 +53,22 @@
 
 #include <QtWidgets>
 
-//#include "../libanalyzer/analyzer.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
+
+#include "../pixelizerdlgpar.h"
 
 namespace Ui {
   class pixelizerDialog;
 }
 
-class pixelizerDialog : public QDialog {
+class pixelizerDialog : public QDialog, public pixelizerDialogParent
+{
   Q_OBJECT
   
   public:
     pixelizerDialog(association* assoc);
     virtual ~pixelizerDialog();
-    bool configured() const {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   Q_SIGNALS:
     void pixelizerSelected(PIXELSCHEME);
@@ -82,11 +81,6 @@ class pixelizerDialog : public QDialog {
     void validate();
     
     Ui::pixelizerDialog *ui;
-    bool dirty;
-    bool isConfigured;
-    PIXELSCHEME pixType;
-//    unsigned int selectedPixelizer;
-    association* dataAssoc;
     
   private Q_SLOTS:
     void help();

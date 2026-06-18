@@ -52,36 +52,27 @@
 #include "ui_multipleselectiondlg.h"
 #include <../libanalyzer/filemanager.h>
 
-multipleSelectionDialog::multipleSelectionDialog(association* s_assoc) :
-              ui(new Ui::multipleSelectionDialog) {
+multipleSelectionDialog::multipleSelectionDialog(association* s_assoc)
+			: multipleSelectionDialogParent(s_assoc),
+              ui(new Ui::multipleSelectionDialog)
+{
   /* set up the user interface first */
   ui->setupUi(this);
-  
-  /* initialize internal variables*/
-  dataAssoc = s_assoc;
-  minEnergy = 0.00;
-  maxEnergy = 1000000.00;
 
-  minSlice = 0;
-  maxSlice = 0;
-
-  dirty = false;
-  isConfigured = false;
-  
   /* set up signals and slots */
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &multipleSelectionDialog::finalize);
   connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &multipleSelectionDialog::cancel);
   connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &multipleSelectionDialog::help);
 }
 
-multipleSelectionDialog::~multipleSelectionDialog() {
+multipleSelectionDialog::~multipleSelectionDialog()
+{
   delete ui;
 }
 
 void multipleSelectionDialog::configure() {
   dirty = false;
-  //ui->minEnergyEdit->insert(QString::number(min));
-  //ui->maxEnergyEdit->insert(QString::number(max));
+
   fileManager* fm = dataAssoc->fileIOEngine();
   int slices = fm->slices();
 
@@ -104,9 +95,6 @@ void multipleSelectionDialog::reset() {
   maxEnergy = 1000000.0;
   minSlice = 0;
   maxSlice = 0;
-
-  //ui->minEnergyEdit->insert(QString::number(minEnergy));
-  //ui->maxEnergyEdit->insert(QString::number(maxEnergy));
 
   ui->minList->clear();
   ui->maxList->clear();

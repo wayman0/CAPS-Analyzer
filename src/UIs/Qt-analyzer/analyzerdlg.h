@@ -53,23 +53,19 @@
 
 #include <QtWidgets>
 
-//#include "../libanalyzer/analyzer.h"
-#include "../../libanalyzer/atypes.h"
-#include "../../libanalyzer/association.h"
+#include "../analyzerdlgpar.h"
 
 namespace Ui {
   class analyzerDialog;
 }
 
-class analyzerDialog : public QDialog {
+class analyzerDialog : public QDialog, public analyzerDialogParent
+{
   Q_OBJECT
   
   public:
     analyzerDialog(association* assoc);
     virtual ~analyzerDialog();
-    bool configured() const {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   Q_SIGNALS:
     void analyzerSelected();
@@ -82,9 +78,6 @@ class analyzerDialog : public QDialog {
     void validate();
     
     Ui::analyzerDialog *ui;
-    bool dirty;
-    bool isConfigured;
-    association* dataAssoc;
     
   private Q_SLOTS:
     void help();

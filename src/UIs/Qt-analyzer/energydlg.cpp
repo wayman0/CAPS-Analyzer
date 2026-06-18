@@ -51,16 +51,11 @@
 #include "energydlg.h"
 #include "ui_energydlg.h"
 
-energyDialog::energyDialog() :
-              ui(new Ui::energyDialog) {
+energyDialog::energyDialog()
+              : energyDialogParent(),
+                ui(new Ui::energyDialog) {
   /* set up the user interface first */
   ui->setupUi(this);
-  
-  /* initialize internal variables*/
-  minEnergy = 0.00;
-  maxEnergy = 1000000.00;
-  dirty = false;
-  isConfigured = false;
   
   /* set up signals and slots */
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &energyDialog::finalize);

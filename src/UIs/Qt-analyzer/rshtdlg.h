@@ -53,26 +53,22 @@
 
 #include <QtWidgets>
 
-//#include "../libanalyzer/analyzer.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
+
+#include "../rshtdlgpar.h"
 
 namespace Ui {
   class rshtDialog;
 }
 
-class rshtDialog : public QDialog {
+class rshtDialog : public QDialog, public rshtDialogParent
+{
   Q_OBJECT
   
   public:
     rshtDialog(association *assoc);
     virtual ~rshtDialog();
-    bool configured() const {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    int minimumIndex() const {return minIndex;}
-    int maximumIndex() const {return maxIndex;}
-    int iterations() const {return noIterations;}
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
     void configure();
@@ -84,15 +80,8 @@ class rshtDialog : public QDialog {
     
   private:
     void validate();
-//    int transform();
-//    int configureInterface();
     
     Ui::rshtDialog *ui;
-    association *dataAssoc;
-    int minIndex, maxIndex, noIterations;
-    bool dirty, isConfigured;
-//    analyzer_transform_hdl currentHandle;
-//    analyzer_hdl dataHandle;
 
   private Q_SLOTS:
     void finalize();

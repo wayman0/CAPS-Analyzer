@@ -153,6 +153,7 @@ class mainWindow : public QMainWindow, GUIManager {
 
     Ui::MainWindow *ui;
     
+    /*
     associationSelectDialog *assocDlg;
     controlDataDialog       *ctrlDlg;
     dataSelectDialog        *dataSelectDlg;
@@ -164,11 +165,13 @@ class mainWindow : public QMainWindow, GUIManager {
     rshtDialog              *rshtDlg;
     analyzerDialog          *analSelectDlg;
     spectrumDialog          *specDlg;
+    */
     mapperDialog            *mapperDlg;
     mapSelectDialog         *mapSelectDlg;
     graphDialog             *grapherDlg;
     graphSelectDialog       *graphSelectDlg;
-    
+
+
     progress                *s_progressInterface;
 
     unsigned char             *activeMap;
