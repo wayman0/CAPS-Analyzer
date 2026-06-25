@@ -278,12 +278,14 @@ typedef genericType GENERICTYPE;
  */
 enum controlType {Empty = 0, Uniform, Regional, Delta, Gaussian, Checker, Harmonic, CONTROL_LIMIT};
 typedef controlType CONTROLTYPE;
+static std::string controlNames[] = { "Empty", "Uniform", "Partial", "Delta", "Gaussian", "Checker", "Harmonic", "LIMIT"};
 
 /**
   * data creation operations
   */
 enum m_op {Add = 0, Subtract, Scale, Replace, Invert, Mirror, OP_LIMIT};
 typedef m_op M_OP;
+static std::string operationNames[] = { "Add", "Sub", "Scale", "Replace", "Invert", "Mirror", "LIMIT"};
 
 /**
   * associated maps
