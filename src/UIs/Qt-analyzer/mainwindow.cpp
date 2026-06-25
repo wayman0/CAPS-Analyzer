@@ -533,32 +533,6 @@ void mainWindow::setAssociation(association* newAssoc)
   clearGraphs();
 }
 
-void mainWindow::getControlDataAttr(CONTROLTYPE* dataSet, double* strength, M_OP* op,
-                                        double* raRes,    double* decRes,
-                                        double* top,      double* bot,
-                                        double* left,     double* right,
-                                        double* peakDec,  double* peakRA,   double* fwhm,
-                                        double* checkRA,  double* checkDec,
-                                        long* l,          long* m)
-{
-  *raRes = ctrlDlg->RAResolution();
-  *decRes = ctrlDlg->decResolution();
-  *dataSet = ctrlDlg->dataPattern();
-  *strength = ctrlDlg->controlSignalStrength();
-  *op = ctrlDlg->controlOperation();
-  *top = ctrlDlg->highDec();
-  *bot = ctrlDlg->lowDec();
-  *left = ctrlDlg->lowRA();
-  *right = ctrlDlg->highRA();
-  *peakDec = ctrlDlg->decPeak();
-  *peakRA = ctrlDlg->RAPeak();
-  *fwhm = ctrlDlg->fullWidthHalfMax();
-  *checkRA = ctrlDlg->checkerRAWidth();
-  *checkDec = ctrlDlg->checkerDecWidth();
-  *l = ctrlDlg->harmonicL();
-  *m = ctrlDlg->harmonicM();
-}
-
 void mainWindow::setControlDlgConfigured(bool config)
 {
     ctrlDlg->configure(config);

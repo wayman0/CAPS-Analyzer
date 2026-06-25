@@ -205,23 +205,23 @@ void GUIManager::createControlData(FILETYPE dataType, bool complete)
         if(replaceDataChain("A data chain currently exists.\n Do you want to replace it?"))
             s_association->discardRelation(dataType);
 
-    CONTROLTYPE dataSet;
-    M_OP op;
-    double strength;
-    double raRes, decRes;
-    double top, bot;
-    double left, right;
-    double peakDec, peakRA, fwhm;
-    double checkRA, checkDec;
-    long l, m;
+    CONTROLTYPE dataSet = ctrlDlg->dataPattern();
+	double raRes = ctrlDlg->RAResolution();
+	double decRes = ctrlDlg->decResolution();
+	double strength = ctrlDlg->controlSignalStrength();
+	M_OP   op = ctrlDlg->controlOperation();
+	double top = ctrlDlg->highDec();
+	double bot = ctrlDlg->lowDec();
+	double left = ctrlDlg->lowRA();
+	double right = ctrlDlg->highRA();
+	double peakDec = ctrlDlg->decPeak();
+	double peakRA = ctrlDlg->RAPeak();
+	double fwhm = ctrlDlg->fullWidthHalfMax();
+	double checkRA = ctrlDlg->checkerRAWidth();
+	double checkDec = ctrlDlg->checkerDecWidth();
+	long l = ctrlDlg->harmonicL();
+	long m = ctrlDlg->harmonicM();
 
-    getControlDataAttr(&dataSet, &strength, &op,
-                       &raRes, &decRes,
-                       &top, &bot,
-                       &left, &right,
-                       &peakDec, &peakRA, &fwhm,
-                       &checkRA, &checkDec,
-                       &l, &m);
 
     if (!s_association->exists(dataType))
     {

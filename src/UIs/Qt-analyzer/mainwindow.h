@@ -103,13 +103,6 @@ class mainWindow : public QMainWindow, GUIManager {
     bool addDataMessage(const char* mess);
     bool replaceDataChain(const char* mess);
 
-    void getControlDataAttr(CONTROLTYPE* dataSet, double* strength, M_OP* op,
-                                        double* raRes, double* decRes,
-                                        double* top, double* bot,
-                                        double* left, double* right,
-                                        double* peakDec, double* peakRA, double* fwhm,
-                                        double* checkRA, double* checkDec,
-                                        long* l, long* m);
     void setControlDlgConfigured(bool config);
     void setPixelizerAttr();
     void setTransformerAttr();

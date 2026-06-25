@@ -9,6 +9,7 @@ pkg_check_modules(DEPS REQUIRED sigc++-2.0)
 set(shell-analyzer_SOURCES
 	main.cpp
 	shellwindow.cpp
+	controldatadlg.cpp
    )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/.. ${CMAKE_SOURCE_DIR} ${DEPS_INCLUDE_DIRS})

@@ -102,13 +102,6 @@ class GUIManager
         void writeData(int numTypes, FILETYPE dataTypes[]);
         void saveFile();
 
-        virtual void getControlDataAttr(CONTROLTYPE* dataSet, double* strength, M_OP* op,
-                                        double* raRes, double* decRes,
-                                        double* top, double* bot,
-                                        double* left, double* right,
-                                        double* peakDec, double* peakRA, double* fwhm,
-                                        double* checkRA, double* checkDec,
-                                        long* l, long* m) = 0;
         virtual void setControlDlgConfigured(bool config) = 0;
         void createControlData(FILETYPE dataType, bool complete);
 

@@ -50,6 +50,10 @@
  ***************************************************************************/
 
 #include "shellwindow.h"
+#include "controldatadlg.h"
+#include "healpixdlg.h"
+
+#include <limits>
 
 ShellWindow::ShellWindow() : GUIManager()
 {
@@ -86,6 +90,15 @@ ShellWindow::ShellWindow() : GUIManager()
 		return;
 	}
 
+	ctrlDlg = new controlDataDialog(s_association, input, output,
+									[this](FILETYPE f, bool b) { this->createControlData(f, b);},
+									[=](){(*output) << "Control Data Creation canceled.\n";});
+
+	healpixDlg = new healpixDialog(s_association, input, output,
+								   [this]() {this->pixelize();},
+								   [=](){(*output) << "Pixelization canceled.\n";});
+
+
 	/* create dialogs needed to pass signals back and forth */
 	/*
 	assocDlg = new associationSelectDialog(associationVector);
@@ -95,7 +108,6 @@ ShellWindow::ShellWindow() : GUIManager()
 	energyDlg = new energyDialog();
 	multSelDlg = new multipleSelectionDialog(s_association);
 	pixSelectDlg = new pixelizerDialog(s_association);
-	healpixDlg = new healpixDialog(s_association);
 	transSelectDlg = new transformerDialog(s_association);
 	rshtDlg = new rshtDialog(s_association);
 	analSelectDlg = new analyzerDialog(s_association);
@@ -234,12 +246,76 @@ bool ShellWindow::replaceDataChain(const char* mess)
 
 void ShellWindow::execute()
 {
-	(*output) << "RUNNING\n";
+	printMenu();
+
+	for(int choice = getChoice(); choice != 0; choice = getChoice())
+	{
+		if(choice == 1)
+		{
+			static_cast<controlDataDialog*>(ctrlDlg)->execute();
+		}
+		else if(choice == 2)
+			(*output) << "Open File\n";
+		else if(choice == 3)
+			(*output) << "Save File\n";
+		else if(choice == 4)
+		{
+			(*output) << "Pixelize\n";
+
+		}
+		else if(choice == 5)
+			(*output) << "Transform\n";
+		else if(choice == 6)
+			(*output) << "Analyzer\n";
+		else
+		{
+			clearInput();
+			printInvalidChoice();
+		}
+
+		printMenu();
+	}
 }
 
 void ShellWindow::printMenu()
 {
+	(*output) << "MENU CHOICES: \n";
+	(*output) << "\t0. Exit\n"
+			  << "\t1. Create Control Data\n"
+			  << "\t2. Open File\n"
+			  << "\t3. Save File\n"
+			  << "\t4. Pixelize\n"
+			  << "\t5. Transform\n"
+			  << "\t6. Analyze\n";
+}
 
+int ShellWindow::getChoice()
+{
+	int choice = 0;
+
+	if((*input) >> choice)
+		return choice;
+
+	do
+	{
+		clearInput();
+		printInvalidChoice();
+	}
+	while(! ((*input) >> choice));
+
+	return choice;
+}
+
+void ShellWindow::clearInput()
+{
+	input->clear();
+	input->ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void ShellWindow::printInvalidChoice()
+{
+	(*output) << "Invalid choice please choose again.\n";
+	printMenu();
 }
 
 void ShellWindow::addAssociation()
@@ -263,15 +339,6 @@ void ShellWindow::emitSelectEnergies()
 {}
 
 void ShellWindow::emitSaveDataSets()
-{}
-
-void ShellWindow::getControlDataAttr(CONTROLTYPE* dataSet, double* strength, M_OP* op,
-                                        double* raRes, double* decRes,
-                                        double* top, double* bot,
-                                        double* left, double* right,
-                                        double* peakDec, double* peakRA, double* fwhm,
-                                        double* checkRA, double* checkDec,
-                                        long* l, long* m)
 {}
 
 void ShellWindow::setControlDlgConfigured(bool config)

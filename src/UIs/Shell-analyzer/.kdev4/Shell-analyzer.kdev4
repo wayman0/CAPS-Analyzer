@@ -1,3 +1,6 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x1c\x00S\x00h\x00e\x00l\x00l\x00-\x00a\x00n\x00a\x00l\x00y\x00z\x00e\x00r)
+
 [CMake]
 Build Directory Count=1
 Current Build Directory Index-Host System=0
@@ -27,10 +30,10 @@ Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00
 Dependency Action=Build
 EnvironmentGroup=
 Executable=file:///mnt/research/software/CAPS-Analyzer/src/UIs/Shell-analyzer
-External Terminal=konsole --noclose --workdir %workdir -e %exe
+External Terminal=konsole --show-normal --no-close --workdir %workdir -e %exe
 Kill Before Executing Again=4194304
 Project Target=Shell-analyzer,Shell-analyzer
-Use External Terminal=false
+Use External Terminal=true
 Working Directory=
 isExecutable=false
 
