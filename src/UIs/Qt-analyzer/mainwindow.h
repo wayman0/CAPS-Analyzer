@@ -103,10 +103,6 @@ class mainWindow : public QMainWindow, GUIManager {
     bool addDataMessage(const char* mess);
     bool replaceDataChain(const char* mess);
 
-    void setControlDlgConfigured(bool config);
-    void setAnalyzerAttr();
-    bool handleMissingTransformer();
-
   public Q_SLOTS:
     void addAssociation();
     void setAssociation(association* newAssoc);

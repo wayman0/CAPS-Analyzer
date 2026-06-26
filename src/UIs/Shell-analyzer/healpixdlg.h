@@ -76,6 +76,8 @@ class healpixDialog : public healpixDialogParent
 		std::istream* input;
 		std::ostream* output;
 
+		const int width = 45;
+
 		void validate();
 
 		void setNSides();
@@ -83,6 +85,7 @@ class healpixDialog : public healpixDialogParent
 		void setOverpixelization();
 
 		void clearInput();
+		void clearScreen();
 
 		bool power2(int s);
 		bool confirm();

@@ -461,9 +461,9 @@ void mainWindow::addAssociation()
 {
   try
   {
-    association* newAssoc = new association(this,   GUIManager::progressBarWrapper,
-                                                    GUIManager::progressTextWrapper,
-                                                    GUIManager::errorMessageWrapper);
+    association* newAssoc = new association(this,   mainWindow::progressBarWrapper,
+                                                    mainWindow::progressTextWrapper,
+                                                    mainWindow::errorMessageWrapper);
     associationVector->push_back(newAssoc);
     setAssociation(newAssoc);
   }
@@ -531,30 +531,6 @@ void mainWindow::setAssociation(association* newAssoc)
 
   clearMaps();
   clearGraphs();
-}
-
-void mainWindow::setControlDlgConfigured(bool config)
-{
-    ctrlDlg->configure(config);
-}
-
-void mainWindow::setAnalyzerAttr()
-{
-  s_association->addEngine(dataEngines::PseudoSpectrum);
-  s_association->powerSpectraEngine()->binning(specDlg->binSpectrum());
-  s_association->powerSpectraEngine()->computeInverse(specDlg->invertTransforms());
-  s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
-  s_association->powerSpectraEngine()->numLPerBin(specDlg->indicesPerBin());
-  s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
-  s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
-  s_association->powerSpectraEngine()->configured(true);
-}
-
-bool mainWindow::handleMissingTransformer()
-{
-  selectTransformer();
-
-  return true;
 }
 
 void mainWindow::configureDisplay(FILETYPE dataType)

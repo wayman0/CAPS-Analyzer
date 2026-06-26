@@ -81,6 +81,8 @@ class controlDataDialog : public controlDataDialogParent
 		successFunc successF;
 		cancelFunc cancelF;
 
+		const int width = 45;
+
 		void setDataType();
 		void setResolution();
 		void setControlType();
@@ -88,6 +90,7 @@ class controlDataDialog : public controlDataDialogParent
 		void setOperation();
 
 		void clearInput();
+		void clearScreen();
 
 		bool confirm();
 

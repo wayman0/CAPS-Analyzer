@@ -90,9 +90,6 @@ class ShellWindow : GUIManager
 
 		void emitSaveDataSets();
 
-		void setControlDlgConfigured(bool config);
-
-		void setAnalyzerAttr();
 		bool handleMissingTransformer();
 
 		void selectPixelizer();

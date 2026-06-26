@@ -75,11 +75,6 @@ class GUIManager
         GUIManager();
         virtual ~GUIManager();
 
-        static void progressBarWrapper(void* ui, int value);
-        static void progressTextWrapper(void* ui, const char* updateName);
-        static void errorMessageWrapper(void* ui, const char* errMess);
-
-
         virtual void updateProgressBar(int value)               = 0;
         virtual void updateProgressText(const char* updateName) = 0;
         virtual void errorMessage(const char* errMess)          = 0;
@@ -102,13 +97,13 @@ class GUIManager
         void writeData(int numTypes, FILETYPE dataTypes[]);
         void saveFile();
 
-        virtual void setControlDlgConfigured(bool config) = 0;
         void createControlData(FILETYPE dataType, bool complete);
 
         void setPixelizerAttr();
         int pixelize();
         bool pixelize(FILETYPE inputDataType, FILETYPE pixelDataType);
 
+		bool handleMissingTransformer();
         void setTransformerAttr();
         int transform();
         bool transform(FILETYPE pixelDataType, FILETYPE transDataType);
@@ -116,8 +111,7 @@ class GUIManager
         int invert();
         bool invert(FILETYPE inverseType, FILETYPE almType);
 
-        virtual void setAnalyzerAttr() = 0;
-        virtual bool handleMissingTransformer() = 0;
+        void setAnalyzerAttr();
         void analyze();
 
         virtual void selectPixelizer() = 0;

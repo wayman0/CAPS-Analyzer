@@ -51,6 +51,7 @@
 #include "spectrumdlg.h"
 
 #include <limits>
+#include <iomanip>
 
 spectrumDialog::spectrumDialog(std::istream* i, std::ostream* o, std::function<void()> s, std::function<void()> c)
 			: spectrumDialogParent()
@@ -67,26 +68,81 @@ spectrumDialog::~spectrumDialog()
 
 void spectrumDialog::execute()
 {
+	setBinSize();
+	setEnsAvg();
+	setMaskIndex();
+
+	if(confirm())
+		spectrumReady();
+	else
+		powerSpectrumCancelled();
 }
 
 void spectrumDialog::setBinSize()
 {
+	(*output) << std::left;
+	int numL;
+	do
+	{
+		clearInput();
+		(*output) << std::setw(60) << "Enter the number of l's per bin.";
+	}while(		!((*input) >> numL)
+				|| numL < 2);
+
+	binSize = numL;
 }
 
 void spectrumDialog::setEnsAvg()
 {
+	(*output) << std::left;
+	int numIter;
+	do
+	{
+		clearInput();
+		(*output) << std::setw(60) << "Enter the number of ensemble averages to perform.";
+	}while(		!((*input) >> numIter)
+				|| numIter < 1);
+
+	ensIter = numIter;
 }
 
 void spectrumDialog::setMaskIndex()
 {
+	(*output) << std::left;
+	int index;
+	do
+	{
+		clearInput();
+		(*output) << std::setw(60) << "Enter the indexes you wish to mask out.";
+	}while(		!((*input) >> index)
+				|| index < 0);
+
+	maskInd = index;
 }
 
 bool spectrumDialog::confirm()
 {
+	(*output) << "You have selected to analyze using "
+			  << binSize << " l's per bin, perform "
+			  << ensIter << " ensemble averages, and mask out the first "
+			  << maskInd << " indexes.\n";
+
+	char confirm = 'n';
+	do
+	{
+		clearInput();
+		(*output) << "Confirm Y | N.\t";
+	}while(		!((*input)>>confirm)
+				|| !(   confirm == 'Y' || confirm == 'y'
+					 || confirm == 'N' || confirm == 'n'));
+
+	return confirm == 'y' || confirm == 'Y' ? true : false;
 }
 
 void spectrumDialog::clearInput()
 {
+	input->clear();
+	input->ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 void spectrumDialog::configure()

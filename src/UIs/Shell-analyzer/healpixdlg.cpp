@@ -104,6 +104,8 @@ void healpixDialog::execute()
     nSides = skySides;
     res = skyRes;
 
+	clearScreen();
+
 	setNSides();
 	setIndexing();
 	setOverpixelization();
@@ -179,6 +181,8 @@ void healpixDialog::setOverpixelization()
 	do
 	{
 		clearInput();
+		clearScreen();
+
 		(*output) << "Choose the overpixelization method.\n"
 			  << "\t0. None\n"
 			  << "\t1. Pixel Mean\n"
@@ -210,6 +214,8 @@ bool healpixDialog::confirm()
 {
 	char confirm = 'n';
 
+	clearScreen();
+
 	(*output) << "You have selected to pixelize with an nsides of: " << nSides << " equating to a resolution of: " << res << ".\n";
 	(*output) << "You are using: " << (nestedFlag ? " nested" :" ringed") << " indexing and have selected to use ";
 
@@ -228,7 +234,7 @@ bool healpixDialog::confirm()
 	else
 		(*output) << "no";
 
-	(*output) << " overpixelization methods.\n";
+	(*output) << " overpixelization method.\n";
 
 	do
 	{
@@ -237,6 +243,8 @@ bool healpixDialog::confirm()
 	} while( 	!((*input) >>  confirm)
 			|| 	!( confirm == 'Y' || confirm == 'y'
 			||     confirm == 'N' || confirm == 'n'));
+
+	clearScreen();
 
 	if(confirm == 'Y' || confirm == 'y')
 		return true;
@@ -259,6 +267,11 @@ void healpixDialog::clearInput()
 {
 	input->clear();
 	input->ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void healpixDialog::clearScreen()
+{
+	(*output) << "\033[H\033[J";
 }
 
 void healpixDialog::configure()

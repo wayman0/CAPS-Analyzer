@@ -56,9 +56,14 @@
 #include "spectrumdlg.h"
 
 #include <limits>
+#include <iomanip>
 
 ShellWindow::ShellWindow() : GUIManager()
 {
+	//prevent synchonization with c and c++ input output buffers
+	// note we cannot use c IO now!
+	std::ios_base::sync_with_stdio(false);
+
 	input =  &(std::cin);
 	output = &(std::cout);
 
@@ -221,7 +226,6 @@ void ShellWindow::errorMessageWrapper(void* uiObj, const char* errMess)
 	here->errorMessage(errMess);
 }
 
-
 void ShellWindow::updateProgressBar(int value)
 {
 	const int barWidth = 50;
@@ -253,12 +257,12 @@ void ShellWindow::updateProgressText(const char* updateName)
 
 void ShellWindow::errorMessage(const char* errMess)
 {
-	(*output) << errMess << "\n";
+	(*output) << "\033[31m" << errMess << "\033[0m" << "\n";
 }
 
 void ShellWindow::displayMessage(const char* mess)
 {
-	(*output) << mess << "\n";
+	(*output) << "\033[36m" << mess << "\033[0m" << "\n";
 }
 
 bool ShellWindow::addDataMessage(const char* errMess)
@@ -267,7 +271,7 @@ bool ShellWindow::addDataMessage(const char* errMess)
 	do
 	{
 		clearInput();
-		(*output) << errMess << "\n";
+		(*output) << "\033[33m" << errMess << "(Y|N)" << "\033[0m";
 	} while(	!((*input)>>add)
 				|| !(   add == 'Y' || add == 'y'
 				|| 		add == 'N' || add == 'n'));
@@ -281,7 +285,7 @@ bool ShellWindow::replaceDataChain(const char* mess)
 	do
 	{
 		clearInput();
-		(*output) << mess << "\n";
+		(*output) << "\033[33m" << mess << "(Y|N)" << "\033[0m";
 	} while(	!((*input)>>add)
 				|| !(   add == 'Y' || add == 'y'
 				|| 		add == 'N' || add == 'n'));
@@ -401,12 +405,6 @@ void ShellWindow::emitSelectEnergies()
 {}
 
 void ShellWindow::emitSaveDataSets()
-{}
-
-void ShellWindow::setControlDlgConfigured(bool config)
-{}
-
-void ShellWindow::setAnalyzerAttr()
 {}
 
 bool ShellWindow::handleMissingTransformer()

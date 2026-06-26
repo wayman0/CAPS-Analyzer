@@ -49,6 +49,7 @@
  * program must reference the fact that it was developed by Daniel Suson   *
  ***************************************************************************/
 #include "controldatadlg.h"
+#include "../libanalyzer/matrixdata.h"
 #include <limits>
 
 controlDataDialog::controlDataDialog(association *assoc, std::istream* i, std::ostream* o, successFunc s, cancelFunc c)
@@ -70,8 +71,16 @@ void controlDataDialog::clearInput()
 	input->ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
+void controlDataDialog::clearScreen()
+{
+	(*output) << "\033[H\033[J";
+}
+
+
 void controlDataDialog::execute()
 {
+	clearScreen();
+
 	setDataType();
 	setResolution();
 	setStrength();
@@ -90,6 +99,7 @@ void controlDataDialog::setDataType()
 	do
 	{
 		clearInput();
+		clearScreen();
 
 		(*output) << "Enter the data type to be created.\n"
 			  << "\t1. Data\n"
@@ -116,32 +126,76 @@ void controlDataDialog::setDataType()
 void controlDataDialog::setResolution()
 {
 	double res1, res2;
-	do
+
+	if(dataAssoc->exists(FILETYPE::InputData))
 	{
-		clearInput();
-		(*output) << "Enter the RA Resolution.\t";
-	}while(		!((*input)>>res1)
-				|| res1 <= 0);
+		res1 = dataAssoc->inputData()->RARes();
+		res2 = dataAssoc->inputData()->DecRes();
+
+		(*output) << "Using existing resolutions.  RA: " << res1 << " Dec: " << res2 << "\n";
+	}
+	else if(dataAssoc->exists(FILETYPE::InputWeights))
+	{
+		res1 = dataAssoc->inputWeights()->RARes();
+		res2 = dataAssoc->inputWeights()->DecRes();
+
+		(*output) << "Using existing resolutions.  RA: " << res1 << " Dec: " << res2 << "\n";
+	}
+	else if(dataAssoc->exists(FILETYPE::InputNoise))
+	{
+		res1 = dataAssoc->inputNoise()->RARes();
+		res2 = dataAssoc->inputNoise()->DecRes();
+
+		(*output) << "Using existing resolutions.  RA: " << res1 << " Dec: " << res2 << "\n";
+	}
+	else if(dataAssoc->exists(FILETYPE::InputFilter))
+	{
+		res1 = dataAssoc->inputFilter()->RARes();
+		res2 = dataAssoc->inputFilter()->DecRes();
+
+		(*output) << "Using existing resolutions.  RA: " << res1 << " Dec: " << res2 << "\n";
+	}
+	else if(dataAssoc->exists(FILETYPE::InputBeam))
+	{
+		res1 = dataAssoc->inputBeam()->RARes();
+		res2 = dataAssoc->inputBeam()->DecRes();
+
+		(*output) << "Using existing resolutions.  RA: " << res1 << " Dec: " << res2 << "\n";
+	}
+	else
+	{
+		(*output) << std::left;
+		do
+		{
+			clearInput();
+
+			(*output) << std::setw(width) << "Enter the RA Resolution.";
+		}while(		!((*input)>>res1)
+					|| res1 <= 0);
+
+		do
+		{
+			clearInput();
+
+			(*output) << std::setw(width) << "Enter the Dec Resolution.";
+		}while(		!((*input)>>res2)
+					|| res2 <= 0);
+
+	}
 
 	resRA = res1;
-
-	do
-	{
-		clearInput();
-		(*output) << "Enter the Dec Resolution.\t";
-	}while(		!((*input)>>res2)
-				|| res2 <= 0);
-
 	resDec = res2;
 }
 
 void controlDataDialog::setStrength()
 {
+	(*output) << std::left;
 	double str;
 	do
 	{
 		clearInput();
-		(*output) << "Enter the Signal Strength.\t";
+
+		(*output) << std::setw(width) << "Enter the Signal Strength.";
 	}while(		!((*input)>>str)
 				|| str <= 0);
 
@@ -154,6 +208,7 @@ void controlDataDialog::setControlType()
 	do
 	{
 		clearInput();
+		clearScreen();
 
 		(*output) << "Enter the control type to be created.\n"
 			  << "\t1. Full Sky\n"
@@ -174,19 +229,22 @@ void controlDataDialog::setControlType()
 	{
 		dataSet = CONTROLTYPE::Regional;
 
+		(*output) << std::left;
 		double t, b;
 		do
 		{
 			do
 			{
 				clearInput();
-				(*output) << "Enter the top bounds.\t";
+
+				(*output) << std::setw(width) << "Enter the top bounds.";
 			}while(		!((*input)>>t));
 
 			do
 			{
 				clearInput();
-				(*output) << "Enter the bottom bounds.\t";
+
+				(*output) << std::setw(width) << "Enter the bottom bounds.";
 			}while(		!((*input)>>b));
 
 			if(t < b)
@@ -203,13 +261,15 @@ void controlDataDialog::setControlType()
 			do
 			{
 				clearInput();
-				(*output) << "Enter the left bounds.\t";
+
+				(*output) << std::setw(width) << "Enter the left bounds.";
 			}while(		!((*input)>>l));
 
 			do
 			{
 				clearInput();
-				(*output) << "Enter the right bounds.\t";
+
+				(*output) << std::setw(width) << "Enter the right bounds.";
 			}while(		!((*input)>>r));
 
 			if(r < l)
@@ -223,11 +283,13 @@ void controlDataDialog::setControlType()
 	{
 		dataSet = CONTROLTYPE::Checker;
 
+		(*output) << std::left;
 		double res1, res2;
 		do
 		{
 			clearInput();
-			(*output) << "Enter the RA checker width.\t";
+
+			(*output) << std::setw(width) << "Enter the checker width.";
 		}while(		!((*input)>>res1)
 					|| res1 <= 0);
 
@@ -236,7 +298,8 @@ void controlDataDialog::setControlType()
 		do
 		{
 			clearInput();
-			(*output) << "Enter the Dec checker height.\t";
+
+			(*output) << std::setw(width) << "Enter the checker height.";
 		}while(		!((*input)>>res2)
 					|| res2 <= 0);
 
@@ -246,11 +309,13 @@ void controlDataDialog::setControlType()
 	{
 		dataSet = CONTROLTYPE::Delta;
 
+		(*output) << std::left;
 		double ra, dec;
 		do
 		{
 			clearInput();
-			(*output) << "Enter the RA point.\t";
+
+			(*output) << std::setw(width) << "Enter the RA point.";
 		}while(		!((*input)>>ra)
 					|| ra < -180
 					|| ra > 180);
@@ -260,7 +325,8 @@ void controlDataDialog::setControlType()
 		do
 		{
 			clearInput();
-			(*output) << "Enter the Dec point.\t";
+
+			(*output) << std::setw(width) << "Enter the Dec point.";
 		}while(		!((*input)>>dec)
 					|| dec < -90
 					|| dec > 90);
@@ -271,11 +337,13 @@ void controlDataDialog::setControlType()
 	{
 		dataSet = CONTROLTYPE::Gaussian;
 
+		(*output) << std::left;
 		double ra, dec, width;
 		do
 		{
 			clearInput();
-			(*output) << "Enter the RA point.\t";
+
+			(*output) << std::setw(width) << "Enter the RA point.";
 		}while(		!((*input)>>ra)
 					|| ra < -180
 					|| ra > 180);
@@ -285,7 +353,8 @@ void controlDataDialog::setControlType()
 		do
 		{
 			clearInput();
-			(*output) << "Enter the Dec point.\t";
+
+			(*output) << std::setw(width) << "Enter the Dec point.";
 		}while(		!((*input)>>dec)
 					|| dec < -90
 					|| dec > 90);
@@ -295,7 +364,8 @@ void controlDataDialog::setControlType()
 		do
 		{
 			clearInput();
-			(*output) << "Enter the std. dev.\t";
+
+			(*output) << std::setw(width) << "Enter the std. dev.";
 		}while(		!((*input)>>width)
 					|| width < -180
 					|| width > 180);
@@ -306,11 +376,13 @@ void controlDataDialog::setControlType()
 	{
 		dataSet = CONTROLTYPE::Harmonic;
 
+		(*output) << std::left;
 		long lVal, mVal;
 		do
 		{
 			clearInput();
-			(*output) << "Enter l parameter.\t";
+
+			(*output) << std::setw(width) << "Enter l parameter.";
 		}while(		!((*input)>>lVal)
 					|| lVal < 0);
 
@@ -319,7 +391,8 @@ void controlDataDialog::setControlType()
 		do
 		{
 			clearInput();
-			(*output) << "Enter m parameter.\t";
+
+			(*output) << std::setw(width) << "Enter m parameter.";
 		}while(		!((*input)>>mVal)
 					|| mVal < -lVal
 					|| mVal >  lVal);
@@ -333,6 +406,7 @@ void controlDataDialog::setOperation()
 	do
 	{
 		clearInput();
+		clearScreen();
 
 		(*output) << "Enter the operation to be performed.\n"
 			  << "\t1. Addition\n"
@@ -362,6 +436,8 @@ void controlDataDialog::setOperation()
 bool controlDataDialog::confirm()
 {
 	char confirm = 'n';
+
+	clearScreen();
 
 	(*output) << "You have selected to create a " << controlNames[static_cast<int>(dataSet)] << " control structure"
 			  << " for the data type: " << dataTypeNames[static_cast<int>(dataType)] << ".\n"
@@ -405,11 +481,13 @@ bool controlDataDialog::confirm()
 	do
 	{
 		clearInput();
+
 		(*output) << "Confirm Y | N.\t";
 	}while(		!((*input)>>confirm)
 				|| !(   confirm == 'Y' || confirm == 'y'
 					 || confirm == 'N' || confirm == 'n'));
 
+	clearScreen();
 	return confirm == 'y' || confirm == 'Y' ? true : false;
 }
 

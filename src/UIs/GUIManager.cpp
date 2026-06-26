@@ -65,15 +65,6 @@ GUIManager::~GUIManager()
     delete associationVector;
 }
 
-void GUIManager::progressBarWrapper(void* ui, int value)
-{}
-
-void GUIManager::progressTextWrapper(void* ui, const char* updateName)
-{}
-
-void GUIManager::errorMessageWrapper(void* ui, const char* errMess)
-{}
-
 void GUIManager::writeData(int numTypes, FILETYPE dataTypes[])
 {
     try
@@ -202,8 +193,12 @@ void GUIManager::openFile()
 void GUIManager::createControlData(FILETYPE dataType, bool complete)
 {
     if(s_association->exists(dataType) && s_association->getData(dataType)->current())
-        if(replaceDataChain("A data chain currently exists.\n Do you want to replace it?"))
+	{
+		if(replaceDataChain("A data chain currently exists.\nDo you want to replace it?"))
             s_association->discardRelation(dataType);
+		else
+			displayMessage("You are keeping existing data chain and appending to it.\n");
+	}
 
     CONTROLTYPE dataSet = ctrlDlg->dataPattern();
 	double raRes = ctrlDlg->RAResolution();
@@ -318,7 +313,7 @@ void GUIManager::createControlData(FILETYPE dataType, bool complete)
         s_association->getData(dataType)->current(true);
     }
     else
-        setControlDlgConfigured(true);
+        ctrlDlg->configured(true);
 }
 
 void GUIManager::setPixelizerAttr()
@@ -435,7 +430,7 @@ bool GUIManager::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType)
             if (!s_association->exists(fileType::InputData))
             {
                 if(!addDataMessage("No data map has been specified.  Do you wish to create or input a data map?"))
-                return false;
+					return false;
             }
             else {
                 if (!s_association->exists(pixelDataType))
@@ -511,6 +506,12 @@ bool GUIManager::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType)
         return true;
     else
         return false;
+}
+
+bool GUIManager::handleMissingTransformer()
+{
+	selectTransformer();
+	return true;
 }
 
 void GUIManager::setTransformerAttr()
@@ -665,6 +666,18 @@ bool GUIManager::invert(FILETYPE inverseType, FILETYPE almType)
         return s_association->generateInverseData(s_association->transformationEngine(), almType);
     else
         return false;
+}
+
+void GUIManager::setAnalyzerAttr()
+{
+	s_association->addEngine(dataEngines::PseudoSpectrum);
+	s_association->powerSpectraEngine()->binning(specDlg->binSpectrum());
+	s_association->powerSpectraEngine()->computeInverse(specDlg->invertTransforms());
+	s_association->powerSpectraEngine()->weight(specDlg->weighIndices());
+	s_association->powerSpectraEngine()->numLPerBin(specDlg->indicesPerBin());
+	s_association->powerSpectraEngine()->maskIndex(specDlg->maskLowestIndices());
+	s_association->powerSpectraEngine()->ensembleIterations(specDlg->ensembleIterations());
+	s_association->powerSpectraEngine()->configured(true);
 }
 
 void GUIManager::analyze()
