@@ -109,7 +109,7 @@ class GUIManager
         int pixelize();
         bool pixelize(FILETYPE inputDataType, FILETYPE pixelDataType);
 
-        virtual void setTransformerAttr() = 0;
+        void setTransformerAttr();
         int transform();
         bool transform(FILETYPE pixelDataType, FILETYPE transDataType);
 

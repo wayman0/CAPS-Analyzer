@@ -513,6 +513,22 @@ bool GUIManager::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType)
         return false;
 }
 
+void GUIManager::setTransformerAttr()
+{
+	switch (s_association->transformationEngineType())
+	{
+		case Rsht:
+			s_association->addEngine(dataEngines::Transformation, Rsht);
+			s_association->transformationEngine()->minIndex(rshtDlg->minimumIndex());
+			s_association->transformationEngine()->maxIndex(rshtDlg->maximumIndex());
+			s_association->transformationEngine()->iterations(rshtDlg->iterations());
+			s_association->transformationEngine()->configured(true);
+			break;
+		default:
+			selectTransformer();
+	}
+}
+
 int GUIManager::transform()
 {
     int count = 0;

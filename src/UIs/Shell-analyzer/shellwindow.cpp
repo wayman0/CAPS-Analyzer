@@ -52,6 +52,7 @@
 #include "shellwindow.h"
 #include "controldatadlg.h"
 #include "healpixdlg.h"
+#include "rshtdlg.h"
 
 #include <limits>
 
@@ -98,6 +99,9 @@ ShellWindow::ShellWindow() : GUIManager()
 								   [this]() {this->pixelize();},
 								   [=](){(*output) << "Pixelization canceled.\n";});
 
+	rshtDlg = new rshtDialog(s_association, input, output,
+							 [this]() {this->transform();},
+							 [=]() {(*output) << "Transformation canceled.\n";});
 
 	/* create dialogs needed to pass signals back and forth */
 	/*
@@ -259,7 +263,7 @@ void ShellWindow::execute()
 		else if(choice == 4)
 			static_cast<healpixDialog*>(healpixDlg)->execute();
 		else if(choice == 5)
-			(*output) << "Transform\n";
+			static_cast<rshtDialog*>(rshtDlg)->execute();
 		else if(choice == 6)
 			(*output) << "Analyze\n";
 		else
@@ -321,7 +325,6 @@ void ShellWindow::setAssociation(association* newAssoc)
 
 void ShellWindow::selectFileName(bool read)
 {
-
 }
 
 void ShellWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
@@ -337,9 +340,6 @@ void ShellWindow::emitSaveDataSets()
 {}
 
 void ShellWindow::setControlDlgConfigured(bool config)
-{}
-
-void ShellWindow::setTransformerAttr()
 {}
 
 void ShellWindow::setAnalyzerAttr()
@@ -378,7 +378,29 @@ void ShellWindow::configurePixelizer(PIXELSCHEME scheme)
 {}
 
 void ShellWindow::selectTransformer()
-{}
+{
+	int count = 0, i = 1;
+	TRANSFORMERSCHEME transCount = static_cast<TRANSFORMERSCHEME>(i);
+
+	while (true)
+	{
+		if (transCount == TRANSFORMER_LIMIT)
+			break;
+		count++;
+		transCount = static_cast <TRANSFORMERSCHEME>(++i);
+	}
+
+	if (count > 1)
+	{
+		if (!transSelectDlg->configured())
+			transSelectDlg->configure();
+	}
+	else
+	{
+		if (!rshtDlg->configured())
+			rshtDlg->configure();
+	}
+}
 
 void ShellWindow::configureTransformer(TRANSFORMERSCHEME scheme)
 {}

@@ -104,7 +104,6 @@ class mainWindow : public QMainWindow, GUIManager {
     bool replaceDataChain(const char* mess);
 
     void setControlDlgConfigured(bool config);
-    void setTransformerAttr();
     void setAnalyzerAttr();
     bool handleMissingTransformer();
 

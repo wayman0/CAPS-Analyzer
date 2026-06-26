@@ -55,6 +55,8 @@ rshtDialogParent::rshtDialogParent(association *assoc)
 {
   dataAssoc = assoc;
 
+  dataAssoc->transformationEngineType(Rsht);
+
   minIndex = 0;
   maxIndex = 1;
   noIterations = 1;

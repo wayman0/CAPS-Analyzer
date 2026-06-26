@@ -538,22 +538,6 @@ void mainWindow::setControlDlgConfigured(bool config)
     ctrlDlg->configure(config);
 }
 
-void mainWindow::setTransformerAttr()
-{
-  switch (s_association->transformationEngineType())
-  {
-    case Rsht:
-      s_association->addEngine(dataEngines::Transformation, Rsht);
-      s_association->transformationEngine()->minIndex(rshtDlg->minimumIndex());
-      s_association->transformationEngine()->maxIndex(rshtDlg->maximumIndex());
-      s_association->transformationEngine()->iterations(rshtDlg->iterations());
-      s_association->transformationEngine()->configured(true);
-      break;
-    default:
-      selectTransformer();
-  }
-}
-
 void mainWindow::setAnalyzerAttr()
 {
   s_association->addEngine(dataEngines::PseudoSpectrum);
@@ -1046,7 +1030,8 @@ void mainWindow::selectPixelizer()
   return;
 }
 
-void mainWindow::selectTransformer() {
+void mainWindow::selectTransformer()
+{
   int count = 0, i = 1;
   TRANSFORMERSCHEME transCount = static_cast<TRANSFORMERSCHEME>(i);
   

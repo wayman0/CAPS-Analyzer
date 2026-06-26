@@ -85,8 +85,6 @@ class ShellWindow : GUIManager
 
 		void setControlDlgConfigured(bool config);
 
-		void setTransformerAttr();
-
 		void setAnalyzerAttr();
 		bool handleMissingTransformer();
 
