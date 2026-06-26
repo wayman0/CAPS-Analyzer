@@ -198,6 +198,25 @@ ShellWindow::~ShellWindow()
 
 }
 
+void ShellWindow::progressBarWrapper(void* uiObj, int value)
+{
+	ShellWindow* here = (ShellWindow*)uiObj;
+	here->updateProgressBar(value);
+}
+
+void ShellWindow::progressTextWrapper(void* uiObj, const char* updateName)
+{
+	ShellWindow* here = (ShellWindow*)uiObj;
+	here->updateProgressText(updateName);
+}
+
+void ShellWindow::errorMessageWrapper(void* uiObj, const char* errMess)
+{
+	ShellWindow* here = (ShellWindow*)uiObj;
+	here->errorMessage(errMess);
+}
+
+
 void ShellWindow::updateProgressBar(int value)
 {
 	const int barWidth = 50;
@@ -217,6 +236,10 @@ void ShellWindow::updateProgressBar(int value)
 
     (*output) << "] " << value << "%";
     output->flush();
+
+	// find where to put the endline
+	if(value == 100)
+		(*output) << "\n";
 }
 
 void ShellWindow::updateProgressText(const char* updateName)
