@@ -10,6 +10,7 @@ set(shell-analyzer_SOURCES
 	main.cpp
 	shellwindow.cpp
 	controldatadlg.cpp
+	healpixdlg.cpp
    )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/.. ${CMAKE_SOURCE_DIR} ${DEPS_INCLUDE_DIRS})

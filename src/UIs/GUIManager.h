@@ -105,7 +105,7 @@ class GUIManager
         virtual void setControlDlgConfigured(bool config) = 0;
         void createControlData(FILETYPE dataType, bool complete);
 
-        virtual void setPixelizerAttr() = 0;
+        void setPixelizerAttr();
         int pixelize();
         bool pixelize(FILETYPE inputDataType, FILETYPE pixelDataType);
 

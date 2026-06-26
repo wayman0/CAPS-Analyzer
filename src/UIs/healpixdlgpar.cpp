@@ -61,6 +61,9 @@ healpixDialogParent::healpixDialogParent(association* assoc)
 {
   dataAssoc = assoc;
   
+  dataAssoc->pixelizationEngineType(PIXELSCHEME::HealPIX);
+
+  std::cout << dataAssoc->pixelizationEngineType() << "\n";
   /* initialize internal variables*/
   usePixAvg = false;
   usePixDev = false;

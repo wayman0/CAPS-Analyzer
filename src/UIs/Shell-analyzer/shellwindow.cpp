@@ -251,22 +251,17 @@ void ShellWindow::execute()
 	for(int choice = getChoice(); choice != 0; choice = getChoice())
 	{
 		if(choice == 1)
-		{
 			static_cast<controlDataDialog*>(ctrlDlg)->execute();
-		}
 		else if(choice == 2)
 			(*output) << "Open File\n";
 		else if(choice == 3)
 			(*output) << "Save File\n";
 		else if(choice == 4)
-		{
-			(*output) << "Pixelize\n";
-
-		}
+			static_cast<healpixDialog*>(healpixDlg)->execute();
 		else if(choice == 5)
 			(*output) << "Transform\n";
 		else if(choice == 6)
-			(*output) << "Analyzer\n";
+			(*output) << "Analyze\n";
 		else
 		{
 			clearInput();
@@ -344,9 +339,6 @@ void ShellWindow::emitSaveDataSets()
 void ShellWindow::setControlDlgConfigured(bool config)
 {}
 
-void ShellWindow::setPixelizerAttr()
-{}
-
 void ShellWindow::setTransformerAttr()
 {}
 
@@ -359,7 +351,28 @@ bool ShellWindow::handleMissingTransformer()
 }
 
 void ShellWindow::selectPixelizer()
-{}
+{
+	int count = 0, i = 1;
+	PIXELSCHEME pixCount = static_cast<PIXELSCHEME>(i);
+
+	while(true)
+	{
+		if (pixCount == PIXELIZER_LIMIT)
+			break;
+		count++;
+		pixCount = static_cast <PIXELSCHEME>(++i);
+	}
+
+	if (count > 1)
+	{
+		if (!pixSelectDlg->configured())
+			pixSelectDlg->configure();
+	}
+	else
+	{
+		static_cast<healpixDialog*>(healpixDlg)->execute();
+	}
+}
 
 void ShellWindow::configurePixelizer(PIXELSCHEME scheme)
 {}

@@ -78,6 +78,14 @@ class healpixDialog : public healpixDialogParent
 
 		void validate();
 
+		void setNSides();
+		void setIndexing();
+		void setOverpixelization();
+
+		void clearInput();
+
+		bool power2(int s);
+		bool confirm();
 
 		void syncSides();
 		void finalize();

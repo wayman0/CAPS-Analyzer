@@ -538,34 +538,6 @@ void mainWindow::setControlDlgConfigured(bool config)
     ctrlDlg->configure(config);
 }
 
-void mainWindow::setPixelizerAttr()
-{
-  switch (s_association->pixelizationEngineType())
-  {
-    case HealPIX:
-      s_association->addEngine(dataEngines::Pixelization, HealPIX);
-      s_association->pixelizationEngine()->scale(healpixDlg->scale());
-
-      s_association->pixelizationEngine()->usePixelAvg(healpixDlg->usePixelAvg());
-      s_association->pixelizationEngine()->usePixelDev(healpixDlg->usePixelDev());
-      s_association->pixelizationEngine()->usePixelVar(healpixDlg->usePixelVar());
-
-      s_association->pixelizationEngine()->doAvgNormalize(healpixDlg->doAvgNormalize());
-      s_association->pixelizationEngine()->doVarNormalize(healpixDlg->doVarNormalize());
-      s_association->pixelizationEngine()->doMinMaxScale(healpixDlg->doMinMaxScale());
-
-      if (healpixDlg->order())
-        s_association->pixelizationEngine()->pixelLayout(Nest);
-      else
-        s_association->pixelizationEngine()->pixelLayout(Ring);
-
-      s_association->pixelizationEngine()->configured(true);
-      break;
-    default:
-      selectPixelizer();
-  }
-}
-
 void mainWindow::setTransformerAttr()
 {
   switch (s_association->transformationEngineType())
@@ -1050,7 +1022,8 @@ void mainWindow::clearGraphs()
   }
 }
 
-void mainWindow::selectPixelizer() {
+void mainWindow::selectPixelizer()
+{
   int count = 0, i = 1;
   PIXELSCHEME pixCount = static_cast<PIXELSCHEME>(i);
   

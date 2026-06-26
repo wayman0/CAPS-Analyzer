@@ -321,6 +321,34 @@ void GUIManager::createControlData(FILETYPE dataType, bool complete)
         setControlDlgConfigured(true);
 }
 
+void GUIManager::setPixelizerAttr()
+{
+	switch (s_association->pixelizationEngineType())
+	{
+		case HealPIX:
+			s_association->addEngine(dataEngines::Pixelization, HealPIX);
+			s_association->pixelizationEngine()->scale(healpixDlg->scale());
+
+			s_association->pixelizationEngine()->usePixelAvg(healpixDlg->usePixelAvg());
+			s_association->pixelizationEngine()->usePixelDev(healpixDlg->usePixelDev());
+			s_association->pixelizationEngine()->usePixelVar(healpixDlg->usePixelVar());
+
+			s_association->pixelizationEngine()->doAvgNormalize(healpixDlg->doAvgNormalize());
+			s_association->pixelizationEngine()->doVarNormalize(healpixDlg->doVarNormalize());
+			s_association->pixelizationEngine()->doMinMaxScale(healpixDlg->doMinMaxScale());
+
+			if (healpixDlg->order())
+				s_association->pixelizationEngine()->pixelLayout(Nest);
+			else
+				s_association->pixelizationEngine()->pixelLayout(Ring);
+
+			s_association->pixelizationEngine()->configured(true);
+			break;
+		default:
+			selectPixelizer();
+	}
+}
+
 int GUIManager::pixelize()
 {
     int count = 0;

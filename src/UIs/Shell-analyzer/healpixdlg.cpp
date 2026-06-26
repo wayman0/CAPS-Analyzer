@@ -49,6 +49,7 @@
  * program must reference the fact that it was developed by Daniel Suson   *
  ***************************************************************************/
 #include <math.h>
+#include <limits>
 
 #include "healpixdlg.h"
 
@@ -63,7 +64,7 @@ healpixDialog::healpixDialog(association* assoc, std::istream* i, std::ostream* 
               : healpixDialogParent(assoc)
 {
 	input = i;
-	output = 0;
+	output = o;
 	successFunc = s;
 	cancelFunc = c;
 }
@@ -74,7 +75,190 @@ healpixDialog::~healpixDialog()
 
 void healpixDialog::execute()
 {
+	double raRes = 0.0, decRes = 0.0;
+    if (dataAssoc->exists(fileType::InputWeights))
+	{
+      raRes = dataAssoc->inputWeights()->RARes();
+      decRes = dataAssoc->inputWeights()->DecRes();
+    }
 
+    if (dataAssoc->exists(fileType::InputData))
+	{
+      raRes = dataAssoc->inputData()->RARes();
+      decRes = dataAssoc->inputData()->DecRes();
+    }
+
+    double skyRes = (decRes >= raRes) ? decRes : raRes;
+
+    int skySides = sides(skyRes);
+    double logSides = log(skySides)/log(2); // log base 2 of skySides
+
+	// if log2(skySides) has a decimal
+    if (abs(logSides - (int)logSides) > SIDERES)
+	{
+      skySides = std::pow(2,(int)logSides);
+      skyRes = resolution(skySides);
+    }
+
+
+    nSides = skySides;
+    res = skyRes;
+
+	setNSides();
+	setIndexing();
+	setOverpixelization();
+
+	if(confirm())
+		pixelizeData();
+	else
+		pixelizationCancelled();
+}
+
+void healpixDialog::setNSides()
+{
+	int sides = nSides;
+	char defOk = 'n';
+
+	do
+	{
+		clearInput();
+		(*output) << "NSides: " << nSides << " Resolution: " << res << "\n";
+		(*output) << "Accept. (Y|N)\t";
+	} while( 	!((*input) >>  defOk)
+			|| 	!( defOk == 'Y' || defOk == 'y'
+			||     defOk == 'N' || defOk == 'n'));
+
+	while(defOk == 'n' || defOk == 'N')
+	{
+		do
+		{
+			do
+			{
+				clearInput();
+				(*output) << "\033[1A\033[J";
+				(*output) << "NSides must be power of 2. Enter desired nsides value.\t";
+			} while( !((*input) >> sides) || !power2(sides));
+
+			double r = resolution(sides);
+			(*output) << "\033[2A\033[JNSides: " << sides << " Resolution: " << r << "\n";
+			(*output) << "Accept. (Y|N)\t";
+
+		}while( 	!((*input) >>  defOk)
+				|| 	!( defOk == 'Y' || defOk == 'y'
+				||     defOk == 'N' || defOk == 'n'));
+	}
+
+	nSides = sides;
+	res = resolution(nSides);
+}
+
+void healpixDialog::setIndexing()
+{
+	int index = 0;
+
+	do
+	{
+		clearInput();
+		(*output) << "Choose the index method.\n"
+			  << "\t0. Ring\n"
+			  << "\t1. Nested\n";
+	}while(		!((*input)>>index)
+				|| index < 0
+				|| index > 1);
+
+	if(index == 0)
+		nestedFlag = false;
+	else
+		nestedFlag = true;
+}
+
+void healpixDialog::setOverpixelization()
+{
+	int overPixelMethod = 0;
+
+	do
+	{
+		clearInput();
+		(*output) << "Choose the overpixelization method.\n"
+			  << "\t0. None\n"
+			  << "\t1. Pixel Mean\n"
+			  << "\t2. Pixel Variance\n"
+			  << "\t3. Pixel Deviance\n"
+			  << "\t4. Mean Normalization\n"
+			  << "\t5. Variance Normalization\n"
+			  << "\t6. Min Max Scaling\n";
+
+	}while(		!((*input)>>overPixelMethod)
+				|| overPixelMethod < 0
+				|| overPixelMethod > 6);
+
+	if(overPixelMethod == 1)
+		usePixAvg = true;
+	else if(overPixelMethod == 2)
+		usePixVar = true;
+	else if(overPixelMethod == 3)
+		usePixDev = true;
+	else if(overPixelMethod == 4)
+		doAvgNorm = true;
+	else if(overPixelMethod == 5)
+		doVarNorm = true;
+	else if(overPixelMethod == 6)
+		doMinMax = true;
+}
+
+bool healpixDialog::confirm()
+{
+	char confirm = 'n';
+
+	(*output) << "You have selected to pixelize with an nsides of: " << nSides << " equating to a resolution of: " << res << ".\n";
+	(*output) << "You are using: " << (nestedFlag ? " nested" :" ringed") << " indexing and have selected to use ";
+
+	if(usePixAvg)
+		(*output) << "pixel average";
+	else if(usePixVar)
+		(*output) << "pixel variance";
+	else if(usePixDev)
+		(*output) << "pixel deviance";
+	else if(doAvgNorm)
+		(*output) << "mean normalization";
+	else if(doVarNorm)
+		(*output) << "variance normalization";
+	else if(doMinMax)
+		(*output) << "min max scaling";
+	else
+		(*output) << "no";
+
+	(*output) << " overpixelization methods.\n";
+
+	do
+	{
+		clearInput();
+		(*output) << "Confirm (Y|N).\t";
+	} while( 	!((*input) >>  confirm)
+			|| 	!( confirm == 'Y' || confirm == 'y'
+			||     confirm == 'N' || confirm == 'n'));
+
+	if(confirm == 'Y' || confirm == 'y')
+		return true;
+	else
+		return false;
+}
+
+bool healpixDialog::power2(int s)
+{
+	double log2S = log(s)/log(2); // log base 2 of s
+
+	// if log2(s) has a decimal
+    if (abs(log2S - (int)log2S) > SIDERES)
+		return false;
+    else
+		return true;
+}
+
+void healpixDialog::clearInput()
+{
+	input->clear();
+	input->ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 void healpixDialog::configure()
@@ -101,6 +285,7 @@ void healpixDialog::validate()
 
 void healpixDialog::syncSides()
 {
+	/*
   QString title, message;
 
   int userSides = ui->sideEdit->text().toInt();
@@ -123,6 +308,7 @@ void healpixDialog::syncSides()
   ui->resEdit->clear();
   ui->resEdit->insert(QString::number(res));
   repaint();
+  */
 }
 
 void healpixDialog::finalize()

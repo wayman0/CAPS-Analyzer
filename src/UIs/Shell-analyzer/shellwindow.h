@@ -85,8 +85,6 @@ class ShellWindow : GUIManager
 
 		void setControlDlgConfigured(bool config);
 
-		void setPixelizerAttr();
-
 		void setTransformerAttr();
 
 		void setAnalyzerAttr();
