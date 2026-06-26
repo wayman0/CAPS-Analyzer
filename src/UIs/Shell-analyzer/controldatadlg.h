@@ -54,10 +54,9 @@
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
 #include "../controldatadlgpar.h"
+
 #include <functional>
 
-//typedef void (*successFunc)(FILETYPE, bool);
-//typedef void (*cancelFunc)();
 
 typedef std::function<void(FILETYPE, bool)> successFunc;
 typedef std::function<void()>               cancelFunc;

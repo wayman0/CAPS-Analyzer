@@ -53,6 +53,7 @@
 #include "controldatadlg.h"
 #include "healpixdlg.h"
 #include "rshtdlg.h"
+#include "spectrumdlg.h"
 
 #include <limits>
 
@@ -102,6 +103,10 @@ ShellWindow::ShellWindow() : GUIManager()
 	rshtDlg = new rshtDialog(s_association, input, output,
 							 [this]() {this->transform();},
 							 [=]() {(*output) << "Transformation canceled.\n";});
+
+	specDlg = new spectrumDialog(input, output,
+								 [this]() {this->analyze();},
+								 [=]() {(*output) << "Analyze canceled\n"; });
 
 	/* create dialogs needed to pass signals back and forth */
 	/*
@@ -221,25 +226,24 @@ void ShellWindow::updateProgressBar(int value)
 {
 	const int barWidth = 50;
 
-    (*output) << "\r[";
-    int pos = value * barWidth / 100;
+	(*output) << "\r\033[?25l" << "[";
 
+	int pos = value * barWidth / 100;
     for (int i = 0; i < barWidth; i += 1)
 	{
         if (i < pos)
-			(*output) << "=";
+			(*output) << "\033[32m=";
         else if (i == pos)
-			(*output) << ">";
+			(*output) << "\033[0m>";
         else
 			(*output) << " ";
     }
 
-    (*output) << "] " << value << "%";
+    (*output) << "\033[0m" << "] " << value << "%";
     output->flush();
 
-	// find where to put the endline
 	if(value == 100)
-		(*output) << "\n";
+		(*output) << "\033[?25h\n";
 }
 
 void ShellWindow::updateProgressText(const char* updateName)
@@ -259,16 +263,51 @@ void ShellWindow::displayMessage(const char* mess)
 
 bool ShellWindow::addDataMessage(const char* errMess)
 {
-	(*output) << errMess << "\n";
+	char add = 'n';
+	do
+	{
+		clearInput();
+		(*output) << errMess << "\n";
+	} while(	!((*input)>>add)
+				|| !(   add == 'Y' || add == 'y'
+				|| 		add == 'N' || add == 'n'));
 
-	return true;
+	return add == 'y' || add == 'Y' ? true : false;
 }
 
 bool ShellWindow::replaceDataChain(const char* mess)
 {
-	(*output) << mess << "\n";
+	char add = 'n';
+	do
+	{
+		clearInput();
+		(*output) << mess << "\n";
+	} while(	!((*input)>>add)
+				|| !(   add == 'Y' || add == 'y'
+				|| 		add == 'N' || add == 'n'));
 
-	return true;
+	return add == 'y' || add == 'Y' ? true : false;
+}
+
+void ShellWindow::printAssocStatus()
+{
+	(*output) << std::left;
+
+	for(fileType ft = FILETYPE::InputData; ft != FILETYPE::FILETYPE_LIMIT; ft = static_cast<FILETYPE>(static_cast<int>(ft)+1))
+	{
+		if(s_association->exists(ft))
+		{
+			(*output) << "\033[32m";
+			(*output) << std::setw(70) << dataTypeNames[static_cast<int>(ft)] << "\t\tdoes    exist.";
+			(*output) << "\033[0m\n";
+		}
+		else
+		{
+			(*output) << "\033[31m";
+			(*output) << std::setw(70) << dataTypeNames[static_cast<int>(ft)] << "\t\tdoesn't exist.";
+			(*output) << "\033[0m\n";
+		}
+	}
 }
 
 void ShellWindow::execute()
@@ -288,7 +327,9 @@ void ShellWindow::execute()
 		else if(choice == 5)
 			static_cast<rshtDialog*>(rshtDlg)->execute();
 		else if(choice == 6)
-			(*output) << "Analyze\n";
+			static_cast<spectrumDialog*>(specDlg)->execute();
+		else if(choice == 7)
+			printAssocStatus();
 		else
 		{
 			clearInput();
@@ -308,7 +349,8 @@ void ShellWindow::printMenu()
 			  << "\t3. Save File\n"
 			  << "\t4. Pixelize\n"
 			  << "\t5. Transform\n"
-			  << "\t6. Analyze\n";
+			  << "\t6. Analyze\n"
+			  << "\t7. View Progress\n";
 }
 
 int ShellWindow::getChoice()
@@ -347,8 +389,7 @@ void ShellWindow::setAssociation(association* newAssoc)
 {}
 
 void ShellWindow::selectFileName(bool read)
-{
-}
+{}
 
 void ShellWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
 {}
@@ -435,7 +476,9 @@ void ShellWindow::configureAnalyzer()
 {}
 
 void ShellWindow::configureDisplay(FILETYPE dataType)
-{}
+{
+	(*output) << dataTypeNames[static_cast<int>(dataType)] << " created successfully\n";
+}
 
 void ShellWindow::displayGraph(ASSOCIATEDSPECTRUM graph)
 {}

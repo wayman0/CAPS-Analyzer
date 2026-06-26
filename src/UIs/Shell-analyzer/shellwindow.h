@@ -80,6 +80,8 @@ class ShellWindow : GUIManager
 		void addAssociation();
 		void setAssociation(association* newAssoc);
 
+		void printAssocStatus();
+
 		void selectFileName(bool read);
 
 		void emitReadDataSets(FILETYPE* dataTypes, int* numTypes);
