@@ -206,8 +206,14 @@ mainWindow::mainWindow() :
   connect(dynamic_cast<analyzerDialog*>(analSelectDlg), &analyzerDialog::analyzerSelected, [=](){configureAnalyzer();});
 
   connect(dynamic_cast<healpixDialog*>(healpixDlg), &healpixDialog::pixelizeData, [=](){pixelize();});
+  connect(dynamic_cast<healpixDialog*>(healpixDlg), &healpixDialog::pixelizationCancelled, [=](){healpixDlg->configured(false);});
+
   connect(dynamic_cast<rshtDialog*>(rshtDlg), &rshtDialog::transformData, [=](){transform();});
+  connect(dynamic_cast<rshtDialog*>(rshtDlg), &rshtDialog::transformationCancelled, [=](){rshtDlg->configured(false);});
+
   connect(dynamic_cast<spectrumDialog*>(specDlg), &spectrumDialog::spectrumReady, [=](){analyze();});
+  connect(dynamic_cast<spectrumDialog*>(specDlg), &spectrumDialog::powerSpectrumCancelled, [=](){specDlg->configured(false);});
+
 //  connect(this, Q_SIGNAL(redrawMap()), ui->mapTab, Q_SLOT(paintEvent(QPaintEvent*)));
 //  connect(ctrlDlg, Q_SIGNAL(controlDataSet()), this, Q_SLOT(checkMapper()));
 //  connect(mapperDlg, Q_SIGNAL(mapperSet(MAPTYPE,long,long,ORIENTATION)), this, Q_SLOT(createMaps(MAPTYPE,long,long,ORIENTATION)));
@@ -310,19 +316,6 @@ bool mainWindow::replaceDataChain(const char* mess)
     return true;
   else
     return false;
-}
-
-void mainWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
-{
-  dataSelectDlg = new dataSelectDialog(s_association, RWMode::Read);
-  connect(dynamic_cast<dataSelectDialog*>(dataSelectDlg), &dataSelectDialog::dataSelected,
-              [=](int size, FILETYPE types[])
-              {
-                dynamic_cast<dataSelectDialog*>(dataSelectDlg)->accept();
-                readData(size, types);
-              });
-
-  Q_EMIT readDataSets(dataTypes, numTypes);
 }
 
 void mainWindow::selectFileName(bool read)
@@ -435,6 +428,19 @@ void mainWindow::emitSaveDataSets()
           });
 
   Q_EMIT saveDataSets();
+}
+
+void mainWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
+{
+  dataSelectDlg = new dataSelectDialog(s_association, RWMode::Read);
+  connect(dynamic_cast<dataSelectDialog*>(dataSelectDlg), &dataSelectDialog::dataSelected,
+              [=](int size, FILETYPE types[])
+              {
+                dynamic_cast<dataSelectDialog*>(dataSelectDlg)->accept();
+                readData(size, types);
+              });
+
+  Q_EMIT readDataSets(dataTypes, numTypes);
 }
 
 void mainWindow::emitSelectSlices()

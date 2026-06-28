@@ -55,8 +55,11 @@
 #include "rshtdlg.h"
 #include "spectrumdlg.h"
 
+#include "dataselectdlg.h"
+
 #include <limits>
 #include <iomanip>
+#include <filesystem>
 
 ShellWindow::ShellWindow() : GUIManager()
 {
@@ -112,95 +115,6 @@ ShellWindow::ShellWindow() : GUIManager()
 	specDlg = new spectrumDialog(input, output,
 								 [this]() {this->analyze();},
 								 [=]() {(*output) << "Analyze canceled\n"; });
-
-	/* create dialogs needed to pass signals back and forth */
-	/*
-	assocDlg = new associationSelectDialog(associationVector);
-	assocDlg->setCurrAssoc(s_association);
-
-	ctrlDlg = new controlDataDialog(s_association);
-	energyDlg = new energyDialog();
-	multSelDlg = new multipleSelectionDialog(s_association);
-	pixSelectDlg = new pixelizerDialog(s_association);
-	transSelectDlg = new transformerDialog(s_association);
-	rshtDlg = new rshtDialog(s_association);
-	analSelectDlg = new analyzerDialog(s_association);
-	specDlg = new spectrumDialog();
-
-	mapperDlg = new mapperDialog(s_association);
-	mapSelectDlg = new mapSelectDialog(s_association);
-	grapherDlg = new graphDialog(s_association);
-	graphSelectDlg = new graphSelectDialog(s_association);
-
-	selectedDataType = fileType::Null;
-	selectedDataStream = genericType::NoGeneric;
-	*/
-
-	/* set up Qt signal/slot connections */
-	/*
-	connect(ui->controlAction, &QAction::triggered, [=](bool open){ctrlDlg->configure(false);});
-	connect(ui->openAction, &QAction::triggered, [=](){openFile();});
-	connect(ui->saveAction, &QAction::triggered, [=](){saveFile();});
-
-	connect(ui->addAssociationAction, &QAction::triggered, [=](){addAssociation(); });
-	connect(ui->selectAssociation, &QAction::triggered, [=](){assocDlg->configure();});
-
-	connect(dynamic_cast<associationSelectDialog*>(assocDlg), &associationSelectDialog::associationSelected, [=](association* newAssoc){setAssociation(newAssoc);});
-
-	//  connect(ui->informationAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	//  connect(ui->printAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	connect(ui->clearAction, &QAction::triggered, [=](){reset();});
-	connect(ui->exitAction, &QAction::triggered, [=](){close();});
-	connect(ui->pixelizeAction, &QAction::triggered, [=](){selectPixelizer();});
-	connect(ui->transformAction, &QAction::triggered, [=](){selectTransformer();});
-	//connect(ui->analyzeAction, &QAction::triggered, [=](){analyze();});
-
-	connect(ui->analyzeAction, &QAction::triggered, [=](){selectAnalzyer();});
-
-	//  connect(ui->inverseAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	connect(ui->selectMapsAction, &QAction::triggered, [=](){mapSelectDlg->configure();});
-	connect(ui->selectGraphsAction, &QAction::triggered, [=](){graphSelectDlg->configure();});
-	//  connect(ui->zoomInAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	//  connect(ui->zoomOutAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	//  connect(ui->zoomNormalAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	//  connect(ui->configureMapper, Q_SIGNAL(triggered()), this, Q_SLOT(setupMapper()));
-	//  connect(ui->configurePoxelizer, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	//  connect*ui->configureTransformer, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	//  connect(ui->HandbookAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	//  connect(ui->aboutAnalyzerAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-	connect(dynamic_cast<controlDataDialog*>(ctrlDlg), &controlDataDialog::buildControlData, [=](FILETYPE value,bool complete){createControlData(value,complete);});
-
-
-	connect(this, &mainWindow::saveDataSets, [=](){dataSelectDlg->configure();});
-	connect(this, &mainWindow::readDataSets, [=](FILETYPE* dataTypes, int* numTypes){dataSelectDlg->configure(dataTypes, numTypes);});
-
-	connect(this,&mainWindow::selectEnergies,[=](double low, double high){energyDlg->configure(low,high);});
-	connect(this,&mainWindow::selectSlices,[=](){multSelDlg->configure(); });
-
-	//connect(energyDlg,&energyDialog::energySelected,[=](double low, double high){readData(low,high);});
-	connect(mapperDlg, &mapperDialog::mapperReady, [=](){buildMaps();});
-	connect(this, &mainWindow::selectMapDisplay, [=](unsigned int selection){mapSelectDlg->configure(selection);});
-	connect(mapSelectDlg, &mapSelectDialog::mapSelected, [=](ASSOCIATEDMAP map){displayMap(map);});
-	connect(grapherDlg, &graphDialog::grapherReady, [=](){buildGraphs();});
-	connect(this, &mainWindow::selectGraphDisplay, [=](unsigned int selection){graphSelectDlg->configure(selection);});
-	connect(graphSelectDlg, &graphSelectDialog::graphSelected, [=](associatedSpectrum graph){displayGraph(graph);});
-	connect(dynamic_cast<pixelizerDialog*>(pixSelectDlg), &pixelizerDialog::pixelizerSelected, [=](PIXELSCHEME scheme){configurePixelizer(scheme);});
-	connect(dynamic_cast<transformerDialog*>(transSelectDlg), &transformerDialog::transformerSelected, [=](TRANSFORMERSCHEME scheme){configureTransformer(scheme);});
-
-	connect(dynamic_cast<analyzerDialog*>(analSelectDlg), &analyzerDialog::analyzerSelected, [=](){configureAnalyzer();});
-
-	connect(dynamic_cast<healpixDialog*>(healpixDlg), &healpixDialog::pixelizeData, [=](){pixelize();});
-	connect(dynamic_cast<rshtDialog*>(rshtDlg), &rshtDialog::transformData, [=](){transform();});
-	connect(dynamic_cast<spectrumDialog*>(specDlg), &spectrumDialog::spectrumReady, [=](){analyze();});
-	//  connect(this, Q_SIGNAL(redrawMap()), ui->mapTab, Q_SLOT(paintEvent(QPaintEvent*)));
-	//  connect(ctrlDlg, Q_SIGNAL(controlDataSet()), this, Q_SLOT(checkMapper()));
-	//  connect(mapperDlg, Q_SIGNAL(mapperSet(MAPTYPE,long,long,ORIENTATION)), this, Q_SLOT(createMaps(MAPTYPE,long,long,ORIENTATION)));
-	//  connect(this, Q_SIGNAL(imageConfigured(association*,FILETYPE*)), mapSelectDlg, configure(association*,FILETYPE*));
-	//  connect(this, Q_SIGNAL(mapSelected(QWidget*)), this, drawImage(QWidget*));
-
-	// set initial directory to user's home directory
-	directory = QDir::home();
-	*/
 }
 
 ShellWindow::~ShellWindow()
@@ -318,9 +232,12 @@ void ShellWindow::printAssocStatus()
 		}
 		else
 		{
-			(*output) << "\033[31m";
-			(*output) << std::setw(70) << dataTypeNames[static_cast<int>(ft)] << "\t\tdoesn't exist.";
-			(*output) << "\033[0m\n";
+			if(ft != FILETYPE::MAP_LIMIT && ft != FILETYPE::GRAPH_LIMIT && ft != FILETYPE::TRANSFORM_LIMIT)
+			{
+				(*output) << "\033[31m";
+				(*output) << std::setw(70) << dataTypeNames[static_cast<int>(ft)] << "\t\tdoesn't exist.";
+				(*output) << "\033[0m\n";
+			}
 		}
 	}
 
@@ -338,7 +255,7 @@ void ShellWindow::execute()
 		if(choice == 1)
 			static_cast<controlDataDialog*>(ctrlDlg)->execute();
 		else if(choice == 2)
-			(*output) << "Open File\n";
+			openFile();
 		else if(choice == 3)
 			(*output) << "Save File\n";
 		else if(choice == 4)
@@ -414,10 +331,68 @@ void ShellWindow::setAssociation(association* newAssoc)
 {}
 
 void ShellWindow::selectFileName(bool read)
-{}
+{
+	if(read)
+	{
+		std::filesystem::path inputFile = "";
+
+		(*output) << "Enter the filename to read data from.\n";
+		(*input) >> inputFile;
+
+		while(! std::filesystem::exists(inputFile))
+		{
+			errorMessage(string("File: " + inputFile.string() + " does not exist.\n").c_str());
+
+			(*output) << "Enter the filename to read data from.\n";
+			(*input) >> inputFile;
+		}
+
+		// parse the file type ie csv fits hdf5
+		std::string ext = inputFile.extension();
+
+		if(ext == ".fit" || ext == ".fits" || ext == ".fts")
+			dataFormat = Fits;
+		else if(ext == ".csv" || ext == ".txt")
+			dataFormat = CSV;
+		else if(ext == ".hdf5" || ext == ".h5")
+			dataFormat = HDF5;
+		else
+		{
+			errorMessage(string("Unknown file format: " + ext + " quiting open file operation.\n").c_str());
+			return;
+		}
+
+		fileName = inputFile.string();
+
+		// get the observatory;
+		std::string obsNames = "";
+		int obsInd = 1;// 0 is unknown we dont' want that to be an option
+		for(obsInd = 1; obsInd < static_cast<int>(OBSERVATORY::OBSERVATORY_LIMIT); obsInd += 1)
+			obsNames += "\t" + std::to_string(obsInd) + ". " + observatoryNames[obsInd] + "\n";
+
+		do
+		{
+			clearInput();
+
+			(*output) << "Enter the observatory the data is from.\n";
+			(*output) << obsNames;
+		}while(	!((*input)>>obsInd)
+				|| obsInd < 1
+				|| obsInd >= static_cast<int>(OBSERVATORY_LIMIT));
+
+		dataSource = static_cast<OBSERVATORY>(obsInd);
+	}
+}
 
 void ShellWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
-{}
+{
+	dataSelectDlg = new dataSelectDialog(s_association, input, output,
+										 [this](int size, FILETYPE types[]){this->readData(size, types);},
+										 [=](){(*output) << "Data Selection Canceled\n";},
+										 RWMode::Read);
+
+	static_cast<dataSelectDialog*>(dataSelectDlg)->execute(dataTypes, numTypes);
+}
 
 void ShellWindow::emitSelectSlices()
 {}

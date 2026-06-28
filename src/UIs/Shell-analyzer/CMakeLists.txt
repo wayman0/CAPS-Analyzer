@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 project(Shell-analyzer)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../../../cmake/Modules/")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FindPkgConfig)
 pkg_check_modules(DEPS REQUIRED sigc++-2.0)
@@ -13,6 +15,7 @@ set(shell-analyzer_SOURCES
 	healpixdlg.cpp
 	rshtdlg.cpp
 	spectrumdlg.cpp
+	dataselectdlg.cpp
    )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/.. ${CMAKE_SOURCE_DIR} ${DEPS_INCLUDE_DIRS})

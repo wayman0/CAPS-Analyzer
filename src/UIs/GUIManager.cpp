@@ -118,6 +118,7 @@ void GUIManager::readData(int numTypes, FILETYPE dataTypes[])
 void GUIManager::openFile()
 {
     selectFileName(true);
+
     if (s_association->exists(dataEngines::fileIO))
         s_association->reset(allTypes::fileIO);
 
@@ -183,7 +184,7 @@ void GUIManager::openFile()
       }
     }
 
-    invert();
+    //invert();
 
     for(fileType type : types)
       configureDisplay(type);
