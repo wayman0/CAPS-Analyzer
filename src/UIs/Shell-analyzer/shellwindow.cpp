@@ -272,7 +272,7 @@ bool ShellWindow::addDataMessage(const char* errMess)
 	{
 		clearInput();
 		(*output) << "\033[33m" << errMess << "\033[0m\n";
-		(*output) << "\033[36mCreate: c, Open: o, No: n" << "\033[0m\t";
+		(*output) << "Create: c, Open: o, No: n" << "\t";
 	} while(	!((*input)>>add)
 				|| !(   add == 'C' || add == 'c'
 					||	add == 'O' || add == 'o'
@@ -304,6 +304,8 @@ bool ShellWindow::replaceDataChain(const char* mess)
 
 void ShellWindow::printAssocStatus()
 {
+	clearScreen();
+
 	(*output) << std::left;
 
 	for(fileType ft = FILETYPE::InputData; ft != FILETYPE::FILETYPE_LIMIT; ft = static_cast<FILETYPE>(static_cast<int>(ft)+1))
@@ -321,6 +323,10 @@ void ShellWindow::printAssocStatus()
 			(*output) << "\033[0m\n";
 		}
 	}
+
+	(*output) << "Press any key to continue to main menu.\n";
+	clearInput();
+	input->get();
 }
 
 void ShellWindow::execute()
@@ -349,6 +355,7 @@ void ShellWindow::execute()
 			printInvalidChoice();
 		}
 
+		clearScreen();
 		printMenu();
 	}
 }
@@ -383,16 +390,21 @@ int ShellWindow::getChoice()
 	return choice;
 }
 
+void ShellWindow::printInvalidChoice()
+{
+	(*output) << "Invalid choice please choose again.\n";
+	printMenu();
+}
+
 void ShellWindow::clearInput()
 {
 	input->clear();
 	input->ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void ShellWindow::printInvalidChoice()
+void ShellWindow::clearScreen()
 {
-	(*output) << "Invalid choice please choose again.\n";
-	printMenu();
+	(*output) << "\033[H\033[J";
 }
 
 void ShellWindow::addAssociation()
@@ -469,7 +481,7 @@ void ShellWindow::selectTransformer()
 	else
 	{
 		if (!rshtDlg->configured())
-			rshtDlg->configure();
+			static_cast<rshtDialog*>(rshtDlg)->execute();
 	}
 }
 

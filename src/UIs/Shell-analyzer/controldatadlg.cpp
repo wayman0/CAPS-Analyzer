@@ -343,7 +343,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the RA point.";
+			(*output) << std::setw(width) << "Enter the RA point.\t";
 		}while(		!((*input)>>ra)
 					|| ra < -180
 					|| ra > 180);
@@ -354,7 +354,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the Dec point.";
+			(*output) << std::setw(width) << "Enter the Dec point.\t";
 		}while(		!((*input)>>dec)
 					|| dec < -90
 					|| dec > 90);
@@ -365,7 +365,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the std. dev.";
+			(*output) << std::setw(width) << "Enter the std. dev.\t";
 		}while(		!((*input)>>width)
 					|| width < -180
 					|| width > 180);

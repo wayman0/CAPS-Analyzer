@@ -110,6 +110,7 @@ class ShellWindow : GUIManager
 		int getChoice();
 		void printInvalidChoice();
 		void clearInput();
+		void clearScreen();
 
 	protected:
 		std::istream* input;
