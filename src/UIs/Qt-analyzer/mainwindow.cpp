@@ -457,6 +457,7 @@ void mainWindow::emitSelectEnergies()
   // let user change energy range before reading data
   Q_EMIT selectEnergies(minEnergy, maxEnergy);
 }
+
 void mainWindow::addAssociation()
 {
   try

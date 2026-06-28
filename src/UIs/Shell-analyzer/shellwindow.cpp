@@ -271,12 +271,21 @@ bool ShellWindow::addDataMessage(const char* errMess)
 	do
 	{
 		clearInput();
-		(*output) << "\033[33m" << errMess << "(Y|N)" << "\033[0m";
+		(*output) << "\033[33m" << errMess << "\033[0m\n";
+		(*output) << "\033[36mCreate: c, Open: o, No: n" << "\033[0m\t";
 	} while(	!((*input)>>add)
-				|| !(   add == 'Y' || add == 'y'
-				|| 		add == 'N' || add == 'n'));
+				|| !(   add == 'C' || add == 'c'
+					||	add == 'O' || add == 'o'
+					|| 	add == 'N' || add == 'n'));
 
-	return add == 'y' || add == 'Y' ? true : false;
+	if(add == 'c' || add == 'C')
+		static_cast<controlDataDialog*>(ctrlDlg)->execute();
+	else if(add == 'o' || add == 'O')
+		(*output) << "OPEN FILE\n";
+	else
+		return false;
+
+	return true;
 }
 
 bool ShellWindow::replaceDataChain(const char* mess)

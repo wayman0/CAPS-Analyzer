@@ -369,32 +369,8 @@ int GUIManager::pixelize()
     int value = 0;
     while (inputChain <= fileType::InputBeam)
     {
-        if (s_association->exists(inputChain) && !s_association->exists(pixelChain))
-        {
-            if (pixelize(inputChain,pixelChain))
-                count++;
-        }
-        // have to account for possibly starting with a file that
-        // doesn't contain weighted data but we do have weights and data
-        // so we can generate weighted pixel
-        else if(pixelChain == fileType::WeightedPixel)
-        {
-            if(s_association->exists(fileType::PixelizedData) &&
-                s_association->exists(fileType::PixelizedWeights))
-            {
-                if(pixelize(inputChain, pixelChain))
-                count++;
-            }
-        }
-        else if(pixelChain == fileType::PixelizedWeightedNoise)
-        {
-            if(s_association->exists(fileType::PixelizedNoise) &&
-                s_association->exists(fileType::PixelizedWeights))
-            {
-                if(pixelize(inputChain, pixelChain))
-                count++;
-            }
-        }
+		if(pixelize(inputChain, pixelChain))
+			count++;
 
         inputChain = static_cast<FILETYPE>(++type);
         pixelChain = static_cast<FILETYPE>(offset+type);
@@ -404,16 +380,6 @@ int GUIManager::pixelize()
             pixelChain = static_cast<FILETYPE>(offset+type);
         }
     }
-
-    if(s_association->exists(fileType::PixelizedData) &&
-        s_association->exists(fileType::PixelizedWeights) )
-        //!s_association->exists(fileType::InputWeightedNoise))
-        s_association->generateWeightedData(fileType::WeightedPixel);
-
-    if(s_association->exists(fileType::PixelizedNoise) &&
-        s_association->exists(fileType::PixelizedWeights) )
-        //!s_association->exists(fileType::InputWeightedNoise))
-        s_association->generateWeightedData(fileType::PixelizedWeightedNoise);
 
     if(count)
         configureDisplay(fileType::PixelizedData);
@@ -432,10 +398,10 @@ bool GUIManager::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType)
                 if(!addDataMessage("No data map has been specified.  Do you wish to create or input a data map?"))
 					return false;
             }
-            else {
-                if (!s_association->exists(pixelDataType))
-                    s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
-            }
+
+            if (!s_association->exists(pixelDataType))
+				s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
+
             break;
         }
         case fileType::InputWeights:
@@ -445,10 +411,10 @@ bool GUIManager::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType)
                 if(!addDataMessage("No mask map has been specified.  Do you wish to create or input a mask map?"))
                     return false;
             }
-            else {
-                if (!s_association->exists(pixelDataType))
-                    s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
-            }
+
+            if (!s_association->exists(pixelDataType))
+				s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
+
             break;
         }
         case fileType::WeightedData:
@@ -460,45 +426,52 @@ bool GUIManager::pixelize(FILETYPE inputDataType, FILETYPE pixelDataType)
                 {
                     s_association->generateWeightedData(fileType::WeightedData);
 
-                if(!s_association->exists(pixelDataType))
-                    s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
+					if(!s_association->exists(pixelDataType))
+						s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
                 }
             }
 
-            if(!s_association->exists(fileType::WeightedPixel))
-            {
-                if (s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
-                    s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
+			if(!s_association->exists(fileType::WeightedPixel))
+			{
+				if (s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
+					s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
 
-                if( s_association->exists(fileType::PixelizedData) &&
-                    s_association->exists(fileType::PixelizedWeights) &&
-                !s_association->exists(fileType::WeightedPixel))
-                s_association->generateWeightedData(fileType::WeightedPixel);
-            }
+				if(  s_association->exists(fileType::PixelizedData) &&
+                     s_association->exists(fileType::PixelizedWeights) &&
+					!s_association->exists(fileType::WeightedPixel))
+						s_association->generateWeightedData(fileType::WeightedPixel);
+			}
 
-            break;
-        }
-        case fileType::InputWeightedNoise:
-        {
-            if(!s_association->exists(fileType::InputWeightedNoise))
-            {
-                if(s_association->exists(fileType::InputNoise) &&
-                s_association->exists(fileType::InputWeights))
-                {
-                s_association->generateWeightedData(fileType::InputWeightedNoise);
+			break;
+		}
+		case fileType::InputWeightedNoise:
+		{
+			if(!s_association->exists(fileType::InputWeightedNoise))
+			{
+                if(	s_association->exists(fileType::InputNoise) &&
+					s_association->exists(fileType::InputWeights))
+				{
+					s_association->generateWeightedData(fileType::InputWeightedNoise);
 
-                if(!s_association->exists(pixelDataType))
-                    s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
-                }
-            }
+					if(!s_association->exists(pixelDataType))
+						s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
+				}
+			}
 
-            if(s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
-                s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
-            break;
-            default:
-            if (s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
-                s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
-            break;
+			if(s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
+				s_association->generatePixelData(s_association->pixelizationEngine(), inputDataType);
+
+			if(  s_association->exists(fileType::PixelizedNoise)   &&
+				 s_association->exists(fileType::PixelizedWeights) &&
+				!s_association->exists(fileType::PixelizedWeightedNoise))
+						s_association->generateWeightedData(fileType::WeightedPixel);
+
+			break;
+		default:
+			if (s_association->exists(inputDataType) && !s_association->exists(pixelDataType))
+				s_association->generatePixelData(s_association->pixelizationEngine(),inputDataType);
+
+			break;
         }
     }
 
