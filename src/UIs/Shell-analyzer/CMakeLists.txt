@@ -8,6 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(FindPkgConfig)
 pkg_check_modules(DEPS REQUIRED sigc++-2.0)
 
+find_library(READLINE_LIBRARY NAMES readline)
+
+if(NOT READLINE_LIBRARY)
+    message(FATAL_ERROR "GNU Readline library not found. Please install libreadline-dev.")
+endif()
+
 set(shell-analyzer_SOURCES
 	main.cpp
 	shellwindow.cpp
@@ -16,10 +22,11 @@ set(shell-analyzer_SOURCES
 	rshtdlg.cpp
 	spectrumdlg.cpp
 	dataselectdlg.cpp
+	multipleselectiondlg.cpp
    )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/.. ${CMAKE_SOURCE_DIR} ${DEPS_INCLUDE_DIRS})
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/../../libanalyzer/ ${CMAKE_CURRENT_BINARY_DIR}/../../libgraphics/)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/../../libanalyzer/ ${CMAKE_CURRENT_BINARY_DIR}/../../libgraphics/ ${READLINE_LIBRARY})
 
 add_executable(Shell-analyzer ${shell-analyzer_SOURCES})
 
@@ -37,5 +44,5 @@ target_sources(Shell-analyzer PUBLIC
 				../spectrumdlgpar.cpp
 				../transformerdlgpar.cpp)
 
-target_link_libraries(Shell-analyzer graphics analyzer ${DEPS_LIBRARIES})
+target_link_libraries(Shell-analyzer graphics analyzer ${READLINE_LIBRARY} ${DEPS_LIBRARIES})
 

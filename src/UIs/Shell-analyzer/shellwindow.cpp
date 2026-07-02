@@ -56,16 +56,20 @@
 #include "spectrumdlg.h"
 
 #include "dataselectdlg.h"
+#include "multipleselectiondlg.h"
 
 #include <limits>
 #include <iomanip>
 #include <filesystem>
+#include <readline/readline.h>
+#include <readline/history.h>
+
 
 ShellWindow::ShellWindow() : GUIManager()
 {
 	//prevent synchonization with c and c++ input output buffers
 	// note we cannot use c IO now!
-	std::ios_base::sync_with_stdio(false);
+	//std::ios_base::sync_with_stdio(false);
 
 	input =  &(std::cin);
 	output = &(std::cout);
@@ -115,6 +119,11 @@ ShellWindow::ShellWindow() : GUIManager()
 	specDlg = new spectrumDialog(input, output,
 								 [this]() {this->analyze();},
 								 [=]() {(*output) << "Analyze canceled\n"; });
+
+	multSelDlg = new multipleSelectionDialog(s_association, input, output,
+											 [this](int min, int max) {s_association->fileIOEngine()->minSlice(min);
+																	   s_association->fileIOEngine()->maxSlice(max);},
+											 [=](){(*output) << "Multiple Selection Canceled\n";});
 }
 
 ShellWindow::~ShellWindow()
@@ -332,20 +341,43 @@ void ShellWindow::setAssociation(association* newAssoc)
 
 void ShellWindow::selectFileName(bool read)
 {
+	rl_bind_key('\t', rl_complete);
+	rl_completion_suppress_append = 0;
+
 	if(read)
 	{
 		std::filesystem::path inputFile = "";
 
-		(*output) << "Enter the filename to read data from.\n";
-		(*input) >> inputFile;
-
-		while(! std::filesystem::exists(inputFile))
+		//(*output) << "Enter the filename to read data from.\n";
+		//(*input) >> inputFile;
+		do
 		{
-			errorMessage(string("File: " + inputFile.string() + " does not exist.\n").c_str());
 
-			(*output) << "Enter the filename to read data from.\n";
-			(*input) >> inputFile;
-		}
+			//(*output) << "Enter the filename to read data from.\n";
+			//(*input) >> inputFile;
+
+			char* inFl = readline("Enter the filename to read data from.\n");
+			add_history(inFl);
+
+			if(!inFl || inFl[0] == '\0')
+			{
+				errorMessage("Quitting reading file.\n");
+				return;
+			}
+
+			// we have to check for whitespace because auto complete adds a trailing space!
+			string file = string(inFl);
+			size_t trailWS = file.find_last_not_of(" \t\n\r\f\v");
+
+			if (trailWS != std::string::npos)
+				file.erase(trailWS + 1);
+
+			inputFile = file;
+			if(!std::filesystem::exists(inputFile))
+				errorMessage(string("File: " + inputFile.string() + " does not exist.\n").c_str());
+
+		}while(! std::filesystem::exists(inputFile));
+
 
 		// parse the file type ie csv fits hdf5
 		std::string ext = inputFile.extension();
@@ -395,7 +427,9 @@ void ShellWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
 }
 
 void ShellWindow::emitSelectSlices()
-{}
+{
+	static_cast<multipleSelectionDialog*>(multSelDlg)->execute();
+}
 
 void ShellWindow::emitSelectEnergies()
 {}
