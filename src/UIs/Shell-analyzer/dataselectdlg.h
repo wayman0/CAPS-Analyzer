@@ -67,6 +67,7 @@ class dataSelectDialog : public dataSelectDialogParent
 
 		void dataSelected(int size, FILETYPE data[]) {successFunc(size, data);}
 
+		void execute();
 		void execute(FILETYPE* dataTypes, int* numTypes);
 		bool confirm();
 

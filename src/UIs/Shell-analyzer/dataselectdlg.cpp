@@ -105,6 +105,43 @@ void dataSelectDialog::execute(FILETYPE* dataTypes, int* numTypes)
 		dataSelected(dataSets->size(), dataSets->data());
 }
 
+void dataSelectDialog::execute()
+{
+	(*output << "Here are the available datasets you have.\n");
+	for(int ftInd = 0; ftInd < static_cast<int>(FILETYPE::FILETYPE_LIMIT); ftInd += 1)
+		if(dataMgr->exists(static_cast<FILETYPE>(ftInd)))
+			(*output) << "\t" << ftInd << ". " << dataTypeNames[static_cast<int>(ftInd)] << "\n";
+
+	(*output) << "Enter a comma separated list of the data to be written. \n";
+
+	clearInput();
+
+	std::string list = "";
+	std::getline((*input), list);
+
+	std::stringstream listParser = std::stringstream(list);
+	string token = "";
+
+	while(std::getline(listParser, token, ','))
+	{
+		if(!token.empty())
+		{
+			try
+			{
+				dataSets->push_back(static_cast<FILETYPE>(std::stoi(token)));
+			}
+			catch(std::invalid_argument& err)
+			{
+				(*output) << "ERROR: " << err.what() << "\n";
+				return;
+			}
+		}
+	}
+
+	if(confirm())
+		dataSelected(dataSets->size(), dataSets->data());
+}
+
 bool dataSelectDialog::confirm()
 {
 	char confirm = 'n';

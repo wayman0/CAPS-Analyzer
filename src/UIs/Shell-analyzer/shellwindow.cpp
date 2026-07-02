@@ -266,7 +266,7 @@ void ShellWindow::execute()
 		else if(choice == 2)
 			openFile();
 		else if(choice == 3)
-			(*output) << "Save File\n";
+			saveFile();
 		else if(choice == 4)
 			static_cast<healpixDialog*>(healpixDlg)->execute();
 		else if(choice == 5)
@@ -347,15 +347,8 @@ void ShellWindow::selectFileName(bool read)
 	if(read)
 	{
 		std::filesystem::path inputFile = "";
-
-		//(*output) << "Enter the filename to read data from.\n";
-		//(*input) >> inputFile;
 		do
 		{
-
-			//(*output) << "Enter the filename to read data from.\n";
-			//(*input) >> inputFile;
-
 			char* inFl = readline("Enter the filename to read data from.\n");
 			add_history(inFl);
 
@@ -414,6 +407,51 @@ void ShellWindow::selectFileName(bool read)
 
 		dataSource = static_cast<OBSERVATORY>(obsInd);
 	}
+	else
+	{
+		std::filesystem::path outFile = "";
+		//do
+		//{
+			char* outFl = readline("Enter the filename to write data to.\n");
+			add_history(outFl);
+
+			if(!outFl || outFl[0] == '\0')
+			{
+				errorMessage("Quitting writing file.\n");
+				return;
+			}
+
+			// we have to check for whitespace because auto complete adds a trailing space!
+			string file = string(outFl);
+			size_t trailWS = file.find_last_not_of(" \t\n\r\f\v");
+
+			if (trailWS != std::string::npos)
+				file.erase(trailWS + 1);
+
+			outFile = file;
+			if(std::filesystem::exists(outFile))
+				displayMessage(string("File: " + outFile.string() + " already exists.\n").c_str());
+
+		//}while(std::filesystem::exists(outFile));
+
+
+		// parse the file type ie csv fits hdf5
+		std::string ext = outFile.extension();
+
+		if(ext == ".fit" || ext == ".fits" || ext == ".fts")
+			dataFormat = Fits;
+		else if(ext == ".csv" || ext == ".txt")
+			dataFormat = CSV;
+		else if(ext == ".hdf5" || ext == ".h5")
+			dataFormat = HDF5;
+		else
+		{
+			errorMessage(string("Unknown file format: " + ext + " quiting open file operation.\n").c_str());
+			return;
+		}
+
+		fileName = outFile.string();
+	}
 }
 
 void ShellWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
@@ -435,7 +473,14 @@ void ShellWindow::emitSelectEnergies()
 {}
 
 void ShellWindow::emitSaveDataSets()
-{}
+{
+	dataSelectDlg = new dataSelectDialog(s_association, input, output,
+										 [this](int size, FILETYPE types[]){this->writeData(size, types);},
+										 [=](){(*output) << "Data Selection Canceled\n";},
+										 RWMode::Read);
+
+	static_cast<dataSelectDialog*>(dataSelectDlg)->execute();
+}
 
 bool ShellWindow::handleMissingTransformer()
 {
