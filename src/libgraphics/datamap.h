@@ -224,7 +224,7 @@ class dataMap {
     FILETYPE      m_dataType;
     MAPTYPE       m_mapType;
     ORIENTATION   m_orientation;
-    COLORSCHEME  m_colorScheme;
+    COLORSCHEME   m_colorScheme;
     arr2<double>  m_map;
     arr2<bool>    m_mask;
     arr2<double>  m_color;

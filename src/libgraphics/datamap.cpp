@@ -129,6 +129,9 @@ long dataMap::initialize(long x,long y) {
   m_Xmap = (long)(0.98 * (double)m_Xpage);
   m_Ymap = (long)(m_Xmap / m_aspect);
 
+  if(m_Ymap > m_Ypage-1)
+	  m_Ymap = m_Ypage-1;
+
   if ((long)(m_Ymap * m_aspect) != m_Xmap)
     m_Ymap++;
 
@@ -273,7 +276,6 @@ unsigned char *dataMap::transferRGBData() {
   rl->translate(m_Xpage * .5 - label_offset,m_Ypage *.05);
   rl->color(0,0,0);
   rl->bitmapFontString(m_title.c_str());
-
   rl->bitmapFontFace(FONT_NAME,15);
   rl->identity();
   sprintf(val,"%.4e",m_minValue);
@@ -368,7 +370,8 @@ void dataMap::writeRGB(bmp_param *bm, arry_param *ar, trans_param *tr) {
     x = 0;
     while (x < xspan) {
       /* See if this pixel is masked... */
-      if (ar->mask_ptr && !(*ar->mask_ptr)[tr->src_xorig + x][tr->src_yorig + y]) {
+      if (ar->mask_ptr && !(*ar->mask_ptr)[tr->src_xorig + x][tr->src_yorig + y])
+	  {
         x++;
         continue;
       }
@@ -408,7 +411,9 @@ void dataMap::writeRGB(bmp_param *bm, arry_param *ar, trans_param *tr) {
 
       dst_y   = tr->dst_yorig + ((int)(y * y_ratio));
       dst_x   = tr->dst_xorig + ((int)(x * x_ratio));
-      pix_ptr = bm->ptr + 3 * ((dst_y * bm->width) + dst_x);
+
+
+	  pix_ptr = bm->ptr + 3 * ((dst_y * bm->width) + dst_x);
       pix     = (rgb_value*)pix_ptr;
 
       /* These cases correspond to sectors on the standard color wheel.
@@ -454,7 +459,8 @@ void dataMap::writeRGB(bmp_param *bm, arry_param *ar, trans_param *tr) {
          interation--this insures that no empty areas are left due to
          double->int conversion issues.*/
 
-      if (dx || dy) {
+      if (dx || dy)
+	  {
         fill_x    = dst_x;
         fill_y    = dst_y;
         fill_to_x = dst_x + dx + 1;
