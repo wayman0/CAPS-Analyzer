@@ -91,6 +91,7 @@ void mapperDialog::execute()
 		dataAssoc->mappingEngine()->raOffset(raOffset);
 		dataAssoc->mappingEngine()->decOffset(decOffset);
 
+		isConfigured = true;
 		mapperReady();
 	}
 	else

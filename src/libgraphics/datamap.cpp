@@ -199,7 +199,13 @@ void dataMap::findExtremes() {
      }
 }
 
-unsigned char *dataMap::transferRGBData() {
+unsigned char *dataMap::transferRGBData()
+{
+	return transferRGBData(15);
+}
+
+unsigned char *dataMap::transferRGBData(int fontSize)
+{
   unsigned char *bitmap = new(std::nothrow) unsigned char[m_Xpage * m_Ypage * 3];
   bmp_param bm;
   arry_param ar;
@@ -271,12 +277,12 @@ unsigned char *dataMap::transferRGBData() {
   }
 
   rl = new Raster(m_Xpage,m_Ypage,3,bitmap);
-  rl->bitmapFontFace(FONT_NAME,40);
+  rl->bitmapFontFace(FONT_NAME, fontSize * 2);
   label_offset = rl->bitmapFontLength(m_title.c_str())/2;
   rl->translate(m_Xpage * .5 - label_offset,m_Ypage *.05);
   rl->color(0,0,0);
   rl->bitmapFontString(m_title.c_str());
-  rl->bitmapFontFace(FONT_NAME,15);
+  rl->bitmapFontFace(FONT_NAME, fontSize);
   rl->identity();
   sprintf(val,"%.4e",m_minValue);
   label_offset = rl->bitmapFontLength(val)/2;

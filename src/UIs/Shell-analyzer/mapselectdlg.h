@@ -51,38 +51,35 @@
 #ifndef _MAPSELECTDIALOG_H_
 #define _MAPSELECTDIALOG_H_
 
-#include <QtWidgets>
-
 #include "../mapselectdlgpar.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
 
-namespace Ui {
-  class mapSelectDialog;
-}
-
-class mapSelectDialog : public QDialog, public mapSelectDialogParent
+class mapSelectDialog : public mapSelectDialogParent
 {
-	Q_OBJECT
-
 	public:
-		mapSelectDialog(association* assoc);
+		mapSelectDialog(association* assoc, std::istream*, std::ostream*, std::function<void(ASSOCIATEDMAP m)>, std::function<void()>);
 		virtual ~mapSelectDialog();
 
-	Q_SIGNALS:
-		void mapSelected(ASSOCIATEDMAP);
+		void mapSelected(ASSOCIATEDMAP m) {successFunc(m);}
+		void configure(unsigned int availableMaps) {}
+		void reset() {}
 
-	public Q_SLOTS:
-		void configure(unsigned int availableMaps);
-		void reset();
+		void execute();
 
 	private:
-		void validate();
-		Ui::mapSelectDialog *ui;
+		void validate() {}
 
-	private Q_SLOTS:
-		void help();
-		void finalize();
-		void cancel();
+		void help() {}
+		void finalize() {}
+		void cancel() {}
+
+		void clearInput();
+		void clearScreen();
+
+		std::istream* input;
+		std::ostream* output;
+		std::function<void(ASSOCIATEDMAP m)> successFunc;
+		std::function<void()>				 cancelFunc;
 };
 #endif

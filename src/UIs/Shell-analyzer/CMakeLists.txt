@@ -24,6 +24,7 @@ set(shell-analyzer_SOURCES
 	dataselectdlg.cpp
 	multipleselectiondlg.cpp
 	mapperdlg.cpp
+	mapselectdlg.cpp
    )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/.. ${CMAKE_SOURCE_DIR} ${DEPS_INCLUDE_DIRS})

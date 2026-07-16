@@ -302,6 +302,16 @@ enum class associatedMap {
 };
 typedef associatedMap ASSOCIATEDMAP;
 
+static std::string associatedMapNames[] = 	{
+												"Null", "Input Data", "Input Weights", "Weighted Data",
+												"Input Noise", "Weighted Noise", "Input Filter", "Input Beam",
+												"Pixelized Data", "Pixelized Weights", "Weighted Pixel", "Pixel Occupancy",
+												"Pixelized Noise", "Pixelized Weighted Noise", "Pixelized Filter", "Pixelized Beam",
+												"Inverse Noise", "Inverse Weights", "Weighted Inverse",
+												"Inverse Noise", "Inverse Weighted Noise", "Inverse Filter", "Inverse Beam",
+												"Map Limit"
+											};
+
 enum typeOfMap {Blank = 0, Mollweide, Aitoff, Gnomonic, TYPEOFMAP_LIMIT};
 typedef typeOfMap MAPTYPE;
 

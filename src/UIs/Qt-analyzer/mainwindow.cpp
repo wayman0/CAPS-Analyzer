@@ -203,11 +203,11 @@ mainWindow::mainWindow() :
 
   connect(dynamic_cast<mapperDialog*>(mapperDlg),
 		  &mapperDialog::mapperReady,
-		  [=](){buildMaps();});
+		  [=](){buildMaps(15);});
 
   connect(dynamic_cast<mapSelectDialog*>(mapSelectDlg),
 		  &mapSelectDialog::mapSelected,
-		  [=](ASSOCIATEDMAP map){displayMap(map);});
+		  [=](ASSOCIATEDMAP map){displayMap(map, 15);});
 
   connect(dynamic_cast<graphDialog*>(grapherDlg),
 		  &graphDialog::grapherReady,
@@ -611,48 +611,8 @@ void mainWindow::paintMap(unsigned char* map)
     colorValue = qRgb(activeMap[offset],activeMap[offset+1],activeMap[offset+2]); // read RGB values at point (i,j)
 	image.setPixel(i,j,colorValue);
 
-	// figure out where to put new line
-
-	printf("R: %03d G: %03d B: %03d\t", activeMap[offset], activeMap[offset+1], activeMap[offset+2]);
-
     offset += 3;
   }
-
-
-	/*
-	int rows = s_association->mappingEngine()->height();
-	int cols = s_association->mappingEngine()->width();
-	//for(int cInd = 0; cInd < cols; cInd += 1)
-	for(int rInd = 0; rInd < rows; rInd += 1)
-	{
-		//for(int rInd = 0; rInd < rows; rInd += 1)
-		for(int cInd = 0; cInd < cols; cInd += 1)
-		{
-			int pixelIndex = (rInd * cols) + cInd;
-
-			unsigned char r = activeMap[pixelIndex + 0];
-			unsigned char g = activeMap[pixelIndex + 1];
-			unsigned char b = activeMap[pixelIndex + 2];
-
-			unsigned int rI = r;
-			unsigned int gI = g;
-			unsigned int bI = b;
-
-			// \033[38;2; says we are using 24 bit true color, r g b are the r g b values, \u2588 is a box what we will use as a pixel
-			//(*output) << "\033[38;2;" + std::to_string(r) + ";" + std::to_string(g) + ";" + std::to_string(b) + "m\u2588";
-
-			//(*output) << "R: " << r                 << " G: " <<                 g << " B: " <<                 b << "\t";
-			//(*output) << "R: " << std::to_string(r) << " G: " << std::to_string(g) << " B: " << std::to_string(b) << "\t";
-			printf("R: %03d G: %03d B: %03d\t", rI, gI, bI);
-
-			colorValue = qRgb(activeMap[pixelIndex],activeMap[pixelIndex+1],activeMap[pixelIndex+2]); // read RGB values at point (i,j)
-			image.setPixel(rInd,cInd,colorValue);
-		}
-		//(*output) << "\n";
-		//(*output) << "\033[0m\n";
-		printf("\n");
-	}
-	*/
 
   // convert QImage to QPixmap and load into graphicsScene
   QPixmap pMap(width,height);

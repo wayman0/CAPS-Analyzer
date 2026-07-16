@@ -61,6 +61,7 @@
 #include "multipleselectiondlg.h"
 
 #include "mapperdlg.h"
+#include "mapselectdlg.h"
 
 #include <limits>
 #include <iomanip>
@@ -130,8 +131,12 @@ ShellWindow::ShellWindow() : GUIManager()
 											 [=](){(*output) << "Multiple Selection Canceled\n";});
 
 	mapperDlg = new mapperDialog(s_association, input, output,
-								 [this](){this->buildMaps();},
+								 [this](){this->buildMaps(5);},
 								 [=]() {(*output) << "Mapper Canceled\n";});
+
+	mapSelectDlg = new mapSelectDialog(s_association, input, output,
+									   [this](ASSOCIATEDMAP m){this->displayMap(m, 5);},
+									   [=]{(*output) << "Map Select Canceled.\n";});
 }
 
 ShellWindow::~ShellWindow()
@@ -282,7 +287,7 @@ void ShellWindow::execute()
 		else if(choice == 6)
 			static_cast<spectrumDialog*>(specDlg)->execute();
 		else if(choice == 7)
-			paintMap(s_association->inputDataMap()->transferRGBData()); //(*output) << "Display Map\n";
+			static_cast<mapSelectDialog*>(mapSelectDlg)->execute();
 		else if(choice == 8)
 			(*output) << "Display Graph\n";
 		else if(choice == 9)
@@ -564,7 +569,7 @@ void ShellWindow::configureAnalyzer()
 
 void ShellWindow::emitSelectMapDisplay(int displayData)
 {
-
+	static_cast<mapSelectDialog*>(mapSelectDlg)->execute();
 }
 
 void ShellWindow::paintMap(unsigned char* map)

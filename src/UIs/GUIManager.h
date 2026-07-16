@@ -128,11 +128,12 @@ class GUIManager
         virtual void selectAnalzyer() = 0;
         virtual void configureAnalyzer() = 0;
 
-        void configureDisplay(FILETYPE dataType);
+		void configureDisplay(FILETYPE dataType);
+        void configureDisplay(FILETYPE dataType, int fontSize);
 
-		void configureMaps();
-		void buildMaps();
-		void displayMap(ASSOCIATEDMAP map);
+		void configureMaps(int fontSize);
+		void buildMaps(int fontSize);
+		void displayMap(ASSOCIATEDMAP map, int fontSize);
 		virtual void emitSelectMapDisplay(int displayData) = 0;
 
 		void configureGraphs();

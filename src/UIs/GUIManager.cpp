@@ -869,6 +869,17 @@ void GUIManager::analyze()
 
 void GUIManager::configureDisplay(FILETYPE dataType)
 {
+	const char* callerName = typeid(*this).name();
+
+	if(std::string_view(callerName).find("ShellWindow") != std::string_view::npos)
+		configureDisplay(dataType, 5);
+	else if(std::string_view(callerName).find("mainWindow") != std::string_view::npos)
+		configureDisplay(dataType, 15);
+
+}
+
+void GUIManager::configureDisplay(FILETYPE dataType, int fontSize)
+{
 	switch (dataType)
 	{
 		case fileType::InputData:
@@ -893,7 +904,7 @@ void GUIManager::configureDisplay(FILETYPE dataType)
 		case fileType::InverseWeightedNoise:
 		case fileType::InverseFilter:
 		case fileType::InverseBeam:
-			configureMaps();
+			configureMaps(fontSize);
 			break;
 		case fileType::TransformedData:
 		case fileType::TransformedWeights:
@@ -916,15 +927,15 @@ void GUIManager::configureDisplay(FILETYPE dataType)
 	}
 }
 
-void GUIManager::configureMaps()
+void GUIManager::configureMaps(int fontSize)
 {
 	if (!mapperDlg->configured())
 		mapperDlg->configure();
 	else
-		buildMaps();
+		buildMaps(fontSize);
 }
 
-void GUIManager::buildMaps()
+void GUIManager::buildMaps(int fontSize)
 {
 	if(!s_association->exists(dataEngines::Mapping))
 		s_association->addEngine(dataEngines::Mapping, Mollweide);
@@ -985,83 +996,83 @@ void GUIManager::buildMaps()
 		if (numMaps > 1)
 			emitSelectMapDisplay(displayData);
 		else
-			displayMap(current);
+			displayMap(current, fontSize);
 	}
 }
 
-void GUIManager::displayMap(ASSOCIATEDMAP map)
+void GUIManager::displayMap(ASSOCIATEDMAP map, int fontSize)
 {
 	activeMap = 0;
 
 	switch (map)
 	{
 		case associatedMap::InputDataMap:
-			activeMap = s_association->inputDataMap()->transferRGBData();
+			activeMap = s_association->inputDataMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InputWeightsMap:
-			activeMap = s_association->inputWeightsMap()->transferRGBData();
+			activeMap = s_association->inputWeightsMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::WeightedDataMap:
-			activeMap = s_association->inputMap()->transferRGBData();
+			activeMap = s_association->inputMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InputNoiseMap:
-			activeMap = s_association->inputNoiseMap()->transferRGBData();
+			activeMap = s_association->inputNoiseMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InputWeightedNoiseMap:
-			activeMap = s_association->weightedNoiseMap()->transferRGBData();
+			activeMap = s_association->weightedNoiseMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InputFilterMap:
-			activeMap = s_association->inputFilterMap()->transferRGBData();
+			activeMap = s_association->inputFilterMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InputBeamMap:
-			activeMap = s_association->inputBeamMap()->transferRGBData();
+			activeMap = s_association->inputBeamMap()->transferRGBData(fontSize);
 			break;
 
 		case associatedMap::PixelizedDataMap:
-			activeMap = s_association->pixelDataMap()->transferRGBData();
+			activeMap = s_association->pixelDataMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::PixelizedWeightsMap:
-			activeMap = s_association->pixelWeightsMap()->transferRGBData();
+			activeMap = s_association->pixelWeightsMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::WeightedPixelMap:
-			activeMap = s_association->pixelMap()->transferRGBData();
+			activeMap = s_association->pixelMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::PixelOccupancyMap:
-			activeMap = s_association->pixelOccupancyMap()->transferRGBData();
+			activeMap = s_association->pixelOccupancyMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::PixelizedNoiseMap:
-			activeMap = s_association->pixelNoiseMap()->transferRGBData();
+			activeMap = s_association->pixelNoiseMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::PixelizedWeightedNoiseMap:
-			activeMap = s_association->pixelWeightedNoiseMap()->transferRGBData();
+			activeMap = s_association->pixelWeightedNoiseMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::PixelizedFilterMap:
-			activeMap = s_association->pixelFilterMap()->transferRGBData();
+			activeMap = s_association->pixelFilterMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::PixelizedBeamMap:
-			activeMap = s_association->pixelBeamMap()->transferRGBData();
+			activeMap = s_association->pixelBeamMap()->transferRGBData(fontSize);
 			break;
 
 		case associatedMap::InverseDataMap:
-			activeMap = s_association->invDataMap()->transferRGBData();
+			activeMap = s_association->invDataMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InverseWeightsMap:
-			activeMap = s_association->invWeightsMap()->transferRGBData();
+			activeMap = s_association->invWeightsMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::WeightedInverseMap:
-			activeMap = s_association->invMap()->transferRGBData();
+			activeMap = s_association->invMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InverseNoiseMap:
-			activeMap = s_association->invNoiseMap()->transferRGBData();
+			activeMap = s_association->invNoiseMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InverseWeightedNoiseMap:
-			activeMap = s_association->invWeightedNoiseMap()->transferRGBData();
+			activeMap = s_association->invWeightedNoiseMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InverseFilterMap:
-			activeMap = s_association->invFilterMap()->transferRGBData();
+			activeMap = s_association->invFilterMap()->transferRGBData(fontSize);
 			break;
 		case associatedMap::InverseBeamMap:
-			activeMap = s_association->invBeamMap()->transferRGBData();
+			activeMap = s_association->invBeamMap()->transferRGBData(fontSize);
 			break;
 		default:
 			activeMap = 0;

@@ -218,6 +218,7 @@ class dataMap {
     /* Generate and transfer ownership of an RGB bitmap */
 
     unsigned char *transferRGBData();
+	unsigned char *transferRGBData(int fontSize);
     void writeRGB(bmp_param *dst, arry_param *src, trans_param *trans);
 
   private:
