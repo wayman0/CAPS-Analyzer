@@ -53,7 +53,7 @@
 
 #include <QtWidgets>
 
-//#include "../libanalyzer/analyzer.h"
+#include "../mapperdlgpar.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
 
@@ -61,17 +61,13 @@ namespace Ui {
   class mapperDialog;
 }
 
-class mapperDialog : public QDialog {
+class mapperDialog : public QDialog, public mapperDialogParent
+{
   Q_OBJECT
   
   public:
     mapperDialog(association *assoc);
     virtual ~mapperDialog();
-    bool configured() {return isConfigured;}
-    void configured(bool config) {isConfigured = config;}
-    int RAOffset() {return raOffset;}
-    int DECOffset() {return decOffset;}
-    void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
   public Q_SLOTS:
     void configure();
@@ -87,16 +83,6 @@ class mapperDialog : public QDialog {
     int configureInterface();
 
     Ui::mapperDialog *ui;
-    association *dataAssoc;
-    long xSize;
-    long ySize;
-    int  raOffset;
-    int  decOffset;
-    ORIENTATION longConvention;
-    MAPTYPE projection;
-    COLORSCHEME hue;
-    bool dirty, isConfigured;
-//    analyzer_map_hdl currentHandle;
 
   private Q_SLOTS:
     void finalize();

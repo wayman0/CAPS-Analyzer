@@ -69,6 +69,11 @@
 #include "spectrumdlgpar.h"
 #include "transformerdlgpar.h"
 
+#include "mapperdlgpar.h"
+#include "mapselectdlgpar.h"
+#include "graphdlgpar.h"
+#include "graphselectdlgpar.h"
+
 class GUIManager
 {
     public:
@@ -123,9 +128,21 @@ class GUIManager
         virtual void selectAnalzyer() = 0;
         virtual void configureAnalyzer() = 0;
 
-        virtual void configureDisplay(FILETYPE dataType) = 0;
-        virtual void displayGraph(ASSOCIATEDSPECTRUM graph) = 0;
-        virtual void displayMap(ASSOCIATEDMAP map) = 0;
+        void configureDisplay(FILETYPE dataType);
+
+		void configureMaps();
+		void buildMaps();
+		void displayMap(ASSOCIATEDMAP map);
+		virtual void emitSelectMapDisplay(int displayData) = 0;
+
+		void configureGraphs();
+		void buildGraphs();
+		void displayGraph(ASSOCIATEDSPECTRUM graph);
+		virtual void emitSelectGraphDisplay(int displayData) = 0;
+
+		virtual void paintMap(unsigned char* map) = 0;
+		virtual void paintGraph(unsigned char* graph) = 0;
+
 
     protected:
         association               *s_association;
@@ -135,6 +152,9 @@ class GUIManager
         FORMAT                     dataFormat;
         std::string                fileName;
         OBSERVATORY                dataSource;
+
+		unsigned char             *activeMap;
+		unsigned char             *activeGraph;
 
         associationSelectDialogParent *assocDlg;
         controlDataDialogParent       *ctrlDlg;
@@ -147,6 +167,12 @@ class GUIManager
         rshtDialogParent              *rshtDlg;
         analyzerDialogParent          *analSelectDlg;
         spectrumDialogParent          *specDlg;
+
+		mapperDialogParent            *mapperDlg;
+		mapSelectDialogParent         *mapSelectDlg;
+		graphDialogParent             *grapherDlg;
+		graphSelectDialogParent       *graphSelectDlg;
+
 };
 #endif
 

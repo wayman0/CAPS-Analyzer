@@ -23,6 +23,7 @@ set(shell-analyzer_SOURCES
 	spectrumdlg.cpp
 	dataselectdlg.cpp
 	multipleselectiondlg.cpp
+	mapperdlg.cpp
    )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/.. ${CMAKE_SOURCE_DIR} ${DEPS_INCLUDE_DIRS})
@@ -42,7 +43,12 @@ target_sources(Shell-analyzer PUBLIC
 				../pixelizerdlgpar.cpp
 				../rshtdlgpar.cpp
 				../spectrumdlgpar.cpp
-				../transformerdlgpar.cpp)
+				../transformerdlgpar.cpp
+				../mapperdlgpar.cpp
+				../mapselectdlgpar.cpp
+				../graphdlgpar.cpp
+				../graphselectdlgpar.cpp
+				)
 
 target_link_libraries(Shell-analyzer graphics analyzer ${READLINE_LIBRARY} ${DEPS_LIBRARIES})
 

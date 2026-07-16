@@ -53,23 +53,13 @@
 
 #include "../../libgraphics/mapper.h"
 
-mapperDialog::mapperDialog(association *assoc) :
-              ui(new Ui::mapperDialog) {
+mapperDialog::mapperDialog(association *assoc)
+				: mapperDialogParent(assoc),
+				  ui(new Ui::mapperDialog)
+{
   /* set up the user interface first */
   ui->setupUi(this);
 
-  dataAssoc = assoc;
-
-  /* initialize internal variables*/
-//  currentHandle = -1;
-  xSize = ySize = 0;
-  raOffset = decOffset = 0;
-  projection = Blank;
-  longConvention = NoOrientation;
-  hue = Dark;
-  dirty = false;
-  isConfigured = false;
-  
   /* disable map layouts that are not implemented yet */
   ui->gnomicButton->setEnabled(false);
   ui->atoffButton->setEnabled(false);

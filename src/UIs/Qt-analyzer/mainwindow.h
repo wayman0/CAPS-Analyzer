@@ -106,12 +106,14 @@ class mainWindow : public QMainWindow, GUIManager {
   public Q_SLOTS:
     void addAssociation();
     void setAssociation(association* newAssoc);
-    void configureDisplay(FILETYPE dataType);
-    void buildMaps();
-    void displayMap(ASSOCIATEDMAP map);
-    void buildGraphs();
-    void displayGraph(ASSOCIATEDSPECTRUM graph);
-    void configurePixelizer(PIXELSCHEME scheme);
+
+	//void configureDisplay(FILETYPE dataType);
+    //void buildMaps();
+    //void displayMap(ASSOCIATEDMAP map);
+    //void buildGraphs();
+    //void displayGraph(ASSOCIATEDSPECTRUM graph);
+
+	void configurePixelizer(PIXELSCHEME scheme);
     void configureTransformer(TRANSFORMERSCHEME scheme);
     void configureAnalyzer();
 
@@ -127,8 +129,9 @@ class mainWindow : public QMainWindow, GUIManager {
     void dataReady(FILETYPE);
 
   private:
-    void configureMaps();
-    void configureGraphs();
+    //void configureMaps();
+    //void configureGraphs();
+
     void clearMaps();
     void clearGraphs();
 
@@ -137,6 +140,9 @@ class mainWindow : public QMainWindow, GUIManager {
     void emitReadDataSets(FILETYPE* dataTypes, int* numTypes);
     void emitSelectSlices();
     void emitSelectEnergies();
+
+	void emitSelectMapDisplay(int displayData);
+	void emitSelectGraphDisplay(int displayData);
 
     Ui::MainWindow *ui;
     
@@ -152,17 +158,14 @@ class mainWindow : public QMainWindow, GUIManager {
     rshtDialog              *rshtDlg;
     analyzerDialog          *analSelectDlg;
     spectrumDialog          *specDlg;
-    */
     mapperDialog            *mapperDlg;
     mapSelectDialog         *mapSelectDlg;
     graphDialog             *grapherDlg;
     graphSelectDialog       *graphSelectDlg;
-
+	*/
 
     progress                *s_progressInterface;
 
-    unsigned char             *activeMap;
-    unsigned char             *activeGraph;
     QDir                      directory;
 
     int pbValue;

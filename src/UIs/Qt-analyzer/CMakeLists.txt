@@ -98,7 +98,12 @@ target_sources(Qt-analyzer PUBLIC
 				../pixelizerdlgpar.cpp
 				../rshtdlgpar.cpp
 				../spectrumdlgpar.cpp
-				../transformerdlgpar.cpp)
+				../transformerdlgpar.cpp
+				../mapperdlgpar.cpp
+				../mapselectdlgpar.cpp
+				../graphdlgpar.cpp
+				../graphselectdlgpar.cpp
+				)
 
 target_link_libraries(Qt-analyzer graphics analyzer Qt::Core Qt::Gui Qt::Widgets ${DEPS_LIBRARIES})
 

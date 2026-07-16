@@ -101,9 +101,11 @@ class ShellWindow : GUIManager
 		void selectAnalzyer();
 		void configureAnalyzer();
 
-		void configureDisplay(FILETYPE dataType);
-		void displayGraph(ASSOCIATEDSPECTRUM graph);
-		void displayMap(ASSOCIATEDMAP map);
+		void emitSelectMapDisplay(int displayData);
+		void paintMap(unsigned char* map);
+
+		void emitSelectGraphDisplay(int displayData);
+		void paintGraph(unsigned char* graph);
 
 		void execute();
 		void printMenu();

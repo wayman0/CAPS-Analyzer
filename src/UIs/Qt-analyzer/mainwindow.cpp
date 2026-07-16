@@ -154,28 +154,27 @@ mainWindow::mainWindow() :
 
 
   /* set up Qt signal/slot connections */
-  connect(ui->controlAction, &QAction::triggered, [=](bool open){ctrlDlg->configure(false);});
-  connect(ui->openAction, &QAction::triggered, [=](){openFile();});
-  connect(ui->saveAction, &QAction::triggered, [=](){saveFile();});
+  connect(ui->controlAction, &QAction::triggered,        [=](bool open){ctrlDlg->configure(false);});
+  connect(ui->openAction,    &QAction::triggered,        [=]()         {openFile();});
+  connect(ui->saveAction,    &QAction::triggered,        [=]()         {saveFile();});
 
-  connect(ui->addAssociationAction, &QAction::triggered, [=](){addAssociation(); });
-  connect(ui->selectAssociation, &QAction::triggered, [=](){assocDlg->configure();});
+  connect(ui->addAssociationAction, &QAction::triggered, [=]()         {addAssociation(); });
+  connect(ui->selectAssociation,    &QAction::triggered, [=]()         {assocDlg->configure();});
 
-  connect(dynamic_cast<associationSelectDialog*>(assocDlg), &associationSelectDialog::associationSelected, [=](association* newAssoc){setAssociation(newAssoc);});
+  connect(ui->clearAction,        &QAction::triggered, [=](){reset();});
+  connect(ui->exitAction,         &QAction::triggered, [=](){close();});
+  connect(ui->pixelizeAction,     &QAction::triggered, [=](){selectPixelizer();});
+  connect(ui->transformAction,    &QAction::triggered, [=](){selectTransformer();});
+  connect(ui->analyzeAction,      &QAction::triggered, [=](){selectAnalzyer();});
+
+  connect(ui->selectMapsAction,   &QAction::triggered, [=](){mapSelectDlg->configure();});
+  connect(ui->selectGraphsAction, &QAction::triggered, [=](){graphSelectDlg->configure();});
+
+//  connect(ui->inverseAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 
 //  connect(ui->informationAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->printAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-  connect(ui->clearAction, &QAction::triggered, [=](){reset();});
-  connect(ui->exitAction, &QAction::triggered, [=](){close();});
-  connect(ui->pixelizeAction, &QAction::triggered, [=](){selectPixelizer();});
-  connect(ui->transformAction, &QAction::triggered, [=](){selectTransformer();});
-  //connect(ui->analyzeAction, &QAction::triggered, [=](){analyze();});
 
-  connect(ui->analyzeAction, &QAction::triggered, [=](){selectAnalzyer();});
-
-//  connect(ui->inverseAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-  connect(ui->selectMapsAction, &QAction::triggered, [=](){mapSelectDlg->configure();});
-  connect(ui->selectGraphsAction, &QAction::triggered, [=](){graphSelectDlg->configure();});
 //  connect(ui->zoomInAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->zoomOutAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->zoomNormalAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
@@ -184,35 +183,75 @@ mainWindow::mainWindow() :
 //  connect*ui->configureTransformer, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->HandbookAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
 //  connect(ui->aboutAnalyzerAction, Q_SIGNAL(triggered(bool)), this, Q_SLOT());
-  connect(dynamic_cast<controlDataDialog*>(ctrlDlg), &controlDataDialog::buildControlData, [=](FILETYPE value,bool complete){createControlData(value,complete);});
 
+  connect(this, &mainWindow::saveDataSets,   [=](){dataSelectDlg->configure();});
+  connect(this, &mainWindow::readDataSets,   [=](FILETYPE* dataTypes, int* numTypes){dataSelectDlg->configure(dataTypes, numTypes);});
 
-  connect(this, &mainWindow::saveDataSets, [=](){dataSelectDlg->configure();});
-  connect(this, &mainWindow::readDataSets, [=](FILETYPE* dataTypes, int* numTypes){dataSelectDlg->configure(dataTypes, numTypes);});
+  connect(this, &mainWindow::selectEnergies,     [=](double low, double high){energyDlg->configure(low,high);});
+  connect(this, &mainWindow::selectSlices,       [=](){multSelDlg->configure(); });
 
-  connect(this,&mainWindow::selectEnergies,[=](double low, double high){energyDlg->configure(low,high);});
-  connect(this,&mainWindow::selectSlices,[=](){multSelDlg->configure(); });
-
-  //connect(energyDlg,&energyDialog::energySelected,[=](double low, double high){readData(low,high);});
-  connect(mapperDlg, &mapperDialog::mapperReady, [=](){buildMaps();});
-  connect(this, &mainWindow::selectMapDisplay, [=](unsigned int selection){mapSelectDlg->configure(selection);});
-  connect(mapSelectDlg, &mapSelectDialog::mapSelected, [=](ASSOCIATEDMAP map){displayMap(map);});
-  connect(grapherDlg, &graphDialog::grapherReady, [=](){buildGraphs();});
+  connect(this, &mainWindow::selectMapDisplay,   [=](unsigned int selection){mapSelectDlg->configure(selection);});
   connect(this, &mainWindow::selectGraphDisplay, [=](unsigned int selection){graphSelectDlg->configure(selection);});
-  connect(graphSelectDlg, &graphSelectDialog::graphSelected, [=](associatedSpectrum graph){displayGraph(graph);});
-  connect(dynamic_cast<pixelizerDialog*>(pixSelectDlg), &pixelizerDialog::pixelizerSelected, [=](PIXELSCHEME scheme){configurePixelizer(scheme);});
-  connect(dynamic_cast<transformerDialog*>(transSelectDlg), &transformerDialog::transformerSelected, [=](TRANSFORMERSCHEME scheme){configureTransformer(scheme);});
 
-  connect(dynamic_cast<analyzerDialog*>(analSelectDlg), &analyzerDialog::analyzerSelected, [=](){configureAnalyzer();});
+  connect(dynamic_cast<associationSelectDialog*>(assocDlg),
+		  &associationSelectDialog::associationSelected,
+		  [=](association* newAssoc){setAssociation(newAssoc);});
 
-  connect(dynamic_cast<healpixDialog*>(healpixDlg), &healpixDialog::pixelizeData, [=](){pixelize();});
-  connect(dynamic_cast<healpixDialog*>(healpixDlg), &healpixDialog::pixelizationCancelled, [=](){healpixDlg->configured(false);});
+  connect(dynamic_cast<controlDataDialog*>(ctrlDlg),
+		  &controlDataDialog::buildControlData,
+		  [=](FILETYPE value,bool complete){createControlData(value,complete);});
 
-  connect(dynamic_cast<rshtDialog*>(rshtDlg), &rshtDialog::transformData, [=](){transform();});
-  connect(dynamic_cast<rshtDialog*>(rshtDlg), &rshtDialog::transformationCancelled, [=](){rshtDlg->configured(false);});
+  connect(dynamic_cast<mapperDialog*>(mapperDlg),
+		  &mapperDialog::mapperReady,
+		  [=](){buildMaps();});
 
-  connect(dynamic_cast<spectrumDialog*>(specDlg), &spectrumDialog::spectrumReady, [=](){analyze();});
-  connect(dynamic_cast<spectrumDialog*>(specDlg), &spectrumDialog::powerSpectrumCancelled, [=](){specDlg->configured(false);});
+  connect(dynamic_cast<mapSelectDialog*>(mapSelectDlg),
+		  &mapSelectDialog::mapSelected,
+		  [=](ASSOCIATEDMAP map){displayMap(map);});
+
+  connect(dynamic_cast<graphDialog*>(grapherDlg),
+		  &graphDialog::grapherReady,
+		  [=](){buildGraphs();});
+
+  connect(dynamic_cast<graphSelectDialog*>(graphSelectDlg),
+		  &graphSelectDialog::graphSelected,
+		  [=](associatedSpectrum graph){displayGraph(graph);});
+
+  connect(dynamic_cast<pixelizerDialog*>(pixSelectDlg),
+		  &pixelizerDialog::pixelizerSelected,
+		  [=](PIXELSCHEME scheme){configurePixelizer(scheme);});
+
+  connect(dynamic_cast<transformerDialog*>(transSelectDlg),
+		  &transformerDialog::transformerSelected,
+		  [=](TRANSFORMERSCHEME scheme){configureTransformer(scheme);});
+
+  connect(dynamic_cast<analyzerDialog*>(analSelectDlg),
+		  &analyzerDialog::analyzerSelected,
+		  [=](){configureAnalyzer();});
+
+  connect(dynamic_cast<healpixDialog*>(healpixDlg),
+		  &healpixDialog::pixelizeData,
+		  [=](){pixelize();});
+
+  connect(dynamic_cast<healpixDialog*>(healpixDlg),
+		  &healpixDialog::pixelizationCancelled,
+		  [=](){healpixDlg->configured(false);});
+
+  connect(dynamic_cast<rshtDialog*>(rshtDlg),
+		  &rshtDialog::transformData,
+		  [=](){transform();});
+
+  connect(dynamic_cast<rshtDialog*>(rshtDlg),
+		  &rshtDialog::transformationCancelled,
+		  [=](){rshtDlg->configured(false);});
+
+  connect(dynamic_cast<spectrumDialog*>(specDlg),
+		  &spectrumDialog::spectrumReady,
+		  [=](){analyze();});
+
+  connect(dynamic_cast<spectrumDialog*>(specDlg),
+		  &spectrumDialog::powerSpectrumCancelled,
+		  [=](){specDlg->configured(false);});
 
 //  connect(this, Q_SIGNAL(redrawMap()), ui->mapTab, Q_SLOT(paintEvent(QPaintEvent*)));
 //  connect(ctrlDlg, Q_SIGNAL(controlDataSet()), this, Q_SLOT(checkMapper()));
@@ -540,215 +579,13 @@ void mainWindow::setAssociation(association* newAssoc)
   clearGraphs();
 }
 
-void mainWindow::configureDisplay(FILETYPE dataType)
+void mainWindow::emitSelectMapDisplay(int displayData)
 {
-  //If running pixelizer
-  //ui->progressBar->setValue(value);  
-  
-  
-  switch (dataType) {
-    case fileType::InputData:
-    case fileType::InputWeights:
-    case fileType::WeightedData:
-    case fileType::InputNoise:
-    case fileType::InputWeightedNoise:
-    case fileType::InputFilter:
-    case fileType::InputBeam:
-    case fileType::PixelizedData:
-    case fileType::PixelizedWeights:
-    case fileType::WeightedPixel:
-    case fileType::PixelizedNoise:
-    case fileType::PixelizedWeightedNoise:
-    case fileType::PixelizedFilter:
-    case fileType::PixelizedBeam:
-    case fileType::PixelOccupancy:
-    case fileType::InverseData:
-    case fileType::InverseWeights:
-    case fileType::WeightedInverse:
-    case fileType::InverseNoise:
-    case fileType::InverseWeightedNoise:
-    case fileType::InverseFilter:
-    case fileType::InverseBeam:
-      configureMaps();
-      break;
-    case fileType::TransformedData:
-    case fileType::TransformedWeights:
-    case fileType::WeightedTransform:
-    case fileType::TransformedNoise:
-    case fileType::TransformedWeightedNoise:
-    case fileType::TransformedFilter:
-    case fileType::TransformedBeam:
-    //case fileType::SpectralData:
-    //case fileType::EnsembleData:
-    case fileType::EnsembleAveragedNoise:
-    case fileType::EnsembleAveragedSpectrum:
-    case fileType::ExtrapolatedSpectrum:
-    case fileType::ExtrapolatedInstrumentSpectrum:
-    case fileType::BinnedSpectrum:
-    case fileType::BinnedExtrapolatedSpectrum:
-    case fileType::BinnedExtrapolatedInstrumentedSpectrum:
-    //case fileType::EnsembleAveragedBinnedSpectrum:
-      configureGraphs();
-      break;
-    default:
-      break;
-  }
+	Q_EMIT selectMapDisplay(displayData);
 }
 
-void mainWindow::configureMaps() {
-  if (!mapperDlg->configured())
-    mapperDlg->configure();
-  buildMaps();
-}
-
-void mainWindow::buildMaps() {
-  QString title, message;
-  
-  if (!s_association->exists(dataEngines::Mapping))
-    s_association->addEngine(dataEngines::Mapping,Mollweide);
-  Mapper* mapEng = s_association->mappingEngine();
-
-  int numMaps = 0, displayData = 0;
-  FILETYPE dataType = fileType::Null;
-  ASSOCIATEDMAP mapType = associatedMap::Null;
-  ASSOCIATEDMAP current = associatedMap::Null;
-  ALLTYPES   allMapType = allTypes::FILETYPE_LIMIT;
-  int type = static_cast<int>(current);
-  int assocType = static_cast<int>(mapType);
-  int allType = static_cast<int>(allMapType);
-  
-  while (type >= 0) {
-    if (dataType == fileType::Null) {
-      dataType = static_cast<FILETYPE>(++type);
-      mapType = static_cast<ASSOCIATEDMAP>(++assocType);
-      allMapType = static_cast<ALLTYPES>(++allType);
-      continue;
-    }
-
-    if (dataType == fileType::MAP_LIMIT)
-      break;
-
-    if (s_association->exists(dataType)) {
-      if(s_association->exists(mapType))
-        s_association->reset(allMapType);
-      try {
-        s_association->generateMap(dataType);
-      }
-      catch (ERRORCODES error) {
-        title = QString(tr("Error code returned"));
-        message = QString(tr("The attempt to create the map for data type %1 failed.\nError code %2"))
-                              .arg(QString::fromStdString(s_association->dataNames((int)dataType)))
-                              .arg(QString::fromStdString(s_association->errorDetails(error)));
-        QMessageBox::critical(this,title,message);
-        return;
-      }
-      numMaps++;
-      displayData += (1 << (type-1));
-      current = mapType;
-    }
-    dataType = static_cast<FILETYPE>(++type);
-    mapType = static_cast<ASSOCIATEDMAP>(++assocType);
-    allMapType = static_cast<ALLTYPES>(++allType);
-  }
-
-  if (numMaps) {
-    if (numMaps > 1)
-      Q_EMIT selectMapDisplay(displayData);
-    else
-      displayMap(current);
-  }
-}
-
-void mainWindow::displayMap(ASSOCIATEDMAP map) {
-  QString title, message;
-
-  activeMap = 0;
-
-  switch (map) {
-    case associatedMap::InputDataMap:
-      activeMap = s_association->inputDataMap()->transferRGBData();
-      break;
-    case associatedMap::InputWeightsMap:
-      activeMap = s_association->inputWeightsMap()->transferRGBData();
-      break;
-    case associatedMap::WeightedDataMap:
-      activeMap = s_association->inputMap()->transferRGBData();
-      break;
-    case associatedMap::InputNoiseMap:
-      activeMap = s_association->inputNoiseMap()->transferRGBData();
-      break;
-    case associatedMap::InputWeightedNoiseMap:
-      activeMap = s_association->weightedNoiseMap()->transferRGBData();
-      break;
-    case associatedMap::InputFilterMap:
-      activeMap = s_association->inputFilterMap()->transferRGBData();
-      break;
-    case associatedMap::InputBeamMap:
-      activeMap = s_association->inputBeamMap()->transferRGBData();
-      break;
-
-    case associatedMap::PixelizedDataMap:
-      activeMap = s_association->pixelDataMap()->transferRGBData();
-      break;
-    case associatedMap::PixelizedWeightsMap:
-      activeMap = s_association->pixelWeightsMap()->transferRGBData();
-      break;
-    case associatedMap::WeightedPixelMap:
-      activeMap = s_association->pixelMap()->transferRGBData();
-      break;
-    case associatedMap::PixelOccupancyMap:
-      activeMap = s_association->pixelOccupancyMap()->transferRGBData();
-      break;
-    case associatedMap::PixelizedNoiseMap:
-      activeMap = s_association->pixelNoiseMap()->transferRGBData();
-      break;
-    case associatedMap::PixelizedWeightedNoiseMap:
-      activeMap = s_association->pixelWeightedNoiseMap()->transferRGBData();
-      break;
-    case associatedMap::PixelizedFilterMap:
-      activeMap = s_association->pixelFilterMap()->transferRGBData();
-      break;
-    case associatedMap::PixelizedBeamMap:
-      activeMap = s_association->pixelBeamMap()->transferRGBData();
-      break;
-
-    case associatedMap::InverseDataMap:
-      activeMap = s_association->invDataMap()->transferRGBData();
-      break;
-    case associatedMap::InverseWeightsMap:
-      activeMap = s_association->invWeightsMap()->transferRGBData();
-      break;
-    case associatedMap::WeightedInverseMap:
-      activeMap = s_association->invMap()->transferRGBData();
-      break;
-    case associatedMap::InverseNoiseMap:
-      activeMap = s_association->invNoiseMap()->transferRGBData();
-      break;
-    case associatedMap::InverseWeightedNoiseMap:
-      activeMap = s_association->invWeightedNoiseMap()->transferRGBData();
-      break;
-    case associatedMap::InverseFilterMap:
-      activeMap = s_association->invFilterMap()->transferRGBData();
-      break;
-    case associatedMap::InverseBeamMap:
-      activeMap = s_association->invBeamMap()->transferRGBData();
-      break;
-    default:
-      activeMap = 0;
-  }
-
-  if (activeMap == 0) {
-    title = QString(tr("Error code returned"));
-    message = QString(tr("The attempt to display the map for data type %1 failed.\nError: %2"))
-                      .arg(QString::fromStdString(s_association->dataNames((int)map)))
-                      .arg(QString::fromStdString(s_association->errorDetails(noDatamapError)));
-    QMessageBox::critical(this,title,message);
-    return;
-  }
-  paintMap(activeMap);
-}
-
-void mainWindow::paintMap(unsigned char* map) {
+void mainWindow::paintMap(unsigned char* map)
+{
   QString title, message;
   int width = 0;
   int height = 0;
@@ -765,16 +602,58 @@ void mainWindow::paintMap(unsigned char* map) {
   QImage image = QImage(width,height,QImage::Format_RGB32);
   QRgb colorValue;
   
+
   int mapEnd = height * width * 3;
   int offset = 0, i = 0, j = 0;
   while (offset < mapEnd) {
     i = (offset/3) % width;
     j = (offset/3) / width;
     colorValue = qRgb(activeMap[offset],activeMap[offset+1],activeMap[offset+2]); // read RGB values at point (i,j)
-    image.setPixel(i,j,colorValue);
+	image.setPixel(i,j,colorValue);
+
+	// figure out where to put new line
+
+	printf("R: %03d G: %03d B: %03d\t", activeMap[offset], activeMap[offset+1], activeMap[offset+2]);
+
     offset += 3;
   }
- 
+
+
+	/*
+	int rows = s_association->mappingEngine()->height();
+	int cols = s_association->mappingEngine()->width();
+	//for(int cInd = 0; cInd < cols; cInd += 1)
+	for(int rInd = 0; rInd < rows; rInd += 1)
+	{
+		//for(int rInd = 0; rInd < rows; rInd += 1)
+		for(int cInd = 0; cInd < cols; cInd += 1)
+		{
+			int pixelIndex = (rInd * cols) + cInd;
+
+			unsigned char r = activeMap[pixelIndex + 0];
+			unsigned char g = activeMap[pixelIndex + 1];
+			unsigned char b = activeMap[pixelIndex + 2];
+
+			unsigned int rI = r;
+			unsigned int gI = g;
+			unsigned int bI = b;
+
+			// \033[38;2; says we are using 24 bit true color, r g b are the r g b values, \u2588 is a box what we will use as a pixel
+			//(*output) << "\033[38;2;" + std::to_string(r) + ";" + std::to_string(g) + ";" + std::to_string(b) + "m\u2588";
+
+			//(*output) << "R: " << r                 << " G: " <<                 g << " B: " <<                 b << "\t";
+			//(*output) << "R: " << std::to_string(r) << " G: " << std::to_string(g) << " B: " << std::to_string(b) << "\t";
+			printf("R: %03d G: %03d B: %03d\t", rI, gI, bI);
+
+			colorValue = qRgb(activeMap[pixelIndex],activeMap[pixelIndex+1],activeMap[pixelIndex+2]); // read RGB values at point (i,j)
+			image.setPixel(rInd,cInd,colorValue);
+		}
+		//(*output) << "\n";
+		//(*output) << "\033[0m\n";
+		printf("\n");
+	}
+	*/
+
   // convert QImage to QPixmap and load into graphicsScene
   QPixmap pMap(width,height);
   pMap.convertFromImage(image);
@@ -797,147 +676,9 @@ void mainWindow::clearMaps()
   }
 }
 
-void mainWindow::configureGraphs() {
-  if (!grapherDlg->configured())
-    grapherDlg->configure();
-  buildGraphs();
-}
-
-void mainWindow::buildGraphs() {
-  QString title, message;
-
-  if (!s_association->exists(dataEngines::Graphing))
-    s_association->addEngine(dataEngines::Graphing);
-  Grapher* graphEng = s_association->graphingEngine();
-
-  int numGraphs = 0, displayData = 0;
-  FILETYPE dataType = fileType::MAP_LIMIT;
-  ASSOCIATEDSPECTRUM graphType = associatedSpectrum::Null;
-  ASSOCIATEDSPECTRUM current = associatedSpectrum::Null;
-  ALLTYPES allGraphType = allTypes::ASSOCIATEMAP_LIMIT;
-  int type = static_cast<int>(current);
-  int assocType = static_cast<int>(graphType);
-  int allType = static_cast<int>(allGraphType);
-  
-  while (type >= (int)fileType::MAP_LIMIT) {
-    if (dataType == fileType::MAP_LIMIT) {
-      dataType = static_cast<FILETYPE>(++type);
-      graphType = static_cast<ASSOCIATEDSPECTRUM>(++assocType);
-      allGraphType = static_cast<ALLTYPES>(++allType);
-      continue;
-    }
-
-    if (dataType == fileType::GRAPH_LIMIT)
-      break;
-
-    if (s_association->exists(dataType))
-    {
-      if (s_association->exists(graphType))
-        s_association->reset(allGraphType);
-
-      try {
-        s_association->generateGraph(dataType);
-      }
-      catch (ERRORCODES error) {
-        title = QString(tr("Error code returned"));
-        message = QString(tr("The attempt to create the graph for data type %1 failed.\nError code %2"))
-                              .arg(QString::fromStdString(s_association->dataNames((int)dataType)))
-                              .arg(QString::fromStdString(s_association->errorDetails(noDatagraphError)));
-        QMessageBox::critical(this,title,message);
-        return;
-      }
-      numGraphs++;
-      displayData += (1 << (type-1));
-      current = graphType;
-    }
-    dataType = static_cast<FILETYPE>(++type);
-    graphType = static_cast<ASSOCIATEDSPECTRUM>(++assocType);
-    allGraphType = static_cast<ALLTYPES>(++allType);
-  }
-
-  if (numGraphs) {
-    if (numGraphs > 1)
-      Q_EMIT selectGraphDisplay(displayData);
-    else
-      displayGraph(current);
-  }
-}
-
-void mainWindow::displayGraph(ASSOCIATEDSPECTRUM graph) {
-  QString title, message;
-
-  activeGraph = 0;
-
-  switch (graph) {
-    case associatedSpectrum::TransformedDataSpectrum:
-      activeGraph = s_association->transDataGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::TransformedWeightsSpectrum:
-      activeGraph = s_association->transWeightsGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::WeightedTransformSpectrum:
-      activeGraph = s_association->transGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::TransformedNoiseSpectrum:
-      activeGraph = s_association->transNoiseGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::TransformedWeightedNoiseSpectrum:
-      activeGraph = s_association->transWeightedNoiseGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::TransformedFilterSpectrum:
-      activeGraph = s_association->transFilterGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::TransformedBeamSpectrum:
-      activeGraph = s_association->transBeamGraph()->transferRGBData();
-      break;
-    /*
-    case associatedSpectrum::SpectralDataSpectrum:
-      activeGraph = s_association->spectrumGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::EnsembleDataSpectrum:
-      activeGraph = s_association->ensembleGraph()->transferRGBData();
-      break;
-    */
-    case associatedSpectrum::EnsembleAveragedNoiseSpectrum:
-      activeGraph = s_association->EnsembleAveragedNoiseGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
-      activeGraph = s_association->EnsembleAveragedSpectrumGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::ExtrapolatedSpectrumSpectrum:
-      activeGraph = s_association->ExtrapolatedSpectrumGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum:
-      activeGraph = s_association->ExtrapolatedInstrumentSpectrumGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::BinnedSpectrumSpectrum:
-      activeGraph = s_association->BinnedSpectrumGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum:
-      activeGraph = s_association->BinnedExtrapolatedSpectrumGraph()->transferRGBData();
-      break;
-    case associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum:
-      activeGraph = s_association->BinnedExtrapolatedInstrumentSpectrumGraph()->transferRGBData();
-      break;
-    /*
-    case associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum:
-      activeGraph = s_association->EnsembleAveragedBinnedSpectrumGraph()->transferRGBData();
-      break;
-    */
-    default:
-      activeGraph = 0;
-      break;
-  }
-
-  if (activeGraph == 0) {
-    title = QString(tr("Error code returned"));
-    message = QString(tr("The attempt to display the spectra for data type %1 failed.\nError: %2"))
-                      .arg(QString::fromStdString(s_association->dataNames((int)graph)))
-                      .arg(QString::fromStdString(s_association->errorDetails(noDatagraphError)));
-    QMessageBox::critical(this,title,message);
-    return;
-  }
-  paintGraph(activeGraph);
+void mainWindow::emitSelectGraphDisplay(int displayData)
+{
+	Q_EMIT selectGraphDisplay(displayData);
 }
 
 void mainWindow::paintGraph(unsigned char* graph) {

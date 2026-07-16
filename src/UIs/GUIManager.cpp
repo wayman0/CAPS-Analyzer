@@ -866,3 +866,354 @@ void GUIManager::analyze()
 
     configureDisplay(fileType::BinnedExtrapolatedInstrumentedSpectrum);
 }
+
+void GUIManager::configureDisplay(FILETYPE dataType)
+{
+	switch (dataType)
+	{
+		case fileType::InputData:
+		case fileType::InputWeights:
+		case fileType::WeightedData:
+		case fileType::InputNoise:
+		case fileType::InputWeightedNoise:
+		case fileType::InputFilter:
+		case fileType::InputBeam:
+		case fileType::PixelizedData:
+		case fileType::PixelizedWeights:
+		case fileType::WeightedPixel:
+		case fileType::PixelizedNoise:
+		case fileType::PixelizedWeightedNoise:
+		case fileType::PixelizedFilter:
+		case fileType::PixelizedBeam:
+		case fileType::PixelOccupancy:
+		case fileType::InverseData:
+		case fileType::InverseWeights:
+		case fileType::WeightedInverse:
+		case fileType::InverseNoise:
+		case fileType::InverseWeightedNoise:
+		case fileType::InverseFilter:
+		case fileType::InverseBeam:
+			configureMaps();
+			break;
+		case fileType::TransformedData:
+		case fileType::TransformedWeights:
+		case fileType::WeightedTransform:
+		case fileType::TransformedNoise:
+		case fileType::TransformedWeightedNoise:
+		case fileType::TransformedFilter:
+		case fileType::TransformedBeam:
+		case fileType::EnsembleAveragedNoise:
+		case fileType::EnsembleAveragedSpectrum:
+		case fileType::ExtrapolatedSpectrum:
+		case fileType::ExtrapolatedInstrumentSpectrum:
+		case fileType::BinnedSpectrum:
+		case fileType::BinnedExtrapolatedSpectrum:
+		case fileType::BinnedExtrapolatedInstrumentedSpectrum:
+			configureGraphs();
+			break;
+		default:
+			break;
+	}
+}
+
+void GUIManager::configureMaps()
+{
+	if (!mapperDlg->configured())
+		mapperDlg->configure();
+	else
+		buildMaps();
+}
+
+void GUIManager::buildMaps()
+{
+	if(!s_association->exists(dataEngines::Mapping))
+		s_association->addEngine(dataEngines::Mapping, Mollweide);
+
+	Mapper* mapEng = s_association->mappingEngine();
+
+	int numMaps = 0, displayData = 0;
+	FILETYPE dataType = fileType::Null;
+	ASSOCIATEDMAP mapType = associatedMap::Null;
+	ASSOCIATEDMAP current = associatedMap::Null;
+	ALLTYPES   allMapType = allTypes::FILETYPE_LIMIT;
+	int type = static_cast<int>(current);
+	int assocType = static_cast<int>(mapType);
+	int allType = static_cast<int>(allMapType);
+
+	while (type >= 0)
+	{
+		if (dataType == fileType::Null)
+		{
+			dataType = static_cast<FILETYPE>(++type);
+			mapType = static_cast<ASSOCIATEDMAP>(++assocType);
+			allMapType = static_cast<ALLTYPES>(++allType);
+			continue;
+		}
+
+		if (dataType == fileType::MAP_LIMIT)
+			break;
+
+		if (s_association->exists(dataType))
+		{
+			if(s_association->exists(mapType))
+				s_association->reset(allMapType);
+			try
+			{
+				s_association->generateMap(dataType);
+			}
+			catch (ERRORCODES error)
+			{
+				errorMessage(string("The attempt to create the map for: "
+									+ dataTypeNames[(int)dataType]
+									+ " failed with error: "
+									+ s_association->errorDetails(error)).c_str());
+
+				return;
+			}
+			numMaps++;
+			displayData += (1 << (type-1));
+			current = mapType;
+		}
+
+		dataType = static_cast<FILETYPE>(++type);
+		mapType = static_cast<ASSOCIATEDMAP>(++assocType);
+		allMapType = static_cast<ALLTYPES>(++allType);
+	}
+
+	if (numMaps)
+	{
+		if (numMaps > 1)
+			emitSelectMapDisplay(displayData);
+		else
+			displayMap(current);
+	}
+}
+
+void GUIManager::displayMap(ASSOCIATEDMAP map)
+{
+	activeMap = 0;
+
+	switch (map)
+	{
+		case associatedMap::InputDataMap:
+			activeMap = s_association->inputDataMap()->transferRGBData();
+			break;
+		case associatedMap::InputWeightsMap:
+			activeMap = s_association->inputWeightsMap()->transferRGBData();
+			break;
+		case associatedMap::WeightedDataMap:
+			activeMap = s_association->inputMap()->transferRGBData();
+			break;
+		case associatedMap::InputNoiseMap:
+			activeMap = s_association->inputNoiseMap()->transferRGBData();
+			break;
+		case associatedMap::InputWeightedNoiseMap:
+			activeMap = s_association->weightedNoiseMap()->transferRGBData();
+			break;
+		case associatedMap::InputFilterMap:
+			activeMap = s_association->inputFilterMap()->transferRGBData();
+			break;
+		case associatedMap::InputBeamMap:
+			activeMap = s_association->inputBeamMap()->transferRGBData();
+			break;
+
+		case associatedMap::PixelizedDataMap:
+			activeMap = s_association->pixelDataMap()->transferRGBData();
+			break;
+		case associatedMap::PixelizedWeightsMap:
+			activeMap = s_association->pixelWeightsMap()->transferRGBData();
+			break;
+		case associatedMap::WeightedPixelMap:
+			activeMap = s_association->pixelMap()->transferRGBData();
+			break;
+		case associatedMap::PixelOccupancyMap:
+			activeMap = s_association->pixelOccupancyMap()->transferRGBData();
+			break;
+		case associatedMap::PixelizedNoiseMap:
+			activeMap = s_association->pixelNoiseMap()->transferRGBData();
+			break;
+		case associatedMap::PixelizedWeightedNoiseMap:
+			activeMap = s_association->pixelWeightedNoiseMap()->transferRGBData();
+			break;
+		case associatedMap::PixelizedFilterMap:
+			activeMap = s_association->pixelFilterMap()->transferRGBData();
+			break;
+		case associatedMap::PixelizedBeamMap:
+			activeMap = s_association->pixelBeamMap()->transferRGBData();
+			break;
+
+		case associatedMap::InverseDataMap:
+			activeMap = s_association->invDataMap()->transferRGBData();
+			break;
+		case associatedMap::InverseWeightsMap:
+			activeMap = s_association->invWeightsMap()->transferRGBData();
+			break;
+		case associatedMap::WeightedInverseMap:
+			activeMap = s_association->invMap()->transferRGBData();
+			break;
+		case associatedMap::InverseNoiseMap:
+			activeMap = s_association->invNoiseMap()->transferRGBData();
+			break;
+		case associatedMap::InverseWeightedNoiseMap:
+			activeMap = s_association->invWeightedNoiseMap()->transferRGBData();
+			break;
+		case associatedMap::InverseFilterMap:
+			activeMap = s_association->invFilterMap()->transferRGBData();
+			break;
+		case associatedMap::InverseBeamMap:
+			activeMap = s_association->invBeamMap()->transferRGBData();
+			break;
+		default:
+			activeMap = 0;
+	}
+
+	if (activeMap == 0)
+	{
+		errorMessage(string("The attempt to create the map for: "
+									+ dataTypeNames[(int)map]
+									+ " failed with error: "
+									+ s_association->errorDetails(noDatamapError)).c_str());
+	}
+
+	paintMap(activeMap);
+}
+
+void GUIManager::configureGraphs()
+{
+	if (!grapherDlg->configured())
+		grapherDlg->configure();
+	else
+		buildGraphs();
+}
+
+void GUIManager::buildGraphs()
+{
+	if (!s_association->exists(dataEngines::Graphing))
+		s_association->addEngine(dataEngines::Graphing);
+
+	Grapher* graphEng = s_association->graphingEngine();
+
+	int numGraphs = 0, displayData = 0;
+	FILETYPE dataType = fileType::MAP_LIMIT;
+	ASSOCIATEDSPECTRUM graphType = associatedSpectrum::Null;
+	ASSOCIATEDSPECTRUM current = associatedSpectrum::Null;
+	ALLTYPES allGraphType = allTypes::ASSOCIATEMAP_LIMIT;
+	int type = static_cast<int>(current);
+	int assocType = static_cast<int>(graphType);
+	int allType = static_cast<int>(allGraphType);
+
+	while (type >= (int)fileType::MAP_LIMIT)
+	{
+		if (dataType == fileType::MAP_LIMIT)
+		{
+			dataType = static_cast<FILETYPE>(++type);
+			graphType = static_cast<ASSOCIATEDSPECTRUM>(++assocType);
+			allGraphType = static_cast<ALLTYPES>(++allType);
+			continue;
+		}
+
+		if (dataType == fileType::GRAPH_LIMIT)
+			break;
+
+		if (s_association->exists(dataType))
+		{
+			if (s_association->exists(graphType))
+				s_association->reset(allGraphType);
+
+			try
+			{
+				s_association->generateGraph(dataType);
+			}
+			catch (ERRORCODES error)
+			{
+				errorMessage(string("The attempt to create the map for: "
+									+ dataTypeNames[(int)dataType]
+									+ " failed with error: "
+									+ s_association->errorDetails(error)).c_str());
+
+				return;
+			}
+
+			numGraphs++;
+			displayData += (1 << (type-1));
+			current = graphType;
+		}
+
+		dataType = static_cast<FILETYPE>(++type);
+		graphType = static_cast<ASSOCIATEDSPECTRUM>(++assocType);
+		allGraphType = static_cast<ALLTYPES>(++allType);
+	}
+
+	if (numGraphs)
+	{
+		if (numGraphs > 1)
+			emitSelectGraphDisplay(displayData);
+		else
+			displayGraph(current);
+	}
+}
+
+void GUIManager::displayGraph(ASSOCIATEDSPECTRUM graph)
+{
+	activeGraph = 0;
+
+	switch (graph)
+	{
+		case associatedSpectrum::TransformedDataSpectrum:
+			activeGraph = s_association->transDataGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::TransformedWeightsSpectrum:
+			activeGraph = s_association->transWeightsGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::WeightedTransformSpectrum:
+			activeGraph = s_association->transGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::TransformedNoiseSpectrum:
+			activeGraph = s_association->transNoiseGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::TransformedWeightedNoiseSpectrum:
+			activeGraph = s_association->transWeightedNoiseGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::TransformedFilterSpectrum:
+			activeGraph = s_association->transFilterGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::TransformedBeamSpectrum:
+			activeGraph = s_association->transBeamGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::EnsembleAveragedNoiseSpectrum:
+			activeGraph = s_association->EnsembleAveragedNoiseGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
+			activeGraph = s_association->EnsembleAveragedSpectrumGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::ExtrapolatedSpectrumSpectrum:
+			activeGraph = s_association->ExtrapolatedSpectrumGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum:
+			activeGraph = s_association->ExtrapolatedInstrumentSpectrumGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::BinnedSpectrumSpectrum:
+			activeGraph = s_association->BinnedSpectrumGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum:
+			activeGraph = s_association->BinnedExtrapolatedSpectrumGraph()->transferRGBData();
+			break;
+		case associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum:
+			activeGraph = s_association->BinnedExtrapolatedInstrumentSpectrumGraph()->transferRGBData();
+			break;
+		default:
+			activeGraph = 0;
+			break;
+	}
+
+	if (activeGraph == 0)
+	{
+		errorMessage(string("The attempt to create the map for: "
+									+ dataTypeNames[(int)graph]
+									+ " failed with error: "
+									+ s_association->errorDetails(noDatagraphError)).c_str());
+		return;
+	}
+
+	paintGraph(activeGraph);
+}
