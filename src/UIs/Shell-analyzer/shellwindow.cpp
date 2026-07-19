@@ -62,6 +62,8 @@
 
 #include "mapperdlg.h"
 #include "mapselectdlg.h"
+#include "graphdlg.h"
+#include "graphselectdlg.h"
 
 #include <limits>
 #include <iomanip>
@@ -70,7 +72,7 @@
 #include <readline/history.h>
 
 
-ShellWindow::ShellWindow() : GUIManager()
+ShellWindow::ShellWindow() : GUIManager(5)
 {
 	//prevent synchonization with c and c++ input output buffers
 	// note we cannot use c IO now!
@@ -131,12 +133,20 @@ ShellWindow::ShellWindow() : GUIManager()
 											 [=](){(*output) << "Multiple Selection Canceled\n";});
 
 	mapperDlg = new mapperDialog(s_association, input, output,
-								 [this](){this->buildMaps(5);},
+								 [this](){this->buildMaps();},
 								 [=]() {(*output) << "Mapper Canceled\n";});
 
 	mapSelectDlg = new mapSelectDialog(s_association, input, output,
-									   [this](ASSOCIATEDMAP m){this->displayMap(m, 5);},
+									   [this](ASSOCIATEDMAP m){this->displayMap(m);},
 									   [=]{(*output) << "Map Select Canceled.\n";});
+
+	grapherDlg = new graphDialog(s_association, input, output,
+							   [this](){this->buildGraphs();},
+							   [=](){(*output) << "Grapher Cancelled\n";});
+
+	graphSelectDlg = new graphSelectDialog(s_association, input, output,
+										   [this](ASSOCIATEDSPECTRUM s){this->displayGraph(s);},
+										   [=](){(*output) << "Graph select canceled\n";});
 }
 
 ShellWindow::~ShellWindow()
@@ -358,7 +368,7 @@ void ShellWindow::addAssociation()
 void ShellWindow::setAssociation(association* newAssoc)
 {}
 
-void ShellWindow::selectFileName(bool read)
+bool ShellWindow::selectFileName(bool read)
 {
 	rl_bind_key('\t', rl_complete);
 	rl_completion_suppress_append = 0;
@@ -374,7 +384,7 @@ void ShellWindow::selectFileName(bool read)
 			if(!inFl || inFl[0] == '\0')
 			{
 				errorMessage("Quitting reading file.\n");
-				return;
+				return false;
 			}
 
 			// we have to check for whitespace because auto complete adds a trailing space!
@@ -386,8 +396,9 @@ void ShellWindow::selectFileName(bool read)
 
 			inputFile = file;
 			if(!std::filesystem::exists(inputFile))
+			{
 				errorMessage(string("File: " + inputFile.string() + " does not exist.\n").c_str());
-
+			}
 		}while(! std::filesystem::exists(inputFile));
 
 
@@ -403,7 +414,7 @@ void ShellWindow::selectFileName(bool read)
 		else
 		{
 			errorMessage(string("Unknown file format: " + ext + " quiting open file operation.\n").c_str());
-			return;
+			return false;
 		}
 
 		fileName = inputFile.string();
@@ -437,7 +448,7 @@ void ShellWindow::selectFileName(bool read)
 			if(!outFl || outFl[0] == '\0')
 			{
 				errorMessage("Quitting writing file.\n");
-				return;
+				return false;
 			}
 
 			// we have to check for whitespace because auto complete adds a trailing space!
@@ -466,11 +477,13 @@ void ShellWindow::selectFileName(bool read)
 		else
 		{
 			errorMessage(string("Unknown file format: " + ext + " quiting open file operation.\n").c_str());
-			return;
+			return false;
 		}
 
 		fileName = outFile.string();
 	}
+
+	return true;
 }
 
 void ShellWindow::emitReadDataSets(FILETYPE* dataTypes, int* numTypes)
@@ -578,6 +591,11 @@ void ShellWindow::paintMap(unsigned char* map)
 	int rows = s_association->mappingEngine()->height();
 	int cols = s_association->mappingEngine()->width();
 
+	FILETYPE mapType = s_association->mappingEngine()->display();
+	std::string mapName = dataTypeNames[static_cast<int>(mapType)];
+	std::string spacing((cols-mapName.size())/2, ' ');
+
+	std::cout << spacing << mapName << spacing << "\n";
 	for(int rInd = 0; rInd < rows; rInd += 1)
 	{
 		for(int cInd = 0; cInd < cols; cInd += 1)
@@ -593,31 +611,46 @@ void ShellWindow::paintMap(unsigned char* map)
 		}
 		(*output) << "\033[0m\n";
 	}
+
+	//(*output) << "Press any key to continue to main menu.\n";
+	clearInput();
+	input->get();
 }
 
 void ShellWindow::emitSelectGraphDisplay(int displayData)
 {
-
+	static_cast<graphSelectDialog*>(graphSelectDlg)->execute();
 }
 
 void ShellWindow::paintGraph(unsigned char* graph)
 {
-	int rows = s_association->graphingEngine()->height();
-	int cols = s_association->graphingEngine()->width();
-	for(int cInd = 0; cInd < cols; cInd += 1)
-	{
-		for(int rInd = 0; rInd < rows; rInd += 1)
-		{
-			int pixelIndex = (rInd * cols) + cInd;
+	activeGraph = graph;
+	int rows = s_association->mappingEngine()->height();
+	int cols = s_association->mappingEngine()->width();
 
-			char r = graph[pixelIndex + 0];
-			char g = graph[pixelIndex + 1];
-			char b = graph[pixelIndex + 2];
+	FILETYPE graphType = s_association->graphingEngine()->dataType();
+	std::string graphName = dataTypeNames[static_cast<int>(graphType)];
+	std::string spacing((cols-graphName.size())/2, ' ');
+
+	std::cout << spacing << graphName << spacing << "\n";
+	for(int rInd = 0; rInd < rows; rInd += 1)
+	{
+		for(int cInd = 0; cInd < cols; cInd += 1)
+		{
+			int pixelIndex = ((rInd * cols) + cInd) * 3;
+
+			unsigned char r = graph[pixelIndex + 0];
+			unsigned char g = graph[pixelIndex + 1];
+			unsigned char b = graph[pixelIndex + 2];
 
 			// \033[38;2; says we are using 24 bit true color, r g b are the r g b values, \u2588 is a box what we will use as a pixel
 			(*output) << "\033[38;2;" + std::to_string(r) + ";" + std::to_string(g) + ";" + std::to_string(b) + "m\u2588";
 		}
 		(*output) << "\033[0m\n";
 	}
+
+	//(*output) << "Press any key to continue to main menu.\n";
+	clearInput();
+	input->get();
 }
 

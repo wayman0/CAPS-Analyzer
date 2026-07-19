@@ -77,7 +77,7 @@
 class GUIManager
 {
     public:
-        GUIManager();
+        GUIManager(int fSize);
         virtual ~GUIManager();
 
         virtual void updateProgressBar(int value)               = 0;
@@ -90,7 +90,7 @@ class GUIManager
         virtual void addAssociation()                           = 0;
         virtual void setAssociation(association* newAssoc)      = 0;
 
-        virtual void selectFileName(bool read) = 0;
+        virtual bool selectFileName(bool read) = 0;
 
         virtual void emitReadDataSets(FILETYPE* dataTypes, int* numTypes) = 0;
         virtual void emitSelectSlices() = 0;
@@ -128,14 +128,15 @@ class GUIManager
         virtual void selectAnalzyer() = 0;
         virtual void configureAnalyzer() = 0;
 
-		void configureDisplay(FILETYPE dataType);
-        void configureDisplay(FILETYPE dataType, int fontSize);
+        void configureDisplay(FILETYPE dataType);
 
-		void configureMaps(int fontSize);
-		void buildMaps(int fontSize);
-		void displayMap(ASSOCIATEDMAP map, int fontSize);
+		void setMapperAttr();
+		void configureMaps();
+		void buildMaps();
+		void displayMap(ASSOCIATEDMAP map);
 		virtual void emitSelectMapDisplay(int displayData) = 0;
 
+		void setGrapherAttr();
 		void configureGraphs();
 		void buildGraphs();
 		void displayGraph(ASSOCIATEDSPECTRUM graph);
@@ -154,6 +155,7 @@ class GUIManager
         std::string                fileName;
         OBSERVATORY                dataSource;
 
+		const int 				   fontSize;
 		unsigned char             *activeMap;
 		unsigned char             *activeGraph;
 

@@ -50,302 +50,64 @@
  ***************************************************************************/
 #include "../graphselectdlgpar.h"
 #include "graphselectdlg.h"
-#include "ui_graphselectdlg.h"
 
-graphSelectDialog::graphSelectDialog(association* assoc)
-				:  graphSelectDialogParent(assoc),
-                   ui(new Ui::graphSelectDialog)
+graphSelectDialog::graphSelectDialog(association* assoc, std::istream* i, std::ostream* o,
+									 std::function<void(ASSOCIATEDSPECTRUM s)> s, std::function<void()> c)
+				:  graphSelectDialogParent(assoc)
 {
-	/* set up the user interface first */
-	ui->setupUi(this);
-
-	/* enable all graphs */
-	ui->dataButton->setEnabled(true);
-	ui->weightButton->setEnabled(true);
-	ui->noiseButton->setEnabled(true);
-	ui->filterButton->setEnabled(true);
-	ui->beamButton->setEnabled(true);
-
-	ui->combinedDataButton->setEnabled(true);
-	ui->EnsAvgSpectrumButton->setEnabled(true);
-	ui->weightedNoiseButton->setEnabled(true);
-	ui->EnsAvgNoiseSpectrumButton->setEnabled(true);
-
-	//ui->spectDataButton->setEnabled(true);
-	//ui->ensembleButton->setEnabled(true);
-
-	ui->extrapolatedSpectrumButton->setEnabled(true);
-	ui->extrapolatedInstrumentSpectrumButton->setEnabled(true);
-	ui->binnedSpectrumButton->setEnabled(true);
-	ui->binnedExtrapolatedSpectrumButton->setEnabled(true);
-	ui->binnedExtrapolatedInstrumentSpectrumButton->setEnabled(true);
-
-	//ui->EnsAvgBinnedSpectrumButton->setEnabled(true);
-
-	/* set up signals and slots */
-	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &graphSelectDialog::finalize);
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &graphSelectDialog::cancel);
-	connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &graphSelectDialog::help);
+	input = i;
+	output = o;
+	successFunc = s;
+	cancelFunc = c;
 }
 
 graphSelectDialog::~graphSelectDialog()
 {
-	delete ui;
 }
 
-void graphSelectDialog::validate()
+
+void graphSelectDialog::execute()
 {
-	dirty = false; // assume nothing has changed
-
-	ASSOCIATEDSPECTRUM oldGraphType = graphType;
-	if (ui->dataButton->isChecked())
-		graphType = associatedSpectrum::TransformedDataSpectrum;
-
-	if (ui->weightButton->isChecked())
-		graphType = associatedSpectrum::TransformedWeightsSpectrum;
-
-	if (ui->noiseButton->isChecked())
-		graphType = associatedSpectrum::TransformedNoiseSpectrum;
-
-	if (ui->filterButton->isChecked())
-		graphType = associatedSpectrum::TransformedFilterSpectrum;
-
-	if (ui->beamButton->isChecked())
-		graphType = associatedSpectrum::TransformedBeamSpectrum;
-
-	if (ui->combinedDataButton->isChecked())
-		graphType = associatedSpectrum::WeightedTransformSpectrum;
-
-	if(ui->EnsAvgSpectrumButton->isChecked())
-		graphType = associatedSpectrum::EnsembleAveragedSpectrumSpectrum;
-
-	if (ui->weightedNoiseButton->isChecked())
-		graphType = associatedSpectrum::TransformedWeightedNoiseSpectrum;
-
-	if(ui->EnsAvgNoiseSpectrumButton->isChecked())
-		graphType = associatedSpectrum::EnsembleAveragedNoiseSpectrum;
-
-	/*
-	if (ui->spectDataButton->isChecked())
-		graphType = associatedSpectrum::SpectralDataSpectrum;
-	if (ui->ensembleButton->isChecked())
-		graphType = associatedSpectrum::EnsembleDataSpectrum;
-	*/
-
-	if(ui->extrapolatedSpectrumButton->isChecked())
-		graphType = associatedSpectrum::ExtrapolatedSpectrumSpectrum;
-
-	if(ui->extrapolatedInstrumentSpectrumButton->isChecked())
-		graphType = associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum;
-
-	if(ui->binnedSpectrumButton->isChecked())
-		graphType = associatedSpectrum::BinnedSpectrumSpectrum;
-
-	if(ui->binnedExtrapolatedSpectrumButton->isChecked())
-		graphType = associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum;
-
-	if(ui->binnedExtrapolatedInstrumentSpectrumButton->isChecked())
-		graphType = associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum;
-
-	//if(ui->EnsAvgBinnedSpectrumButton->isChecked())
-	//  graphType = associatedSpectrum::EnsembleAveragedBinnedSpectrumSpectrum;
-
-	if (graphType != oldGraphType)
-		dirty = true;
-
-	return;
-}
-
-void graphSelectDialog::configure(unsigned int availableGraphs)
-{
-	dirty = false;
-	activeGraphs = availableGraphs;
-
-	ui->dataButton->setEnabled(false);
-	ui->weightButton->setEnabled(false);
-	ui->noiseButton->setEnabled(false);
-	ui->filterButton->setEnabled(false);
-	ui->beamButton->setEnabled(false);
-
-	ui->combinedDataButton->setEnabled(false);
-	ui->EnsAvgSpectrumButton->setEnabled(false);
-	ui->weightedNoiseButton->setEnabled(false);
-	ui->EnsAvgNoiseSpectrumButton->setEnabled(false);
-
-	//ui->spectDataButton->setEnabled(true);
-	//ui->ensembleButton->setEnabled(true);
-
-	ui->extrapolatedSpectrumButton->setEnabled(false);
-	ui->extrapolatedInstrumentSpectrumButton->setEnabled(false);
-	ui->binnedSpectrumButton->setEnabled(false);
-	ui->binnedExtrapolatedSpectrumButton->setEnabled(false);
-	ui->binnedExtrapolatedInstrumentSpectrumButton->setEnabled(false);
-
-	ASSOCIATEDSPECTRUM graphType = associatedSpectrum::ASSOCIATEDSPECTRUM_LIMIT;
-	int type = static_cast<int>(graphType);
-
-	while(graphType >  associatedSpectrum::Null) // run over graphable data types
+	int graphChosen = 0;
+	do
 	{
-		if (graphType == associatedSpectrum::ASSOCIATEDSPECTRUM_LIMIT)
+		clearInput();
+		clearScreen();
+
+		(*output) << "Here are the existing graphs: \n";
+		ASSOCIATEDSPECTRUM graphType = ASSOCIATEDSPECTRUM::Null;
+		int type = static_cast<int>(graphType);
+
+		while (graphType <  ASSOCIATEDSPECTRUM::ASSOCIATEDSPECTRUM_LIMIT) // run over graphable data types
 		{
-			graphType = static_cast<associatedSpectrum>(--type);
-			continue;
+			if (graphType == ASSOCIATEDSPECTRUM::Null)
+			{
+				graphType = static_cast<ASSOCIATEDSPECTRUM>(++type);
+				continue;
+			}
+
+			if(dataAssoc->exists(graphType))
+				(*output) << "\t" << type << ": " << associatedSpectrumNames[type - static_cast<int>(ASSOCIATEDSPECTRUM::Null)] << "\n";
+
+			graphType = static_cast<ASSOCIATEDSPECTRUM>(++type);
 		}
 
-		if (graphType == associatedSpectrum::Null)
-			break;
+		(*output) << "Enter the number for the map wanted.\t";
 
-		switch (graphType)
-		{
-			case associatedSpectrum::TransformedDataSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->dataButton->setEnabled(true);
-					ui->dataButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::TransformedWeightsSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->weightButton->setEnabled(true);
-					ui->weightButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::WeightedTransformSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->combinedDataButton->setEnabled(true);
-					ui->combinedDataButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::TransformedNoiseSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->noiseButton->setEnabled(true);
-					ui->noiseButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::TransformedWeightedNoiseSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->weightedNoiseButton->setEnabled(true);
-					ui->weightedNoiseButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::TransformedFilterSpectrum:
-				if(dataAssoc->exists(graphType))
-				{
-					ui->filterButton->setEnabled(true);
-					ui->filterButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::TransformedBeamSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->beamButton->setEnabled(true);
-					ui->beamButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::EnsembleAveragedSpectrumSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->EnsAvgSpectrumButton->setEnabled(true);
-					ui->EnsAvgSpectrumButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::EnsembleAveragedNoiseSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->EnsAvgNoiseSpectrumButton->setEnabled(true);
-					ui->EnsAvgNoiseSpectrumButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::ExtrapolatedSpectrumSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->extrapolatedSpectrumButton->setEnabled(true);
-					ui->extrapolatedSpectrumButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::ExtrapolatedInstrumentSpectrumSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->extrapolatedInstrumentSpectrumButton->setEnabled(true);
-					ui->extrapolatedInstrumentSpectrumButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::BinnedSpectrumSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->binnedSpectrumButton->setEnabled(true);
-					ui->binnedSpectrumButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::BinnedExtrapolatedSpectrumSpectrum:
-				if(dataAssoc->exists(graphType))
-				{
-					ui->binnedExtrapolatedSpectrumButton->setEnabled(true);
-					ui->binnedExtrapolatedSpectrumButton->setChecked(true);
-				}
-				break;
-			case associatedSpectrum::BinnedExtrapolatedInstrumentedSpectrumSpectrum:
-				if (dataAssoc->exists(graphType))
-				{
-					ui->binnedExtrapolatedInstrumentSpectrumButton->setEnabled(true);
-					ui->binnedExtrapolatedInstrumentSpectrumButton->setChecked(true);
-				}
-				break;
-		}
+	} while ( !((*input) >> graphChosen)
+		     || graphChosen <= static_cast<int>(ASSOCIATEDSPECTRUM::Null)
+			 || graphChosen >= static_cast<int>(ASSOCIATEDSPECTRUM::ASSOCIATEDSPECTRUM_LIMIT));
 
-		graphType = static_cast<associatedSpectrum>(--type);
-	}
-
-	exec();
+	graphSelected(static_cast<ASSOCIATEDSPECTRUM>(graphChosen));
 }
 
-void graphSelectDialog::reset()
+void graphSelectDialog::clearInput()
 {
-	activeGraphs = 0;
-	graphType = associatedSpectrum::Null;
-
-	ui->dataButton->setEnabled(true);
-	ui->weightButton->setEnabled(true);
-	ui->noiseButton->setEnabled(true);
-	ui->filterButton->setEnabled(true);
-	ui->beamButton->setEnabled(true);
-
-	ui->combinedDataButton->setEnabled(true);
-	ui->EnsAvgSpectrumButton->setEnabled(true);
-	ui->weightedNoiseButton->setEnabled(true);
-	ui->EnsAvgNoiseSpectrumButton->setEnabled(true);
-
-	//ui->spectDataButton->setEnabled(true);
-	//ui->ensembleButton->setEnabled(true);
-
-	ui->extrapolatedSpectrumButton->setEnabled(true);
-	ui->extrapolatedInstrumentSpectrumButton->setEnabled(true);
-	ui->binnedSpectrumButton->setEnabled(true);
-	ui->binnedExtrapolatedSpectrumButton->setEnabled(true);
-	ui->binnedExtrapolatedInstrumentSpectrumButton->setEnabled(true);
-
-
-	dirty = false;
+	input->clear();
+	input->ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void graphSelectDialog::finalize()
+void graphSelectDialog::clearScreen()
 {
-	validate();
-	Q_EMIT graphSelected(graphType);
-	accept();
-}
-
-void graphSelectDialog::cancel()
-{
-	if (dirty)
-		dirty = false;
-	close();
-}
-
-void graphSelectDialog::help()
-{
+	(*output) << "\033[H\033[J";
 }

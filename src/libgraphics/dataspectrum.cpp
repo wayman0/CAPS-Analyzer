@@ -252,6 +252,7 @@ unsigned char* dataSpectrum::transferRGBData() {
       rl->color(.6,.6,.6);
     else
       rl->color(.9,.9,.9);
+
     rl->begin(RASTER_LINES);
     rl->vertex(n * .05,0);
     rl->vertex(n * .05,1);

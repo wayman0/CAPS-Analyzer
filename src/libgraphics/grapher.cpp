@@ -123,6 +123,8 @@ int Grapher::makeGraph(dataSpectrum *spect, FILETYPE dataType, association* a) {
   vectorData<double> *vec_dat_ptr = 0, *vec_wht_ptr = 0;
   int count = 0;
    
+  this->dataType(dataType);
+
   /* save data type to associated spectrum */
   spect->dataType(dataType);
   

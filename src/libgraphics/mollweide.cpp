@@ -69,6 +69,8 @@ int MollweideMapper::makeMap(dataMap *map, FILETYPE dataTypes, association* data
 
   /* save data type to associated map */
   map->dataType(dataTypes);
+  m_display = dataTypes;
+
   switch (dataTypes) {
     /* Data types which require pixelizer and defined pixelized data... */
     case fileType::PixelizedData:

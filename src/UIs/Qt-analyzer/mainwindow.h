@@ -135,7 +135,7 @@ class mainWindow : public QMainWindow, GUIManager {
     void clearMaps();
     void clearGraphs();
 
-    void selectFileName(bool read);
+    bool selectFileName(bool read);
     void emitSaveDataSets();
     void emitReadDataSets(FILETYPE* dataTypes, int* numTypes);
     void emitSelectSlices();

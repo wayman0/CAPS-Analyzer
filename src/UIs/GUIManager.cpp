@@ -49,8 +49,11 @@
  ***************************************************************************/
 
 #include "GUIManager.h"
+#include "../libanalyzer/atypes.h"
+#include "../libgraphics/grapher.h"
+#include "../libgraphics/mapper.h"
 
-GUIManager::GUIManager()
+GUIManager::GUIManager(int fSize) : fontSize(fSize)
 {
     dataSource = OBSERVATORY::Analyzer;
     fileName = "";
@@ -117,7 +120,8 @@ void GUIManager::readData(int numTypes, FILETYPE dataTypes[])
 
 void GUIManager::openFile()
 {
-    selectFileName(true);
+	if(!selectFileName(true))
+		return;
 
     if (s_association->exists(dataEngines::fileIO))
         s_association->reset(allTypes::fileIO);
@@ -869,17 +873,6 @@ void GUIManager::analyze()
 
 void GUIManager::configureDisplay(FILETYPE dataType)
 {
-	const char* callerName = typeid(*this).name();
-
-	if(std::string_view(callerName).find("ShellWindow") != std::string_view::npos)
-		configureDisplay(dataType, 5);
-	else if(std::string_view(callerName).find("mainWindow") != std::string_view::npos)
-		configureDisplay(dataType, 15);
-
-}
-
-void GUIManager::configureDisplay(FILETYPE dataType, int fontSize)
-{
 	switch (dataType)
 	{
 		case fileType::InputData:
@@ -904,7 +897,7 @@ void GUIManager::configureDisplay(FILETYPE dataType, int fontSize)
 		case fileType::InverseWeightedNoise:
 		case fileType::InverseFilter:
 		case fileType::InverseBeam:
-			configureMaps(fontSize);
+			configureMaps();
 			break;
 		case fileType::TransformedData:
 		case fileType::TransformedWeights:
@@ -927,16 +920,39 @@ void GUIManager::configureDisplay(FILETYPE dataType, int fontSize)
 	}
 }
 
-void GUIManager::configureMaps(int fontSize)
+void GUIManager::setMapperAttr()
+{
+	if(s_association->exists(dataEngines::Mapping))
+		s_association->reset(ALLTYPES::Mapping);
+
+	s_association->addEngine(dataEngines::Mapping, mapperDlg->project());
+
+	s_association->mappingEngine()->layout(mapperDlg->project());
+
+	s_association->mappingEngine()->width(mapperDlg->width());
+	s_association->mappingEngine()->height(mapperDlg->height());
+	s_association->mappingEngine()->orientation(mapperDlg->orientation());
+	s_association->mappingEngine()->colorScheme(mapperDlg->colorScheme());
+
+	s_association->mappingEngine()->raOffset(mapperDlg->RAOffset());
+	s_association->mappingEngine()->decOffset(mapperDlg->DECOffset());
+
+	s_association->mappingEngine()->configured(true);
+	mapperDlg->configured(true);
+}
+
+void GUIManager::configureMaps()
 {
 	if (!mapperDlg->configured())
 		mapperDlg->configure();
 	else
-		buildMaps(fontSize);
+		buildMaps();
 }
 
-void GUIManager::buildMaps(int fontSize)
+void GUIManager::buildMaps()
 {
+	setMapperAttr();
+
 	if(!s_association->exists(dataEngines::Mapping))
 		s_association->addEngine(dataEngines::Mapping, Mollweide);
 
@@ -996,11 +1012,11 @@ void GUIManager::buildMaps(int fontSize)
 		if (numMaps > 1)
 			emitSelectMapDisplay(displayData);
 		else
-			displayMap(current, fontSize);
+			displayMap(current);
 	}
 }
 
-void GUIManager::displayMap(ASSOCIATEDMAP map, int fontSize)
+void GUIManager::displayMap(ASSOCIATEDMAP map)
 {
 	activeMap = 0;
 
@@ -1089,6 +1105,21 @@ void GUIManager::displayMap(ASSOCIATEDMAP map, int fontSize)
 	paintMap(activeMap);
 }
 
+void GUIManager::setGrapherAttr()
+{
+	if(s_association->exists(dataEngines::Graphing))
+		s_association->reset(ALLTYPES::Graphing);
+
+	s_association->addEngine(dataEngines::Graphing);
+
+	s_association->graphingEngine()->width(grapherDlg->width());
+	s_association->graphingEngine()->height(grapherDlg->height());
+	s_association->graphingEngine()->loglogScale(grapherDlg->logLogScale());
+	s_association->graphingEngine()->configured(true);
+
+	grapherDlg->configured(true);
+}
+
 void GUIManager::configureGraphs()
 {
 	if (!grapherDlg->configured())
@@ -1099,6 +1130,8 @@ void GUIManager::configureGraphs()
 
 void GUIManager::buildGraphs()
 {
+	setGrapherAttr();
+
 	if (!s_association->exists(dataEngines::Graphing))
 		s_association->addEngine(dataEngines::Graphing);
 

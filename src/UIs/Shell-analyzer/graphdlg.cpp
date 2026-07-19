@@ -49,30 +49,135 @@
  * program must reference the fact that it was developed by Daniel Suson   *
  ***************************************************************************/
 #include "graphdlg.h"
-#include "ui_graphdlg.h"
 
 #include "../graphdlgpar.h"
 #include "../../libgraphics/grapher.h"
 
-graphDialog::graphDialog(association *assoc)
-			: graphDialogParent(assoc),
-              ui(new Ui::graphDialog)
-{
-	/* set up the user interface first */
-	ui->setupUi(this);
+#include <sys/ioctl.h>
+#include <unistd.h>
 
-	/* set up signals and slots */
-	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &graphDialog::finalize);
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &graphDialog::cancel);
-	connect(ui->buttonBox, &QDialogButtonBox::helpRequested, this, &graphDialog::help);
-	connect(ui->customSizeButton, &QRadioButton::toggled, [=](bool value){graphDialog::activateCustom(value);});
+graphDialog::graphDialog(association *assoc, std::istream* i, std::ostream* o,
+					std::function<void()> s, std::function<void()> c)
+			: graphDialogParent(assoc)
+{
+	input = i;
+	output = o;
+	successFunc = s;
+	cancelFunc = c;
 }
 
 graphDialog::~graphDialog()
 {
-	delete ui;
 }
 
+void graphDialog::execute()
+{
+	setDims();
+	setLogLogScale();
+
+	if(confirm())
+		grapherReady();
+	else
+		grapherCancelled();
+}
+
+void graphDialog::setDims()
+{
+	struct winsize w;
+
+    // Query standard output for window dimensions
+    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0)
+	{
+		xSize = w.ws_col;
+		ySize = w.ws_row;
+	}
+    else
+	{
+		(*output) << "ERROR, unable to get default screen size.\n";
+		grapherCancelled();
+	}
+
+	char defOk = 'n';
+	do
+	{
+		clearInput();
+
+		(*output) << "Configuring Grapher.  Default size is Height: " << ySize << " Width: " << xSize << "\n";
+		(*output) << "Accept. (Y|N)\t";
+	} while( 	!((*input) >>  defOk)
+			|| 	!( defOk == 'Y' || defOk == 'y'
+			||     defOk == 'N' || defOk == 'n'));
+
+	int x = xSize;
+	int y = ySize;
+
+	if(defOk == 'n' || defOk == 'N')
+	{
+		do
+		{
+			clearInput();
+			(*output) << "Enter the new Height: \t";
+		}while(!((*input) >> y)
+			   || y < 0);
+
+		do
+		{
+			clearInput();
+			(*output) << "Enter the new Width: \t";
+		}while(!((*input) >> x)
+				|| x < 0);
+	}
+
+	xSize = x;
+	ySize = y;
+}
+
+void graphDialog::setLogLogScale()
+{
+	char confirm = 'n';
+
+	do
+	{
+		clearInput();
+		(*output) << "Do you wish to use log log scale (Y|N)\t";
+	} while( 	!((*input) >>  confirm)
+			|| 	!( confirm == 'Y' || confirm == 'y'
+			||     confirm == 'N' || confirm == 'n'));
+
+	if(confirm == 'y' | confirm == 'Y')
+		isloglogScale = true;
+	else
+		isloglogScale = false;
+}
+
+bool graphDialog::confirm()
+{
+	char confirm = 'n';
+
+	(*output) << "You have selected to create the graphs to be (height x width): " << ySize << " x " << xSize << "\n";
+	(*output) << "Using a scale of: " << (isloglogScale ? "Log Log\n" : "Normal\n");
+
+	do
+	{
+		clearInput();
+		(*output) << "Confirm (Y|N).\t";
+	} while( 	!((*input) >>  confirm)
+			|| 	!( confirm == 'Y' || confirm == 'y'
+			||     confirm == 'N' || confirm == 'n'));
+
+	if(confirm == 'Y' || confirm == 'y')
+		return true;
+	else
+		return false;
+}
+
+void graphDialog::clearInput()
+{
+	input->clear();
+	input->ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+/*
 void graphDialog::configure()
 {
 	dirty = false;
@@ -146,7 +251,7 @@ void graphDialog::validate()
 {
 	dirty = false; // assume nothing has changed
 
-	/* set map size */
+	//set map size
 	long oldXSize = xSize;
 	long oldYSize = ySize;
 	if (ui->smallSizeButton->isChecked() && oldXSize != 800) {
@@ -263,3 +368,4 @@ void graphDialog::cancel()
 	Q_EMIT grapherCancelled();
 	close();
 }
+*/

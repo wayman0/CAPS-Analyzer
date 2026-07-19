@@ -337,22 +337,29 @@ void Raster::write_point() {
 
   if (m_at_x < 0 || m_at_y < 0)
     return;
-  if ((int)m_at_x + m_point_size > m_raster_width)
-    return;
-  if ((int)m_at_y + m_point_size > m_raster_height)
-    return;
 
-  x     = (m_pixel_mode == RASTER_NEAREST) ? round(m_at_x) : m_at_x;
-  y     = (m_pixel_mode == RASTER_NEAREST) ? round(m_at_y) : m_at_y;
+  if(m_pixel_mode == RASTER_NEAREST)
+  {
+	  if( round(m_at_x) + m_point_size > m_raster_width)
+		  return;
+
+	  if( round(m_at_y) + m_point_size > m_raster_height)
+		  return;
+  }
+  else
+  {
+	if ((int)m_at_x + m_point_size > m_raster_width)
+		return;
+
+	if ((int)m_at_y + m_point_size > m_raster_height)
+		return;
+  }
+
+  x     = (m_pixel_mode == RASTER_NEAREST) ? round(m_at_x) : (int)m_at_x;
+  y     = (m_pixel_mode == RASTER_NEAREST) ? round(m_at_y) : (int)m_at_y;
   color = (unsigned char*)&m_color;
 
-  // where we are at in the pixel map = the pixel map plus an offset of   which row we are calculating * the size of a row  + how many columns into the row * the size of a pixel
-  //at =                                  m_raster +                        ((y * m_raster_width)                              + x)                           * m_raster_Bpp;
-
-
   at    = m_raster + (((int)y * m_raster_width) + (int)x) * m_raster_Bpp;
-
-  //printf("(%f,%f) = index %d width = %d height = %d xLogSize = %d\n", x, y, *at, m_raster_width, m_raster_height, m_logSize_x);
 
   y = 0;
   while (y < m_point_size) {

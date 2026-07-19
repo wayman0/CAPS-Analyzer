@@ -82,7 +82,7 @@ class ShellWindow : GUIManager
 
 		void printAssocStatus();
 
-		void selectFileName(bool read);
+		bool selectFileName(bool read);
 
 		void emitReadDataSets(FILETYPE* dataTypes, int* numTypes);
 		void emitSelectSlices();

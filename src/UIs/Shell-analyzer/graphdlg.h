@@ -51,43 +51,44 @@
 #ifndef _GRAPHDIALOG_H_
 #define _GRAPHDIALOG_H_
 
-#include <QtWidgets>
-
 #include "../graphdlgpar.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
 
-namespace Ui {
-  class graphDialog;
-}
 
-class graphDialog : public QDialog, public graphDialogParent
+class graphDialog : public graphDialogParent
 {
-	Q_OBJECT
-
 	public:
-		graphDialog(association *assoc);
+		graphDialog(association *assoc, std::istream* i, std::ostream* o,
+					std::function<void()> s, std::function<void()> c);
 		virtual ~graphDialog();
 
-	public Q_SLOTS:
-		void configure();
-		void configure(bool triggered);
-		void reset();
+		void configure() {execute();}
+		void configure(bool triggered) {}
+		void reset() {}
 
-	Q_SIGNALS:
-		void grapherCancelled();
-		void grapherReady();
+		void execute();
+		bool confirm();
+		void setLogLogScale();
+		void setDims();
+
+		void grapherCancelled() {cancelFunc();}
+		void grapherReady()     {successFunc();}
 
 	protected:
-		void validate();
-		int configureInterface();
+		void validate() {}
+		int configureInterface() {return 0;}
 
-		Ui::graphDialog *ui;
+		void finalize() {}
+		void help() {}
+		void activateCustom(bool check) {}
+		void cancel() {}
 
-	private Q_SLOTS:
-		void finalize();
-		void help();
-		void activateCustom(bool check);
-		void cancel();
+		void clearInput();
+
+		std::istream* input;
+		std::ostream* output;
+		std::function<void()> successFunc;
+		std::function<void()> cancelFunc;
 };
 #endif

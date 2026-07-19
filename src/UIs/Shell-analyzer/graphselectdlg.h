@@ -51,39 +51,36 @@
 #ifndef _GRAPHSELECTDIALOG_H_
 #define _GRAPHSELECTDIALOG_H_
 
-#include <QtWidgets>
-
 #include "../graphselectdlgpar.h"
 #include "../../libanalyzer/atypes.h"
 #include "../../libanalyzer/association.h"
 
-namespace Ui {
-  class graphSelectDialog;
-}
-
-class graphSelectDialog : public QDialog, public graphSelectDialogParent
+class graphSelectDialog : public graphSelectDialogParent
 {
-	Q_OBJECT
-
 	public:
-		graphSelectDialog(association* assoc);
+		graphSelectDialog(association* assoc, std::istream* i, std::ostream* o,
+						  std::function<void(ASSOCIATEDSPECTRUM s)> s, std::function<void()> c);
 		virtual ~graphSelectDialog();
 
-	Q_SIGNALS:
-		void graphSelected(ASSOCIATEDSPECTRUM);
+		void graphSelected(ASSOCIATEDSPECTRUM s) { successFunc(s);};
 
-	public Q_SLOTS:
-		void configure(unsigned int availableGraphs);
-		void reset();
+		void configure(unsigned int availableGraphs) {};
+		void reset() {};
+
+		void execute();
 
 	private:
-		void validate();
+		void validate() {};
 
-		Ui::graphSelectDialog *ui;
+		void help() {}
+		void finalize() {}
+		void cancel() {}
 
-	private Q_SLOTS:
-		void help();
-		void finalize();
-		void cancel();
+		void clearInput();
+		void clearScreen();
+		std::istream* input;
+		std::ostream* output;
+		std::function<void(ASSOCIATEDSPECTRUM s)> successFunc;
+		std::function<void()>                     cancelFunc;
 };
 #endif

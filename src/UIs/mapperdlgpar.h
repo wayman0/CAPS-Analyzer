@@ -66,6 +66,13 @@ class mapperDialogParent
 		int DECOffset() {return decOffset;}
 		void setAssociation(association* newAssoc) {dataAssoc = newAssoc;}
 
+		long width() {return xSize; }
+		long height() {return ySize;}
+
+		ORIENTATION orientation() {return longConvention;}
+		MAPTYPE     project()     {return projection;}
+		COLORSCHEME colorScheme() {return hue;}
+
 	//public Q_SLOTS:
 		virtual void configure() = 0;
 		virtual void configure(bool triggered) = 0;

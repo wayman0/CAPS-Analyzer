@@ -58,7 +58,7 @@
 #include "../libanalyzer/csvmanager.h"
 
 mainWindow::mainWindow() :
-            GUIManager(),
+            GUIManager(15),
             ui(new Ui::MainWindow)
 {
   associationVector = new std::vector<association*>();
@@ -203,11 +203,11 @@ mainWindow::mainWindow() :
 
   connect(dynamic_cast<mapperDialog*>(mapperDlg),
 		  &mapperDialog::mapperReady,
-		  [=](){buildMaps(15);});
+		  [=](){buildMaps();});
 
   connect(dynamic_cast<mapSelectDialog*>(mapSelectDlg),
 		  &mapSelectDialog::mapSelected,
-		  [=](ASSOCIATEDMAP map){displayMap(map, 15);});
+		  [=](ASSOCIATEDMAP map){displayMap(map);});
 
   connect(dynamic_cast<graphDialog*>(grapherDlg),
 		  &graphDialog::grapherReady,
@@ -357,7 +357,7 @@ bool mainWindow::replaceDataChain(const char* mess)
     return false;
 }
 
-void mainWindow::selectFileName(bool read)
+bool mainWindow::selectFileName(bool read)
 {
   QString title, fileTypes, fName;
 
@@ -454,6 +454,8 @@ void mainWindow::selectFileName(bool read)
         errorMessage("Invalid observatory selected");
     }
   }
+
+  return true;
 }
 
 void mainWindow::emitSaveDataSets()

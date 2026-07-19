@@ -335,6 +335,13 @@ enum class associatedSpectrum {
 };
 typedef associatedSpectrum ASSOCIATEDSPECTRUM;
 
+static std::string associatedSpectrumNames[] = {"Null", "Transformed Data", "Transformed Weights", "Weighted Transform",
+												"Transformed Noise", "Transformed Weighted Noise", "Transformed Filter", "Transformed Beam",
+												"Ensemble Averaged Spectrum", "Ensemble Averaged Noise",
+												"Extrapolated Spectrum", "Extrapolated Instrumented Spectrum",
+												"Binned Spectrum", "Binned Extrapolated Spectrum", "Binned Extrapolated Instrumented Spectrum", "Spectrum Limit"
+												};
+
 /**
  * data manipulation engines
  */

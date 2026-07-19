@@ -75,25 +75,7 @@ void mapperDialog::execute()
 	setCoordSystem();
 
 	if(confirm())
-	{
-		if(dataAssoc->exists(dataEngines::Mapping))
-			dataAssoc->reset(ALLTYPES::Mapping);
-
-		dataAssoc->addEngine(dataEngines::Mapping, projection);
-
-		dataAssoc->mappingEngine()->layout(projection);
-
-		dataAssoc->mappingEngine()->width(xSize);
-		dataAssoc->mappingEngine()->height(ySize);
-		dataAssoc->mappingEngine()->orientation(longConvention);
-		dataAssoc->mappingEngine()->colorScheme(hue);
-
-		dataAssoc->mappingEngine()->raOffset(raOffset);
-		dataAssoc->mappingEngine()->decOffset(decOffset);
-
-		isConfigured = true;
 		mapperReady();
-	}
 	else
 		mapperCancelled();
 }
