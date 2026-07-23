@@ -499,7 +499,8 @@ void ShellWindow::emitSelectMapDisplay(int displayData)
 
 void ShellWindow::configureDisplay(FILETYPE ft)
 {
-	// leave empty to avoid from having to display maps which are ugly in this version and very error prone.
+	// leave empty to avoid from having to display maps which are ugly in this version
+	// also it is very error prone.
 }
 
 void ShellWindow::paintMap(unsigned char* map)
