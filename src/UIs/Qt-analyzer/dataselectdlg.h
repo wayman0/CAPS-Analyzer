@@ -77,6 +77,10 @@ class dataSelectDialog : public QDialog, public dataSelectDialogParent
   public Q_SLOTS:
     void configure(RWMode uiMode);
     void configure(FILETYPE* dataTypes, int* numTypes);
+
+	void execute() {dataSelectDialogParent::configure();}
+
+	void execute(FILETYPE* dataTypes, int* numTypes) {configure(dataTypes, numTypes);}
     void reset();
 
   private:

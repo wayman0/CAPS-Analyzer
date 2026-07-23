@@ -75,3 +75,26 @@ controlDataDialogParent::controlDataDialogParent(association *assoc)
 
   //changeStack(0);
 }
+
+void controlDataDialogParent::reset()
+{
+	dataSet = Empty;
+
+	resRA = resDec = 0.0;
+	coords = RAdec;
+
+	signalStrength = 0.0;
+
+	dataType = fileType::Null;
+	top = 90.0;
+	bottom = -90.0;
+	from = -180.0;
+	to = 180.0;
+	peakDec = peakRA = 0.0;
+	fwhm = 0.0;
+	checkRA = checkDec = 0.0;
+	l = m = 0;
+	operation = Add;
+	dirty = false;
+	isConfigured = false;
+}

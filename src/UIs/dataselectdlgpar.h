@@ -75,6 +75,8 @@ class dataSelectDialogParent
 
     virtual void configure(RWMode uiMode) = 0;
     virtual void configure(FILETYPE* dataTypes, int* numTypes) = 0;
+	virtual void execute(FILETYPE* dataTypes, int* numTypes) = 0;
+	virtual void execute() = 0;
     virtual void reset() = 0;
 
   protected:

@@ -74,6 +74,7 @@ class mapSelectDialog : public QDialog, public mapSelectDialogParent
 
 	public Q_SLOTS:
 		void configure(unsigned int availableMaps);
+		void execute() {mapSelectDialogParent::configure();}
 		void reset();
 
 	private:

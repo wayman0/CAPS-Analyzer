@@ -54,6 +54,7 @@
 #include "../libanalyzer/atypes.h"
 #include "../libanalyzer/association.h"
 
+#include <climits>
 class graphSelectDialogParent
 {
 	public:
@@ -67,6 +68,7 @@ class graphSelectDialogParent
 	//public Q_SLOTS:
 		void configure() {configure(activeGraphs);}
 		virtual void configure(unsigned int availableGraphs) = 0;
+		virtual void execute() = 0;
 		virtual void reset() = 0;
 
 	protected:
@@ -75,7 +77,7 @@ class graphSelectDialogParent
 		ASSOCIATEDSPECTRUM graphType;
 		association* dataAssoc;
 		bool dirty;
-		unsigned int activeGraphs;
+		unsigned int activeGraphs = INT_MAX;
 
 	//private Q_SLOTS:
 		virtual void help() = 0;

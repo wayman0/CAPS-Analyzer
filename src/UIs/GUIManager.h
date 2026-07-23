@@ -120,14 +120,14 @@ class GUIManager
         void setAnalyzerAttr();
         void analyze();
 
-        virtual void selectPixelizer() = 0;
-        virtual void configurePixelizer(PIXELSCHEME scheme) = 0;
+        void selectPixelizer();
+        void configurePixelizer(PIXELSCHEME scheme);
 
-        virtual void selectTransformer() = 0;
-        virtual void configureTransformer(TRANSFORMERSCHEME scheme) = 0;
+        void selectTransformer();
+        void configureTransformer(TRANSFORMERSCHEME scheme);
 
-        virtual void selectAnalzyer() = 0;
-        virtual void configureAnalyzer() = 0;
+        void selectAnalzyer();
+        void configureAnalyzer();
 
         virtual void configureDisplay(FILETYPE dataType);
 

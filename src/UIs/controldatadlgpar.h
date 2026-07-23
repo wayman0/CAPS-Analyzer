@@ -84,7 +84,9 @@ class controlDataDialogParent
 
   // Q_SLOTS:
     virtual void configure(bool open) = 0;
-    virtual void reset() = 0;
+	virtual void execute() = 0;
+	virtual void execute(bool open) = 0;
+    virtual void reset();
 
   //Q_SIGNALS:
     virtual void dataCreationCancelled() = 0;

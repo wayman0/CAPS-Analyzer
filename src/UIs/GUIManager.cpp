@@ -424,6 +424,50 @@ void GUIManager::createControlData(FILETYPE dataType, bool complete)
         ctrlDlg->configured(true);
 }
 
+void GUIManager::selectPixelizer()
+{
+	int count = 0, i = 1;
+	PIXELSCHEME pixCount = static_cast<PIXELSCHEME>(i);
+
+	while (i)
+	{
+		if (pixCount == PIXELIZER_LIMIT)
+			break;
+		count++;
+		pixCount = static_cast <PIXELSCHEME>(++i);
+	}
+
+	if (count > 1)
+	{
+		if (!pixSelectDlg->configured())
+			pixSelectDlg->execute();
+	}
+	else
+	{
+		if (!healpixDlg->configured())
+			healpixDlg->execute();
+	}
+
+	return;
+}
+
+void GUIManager::configurePixelizer(PIXELSCHEME scheme)
+{
+	bool error = false;
+
+	switch (scheme)
+	{
+		case HealPIX:
+			healpixDlg->execute();
+			break;
+		default:
+			error = true;
+	}
+
+	if (error)
+		errorMessage("An invalid pixelization engine was specified.\nPixelization aborted.");
+}
+
 void GUIManager::setPixelizerAttr()
 {
 	switch (s_association->pixelizationEngineType())
@@ -595,6 +639,50 @@ bool GUIManager::handleMissingTransformer()
 	return true;
 }
 
+void GUIManager::selectTransformer()
+{
+	int count = 0, i = 1;
+	TRANSFORMERSCHEME transCount = static_cast<TRANSFORMERSCHEME>(i);
+
+	while (i)
+	{
+		if (transCount == TRANSFORMER_LIMIT)
+			break;
+		count++;
+		transCount = static_cast <TRANSFORMERSCHEME>(++i);
+	}
+
+	if (count > 1)
+	{
+		if (!transSelectDlg->configured())
+		transSelectDlg->execute();
+	}
+	else
+	{
+		if (!rshtDlg->configured())
+		rshtDlg->execute();
+	}
+
+	return;
+}
+
+void GUIManager::configureTransformer(TRANSFORMERSCHEME scheme)
+{
+	bool error = false;
+
+	switch (scheme)
+	{
+		case Rsht:
+			rshtDlg->execute();
+			break;
+		default:
+			error = true;
+	}
+
+	if (error)
+		errorMessage("An invalid transformation engine was specified. \nTransformation aborted.");
+}
+
 void GUIManager::setTransformerAttr()
 {
 	switch (s_association->transformationEngineType())
@@ -747,6 +835,19 @@ bool GUIManager::invert(FILETYPE inverseType, FILETYPE almType)
         return s_association->generateInverseData(s_association->transformationEngine(), almType);
     else
         return false;
+}
+
+void GUIManager::selectAnalzyer()
+{
+	if (!specDlg->configured())
+		specDlg->execute();
+}
+
+void GUIManager::configureAnalyzer()
+{
+	if(!specDlg->configured())
+		specDlg->execute();
+
 }
 
 void GUIManager::setAnalyzerAttr()

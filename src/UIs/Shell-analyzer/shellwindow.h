@@ -85,15 +85,6 @@ class ShellWindow : GUIManager
 
 		bool handleMissingTransformer();
 
-		void selectPixelizer();
-		void configurePixelizer(PIXELSCHEME scheme);
-
-		void selectTransformer();
-		void configureTransformer(TRANSFORMERSCHEME scheme);
-
-		void selectAnalzyer();
-		void configureAnalyzer();
-
 		void configureDisplay(FILETYPE ft);
 
 		void emitSelectMapDisplay(int displayData);

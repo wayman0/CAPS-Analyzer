@@ -73,6 +73,7 @@ class energyDialog : public QDialog, public energyDialogParent
 
   public Q_SLOTS:
     void configure(double min, double max);
+	void execute(double min, double max) {configure(min, max);}
     void reset();
     
   Q_SIGNALS:

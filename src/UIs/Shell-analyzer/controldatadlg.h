@@ -68,9 +68,8 @@ class controlDataDialog : public controlDataDialogParent
 		virtual ~controlDataDialog();
 
 		void execute();
-
+		void execute(bool t) {execute(); }
 		void configure(bool open) {}
-		void reset() {}
 
 		void dataCreationCancelled();// { cancelF(); }
 		void buildControlData(FILETYPE f, bool b);// { successF(f, b);}
@@ -81,7 +80,7 @@ class controlDataDialog : public controlDataDialogParent
 		successFunc successF;
 		cancelFunc cancelF;
 
-		const int width = 45;
+		const int fWidth = 45;
 
 		void setDataType();
 		void setResolution();

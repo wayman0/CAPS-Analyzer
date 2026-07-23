@@ -75,6 +75,7 @@ class pixelizerDialog : public QDialog, public pixelizerDialogParent
 
   public Q_SLOTS:
     void configure();
+	void execute() {configure();}
     void reset();
 
   private:

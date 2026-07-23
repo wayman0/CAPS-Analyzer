@@ -74,6 +74,7 @@ class graphSelectDialog : public QDialog, public graphSelectDialogParent
 
 	public Q_SLOTS:
 		void configure(unsigned int availableGraphs);
+		void execute() {graphSelectDialogParent::configure();}
 		void reset();
 
 	private:

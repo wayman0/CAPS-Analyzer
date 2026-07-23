@@ -72,6 +72,7 @@ class multipleSelectionDialog : public QDialog, public multipleSelectionDialogPa
 
   public Q_SLOTS:
     void configure();
+	void execute() {configure();}
     void reset();
     
   Q_SIGNALS:

@@ -492,99 +492,6 @@ bool ShellWindow::handleMissingTransformer()
 	return true;
 }
 
-void ShellWindow::selectPixelizer()
-{
-	int count = 0, i = 1;
-	PIXELSCHEME pixCount = static_cast<PIXELSCHEME>(i);
-
-	while(true)
-	{
-		if (pixCount == PIXELIZER_LIMIT)
-			break;
-		count++;
-		pixCount = static_cast <PIXELSCHEME>(++i);
-	}
-
-	if (count > 1)
-	{
-		if (!pixSelectDlg->configured())
-			static_cast<pixelizerDialog*>(pixSelectDlg)->execute();
-	}
-	else
-	{
-		static_cast<healpixDialog*>(healpixDlg)->execute();
-	}
-}
-
-void ShellWindow::configurePixelizer(PIXELSCHEME scheme)
-{
-	bool error = false;
-
-	switch (scheme)
-	{
-		case HealPIX:
-			static_cast<healpixDialog*>(healpixDlg)->execute();
-			break;
-		default:
-			error = true;
-	}
-
-  if (error)
-    errorMessage("An invalid pixelization engine was specified.\nPixelization aborted.");
-}
-
-void ShellWindow::selectTransformer()
-{
-	int count = 0, i = 1;
-	TRANSFORMERSCHEME transCount = static_cast<TRANSFORMERSCHEME>(i);
-
-	while (true)
-	{
-		if (transCount == TRANSFORMER_LIMIT)
-			break;
-		count++;
-		transCount = static_cast <TRANSFORMERSCHEME>(++i);
-	}
-
-	if (count > 1)
-	{
-		if (!transSelectDlg->configured())
-			static_cast<transformerDialog*>(transSelectDlg)->execute();
-	}
-	else
-	{
-		if (!rshtDlg->configured())
-			static_cast<rshtDialog*>(rshtDlg)->execute();
-	}
-}
-
-void ShellWindow::configureTransformer(TRANSFORMERSCHEME scheme)
-{
-	bool error = false;
-
-	switch (scheme)
-	{
-		case Rsht:
-			static_cast<rshtDialog*>(rshtDlg)->execute();
-			break;
-		default:
-			error = true;
-	}
-
-	if (error)
-		errorMessage("An invalid transformation engine was specified. \nTransformation aborted.");
-}
-
-void ShellWindow::selectAnalzyer()
-{
-	static_cast<analyzerDialog*>(analSelectDlg)->execute();
-}
-
-void ShellWindow::configureAnalyzer()
-{
-	static_cast<spectrumDialog*>(specDlg)->execute();
-}
-
 void ShellWindow::emitSelectMapDisplay(int displayData)
 {
 	static_cast<mapSelectDialog*>(mapSelectDlg)->execute();
@@ -592,7 +499,7 @@ void ShellWindow::emitSelectMapDisplay(int displayData)
 
 void ShellWindow::configureDisplay(FILETYPE ft)
 {
-	// leave empty to avoid from having to display maps which are ugly in this version.
+	// leave empty to avoid from having to display maps which are ugly in this version and very error prone.
 }
 
 void ShellWindow::paintMap(unsigned char* map)

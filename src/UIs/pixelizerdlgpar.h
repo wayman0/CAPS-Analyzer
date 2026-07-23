@@ -70,6 +70,7 @@ class pixelizerDialogParent
    //Q_SLOTS:
     virtual void configure() = 0;
     virtual void reset() = 0;
+	virtual void execute() = 0;
 
   protected:
     virtual void validate() = 0;

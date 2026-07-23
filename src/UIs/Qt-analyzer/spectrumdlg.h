@@ -69,6 +69,7 @@ class spectrumDialog : public QDialog, public spectrumDialogParent
 
   public Q_SLOTS:
     void configure();
+	void execute() {configure();}
     void reset();
 
   Q_SIGNALS:

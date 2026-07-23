@@ -210,92 +210,90 @@ void controlDataDialog::configure(bool open) {
     show();
 }
 
-void controlDataDialog::reset() {
-  dataSet = Empty;
-  ui->dataButton->setEnabled(true);
-  ui->weightsButton->setEnabled(true);
-  ui->noiseButton->setEnabled(true);
-  ui->filterButton->setEnabled(true);
-  ui->beamButton->setEnabled(true);
-  ui->dataButton->setChecked(true);
+void controlDataDialog::reset()
+{
+	controlDataDialogParent::reset();
 
-  resRA = resDec = 0.0;
-  ui->decResolutionLabel->setEnabled(true);
-  ui->RAResolutionLabel->setEnabled(true);
-  ui->decResolutionValue->setText(QString("%1").arg(resDec,0,'f',1));
-  ui->RAResolutionValue->setText(QString("%1").arg(resRA,0,'f',1));
-  coords = RAdec;
-  ui->RADecButton->setChecked(true);
+	ui->dataButton->setEnabled(true);
+	ui->weightsButton->setEnabled(true);
+	ui->noiseButton->setEnabled(true);
+	ui->filterButton->setEnabled(true);
+	ui->beamButton->setEnabled(true);
+	ui->dataButton->setChecked(true);
 
-  signalStrength = 0.0;
-  ui->sigLabel->setEnabled(true);
-  ui->sigValue->setEnabled(true);
-  ui->sigUnit->setEnabled(true);
-  ui->sigValue->clear();
-  ui->sigValue->setText(QString("%1").arg(signalStrength,0,'f',1));
+	ui->decResolutionLabel->setEnabled(true);
+	ui->RAResolutionLabel->setEnabled(true);
+	ui->decResolutionValue->setText(QString("%1").arg(resDec,0,'f',1));
+	ui->RAResolutionValue->setText(QString("%1").arg(resRA,0,'f',1));
 
-  ui->stackedWidget->setCurrentIndex(0); //insure that blank widget is originally visual
-  dataType = fileType::Null;
-  ui->checkerButton->setChecked(false);
-  ui->deltaButton->setChecked(false);
-  ui->gaussianButton->setChecked(false);
-  ui->harmonicButton->setChecked(false);
-  ui->regionalButton->setChecked(false);
-  ui->uniformButton->setChecked(false);
-  top = 90.0;
-  bottom = -90.0;
-  from = -180.0;
-  to = 180.0;
-  ui->regionTopValue->setText(QString("%1").arg(top,0,'f',1));
-  ui->regionBottomValue->setText(QString("%1").arg(bottom,0,'f',1));
-  ui->regionFromValue->setText(QString("%1").arg(from,0,'f',1));
-  ui->regionToValue->setText(QString("%1").arg(to,0,'f',1));
-  peakDec = peakRA = 0.0;
-  fwhm = 0.0;
-  ui->RAValue->setText(QString("%1").arg(peakRA,0,'f',1));
-  ui->decValue->setText(QString("%1").arg(peakDec,0,'f',1));
-  ui->fwhmValue->setText(QString("%1").arg(fwhm,0,'f',1));
-  checkRA = checkDec = 0.0;
-  ui->RAScaleValue->setText(QString("%1").arg(checkRA,0,'f',1));
-  ui->decScaleValue->setText(QString("%1").arg(checkDec,0,'f',1));
-  l = m = 0;
-  ui->lSpinner->setValue(l);
-  ui->mSpinner->setValue(m);
-  operation = Add;
-  dirty = false;
-  isConfigured = false;
+	ui->RADecButton->setChecked(true);
 
-  QString title, message, chainDesc;
-  FILETYPE chain = fileType::InputData;
-  int type = 1;
+	ui->sigLabel->setEnabled(true);
+	ui->sigValue->setEnabled(true);
+	ui->sigUnit->setEnabled(true);
+	ui->sigValue->clear();
+	ui->sigValue->setText(QString("%1").arg(signalStrength,0,'f',1));
 
-  while (chain < fileType::PixelizedData) {
-    if (dataAssoc->maxDataSet((GENERICTYPE)chain) != noSky) {
-      switch (chain) {
-        case fileType::InputData:
-          chainDesc = QString(tr("Data"));
-          break;
-        case fileType::InputWeights:
-          chainDesc = QString(tr("Weight"));
-          break;
-        case fileType::InputNoise:
-          chainDesc = QString(tr("Noise"));
-          break;
-        case fileType::InputFilter:
-          chainDesc = QString(tr("Filter"));
-          break;
-        case fileType::InputBeam:
-          chainDesc = QString(tr("Beam"));
-          break;
-      }
-      title = QString(tr("%1 chain found")).arg(chainDesc);
-      message = QString(tr("Elements of the %1 chain were found.\nDo you wish to reset these?")).arg(chainDesc);
-      int result = QMessageBox::question(this,title,message,QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
-        if (result == QMessageBox::Yes)
-          dataAssoc->discardRelation(chain);
-    }
-  chain = static_cast<fileType>(++type);
-  }
+	ui->stackedWidget->setCurrentIndex(0); //insure that blank widget is originally visual
+
+	ui->checkerButton->setChecked(false);
+	ui->deltaButton->setChecked(false);
+	ui->gaussianButton->setChecked(false);
+	ui->harmonicButton->setChecked(false);
+	ui->regionalButton->setChecked(false);
+	ui->uniformButton->setChecked(false);
+
+	ui->regionTopValue->setText(QString("%1").arg(top,0,'f',1));
+	ui->regionBottomValue->setText(QString("%1").arg(bottom,0,'f',1));
+	ui->regionFromValue->setText(QString("%1").arg(from,0,'f',1));
+	ui->regionToValue->setText(QString("%1").arg(to,0,'f',1));
+
+	ui->RAValue->setText(QString("%1").arg(peakRA,0,'f',1));
+	ui->decValue->setText(QString("%1").arg(peakDec,0,'f',1));
+	ui->fwhmValue->setText(QString("%1").arg(fwhm,0,'f',1));
+
+	ui->RAScaleValue->setText(QString("%1").arg(checkRA,0,'f',1));
+	ui->decScaleValue->setText(QString("%1").arg(checkDec,0,'f',1));
+
+	ui->lSpinner->setValue(l);
+	ui->mSpinner->setValue(m);
+
+	QString title, message, chainDesc;
+	FILETYPE chain = fileType::InputData;
+	int type = 1;
+
+	while (chain < fileType::PixelizedData)
+	{
+		if (dataAssoc->maxDataSet((GENERICTYPE)chain) != noSky)
+		{
+			switch (chain)
+			{
+				case fileType::InputData:
+					chainDesc = QString(tr("Data"));
+					break;
+				case fileType::InputWeights:
+					chainDesc = QString(tr("Weight"));
+					break;
+				case fileType::InputNoise:
+					chainDesc = QString(tr("Noise"));
+					break;
+				case fileType::InputFilter:
+					chainDesc = QString(tr("Filter"));
+					break;
+				case fileType::InputBeam:
+					chainDesc = QString(tr("Beam"));
+					break;
+			}
+
+			title = QString(tr("%1 chain found")).arg(chainDesc);
+			message = QString(tr("Elements of the %1 chain were found.\nDo you wish to reset these?")).arg(chainDesc);
+			int result = QMessageBox::question(this,title,message,QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
+
+			if (result == QMessageBox::Yes)
+				dataAssoc->discardRelation(chain);
+		}
+		chain = static_cast<fileType>(++type);
+	}
 }
 
 bool controlDataDialog::validate() {

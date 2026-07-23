@@ -66,6 +66,7 @@ class energyDialogParent
 
    //Q_SLOTS:
     virtual void configure(double min, double max) = 0;
+	virtual void execute(double min, double max) = 0;
     virtual void reset() = 0;
     
   //Q_SIGNALS:

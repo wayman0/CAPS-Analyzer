@@ -72,6 +72,8 @@ class mapperDialog : public QDialog, public mapperDialogParent
   public Q_SLOTS:
     void configure();
     void configure(bool triggered);
+	void execute() {configure();}
+	void execute(bool triggered) {configure(triggered);}
     void reset();
     
   Q_SIGNALS:

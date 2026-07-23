@@ -68,6 +68,7 @@ class graphDialog : public graphDialogParent
 		void reset() {}
 
 		void execute();
+		void execute(bool t) {execute();}
 		bool confirm();
 		void setLogLogScale();
 		void setDims();

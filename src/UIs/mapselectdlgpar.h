@@ -53,6 +53,7 @@
 
 #include "../libanalyzer/atypes.h"
 #include "../libanalyzer/association.h"
+#include <climits>
 
 class mapSelectDialogParent
 {
@@ -68,6 +69,7 @@ class mapSelectDialogParent
 	//public Q_SLOTS:
 		void configure() {configure(activeMaps);}
 		virtual void configure(unsigned int availableMaps) = 0;
+		virtual void execute() = 0;
 		virtual void reset() = 0;
 
 	protected:
@@ -76,7 +78,7 @@ class mapSelectDialogParent
 		association * dataMgr;
 		ASSOCIATEDMAP mapType;
 		bool dirty;
-		unsigned int activeMaps;
+		unsigned int activeMaps = INT_MAX;
 
 	//private Q_SLOTS:
 		virtual void help() = 0;

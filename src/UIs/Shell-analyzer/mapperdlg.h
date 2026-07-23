@@ -66,7 +66,7 @@ class mapperDialog : public mapperDialogParent
 		virtual ~mapperDialog();
 
 		void execute();
-
+		void execute(bool t) {execute();}
 		void setDims();
 		void setProjection();
 		void setColorScale();

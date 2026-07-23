@@ -71,6 +71,8 @@ class controlDataDialog : public QDialog, public controlDataDialogParent
 
   public Q_SLOTS:
     void configure(bool open);
+	void execute() {configure(false);}
+	void execute(bool open) {configure(open);}
     void reset();
 
   Q_SIGNALS:

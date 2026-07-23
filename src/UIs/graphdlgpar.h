@@ -72,6 +72,8 @@ class graphDialogParent
 	//public Q_SLOTS:
 		virtual void configure() = 0;
 		virtual void configure(bool triggered) = 0;
+		virtual void execute() = 0;
+		virtual void execute(bool triggered) = 0;
 		virtual void reset() = 0;
 
 	//Q_SIGNALS:

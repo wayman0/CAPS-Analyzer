@@ -72,6 +72,8 @@ class graphDialog : public QDialog, public graphDialogParent
 	public Q_SLOTS:
 		void configure();
 		void configure(bool triggered);
+		void execute(bool triggered) {configure(triggered);}
+		void execute() {configure();}
 		void reset();
 
 	Q_SIGNALS:

@@ -169,7 +169,7 @@ void controlDataDialog::setResolution()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the RA Resolution.";
+			(*output) << std::setw(fWidth) << "Enter the RA Resolution.";
 		}while(		!((*input)>>res1)
 					|| res1 <= 0);
 
@@ -177,7 +177,7 @@ void controlDataDialog::setResolution()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the Dec Resolution.";
+			(*output) << std::setw(fWidth) << "Enter the Dec Resolution.";
 		}while(		!((*input)>>res2)
 					|| res2 <= 0);
 
@@ -195,7 +195,7 @@ void controlDataDialog::setStrength()
 	{
 		clearInput();
 
-		(*output) << std::setw(width) << "Enter the Signal Strength.";
+		(*output) << std::setw(fWidth) << "Enter the Signal Strength.";
 	}while(		!((*input)>>str)
 				|| str <= 0);
 
@@ -237,14 +237,14 @@ void controlDataDialog::setControlType()
 			{
 				clearInput();
 
-				(*output) << std::setw(width) << "Enter the top bounds.";
+				(*output) << std::setw(fWidth) << "Enter the top bounds.";
 			}while(		!((*input)>>t));
 
 			do
 			{
 				clearInput();
 
-				(*output) << std::setw(width) << "Enter the bottom bounds.";
+				(*output) << std::setw(fWidth) << "Enter the bottom bounds.";
 			}while(		!((*input)>>b));
 
 			if(t < b)
@@ -262,14 +262,14 @@ void controlDataDialog::setControlType()
 			{
 				clearInput();
 
-				(*output) << std::setw(width) << "Enter the left bounds.";
+				(*output) << std::setw(fWidth) << "Enter the left bounds.";
 			}while(		!((*input)>>l));
 
 			do
 			{
 				clearInput();
 
-				(*output) << std::setw(width) << "Enter the right bounds.";
+				(*output) << std::setw(fWidth) << "Enter the right bounds.";
 			}while(		!((*input)>>r));
 
 			if(r < l)
@@ -289,7 +289,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the checker width.";
+			(*output) << std::setw(fWidth) << "Enter the checker width.";
 		}while(		!((*input)>>res1)
 					|| res1 <= 0);
 
@@ -299,7 +299,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the checker height.";
+			(*output) << std::setw(fWidth) << "Enter the checker height.";
 		}while(		!((*input)>>res2)
 					|| res2 <= 0);
 
@@ -315,7 +315,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the RA point.";
+			(*output) << std::setw(fWidth) << "Enter the RA point.";
 		}while(		!((*input)>>ra)
 					|| ra < -180
 					|| ra > 180);
@@ -326,7 +326,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the Dec point.";
+			(*output) << std::setw(fWidth) << "Enter the Dec point.";
 		}while(		!((*input)>>dec)
 					|| dec < -90
 					|| dec > 90);
@@ -343,7 +343,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the RA point.\t";
+			(*output) << std::setw(fWidth) << "Enter the RA point.\t";
 		}while(		!((*input)>>ra)
 					|| ra < -180
 					|| ra > 180);
@@ -354,7 +354,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the Dec point.\t";
+			(*output) << std::setw(fWidth) << "Enter the Dec point.\t";
 		}while(		!((*input)>>dec)
 					|| dec < -90
 					|| dec > 90);
@@ -365,7 +365,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter the std. dev.\t";
+			(*output) << std::setw(fWidth) << "Enter the std. dev.\t";
 		}while(		!((*input)>>width)
 					|| width < -180
 					|| width > 180);
@@ -382,7 +382,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter l parameter.";
+			(*output) << std::setw(fWidth) << "Enter l parameter.";
 		}while(		!((*input)>>lVal)
 					|| lVal < 0);
 
@@ -392,7 +392,7 @@ void controlDataDialog::setControlType()
 		{
 			clearInput();
 
-			(*output) << std::setw(width) << "Enter m parameter.";
+			(*output) << std::setw(fWidth) << "Enter m parameter.";
 		}while(		!((*input)>>mVal)
 					|| mVal < -lVal
 					|| mVal >  lVal);

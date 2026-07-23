@@ -72,6 +72,7 @@ class analyzerDialog : public QDialog, public analyzerDialogParent
 
   public Q_SLOTS:
     void configure();
+	void execute() {configure();}
     void reset();
 
   private:

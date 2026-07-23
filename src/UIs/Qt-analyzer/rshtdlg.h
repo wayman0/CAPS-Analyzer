@@ -72,6 +72,7 @@ class rshtDialog : public QDialog, public rshtDialogParent
 
   public Q_SLOTS:
     void configure();
+	void execute() {configure();}
     void reset();
 
   Q_SIGNALS:

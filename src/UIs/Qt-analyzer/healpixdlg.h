@@ -73,6 +73,7 @@ class healpixDialog : public QDialog, public healpixDialogParent
 
   public Q_SLOTS:
     void configure();
+	void execute() {configure();}
     void reset();
 
   Q_SIGNALS:

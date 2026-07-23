@@ -75,6 +75,7 @@ class transformerDialog : public QDialog, public transformerDialogParent
 
   public Q_SLOTS:
     void configure();
+	void execute() {configure();}
     void reset();
 
   private:

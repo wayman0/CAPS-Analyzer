@@ -112,9 +112,9 @@ class mainWindow : public QMainWindow, GUIManager {
     //void buildGraphs();
     //void displayGraph(ASSOCIATEDSPECTRUM graph);
 
-	void configurePixelizer(PIXELSCHEME scheme);
-    void configureTransformer(TRANSFORMERSCHEME scheme);
-    void configureAnalyzer();
+	//void configurePixelizer(PIXELSCHEME scheme);
+    //void configureTransformer(TRANSFORMERSCHEME scheme);
+    //void configureAnalyzer();
 
   Q_SIGNALS:
     void redrawMap();
@@ -173,8 +173,8 @@ class mainWindow : public QMainWindow, GUIManager {
     void paintMap(unsigned char* map);
     void paintGraph(unsigned char* graph);
     void reset();
-    void selectPixelizer();
-    void selectTransformer();
-    void selectAnalzyer();
+    //void selectPixelizer();
+    //void selectTransformer();
+    //void selectAnalzyer();
 };
 #endif
