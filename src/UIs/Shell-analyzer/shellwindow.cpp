@@ -501,6 +501,7 @@ void ShellWindow::configureDisplay(FILETYPE ft)
 {
 	// leave empty to avoid from having to display maps which are ugly in this version
 	// also it is very error prone.
+	// throws a sigsegv when making graphs but only on control data not when read from file
 }
 
 void ShellWindow::paintMap(unsigned char* map)
