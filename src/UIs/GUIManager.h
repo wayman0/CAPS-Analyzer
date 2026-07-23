@@ -83,12 +83,13 @@ class GUIManager
         virtual void updateProgressBar(int value)               = 0;
         virtual void updateProgressText(const char* updateName) = 0;
         virtual void errorMessage(const char* errMess)          = 0;
+
         virtual void displayMessage(const char* mess)           = 0;
         virtual bool addDataMessage(const char* errMess)        = 0;
         virtual bool replaceDataChain(const char* mess)         = 0;
 
-        virtual void addAssociation()                           = 0;
-        virtual void setAssociation(association* newAssoc)      = 0;
+        void addAssociation();
+        void setAssociation(association* newAssoc);
 
         virtual bool selectFileName(bool read) = 0;
 
@@ -128,18 +129,20 @@ class GUIManager
         virtual void selectAnalzyer() = 0;
         virtual void configureAnalyzer() = 0;
 
-        void configureDisplay(FILETYPE dataType);
+        virtual void configureDisplay(FILETYPE dataType);
 
 		void setMapperAttr();
 		void configureMaps();
 		void buildMaps();
 		void displayMap(ASSOCIATEDMAP map);
+		virtual void clearMaps() = 0;
 		virtual void emitSelectMapDisplay(int displayData) = 0;
 
 		void setGrapherAttr();
 		void configureGraphs();
 		void buildGraphs();
 		void displayGraph(ASSOCIATEDSPECTRUM graph);
+		virtual void clearGraphs() = 0;
 		virtual void emitSelectGraphDisplay(int displayData) = 0;
 
 		virtual void paintMap(unsigned char* map) = 0;

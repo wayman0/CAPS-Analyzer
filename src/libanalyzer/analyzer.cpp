@@ -231,7 +231,7 @@ analyzer_hdl analyzer_create_instance(void) {
   if (n == MAX_DATA_HANDLES)
     return ANALYZER_OBJECT_LIMIT_ERR;
 
-  s_dataset[n] = new(std::nothrow) association(malloc(0), nullptr, nullptr, nullptr);
+  s_dataset[n] = new(std::nothrow) association((GUIManager*)0); //, nullptr, nullptr, nullptr);
 
   if (s_dataset[n])
     return n;

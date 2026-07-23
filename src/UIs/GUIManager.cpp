@@ -58,6 +58,33 @@ GUIManager::GUIManager(int fSize) : fontSize(fSize)
     dataSource = OBSERVATORY::Analyzer;
     fileName = "";
     dataFormat = FORMAT::None;
+
+	associationVector = new std::vector<association*>();
+	try
+	{
+		associationVector->push_back(new association(this));
+		s_association = (*associationVector)[0];
+	}
+	catch (const std::overflow_error &e)
+	{
+		errorMessage("The attempt to create a new data association failed due to overflow error.");
+		return;
+	}
+	catch (const std::runtime_error &e)
+	{
+		errorMessage("The attempt to create a new data association failed due to runtime error.");
+		return;
+	}
+	catch (const std::exception &e)
+	{
+		errorMessage("The attempt to create a new data association failed due to exception error.");
+		return;
+	}
+	catch (...)
+	{
+		errorMessage("The attempt to create a new data association failed.");
+		return;
+	}
 }
 
 GUIManager::~GUIManager()
@@ -66,6 +93,82 @@ GUIManager::~GUIManager()
         delete s;
 
     delete associationVector;
+}
+
+void GUIManager::errorMessage(const char* errMess)
+{
+	std::cerr << errMess << "\n";
+}
+
+void GUIManager::addAssociation()
+{
+  try
+  {
+    association* newAssoc = new association(this);
+    associationVector->push_back(newAssoc);
+    setAssociation(newAssoc);
+  }
+  catch (const std::overflow_error &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to overflow error.");
+    return;
+  }
+  catch (const std::runtime_error &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to runtime error.");
+    return;
+  }
+  catch (const std::exception &e)
+  {
+    errorMessage("The attempt to create a new data association failed due to exception error.");
+    return;
+  }
+  catch (...)
+  {
+    errorMessage("The attempt to create a new data association failed.");
+    return;
+  }
+
+   mapperDlg->configured(false);
+  grapherDlg->configured(false);
+
+  ctrlDlg->reset();
+
+  displayMessage("Association addition successful.\n Now using the new addition.\n");
+}
+
+void GUIManager::setAssociation(association* newAssoc)
+{
+  s_association = newAssoc;
+
+  assocDlg->setCurrAssoc(s_association);
+
+  if(dataSelectDlg)
+    dataSelectDlg->setAssociation(s_association);
+
+         ctrlDlg->setAssociation(s_association);
+//       energyDlg->setAssociation(s_association);
+      multSelDlg->setAssociation(s_association);
+    pixSelectDlg->setAssociation(s_association);
+      healpixDlg->setAssociation(s_association);
+  transSelectDlg->setAssociation(s_association);
+         rshtDlg->setAssociation(s_association);
+       mapperDlg->setAssociation(s_association);
+    mapSelectDlg->setAssociation(s_association);
+      grapherDlg->setAssociation(s_association);
+  graphSelectDlg->setAssociation(s_association);
+
+         ctrlDlg->configured(false);
+       //energyDlg->configured(false);
+      multSelDlg->configured(false);
+    pixSelectDlg->configured(false);
+      healpixDlg->configured(false);
+  transSelectDlg->configured(false);
+         rshtDlg->configured(false);
+         specDlg->configured(false);
+
+  clearMaps();
+  clearGraphs();
 }
 
 void GUIManager::writeData(int numTypes, FILETYPE dataTypes[])

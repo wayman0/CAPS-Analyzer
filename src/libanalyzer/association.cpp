@@ -74,14 +74,16 @@
 #include "../libgraphics/mollweide.h"
 #include "../libgraphics/grapher.h"
 
-association::association(void* guiObj, void (*updFX)(void*, int),
-                                       void (*updTxt)(void*, const char*),
-                                      void (*dispErr)(void*, const char*))
+#include "../UIs/GUIManager.h"
+
+association::association(GUIManager* guiObj) //void (*updFX)(void*, int),
+                                       //void (*updTxt)(void*, const char*),
+                                      //void (*dispErr)(void*, const char*))
 {
   m_uiObject = guiObj;
-  m_updateProgressValue = updFX;
-  m_updateProgressText  = updTxt;
-  m_displayErrorMessage = dispErr;
+  //m_updateProgressValue = updFX;
+  //m_updateProgressText  = updTxt;
+  //m_displayErrorMessage = dispErr;
 
   m_showProgress = false;
 
@@ -501,6 +503,21 @@ association& association::operator=(association& other) {
 //  m_showProgress        = other.showProgress();
 
   return *this;
+}
+
+void association::updateProgressValue(int value)
+{
+	m_uiObject->updateProgressBar(value);
+}
+
+void association::updateProgressText(const char* text)
+{
+	m_uiObject->updateProgressText(text);
+}
+
+void association::displayErrorMessage(const char* mess)
+{
+	m_uiObject->errorMessage(mess);
 }
 
 association& association::merge(association& other, bool replace) {
@@ -5358,8 +5375,8 @@ void association::discardRelation(FILETYPE type) {
 
 void association::reset() {
   m_uiObject = 0;
-  m_updateProgressValue = 0;
-  m_updateProgressText  = 0;
+  //m_updateProgressValue = 0;
+  //m_updateProgressText  = 0;
   m_showProgress = false;
 
   m_pixelAverage = 0;

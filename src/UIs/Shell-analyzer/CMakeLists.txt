@@ -18,8 +18,11 @@ set(shell-analyzer_SOURCES
 	main.cpp
 	shellwindow.cpp
 	controldatadlg.cpp
+	pixelizerdlg.cpp
 	healpixdlg.cpp
+	transformerdlg.cpp
 	rshtdlg.cpp
+	analyzerdlg.cpp
 	spectrumdlg.cpp
 	dataselectdlg.cpp
 	multipleselectiondlg.cpp
@@ -27,6 +30,8 @@ set(shell-analyzer_SOURCES
 	mapselectdlg.cpp
 	graphdlg.cpp
 	graphselectdlg.cpp
+
+	associationselectdlg.cpp
    )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/.. ${CMAKE_SOURCE_DIR} ${DEPS_INCLUDE_DIRS})

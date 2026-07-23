@@ -61,36 +61,6 @@ mainWindow::mainWindow() :
             GUIManager(15),
             ui(new Ui::MainWindow)
 {
-  associationVector = new std::vector<association*>();
-  try
-  {
-    associationVector->push_back(new association(this,  mainWindow::progressBarWrapper,
-                                                        mainWindow::progressTextWrapper,
-                                                        mainWindow::errorMessageWrapper));
-
-    s_association = (*associationVector)[0];
-  }
-  catch (const std::overflow_error &e)
-  {
-    errorMessage("The attempt to create a new data association failed due to overflow error.");
-    return;
-  }
-  catch (const std::runtime_error &e)
-  {
-    errorMessage("The attempt to create a new data association failed due to runtime error.");
-    return;
-  }
-  catch (const std::exception &e)
-  {
-    errorMessage("The attempt to create a new data association failed due to exception error.");
-    return;
-  }
-  catch (...)
-  {
-    errorMessage("The attempt to create a new data association failed.");
-    return;
-  }
-
   /* set up the user interface */
   ui->setupUi(this);
 
@@ -121,7 +91,6 @@ mainWindow::mainWindow() :
   ui->progressBar->reset();
   ui->progressBar->setRange(0,100);
   ui->progressLabel->setText(QString(tr("Ready")));
-  s_progressInterface = new progress(this,progressBarWrapper);
 
   /* set LED indicators */
   selectedDataType = fileType::Null;
@@ -282,24 +251,6 @@ mainWindow::~mainWindow() {
   delete mapSelectDlg;
   delete grapherDlg;
   delete graphSelectDlg;
-}
-
-void mainWindow::progressBarWrapper(void* uiObj, int value)
-{
-  mainWindow* here = (mainWindow*) uiObj;
-  here->updateProgressBar(value);
-}
-
-void mainWindow::progressTextWrapper(void* uiObj, const char* updateName)
-{
-  mainWindow* here = (mainWindow*) uiObj;
-  here->updateProgressText(updateName);
-}
-
-void mainWindow::errorMessageWrapper(void* uiObj, const char* errMess)
-{
-  mainWindow* here = (mainWindow*) uiObj;
-  here->errorMessage(errMess);
 }
 
 void mainWindow::updateProgressBar(int value)
@@ -503,82 +454,6 @@ void mainWindow::emitSelectEnergies()
 
   // let user change energy range before reading data
   Q_EMIT selectEnergies(minEnergy, maxEnergy);
-}
-
-void mainWindow::addAssociation()
-{
-  try
-  {
-    association* newAssoc = new association(this,   mainWindow::progressBarWrapper,
-                                                    mainWindow::progressTextWrapper,
-                                                    mainWindow::errorMessageWrapper);
-    associationVector->push_back(newAssoc);
-    setAssociation(newAssoc);
-  }
-  catch (const std::overflow_error &e)
-  {
-    errorMessage("The attempt to create a new data association failed due to overflow error.");
-    return;
-  }
-  catch (const std::runtime_error &e)
-  {
-    errorMessage("The attempt to create a new data association failed due to runtime error.");
-    return;
-  }
-  catch (const std::exception &e)
-  {
-    errorMessage("The attempt to create a new data association failed due to exception error.");
-    return;
-  }
-  catch (...)
-  {
-    errorMessage("The attempt to create a new data association failed.");
-    return;
-  }
-
-   mapperDlg->configured(false);
-  grapherDlg->configured(false);
-
-  ctrlDlg->reset();
-
-  QMessageBox addSuccessful;
-  addSuccessful.setText("Addition Successful. Now using the new addition.");
-  addSuccessful.setStandardButtons(QMessageBox::Ok);
-  addSuccessful.exec();
-}
-
-void mainWindow::setAssociation(association* newAssoc)
-{
-  s_association = newAssoc;
-
-  assocDlg->setCurrAssoc(s_association);
-
-  if(dataSelectDlg)
-    dataSelectDlg->setAssociation(s_association);
-
-         ctrlDlg->setAssociation(s_association);
-       energyDlg->setAssociation(s_association);
-      multSelDlg->setAssociation(s_association);
-    pixSelectDlg->setAssociation(s_association);
-      healpixDlg->setAssociation(s_association);
-  transSelectDlg->setAssociation(s_association);
-         rshtDlg->setAssociation(s_association);
-       mapperDlg->setAssociation(s_association);
-    mapSelectDlg->setAssociation(s_association);
-      grapherDlg->setAssociation(s_association);
-  graphSelectDlg->setAssociation(s_association);
-
-         ctrlDlg->configured(false);
-       energyDlg->configured(false);
-      multSelDlg->configured(false);
-    pixSelectDlg->configured(false);
-      healpixDlg->configured(false);
-  transSelectDlg->configured(false);
-         rshtDlg->configured(false);
-         specDlg->configured(false);
-
-  clearMaps();
-  clearGraphs();
 }
 
 void mainWindow::emitSelectMapDisplay(int displayData)
@@ -801,8 +676,4 @@ void mainWindow::reset() {
   clearGraphs();
 
   s_association->reset();
-
-  delete s_progressInterface;
-  s_progressInterface = 0;
-  ui->progressBar->reset();
 }

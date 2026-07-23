@@ -53,9 +53,14 @@
 
 #include "shellwindow.h"
 #include "controldatadlg.h"
+#include "pixelizerdlg.h"
 #include "healpixdlg.h"
+#include "transformerdlg.h"
 #include "rshtdlg.h"
+#include "analyzerdlg.h"
 #include "spectrumdlg.h"
+
+#include "associationselectdlg.h"
 
 #include "dataselectdlg.h"
 #include "multipleselectiondlg.h"
@@ -81,47 +86,29 @@ ShellWindow::ShellWindow() : GUIManager(5)
 	input =  &(std::cin);
 	output = &(std::cout);
 
-	associationVector = new std::vector<association*>();
-	try
-	{
-		associationVector->push_back(new association(this,  ShellWindow::progressBarWrapper,
-															ShellWindow::progressTextWrapper,
-															ShellWindow::errorMessageWrapper));
-
-		s_association = (*associationVector)[0];
-	}
-	catch (const std::overflow_error &e)
-	{
-		errorMessage("The attempt to create a new data association failed due to overflow error.");
-		return;
-	}
-	catch (const std::runtime_error &e)
-	{
-		errorMessage("The attempt to create a new data association failed due to runtime error.");
-		return;
-	}
-	catch (const std::exception &e)
-	{
-		errorMessage("The attempt to create a new data association failed due to exception error.");
-		return;
-	}
-	catch (...)
-	{
-		errorMessage("The attempt to create a new data association failed.");
-		return;
-	}
-
 	ctrlDlg = new controlDataDialog(s_association, input, output,
 									[this](FILETYPE f, bool b) { this->createControlData(f, b);},
 									[=](){(*output) << "Control Data Creation canceled.\n";});
+
+	pixSelectDlg = new pixelizerDialog(s_association, input, output,
+									   [this](PIXELSCHEME p){configurePixelizer(p);},
+									   [=](){(*output) << "Pixelizer selection canceled.\n";});
 
 	healpixDlg = new healpixDialog(s_association, input, output,
 								   [this]() {this->pixelize();},
 								   [=](){(*output) << "Pixelization canceled.\n";});
 
+	transSelectDlg = new transformerDialog(s_association, input, output,
+										   [this](TRANSFORMERSCHEME t){configureTransformer(t);},
+										   [=](){(*output) << "Transformer selection canceled.\n";});
+
 	rshtDlg = new rshtDialog(s_association, input, output,
 							 [this]() {this->transform();},
 							 [=]() {(*output) << "Transformation canceled.\n";});
+
+	analSelectDlg = new analyzerDialog(s_association, input, output,
+									   [this](){configureAnalyzer();},
+									   [=](){(*output) << "Analyzer selection canceled.\n";});
 
 	specDlg = new spectrumDialog(input, output,
 								 [this]() {this->analyze();},
@@ -131,6 +118,10 @@ ShellWindow::ShellWindow() : GUIManager(5)
 											 [this](int min, int max) {s_association->fileIOEngine()->minSlice(min);
 																	   s_association->fileIOEngine()->maxSlice(max);},
 											 [=](){(*output) << "Multiple Selection Canceled\n";});
+
+	assocDlg = new associationSelectDialog(associationVector, input, output,
+										   [this](association* a) {setAssociation(a);},
+										   [=](){(*output) << "Canceled\n";});
 
 	mapperDlg = new mapperDialog(s_association, input, output,
 								 [this](){this->buildMaps();},
@@ -152,24 +143,6 @@ ShellWindow::ShellWindow() : GUIManager(5)
 ShellWindow::~ShellWindow()
 {
 
-}
-
-void ShellWindow::progressBarWrapper(void* uiObj, int value)
-{
-	ShellWindow* here = (ShellWindow*)uiObj;
-	here->updateProgressBar(value);
-}
-
-void ShellWindow::progressTextWrapper(void* uiObj, const char* updateName)
-{
-	ShellWindow* here = (ShellWindow*)uiObj;
-	here->updateProgressText(updateName);
-}
-
-void ShellWindow::errorMessageWrapper(void* uiObj, const char* errMess)
-{
-	ShellWindow* here = (ShellWindow*)uiObj;
-	here->errorMessage(errMess);
 }
 
 void ShellWindow::updateProgressBar(int value)
@@ -291,24 +264,28 @@ void ShellWindow::execute()
 		else if(choice == 3)
 			saveFile();
 		else if(choice == 4)
-			static_cast<healpixDialog*>(healpixDlg)->execute();
+			selectPixelizer(); //static_cast<healpixDialog*>(healpixDlg)->execute();
 		else if(choice == 5)
-			static_cast<rshtDialog*>(rshtDlg)->execute();
+			selectTransformer(); //static_cast<rshtDialog*>(rshtDlg)->execute();
 		else if(choice == 6)
-			static_cast<spectrumDialog*>(specDlg)->execute();
+			selectAnalzyer(); //static_cast<spectrumDialog*>(specDlg)->execute();
 		else if(choice == 7)
-			static_cast<mapSelectDialog*>(mapSelectDlg)->execute();
+			(*output) << "Option currently unavailable.\n";//static_cast<mapSelectDialog*>(mapSelectDlg)->execute();
 		else if(choice == 8)
-			(*output) << "Display Graph\n";
+			(*output) << "Option currently unavailable.\n";//static_cast<graphSelectDialog*>(graphSelectDlg)->execute();
 		else if(choice == 9)
 			printAssocStatus();
+		else if(choice == 10)
+			addAssociation();
+		else if(choice == 11)
+			static_cast<associationSelectDialog*>(assocDlg)->execute();
 		else
 		{
 			clearInput();
 			printInvalidChoice();
 		}
 
-		//clearScreen();
+		clearScreen();
 		printMenu();
 	}
 }
@@ -316,16 +293,18 @@ void ShellWindow::execute()
 void ShellWindow::printMenu()
 {
 	(*output) << "MENU CHOICES: \n";
-	(*output) << "\t0. Exit\n"
-			  << "\t1. Create Control Data\n"
-			  << "\t2. Open File\n"
-			  << "\t3. Save File\n"
-			  << "\t4. Pixelize\n"
-			  << "\t5. Transform\n"
-			  << "\t6. Analyze\n"
-			  << "\t7. Display Map\n"
-			  << "\t8. Display Graph\n"
-			  << "\t9. View Progress\n";
+	(*output) << "\t0.  Exit\n"
+			  << "\t1.  Create Control Data\n"
+			  << "\t2.  Open File\n"
+			  << "\t3.  Save File\n"
+			  << "\t4.  Pixelize\n"
+			  << "\t5.  Transform\n"
+			  << "\t6.  Analyze\n"
+			  << "\t7.  Display Map\n"
+			  << "\t8.  Display Graph\n"
+			  << "\t9.  View Progress\n"
+			  << "\t10. Add Association\n"
+			  << "\t11. Change Association.\n";
 }
 
 int ShellWindow::getChoice()
@@ -361,12 +340,6 @@ void ShellWindow::clearScreen()
 {
 	(*output) << "\033[H\033[J";
 }
-
-void ShellWindow::addAssociation()
-{}
-
-void ShellWindow::setAssociation(association* newAssoc)
-{}
 
 bool ShellWindow::selectFileName(bool read)
 {
@@ -535,7 +508,7 @@ void ShellWindow::selectPixelizer()
 	if (count > 1)
 	{
 		if (!pixSelectDlg->configured())
-			pixSelectDlg->configure();
+			static_cast<pixelizerDialog*>(pixSelectDlg)->execute();
 	}
 	else
 	{
@@ -544,7 +517,21 @@ void ShellWindow::selectPixelizer()
 }
 
 void ShellWindow::configurePixelizer(PIXELSCHEME scheme)
-{}
+{
+	bool error = false;
+
+	switch (scheme)
+	{
+		case HealPIX:
+			static_cast<healpixDialog*>(healpixDlg)->execute();
+			break;
+		default:
+			error = true;
+	}
+
+  if (error)
+    errorMessage("An invalid pixelization engine was specified.\nPixelization aborted.");
+}
 
 void ShellWindow::selectTransformer()
 {
@@ -562,7 +549,7 @@ void ShellWindow::selectTransformer()
 	if (count > 1)
 	{
 		if (!transSelectDlg->configured())
-			transSelectDlg->configure();
+			static_cast<transformerDialog*>(transSelectDlg)->execute();
 	}
 	else
 	{
@@ -572,17 +559,40 @@ void ShellWindow::selectTransformer()
 }
 
 void ShellWindow::configureTransformer(TRANSFORMERSCHEME scheme)
-{}
+{
+	bool error = false;
+
+	switch (scheme)
+	{
+		case Rsht:
+			static_cast<rshtDialog*>(rshtDlg)->execute();
+			break;
+		default:
+			error = true;
+	}
+
+	if (error)
+		errorMessage("An invalid transformation engine was specified. \nTransformation aborted.");
+}
 
 void ShellWindow::selectAnalzyer()
-{}
+{
+	static_cast<analyzerDialog*>(analSelectDlg)->execute();
+}
 
 void ShellWindow::configureAnalyzer()
-{}
+{
+	static_cast<spectrumDialog*>(specDlg)->execute();
+}
 
 void ShellWindow::emitSelectMapDisplay(int displayData)
 {
 	static_cast<mapSelectDialog*>(mapSelectDlg)->execute();
+}
+
+void ShellWindow::configureDisplay(FILETYPE ft)
+{
+	// leave empty to avoid from having to display maps which are ugly in this version.
 }
 
 void ShellWindow::paintMap(unsigned char* map)
@@ -615,6 +625,11 @@ void ShellWindow::paintMap(unsigned char* map)
 	//(*output) << "Press any key to continue to main menu.\n";
 	clearInput();
 	input->get();
+}
+
+void ShellWindow::clearMaps()
+{
+	clearScreen();
 }
 
 void ShellWindow::emitSelectGraphDisplay(int displayData)
@@ -652,5 +667,10 @@ void ShellWindow::paintGraph(unsigned char* graph)
 	//(*output) << "Press any key to continue to main menu.\n";
 	clearInput();
 	input->get();
+}
+
+void ShellWindow::clearGraphs()
+{
+	clearScreen();
 }
 

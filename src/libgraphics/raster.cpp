@@ -614,7 +614,7 @@ double Raster::vectorFontLength(VectorFont font, const char *string) {
 
 /* FreeType2 bitmapped fonts... */
 void Raster::bitmapFontFace(const char *font, int face_pixels) {
-  FT_Error err;
+  FT_Error err = 0;
 
   if (!font || face_pixels < 1) {
     printf("Parameter error...\n");

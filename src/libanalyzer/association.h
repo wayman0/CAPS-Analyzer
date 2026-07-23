@@ -71,13 +71,11 @@ class Transformer;
 class Pixelizer;
 class Spectrum;
 
-typedef void (*updateProgressText)(void*, const char*);
-typedef void (*updateProgressBar)(void*, int);
-typedef void (*displayErrorMess)(void*, const char*);
+class GUIManager;
 
 class association {
 public:
-  association(void* guiObj, void (*updPB)(void*, int), void (*updPT)(void*, const char*), void (*dispErr)(void*, const char*));
+  association(GUIManager* guiObj);
   association(association* from);
   ~association() {reset();}
 
@@ -378,9 +376,9 @@ public:
 //  void* userInterface() const {return m_uiObject;}
 //  updateFx updateFunction() const {return m_updateFunc;}
 
-  void updateProgressValue(int value)       { m_updateProgressValue(m_uiObject, value); }
-  void updateProgressText(const char* text) { m_updateProgressText(m_uiObject, text);   }
-  void displayErrorMessage(const char* mess){ m_displayErrorMessage(m_uiObject, mess);    }
+  void updateProgressValue(int value);//       { m_uiObject->updateProgressValue(value); }
+  void updateProgressText(const char* text);// { m_uiObject->m_updateProgressText(text); }
+  void displayErrorMessage(const char* mess);//{ m_uiObject->m_displayErrorMessage(mess);}
 
   ERRORCODES  errorValue() const {return m_error;}
   void errorValue(ERRORCODES errNo) {m_error = errNo;}
@@ -397,10 +395,7 @@ private:
   dataSpectrum* configureGraph(FILETYPE type);
 
   bool                             m_showProgress;
-  void*                            m_uiObject;
-  ::updateProgressBar              m_updateProgressValue;
-  ::updateProgressText             m_updateProgressText;
-  ::displayErrorMess               m_displayErrorMessage;
+  GUIManager*                      m_uiObject;
   progress                         *m_progress;
 
   double                           m_pixelAverage;
