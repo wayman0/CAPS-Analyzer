@@ -1,5 +1,5 @@
 /***************************************************************************
- *   shellwindow.h                                                          *
+ *   ftxuiwindow.cpp                                                          *
  *   Copyright (C) {} 2014 by Daniel Suson                                    *
  *   suson@calumet.purdue.edu                                              *
  *                                                                         *
@@ -52,15 +52,41 @@
 
 #include "ftxuiwindow.h"
 
+#include "healpixdlg.h"
+
+
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/screen/screen.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/loop.hpp>
+
+#include <vector>
+
+//#include <thread>
+//#include <chrono>
 
 FTXUIWindow::FTXUIWindow() : GUIManager(5), screen(ftxui::ScreenInteractive::Fullscreen())
 {
+	options = new std::vector<std::string>{"Exit",
+											"Create Control Data",
+											"Open File",
+											"Save File",
+											"Pixelize",
+											"Transform",
+											"Analyze",
+											"Display Map",
+											"Display Graph",
+											"View Progress",
+											"Add Association",
+											"Change Association"};
 
+	healpixDlg = new healpixDialog(s_association, [this](){this->pixelize();}, [=](){});
 }
 
 FTXUIWindow::~FTXUIWindow()
 {
-
+	delete options;
 }
 
 void FTXUIWindow::updateProgressBar(int value){}
@@ -75,17 +101,73 @@ void FTXUIWindow::printAssocStatus(){}
 
 void FTXUIWindow::execute()
 {
-	std::cout << "SUCCESS\n";
+	bool showScreen     = true;
+	int  optionSelected = 0;
 
-	int hello;
-	std::cin >> hello;
+	ftxui::Component menu = ftxui::Menu(options, &optionSelected) | ftxui::border;
+
+	ftxui::Component menuEvents = CatchEvent(menu,
+									  [&](ftxui::Event menuEvent)
+										{
+											if(  menuEvent == ftxui::Event::Return ||
+												(menuEvent.is_mouse() &&
+												 menuEvent.mouse().button == ftxui::Mouse::Left &&
+												 menuEvent.mouse().motion == ftxui::Mouse::Released))
+											{
+												if(optionSelected == 0)
+													screen.Exit();
+												else
+													showScreen = false;
+
+												return true;
+											}
+											else
+												return false;
+										});
+
+	ftxui::Component menuHider = ftxui::Maybe(menuEvents, &showScreen);
+
+	ftxui::Loop eventLoop = ftxui::Loop(&screen, menuHider);
+	while(!eventLoop.HasQuitted())
+	{
+		eventLoop.RunOnce();
+
+		if(!showScreen)
+		{
+			screen.Clear();
+
+			//if(optionSelected == 1)
+				// create control data
+			//else if(optionSelected == 2)
+				// open file
+			//else if(optionSelected == 3)
+				// save file
+			if(optionSelected == 4)
+				selectPixelizer();
+			/*
+			else if(optionSelected == 5)
+				// transform
+			else if(optionSelected == 6)
+				// analyze
+			else if(optionSelected == 7)
+				// choose map
+			else if(optionSelected == 8)
+				// choose graph
+			else if(optionSelected == 9)
+				// view status
+			else if(optionSelected == 10)
+				// add association
+			else if(optionSelected == 11)
+				// change association
+			*/
+
+			showScreen = true;
+
+			screen.PostEvent(ftxui::Event::Custom);
+			menu->TakeFocus();
+		}
+	}
 }
-
-void FTXUIWindow::printMenu(){}
-int FTXUIWindow::getChoice(){ return true; }
-void FTXUIWindow::printInvalidChoice(){}
-void FTXUIWindow::clearInput(){}
-void FTXUIWindow::clearScreen(){}
 
 bool FTXUIWindow::selectFileName(bool read){return true; }
 

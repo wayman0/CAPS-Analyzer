@@ -27,7 +27,7 @@ set(ftxui-analyzer_SOURCES
 	ftxuiwindow.cpp
 	#controldatadlg.cpp
 	#pixelizerdlg.cpp
-	#healpixdlg.cpp
+	healpixdlg.cpp
 	#transformerdlg.cpp
 	#rshtdlg.cpp
 	#analyzerdlg.cpp
@@ -54,7 +54,7 @@ target_sources(FTXUI-analyzer PUBLIC
 				#../controldatadlgpar.cpp
 				#../dataselectdlgpar.cpp
 				#../energydlgpar.cpp
-				#../healpixdlgpar.cpp
+				../healpixdlgpar.cpp
 				#../multipleselectiondlgpar.cpp
 				#../pixelizerdlgpar.cpp
 				#../rshtdlgpar.cpp
