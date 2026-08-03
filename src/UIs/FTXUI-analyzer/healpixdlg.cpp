@@ -108,6 +108,20 @@ void healpixDialog::execute()
     nSides = skySides;
     res = skyRes;
 
+	std::function<ftxui::Component(std::string)> labelMaker = [&](std::string str)
+																{
+																	ftxui::Component labelComp =
+																				ftxui::Renderer([str](bool focused)
+																				{
+																					ftxui::Element label = ftxui::text(str) | ftxui::focus;
+																					if(focused)
+																						return label | ftxui::color(ftxui::Color::Black) | ftxui::bgcolor(ftxui::Color::GrayLight);
+
+																					return label;
+																				});
+																	return labelComp;
+																};
+
 	std::string nSidesInput = "";
 	std::string resInput    = "";
 
@@ -145,21 +159,12 @@ void healpixDialog::execute()
 									return e;
 								};
 	ftxui::Component nSidesInputBox = ftxui::Input(&nSidesInput, std::to_string(nSides), nSidesOptions);
-	ftxui::Component nSidesDescr    = ftxui::Renderer([](){return ftxui::text("NSides (Power of 2): ");});
+	ftxui::Component nSidesDescr    = labelMaker("NSides (Power of 2): ");
 
 	ftxui::InputOption resOptions = ftxui::InputOption::Default();
-	resOptions.transform = [&](ftxui::InputState resState)
-							{
-								ftxui::Element e = resState.element;
-								e = e | ftxui::bgcolor(ftxui::Color::GrayDark);
-
-								if(resState.focused)
-									e = e | ftxui::bgcolor(ftxui::Color::White);
-
-								return e;
-							};
+	resOptions.transform = [&](ftxui::InputState resState){return resState.element | bgcolor(ftxui::Color::GrayDark);};
 	ftxui::Component resInputBox = ftxui::Input(&resInput, std::to_string(res), resOptions);
-	ftxui::Component resDescr    = ftxui::Renderer([](){return ftxui::text("Resoulution: ");});
+	ftxui::Component resDescr    = labelMaker("Resolution: ");
 
 	ftxui::Component nSidesResCont = ftxui::Container::Vertical({nSidesDescr, nSidesInputBox,
 																resDescr,    resInputBox});
@@ -213,7 +218,7 @@ void healpixDialog::execute()
 							};
 	ftxui::Component nestCheckBox = ftxui::Checkbox("Nested", &nestSelected, nestOption);
 
-	ftxui::Component indexComponent = ftxui::Renderer([](){return ftxui::text("Choose the Indexing Scheme") | ftxui::bold;});
+	ftxui::Component indexComponent = labelMaker("Choose the Indexing Scheme");
 	ftxui::Component indexContainer = ftxui::Container::Vertical({
 																	indexComponent | ftxui::hcenter,
 																	ringCheckBox,
@@ -343,7 +348,7 @@ void healpixDialog::execute()
 	ftxui::Component healpixContainer = ftxui::Container::Vertical({
 																		healpixTextComp | ftxui::hcenter,
 																		resIndContainer,
-																		overPixGrided, //overPixContainer,
+																		overPixGrided,
 																		buttonCont
 																}) | ftxui::border;
 

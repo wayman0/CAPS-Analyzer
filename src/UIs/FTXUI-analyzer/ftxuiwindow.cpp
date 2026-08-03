@@ -52,8 +52,10 @@
 
 #include "ftxuiwindow.h"
 
+#include "pixelizerdlg.h"
 #include "healpixdlg.h"
-
+#include "transformerdlg.h"
+#include "rshtdlg.h"
 
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
@@ -81,7 +83,12 @@ FTXUIWindow::FTXUIWindow() : GUIManager(5), screen(ftxui::ScreenInteractive::Ful
 											"Add Association",
 											"Change Association"};
 
-	healpixDlg = new healpixDialog(s_association, [this](){this->pixelize();}, [=](){});
+	pixSelectDlg = new pixelizerDialog(s_association, [this](PIXELSCHEME p){configurePixelizer(p);}, [](){});
+	healpixDlg   = new healpixDialog(s_association,   [this](){this->pixelize();},                   [](){});
+
+	transSelectDlg = new transformerDialog(s_association, [this](TRANSFORMERSCHEME t){configureTransformer(t);}, [](){});
+	rshtDlg = new rshtDialog(s_association, [this](){this->transform();}, [](){});
+
 }
 
 FTXUIWindow::~FTXUIWindow()
@@ -144,9 +151,10 @@ void FTXUIWindow::execute()
 				// save file
 			if(optionSelected == 4)
 				selectPixelizer();
-			/*
+
 			else if(optionSelected == 5)
-				// transform
+				rshtDlg->execute();
+			/*
 			else if(optionSelected == 6)
 				// analyze
 			else if(optionSelected == 7)
