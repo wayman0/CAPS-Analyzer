@@ -56,6 +56,8 @@
 #include "healpixdlg.h"
 #include "transformerdlg.h"
 #include "rshtdlg.h"
+#include "analyzerdlg.h"
+#include "spectrumdlg.h"
 
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
@@ -89,6 +91,8 @@ FTXUIWindow::FTXUIWindow() : GUIManager(5), screen(ftxui::ScreenInteractive::Ful
 	transSelectDlg = new transformerDialog(s_association, [this](TRANSFORMERSCHEME t){configureTransformer(t);}, [](){});
 	rshtDlg = new rshtDialog(s_association, [this](){this->transform();}, [](){});
 
+	analSelectDlg = new analyzerDialog(s_association, [this](){configureAnalyzer();}, [](){});
+	specDlg = new spectrumDialog([this](){analyze();}, [](){});
 }
 
 FTXUIWindow::~FTXUIWindow()
@@ -151,12 +155,11 @@ void FTXUIWindow::execute()
 				// save file
 			if(optionSelected == 4)
 				selectPixelizer();
-
 			else if(optionSelected == 5)
-				rshtDlg->execute();
-			/*
+				selectTransformer();
 			else if(optionSelected == 6)
-				// analyze
+				selectAnalyzer();
+			/*
 			else if(optionSelected == 7)
 				// choose map
 			else if(optionSelected == 8)

@@ -30,8 +30,8 @@ set(ftxui-analyzer_SOURCES
 	healpixdlg.cpp
 	transformerdlg.cpp
 	rshtdlg.cpp
-	#analyzerdlg.cpp
-	#spectrumdlg.cpp
+	analyzerdlg.cpp
+	spectrumdlg.cpp
 	#dataselectdlg.cpp
 	#multipleselectiondlg.cpp
 	#mapperdlg.cpp
@@ -49,7 +49,6 @@ add_executable(FTXUI-analyzer ${ftxui-analyzer_SOURCES})
 
 target_sources(FTXUI-analyzer PUBLIC
 				../GUIManager.cpp
-				#../analyzerdlgpar.cpp
 				#../associationselectdlgpar.cpp
 				#../controldatadlgpar.cpp
 				#../dataselectdlgpar.cpp
@@ -59,7 +58,8 @@ target_sources(FTXUI-analyzer PUBLIC
 				../healpixdlgpar.cpp
 				../transformerdlgpar.cpp
 				../rshtdlgpar.cpp
-				#../spectrumdlgpar.cpp
+				../analyzerdlgpar.cpp
+				../spectrumdlgpar.cpp
 				#../mapperdlgpar.cpp
 				#../mapselectdlgpar.cpp
 				#../graphdlgpar.cpp
