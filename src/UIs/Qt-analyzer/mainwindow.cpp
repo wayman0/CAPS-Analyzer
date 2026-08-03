@@ -134,7 +134,7 @@ mainWindow::mainWindow() :
   connect(ui->exitAction,         &QAction::triggered, [=](){close();});
   connect(ui->pixelizeAction,     &QAction::triggered, [=](){selectPixelizer();});
   connect(ui->transformAction,    &QAction::triggered, [=](){selectTransformer();});
-  connect(ui->analyzeAction,      &QAction::triggered, [=](){selectAnalzyer();});
+  connect(ui->analyzeAction,      &QAction::triggered, [=](){selectAnalyzer();});
 
   connect(ui->selectMapsAction,   &QAction::triggered, [=](){mapSelectDlg->configure();});
   connect(ui->selectGraphsAction, &QAction::triggered, [=](){graphSelectDlg->configure();});

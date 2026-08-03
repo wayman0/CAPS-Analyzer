@@ -837,7 +837,7 @@ bool GUIManager::invert(FILETYPE inverseType, FILETYPE almType)
         return false;
 }
 
-void GUIManager::selectAnalzyer()
+void GUIManager::selectAnalyzer()
 {
 	if (!specDlg->configured())
 		specDlg->execute();

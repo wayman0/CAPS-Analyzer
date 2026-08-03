@@ -126,7 +126,7 @@ class GUIManager
         void selectTransformer();
         void configureTransformer(TRANSFORMERSCHEME scheme);
 
-        void selectAnalzyer();
+        void selectAnalyzer();
         void configureAnalyzer();
 
         virtual void configureDisplay(FILETYPE dataType);

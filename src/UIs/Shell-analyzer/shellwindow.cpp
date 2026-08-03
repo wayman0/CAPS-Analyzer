@@ -268,7 +268,7 @@ void ShellWindow::execute()
 		else if(choice == 5)
 			selectTransformer(); //static_cast<rshtDialog*>(rshtDlg)->execute();
 		else if(choice == 6)
-			selectAnalzyer(); //static_cast<spectrumDialog*>(specDlg)->execute();
+			selectAnalyzer(); //static_cast<spectrumDialog*>(specDlg)->execute();
 		else if(choice == 7)
 			(*output) << "Option currently unavailable.\n";//static_cast<mapSelectDialog*>(mapSelectDlg)->execute();
 		else if(choice == 8)

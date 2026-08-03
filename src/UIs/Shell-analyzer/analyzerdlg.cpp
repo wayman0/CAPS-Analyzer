@@ -66,6 +66,7 @@ analyzerDialog::~analyzerDialog()
 void analyzerDialog::execute()
 {
 	isConfigured = true;
+
 	analyzerSelected();
 }
 
