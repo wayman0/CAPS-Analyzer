@@ -52,6 +52,7 @@
 
 #include "ftxuiwindow.h"
 
+#include "controldatadlg.h"
 #include "pixelizerdlg.h"
 #include "healpixdlg.h"
 #include "transformerdlg.h"
@@ -85,6 +86,8 @@ FTXUIWindow::FTXUIWindow() : GUIManager(5), screen(ftxui::ScreenInteractive::Ful
 											"Add Association",
 											"Change Association"};
 
+	ctrlDlg = new controlDataDialog(s_association, [this](FILETYPE f, bool b){createControlData(f, b);}, [](){});
+
 	pixSelectDlg = new pixelizerDialog(s_association, [this](PIXELSCHEME p){configurePixelizer(p);}, [](){});
 	healpixDlg   = new healpixDialog(s_association,   [this](){this->pixelize();},                   [](){});
 
@@ -108,7 +111,104 @@ void FTXUIWindow::displayMessage(const char* mess){}
 bool FTXUIWindow::addDataMessage(const char* errMess){ return true; }
 bool FTXUIWindow::replaceDataChain(const char* mess){ return true; }
 
-void FTXUIWindow::printAssocStatus(){}
+void FTXUIWindow::printAssocStatus()
+{
+	ftxui::ScreenInteractive assocScreen = ftxui::ScreenInteractive::Fullscreen();
+	/*
+	std::vector<ftxui::Element> assocStatus;
+
+	for(fileType ft = FILETYPE::InputData; ft != FILETYPE::FILETYPE_LIMIT; ft = static_cast<FILETYPE>(static_cast<int>(ft)+1))
+	{
+		std::string ftName = dataTypeNames[static_cast<int>(ft)];
+		if(s_association->exists(ft))
+			assocStatus.push_back(ftxui::text(ftName) | ftxui::border | ftxui::color(ftxui::Color::Green));
+		else
+			assocStatus.push_back(ftxui::text(ftName) | ftxui::border | ftxui::color(ftxui::Color::Red));
+	}
+
+	ftxui::Component title = ftxui::Renderer([](){return ftxui::text("Association Status") | ftxui::bold | ftxui::border | ftxui::hcenter;});
+	ftxui::Component assocBox = ftxui::Renderer([&](){return ftxui::vbox(assocStatus) | ftxui::border;});
+	ftxui::Component contButt = ftxui::Button("Continue", [&](){assocScreen.Exit();});
+
+	ftxui::Component container = ftxui::Container::Vertical({title,
+															//ftxui::Renderer([&](){return ftxui::vbox(assocStatus) | ftxui::border;}),
+															//assocBox,
+															contButt}) | ftxui::border;
+	*/
+
+	// there needs to be a way to make this scrollable
+	// we also should be able to fill a vector with true/false and loop the vector
+	// supposedly we can make a vbox(Elements) where Elements is alias for vector<element>
+	// but nothing apppears when I do that so IDK
+	ftxui::Component title = ftxui::Renderer([](){return ftxui::text("Association Status") | ftxui::bold | ftxui::border | ftxui::hcenter;});
+	ftxui::Component contButt = ftxui::Button("Continue", [&](){assocScreen.Exit();});
+
+	ftxui::Element assocStatus = ftxui::vbox({
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InputData)])          | ftxui::color(s_association->exists(fileType::InputData)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InputWeights)])       | ftxui::color(s_association->exists(fileType::InputWeights)       ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::WeightedData)])       | ftxui::color(s_association->exists(fileType::WeightedData)       ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InputNoise)])         | ftxui::color(s_association->exists(fileType::InputNoise)         ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InputWeightedNoise)]) | ftxui::color(s_association->exists(fileType::InputWeightedNoise) ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InputBeam)])          | ftxui::color(s_association->exists(fileType::InputBeam)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InputFilter)])        | ftxui::color(s_association->exists(fileType::InputFilter)        ? ftxui::Color::Green : ftxui::Color::Red),
+
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::PixelizedData)])          | ftxui::color(s_association->exists(fileType::PixelizedData)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::PixelizedWeights)])       | ftxui::color(s_association->exists(fileType::PixelizedWeights)       ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::WeightedPixel)])          | ftxui::color(s_association->exists(fileType::WeightedPixel)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::PixelizedNoise)])         | ftxui::color(s_association->exists(fileType::PixelizedNoise)         ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::PixelizedWeightedNoise)]) | ftxui::color(s_association->exists(fileType::PixelizedWeightedNoise) ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::PixelizedBeam)])          | ftxui::color(s_association->exists(fileType::PixelizedBeam)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::PixelizedFilter)])        | ftxui::color(s_association->exists(fileType::PixelizedFilter)        ? ftxui::Color::Green : ftxui::Color::Red),
+
+												// ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseData)])          | ftxui::color(s_association->exists(fileType::InverseData)          ? ftxui::Color::Green : ftxui::Color::Red),
+												// ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseWeights)])       | ftxui::color(s_association->exists(fileType::InverseWeights)       ? ftxui::Color::Green : ftxui::Color::Red),
+												// ftxui::text(dataTypeNames[static_cast<int>(fileType::WeightedInverse)])      | ftxui::color(s_association->exists(fileType::WeightedInverse)      ? ftxui::Color::Green : ftxui::Color::Red),
+												// ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseNoise)])         | ftxui::color(s_association->exists(fileType::InverseNoise)         ? ftxui::Color::Green : ftxui::Color::Red),
+												// ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseWeightedNoise)]) | ftxui::color(s_association->exists(fileType::InverseWeightedNoise) ? ftxui::Color::Green : ftxui::Color::Red),
+												// ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseBeam)])          | ftxui::color(s_association->exists(fileType::InverseBeam)          ? ftxui::Color::Green : ftxui::Color::Red),
+												// ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseFilter)])        | ftxui::color(s_association->exists(fileType::InverseFilter)        ? ftxui::Color::Green : ftxui::Color::Red),
+
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::TransformedData)])          | ftxui::color(s_association->exists(fileType::TransformedData)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::TransformedWeights)])       | ftxui::color(s_association->exists(fileType::TransformedWeights)       ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::WeightedTransform)])        | ftxui::color(s_association->exists(fileType::WeightedTransform)        ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::TransformedNoise)])         | ftxui::color(s_association->exists(fileType::TransformedNoise)         ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::TransformedWeightedNoise)]) | ftxui::color(s_association->exists(fileType::TransformedWeightedNoise) ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::TransformedBeam)])          | ftxui::color(s_association->exists(fileType::TransformedBeam)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::TransformedFilter)])        | ftxui::color(s_association->exists(fileType::TransformedFilter)        ? ftxui::Color::Green : ftxui::Color::Red),
+
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::AlmData)])          | ftxui::color(s_association->exists(fileType::AlmData)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::AlmWeights)])       | ftxui::color(s_association->exists(fileType::AlmWeights)       ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::WeightedAlm)])      | ftxui::color(s_association->exists(fileType::WeightedAlm)      ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::AlmNoise)])         | ftxui::color(s_association->exists(fileType::AlmNoise)         ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::AlmWeightedNoise)]) | ftxui::color(s_association->exists(fileType::AlmWeightedNoise) ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::AlmBeam)])          | ftxui::color(s_association->exists(fileType::AlmBeam)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::AlmFilter)])        | ftxui::color(s_association->exists(fileType::AlmFilter)        ? ftxui::Color::Green : ftxui::Color::Red),
+
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::EnsembleAveragedSpectrum)])               | ftxui::color(s_association->exists(fileType::EnsembleAveragedSpectrum)               ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::EnsembleAveragedNoise)])                  | ftxui::color(s_association->exists(fileType::EnsembleAveragedNoise)                  ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::ExtrapolatedSpectrum)])                   | ftxui::color(s_association->exists(fileType::ExtrapolatedSpectrum)                   ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::ExtrapolatedInstrumentSpectrum)])         | ftxui::color(s_association->exists(fileType::ExtrapolatedInstrumentSpectrum)         ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::BinnedSpectrum)])                         | ftxui::color(s_association->exists(fileType::BinnedSpectrum)                         ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedSpectrum)])             | ftxui::color(s_association->exists(fileType::BinnedExtrapolatedSpectrum)             ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::BinnedExtrapolatedInstrumentedSpectrum)]) | ftxui::color(s_association->exists(fileType::BinnedExtrapolatedInstrumentedSpectrum) ? ftxui::Color::Green : ftxui::Color::Red),
+
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::EnsembleIterationSpectrum)])      | ftxui::color(s_association->exists(fileType::EnsembleIterationSpectrum)      ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::EnsembleIterationNoise)])         | ftxui::color(s_association->exists(fileType::EnsembleIterationNoise)         ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::ModeModeMatrix)])                 | ftxui::color(s_association->exists(fileType::ModeModeMatrix)                 ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseModeModeMatrix)])          | ftxui::color(s_association->exists(fileType::InverseModeModeMatrix)          ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InstrumentEffectsMatrix)])        | ftxui::color(s_association->exists(fileType::InstrumentEffectsMatrix)        ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseInstrumentEffectsMatrix)]) | ftxui::color(s_association->exists(fileType::InverseInstrumentEffectsMatrix) ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::BinningMatrix)])                  | ftxui::color(s_association->exists(fileType::BinningMatrix)                  ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::UnbinningMatrix)])                | ftxui::color(s_association->exists(fileType::UnbinningMatrix)                ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::BinnedInstrumentEffectsMatrix)])  | ftxui::color(s_association->exists(fileType::BinnedInstrumentEffectsMatrix)  ? ftxui::Color::Green : ftxui::Color::Red),
+												ftxui::text(dataTypeNames[static_cast<int>(fileType::InverseBinnedInstrumentMatrix)])  | ftxui::color(s_association->exists(fileType::InverseBinnedInstrumentMatrix)  ? ftxui::Color::Green : ftxui::Color::Red)
+											}) | ftxui::border;
+	ftxui::Component assocBox = ftxui::Renderer([&](){return assocStatus;});
+	ftxui::Component container = ftxui::Container::Vertical({assocBox, contButt}) | ftxui::border;
+
+
+	assocScreen.Loop(container);
+}
 
 void FTXUIWindow::execute()
 {
@@ -147,8 +247,8 @@ void FTXUIWindow::execute()
 		{
 			screen.Clear();
 
-			//if(optionSelected == 1)
-				// create control data
+			if(optionSelected == 1)
+				 ctrlDlg->execute();
 			//else if(optionSelected == 2)
 				// open file
 			//else if(optionSelected == 3)
@@ -164,8 +264,10 @@ void FTXUIWindow::execute()
 				// choose map
 			else if(optionSelected == 8)
 				// choose graph
+			*/
 			else if(optionSelected == 9)
-				// view status
+				printAssocStatus();
+			/*
 			else if(optionSelected == 10)
 				// add association
 			else if(optionSelected == 11)

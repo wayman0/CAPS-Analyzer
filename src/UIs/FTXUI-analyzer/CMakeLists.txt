@@ -25,7 +25,7 @@ find_package(ftxui REQUIRED MODULE)
 set(ftxui-analyzer_SOURCES
 	main.cpp
 	ftxuiwindow.cpp
-	#controldatadlg.cpp
+	controldatadlg.cpp
 	pixelizerdlg.cpp
 	healpixdlg.cpp
 	transformerdlg.cpp
@@ -50,7 +50,7 @@ add_executable(FTXUI-analyzer ${ftxui-analyzer_SOURCES})
 target_sources(FTXUI-analyzer PUBLIC
 				../GUIManager.cpp
 				#../associationselectdlgpar.cpp
-				#../controldatadlgpar.cpp
+				../controldatadlgpar.cpp
 				#../dataselectdlgpar.cpp
 				#../multipleselectiondlgpar.cpp
 				#../energydlgpar.cpp
